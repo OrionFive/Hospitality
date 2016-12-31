@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A36BEEB2-7379-475B-B537-827E34571962}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hospitality</RootNamespace>
+    <AssemblyName>Hospitality</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <BaseIntermediateOutputPath>C:\Temp\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>switchToRelease\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <DefineConstants>NoCCL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Community Core Library">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\729577707\Assemblies\Community Core Library.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DetourAttribute.cs" />
+    <Compile Include="Detouring\JoyGiver_Ingest.cs" />
+    <Compile Include="Detouring\ModContentPack.cs" />
+    <Compile Include="Detouring\ThoughtWorker_PrisonBarracksImpressiveness.cs" />
+    <Compile Include="Detouring\ThoughtWorker_PrisonCellImpressiveness.cs" />
+    <Compile Include="GenericUtility.cs" />
+    <Compile Include="IncidentWorker_RefugeeChased.cs" />
+    <Compile Include="IncidentWorker_WandererJoin.cs" />
+    <Compile Include="NoCCL\Detours.cs" />
+    <Compile Include="CompGuest.cs" />
+    <Compile Include="CompProperties_Guest.cs" />
+    <Compile Include="Debugging.cs" />
+    <Compile Include="Detouring\Pawn_NeedsTracker.cs" />
+    <Compile Include="Detouring\Pawn_RelationsTracker.cs" />
+    <Compile Include="Detouring\RestUtility.cs" />
+    <Compile Include="Detouring\ThoughtWorker_BarracksImpressiveness.cs" />
+    <Compile Include="Detouring\ThoughtWorker_BedroomImpressiveness.cs" />
+    <Compile Include="NoCCL\SpecialInjector.cs" />
+    <Compile Include="Detouring\ThoughtWorker_SharedBedroom.cs" />
+    <Compile Include="Detouring\ThoughtWorker_SleepingRoomImpressiveness.cs" />
+    <Compile Include="EventAction.cs" />
+    <Compile Include="EventAction_AngerForPawn.cs" />
+    <Compile Include="EventAction_BreakPawns.cs" />
+    <Compile Include="EventAction_Pawns.cs" />
+    <Compile Include="InteractionWorker_CharmGuestAttempt.cs" />
+    <Compile Include="InteractionWorker_GuestDiplomacy.cs" />
+    <Compile Include="JobDriver_BrowseItems.cs" />
+    <Compile Include="JobDriver_BuyItem.cs" />
+    <Compile Include="Detouring\Pawn_WorkSettings.cs" />
+    <Compile Include="JoyGiver_BuyFood.cs" />
+    <Compile Include="JoyGiver_BuyStuff.cs" />
+    <Compile Include="LordJob_VisitColony.cs" />
+    <Compile Include="LordToil_CustomTravel.cs" />
+    <Compile Include="Detouring\Pawn_InteractionsTracker.cs" />
+    <Compile Include="ModConfigMenu.cs" />
+    <Compile Include="ThoughtWorker_Beds.cs" />
+    <Compile Include="ThoughtWorker_Expectations.cs" />
+    <Compile Include="Trigger_UrgentlyCold.cs" />
+    <Compile Include="VisitorFlag.cs" />
+    <Compile Include="Building_GuestBed.cs" />
+    <Compile Include="GuestUtility.cs" />
+    <Compile Include="IncidentWorker_VisitorGroup.cs" />
+    <Compile Include="JobDriver_GuestBase.cs" />
+    <Compile Include="JobDriver_GuestImproveRelationship.cs" />
+    <Compile Include="JobDriver_CharmGuest.cs" />
+    <Compile Include="Detouring\FactionDialogMaker.cs" />
+    <Compile Include="JobGiver_Relax.cs" />
+    <Compile Include="JobGiver_Sleep.cs" />
+    <Compile Include="RoomRoleWorker_GuestRoom.cs" />
+    <Compile Include="LordToil_VisitPoint.cs" />
+    <Compile Include="StatWorker_PleaseGuestChance.cs" />
+    <Compile Include="StatWorker_RecruitEffectivity.cs" />
+    <Compile Include="StatWorker_RelationshipDamage.cs" />
+    <Compile Include="ThinkNode_FilterGuestRooms.cs" />
+    <Compile Include="Trigger_Visitors.cs" />
+    <Compile Include="WorkGiver_Diplomat.cs" />
+    <Compile Include="WorkGiver_Recruiter.cs" />
+    <Compile Include="Hospitality_MapComponent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ITab_Pawn_Guest.cs" />
+    <Compile Include="Hospitality_SpecialInjector.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
