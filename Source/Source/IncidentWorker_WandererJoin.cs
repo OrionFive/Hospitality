@@ -1,0 +1,79 @@
+using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
+using Verse;
+
+namespace Hospitality
+{
+    public class IncidentWorker_WandererJoin : IncidentWorker
+    {
+        public override bool TryExecute(IncidentParms parms)
+        {
+            IntVec3 loc;
+            if (!CellFinder.TryFindRandomEdgeCellWith(c => c.CanReachColony(), out loc))
+            {
+                return false;
+            }
+
+            IntVec3 spawnSpot;
+            if (!CellFinder.TryFindRandomEdgeCellWith(c => c.CanReachColony(), out spawnSpot))
+            {
+                return false;
+            }
+
+            var pawn = GenericUtility.GetAnyRelatedWorldPawn(other => other.Faction != null && !other.Faction.HostileTo(Faction.OfPlayer), 100) ?? VanillaPawnCreation();
+            if (pawn == null) return false;
+
+            ShowWandererJoinDialog(pawn, spawnSpot);
+            return true;
+        }
+
+        private static Pawn VanillaPawnCreation()
+        {
+            PawnKindDef pawnKindDef = new List<PawnKindDef> {
+				PawnKindDefOf.Villager
+			}.RandomElement();
+            PawnGenerationRequest request = new PawnGenerationRequest(pawnKindDef, Faction.OfPlayer, PawnGenerationContext.NonPlayer, false, false, false, false, true, false, 20f, false, true, true, null, null, null, null, null);
+            Pawn pawn = PawnGenerator.GeneratePawn(request);
+            return pawn;
+        }
+
+        public static void ShowWandererJoinDialog(Pawn pawn, IntVec3 spawnSpot)
+        {
+            string textAsk = "WandererInitial".Translate(pawn.Faction.Name, pawn.story.adulthood.title.ToLower(), GenText.ToCommaList(pawn.story.traits.allTraits.Select(t=>t.Label)));
+            textAsk = textAsk.AdjustedFor(pawn);
+            PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref textAsk, pawn);
+            DiaNode nodeAsk = new DiaNode(textAsk);
+            var textAccept = "RescuedInitial_Accept".Translate();
+            textAccept = textAccept.AdjustedFor(pawn);
+
+            DiaOption optionAccept = new DiaOption(textAccept);
+            optionAccept.action = () => {
+                if(Find.WorldPawns.Contains(pawn)) Find.WorldPawns.RemovePawn(pawn);
+                GenSpawn.Spawn(pawn, spawnSpot);
+                if (pawn.Faction != Faction.OfPlayer)
+                {
+                    if (pawn.Faction != null && pawn == pawn.Faction.leader)
+                    {
+                        pawn.Faction.GenerateNewLeader();
+                    }
+                    pawn.SetFaction(Faction.OfPlayer);
+                }
+
+                Find.CameraDriver.JumpTo(pawn.Position);
+            };
+            optionAccept.resolveTree = true;
+            nodeAsk.options.Add(optionAccept);
+
+            var textReject = "RescuedInitial_Reject".Translate();
+            textReject = textReject.AdjustedFor(pawn);
+
+            DiaOption optionReject = new DiaOption(textReject);
+            optionReject.action = () => { GuestUtility.BreakupRelations(pawn); };
+            optionReject.resolveTree = true;
+
+            nodeAsk.options.Add(optionReject);
+            Find.WindowStack.Add(new Dialog_NodeTree(nodeAsk, true));
+        }
+    }
+}
