@@ -41,7 +41,7 @@ namespace Hospitality
         {
             base.Init();
             if (Data.destAssigned) return;
-            if (!RCellFinder.TryFindTravelDestFrom(lord.ownedPawns[0].Position, out Data.dest))
+            if (!RCellFinder.TryFindTravelDestFrom(lord.ownedPawns[0].Position, Map, out Data.dest))
             {
                 Log.Error("Travelers for " + lord.faction + " could not late-find travel destination.");
                 Data.dest = lord.ownedPawns[0].Position;

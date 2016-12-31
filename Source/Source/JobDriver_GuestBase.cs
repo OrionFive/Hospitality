@@ -24,7 +24,7 @@ namespace Hospitality
                 initAction = () => {
                     PawnUtility.ForceWait(talkee, duration, pawn);
                     TargetThingB = pawn;
-                    MoteMaker.MakeInteractionMote(pawn, talkee, intDef.interactionMote, intDef.Symbol);
+                    MoteMaker.MakeInteractionBubble(pawn, talkee, intDef.interactionMote, intDef.Symbol);
                 }, 
                 socialMode = RandomSocialMode.Normal,
                 defaultCompleteMode = ToilCompleteMode.Delay,

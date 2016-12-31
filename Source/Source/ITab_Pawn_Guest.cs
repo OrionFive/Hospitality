@@ -3,6 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
+using Verse.Sound;
 
 namespace Hospitality
 {
@@ -118,14 +119,17 @@ namespace Hospitality
             }
         }
 
-        private static void SetDefaults(PrisonerInteractionMode mode)
+        private void SetDefaults(PrisonerInteractionMode mode)
         {
-            var oldMode = Hospitality_MapComponent.Instance.defaultInteractionMode;
+            Map map = SelPawn.MapHeld;
+            if (map == null) return;
+
+            var oldMode = Hospitality_MapComponent.Instance(map).defaultInteractionMode;
             if (oldMode == mode) return;
 
-            Hospitality_MapComponent.Instance.defaultInteractionMode = mode;
+            Hospitality_MapComponent.Instance(map).defaultInteractionMode = mode;
 
-            var guests = GuestUtility.GetAllGuests();
+            var guests = GuestUtility.GetAllGuests(map);
             foreach (var guest in guests)
             {
                 var comp = guest.GetComp<CompGuest>();

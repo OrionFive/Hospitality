@@ -31,7 +31,7 @@ namespace Hospitality.Detouring
             {
                 return false;
             }
-            var collection = Find.MapPawns.AllPawnsSpawned.Where(IsInteractable).InRandomOrder(); // Added
+            var collection = pawn.MapHeld.mapPawns.AllPawnsSpawned.Where(IsInteractable).InRandomOrder(); // Added
             var workingList = (List<Pawn>)typeof(Source).GetField("workingList", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null); // Had to add
             workingList.Clear();
             workingList.AddRange(collection);
@@ -68,7 +68,7 @@ namespace Hospitality.Detouring
                    && ((pawn.Position - recipient.Position).LengthHorizontalSquared <= 36.0
                        && InteractionUtility.CanInitiateInteraction(pawn)
                        && (InteractionUtility.CanReceiveInteraction(recipient)
-                           && GenSight.LineOfSight(pawn.Position, recipient.Position, true)));
+                           && GenSight.LineOfSight(pawn.Position, recipient.Position, pawn.MapHeld, true)));
         }
     }
 }

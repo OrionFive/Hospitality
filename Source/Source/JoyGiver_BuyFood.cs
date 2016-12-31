@@ -12,7 +12,7 @@ namespace Hospitality
         {
             if (!pawn.IsGuest()) return 0;
 
-            var carriedFood = pawn.inventory.GetContainer().Count(i => i.IngestibleNow);
+            var carriedFood = pawn.inventory.GetInnerContainer().Count(i => i.IngestibleNow);
             var needFood = pawn.needs.TryGetNeed<Need_Food>();
             var hungerFactor = needFood != null ? needFood.PercentageThreshHungry : 0;
             var carriedFactor = carriedFood == 0 ? 1 : carriedFood == 1 ? 0.25f : 0.05f;

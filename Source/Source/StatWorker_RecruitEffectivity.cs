@@ -1,8 +1,5 @@
-using System;
-using System.Linq;
 using System.Text;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace Hospitality
@@ -13,7 +10,7 @@ namespace Hospitality
         {
             var pawn = req.Thing as Pawn;
             if (pawn == null || pawn.story == null) return 0;
-            return stat.defaultBaseValue + pawn.skills.GetSkill(SkillDefOf.Social).level/8f;
+            return stat.defaultBaseValue + pawn.skills.GetSkill(SkillDefOf.Social).Level/8f;
         }
 
         public override string GetExplanation(StatRequest req, ToStringNumberSense numberSense)
@@ -30,7 +27,7 @@ namespace Hospitality
             stringBuilder.AppendLine();
             stringBuilder.AppendLine("StatsReport_Skills".Translate());
 
-            int level = pawn.skills.GetSkill(SkillDefOf.Social).level;
+            int level = pawn.skills.GetSkill(SkillDefOf.Social).Level;
             stringBuilder.AppendLine(string.Format("    {0} ({1}): +{2}", SkillDefOf.Social.LabelCap, level, (level / 8f).ToStringDecimalIfSmall()));
 
             return stringBuilder.ToString();

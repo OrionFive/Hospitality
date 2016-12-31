@@ -15,7 +15,7 @@ namespace Hospitality
             }
             float curLevel = pawn.needs.rest.CurLevel;
 
-            int hourOfDay = GenDate.HourOfDay;
+            int hourOfDay = GenLocalDate.HourOfDay(pawn);
             if (hourOfDay < 7 || hourOfDay > 21)
             {
                 curLevel -= 0.2f;
@@ -57,7 +57,7 @@ namespace Hospitality
             {
                 return new ThinkResult(new Job(JobDefOf.LayDown, bed), this);
             }
-            IntVec3 vec = CellFinder.RandomClosewalkCellNear(pawn.mindState.duty.focus.Cell, 4);
+            IntVec3 vec = CellFinder.RandomClosewalkCellNear(pawn.mindState.duty.focus.Cell, pawn.MapHeld, 4);
             return new ThinkResult(new Job(JobDefOf.LayDown, vec), this);
         }
     }

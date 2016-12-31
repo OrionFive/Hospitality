@@ -21,7 +21,7 @@ namespace Hospitality
         {
             get
             {
-                var list = Find.ThingGrid.ThingsListAt(Position);
+                var list = Map.thingGrid.ThingsListAt(Position);
                 return list.OfType<Pawn>()
                     .Where(pawn => pawn.jobs.curJob != null)
                     .FirstOrDefault(pawn => pawn.jobs.curJob.def == JobDefOf.LayDown && pawn.jobs.curJob.targetA.Thing == this);
@@ -48,7 +48,7 @@ namespace Hospitality
             {
                 owner.ownership.UnclaimBed();
             }
-            var room = Position.GetRoom();
+            var room = Position.GetRoom(Map);
             base.DeSpawn();
             if (room != null)
             {
@@ -121,11 +121,6 @@ namespace Hospitality
         {
             base.PostMake();
             PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("GuestBeds"), KnowledgeAmount.Total);
-        }
-
-        public override void SpawnSetup()
-        {
-            base.SpawnSetup();
         }
 
         public override void DrawGUIOverlay()

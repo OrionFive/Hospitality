@@ -24,15 +24,16 @@ namespace Hospitality
 
         public static int GetMoney(Pawn pawn)
         {
-            var money = pawn.inventory.GetContainer().FirstOrDefault(i => i.def == ThingDefOf.Silver);
+            var money = pawn.inventory.GetInnerContainer().FirstOrDefault(i => i.def == ThingDefOf.Silver);
             if (money == null) return 0;
             return money.stackCount;
         }
 
         public override Job TryGiveJob(Pawn pawn)
         {
-            var things = Find.ListerThings.ThingsInGroup(RequestGroup).Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t)).ToList();
-            var storage = Find.ListerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(InGuestRoom);
+            var map = pawn.MapHeld;
+            var things = map.listerThings.ThingsInGroup(RequestGroup).Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t)).ToList();
+            var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(InGuestRoom);
             things.AddRange(storage.SelectMany(s=>s.slotGroup.HeldThings));
             if (things.Count == 0) return null;
             Thing thing = things.RandomElement(); //things.MaxBy(t => Likey(pawn, t));
@@ -47,16 +48,11 @@ namespace Hospitality
                 IntVec3 standTarget;
                 int duration = Rand.Range(JobDriver_BuyItem.MinShoppingDuration, JobDriver_BuyItem.MaxShoppingDuration);
 
-                var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, 2, out standTarget) && IsBuyableNow(pawn, thing);
+                var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, map, 2, out standTarget) && IsBuyableNow(pawn, thing);
                 return canBrowse ? new Job(jobDefBrowse, standTarget, thing){expiryInterval = duration * 2} : null;
             }
-            float value = thing.MarketValue*JobDriver_BuyItem.PriceFactor;
-            int maxBuyable = Mathf.Min(thing.stackCount, (int) (GetMoney(pawn)/value));
 
-            return new Job(jobDefBuy, thing)
-            {
-                maxNumToCarry = Mathf.Min(thing.stackCount, Rand.Range(1, maxBuyable))
-            };
+            return new Job(jobDefBuy, thing);
         }
 
         private static bool InGuestRoom(Thing s)

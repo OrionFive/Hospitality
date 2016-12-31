@@ -8,6 +8,8 @@ using Verse.AI.Group;
 
 namespace Hospitality
 {
+    // TODO: Compare this with vanilla - check what has changed and what we need to change as well
+    // Note that this implementation is VERY different from vanilla
     public partial class IncidentWorker_VisitorGroup : IncidentWorker_NeutralGroup
     {
         private static readonly RoomRoleDef _roomRoleDefGuestRoom = DefDatabase<RoomRoleDef>.GetNamed("GuestRoom");
@@ -32,10 +34,11 @@ namespace Hospitality
             return Mathf.Lerp(-20, 20, Mathf.InverseLerp(-100, 100, current));
         }
 
-        protected override bool CanFireNowSub()
+        protected override bool CanFireNowSub(IIncidentTarget target)
         {
-            if (Find.MapConditionManager.GetActiveCondition<MapCondition_ToxicFallout>() != null) return false;
-            if (Find.MapPawns.AllPawnsSpawned.Any(p => !p.Dead && !p.IsPrisoner && p.Faction != null && p.Faction.HostileTo(Faction.OfPlayer) && p.Faction != Faction.OfInsects && !p.Downed)) return false;
+            Map map = (Map)target; 
+            if (map.mapConditionManager.GetActiveCondition<MapCondition_ToxicFallout>() != null) return false;
+            if (map.mapPawns.AllPawnsSpawned.Any(p => !p.Dead && !p.IsPrisoner && p.Faction != null && p.Faction.HostileTo(Faction.OfPlayer) && p.Faction != Faction.OfInsects && !p.Downed)) return false;
 
              //if (Find.MapConditionManager.GetActiveCondition<MapCondition_VolcanicWinter>() != null) return false;
             var rooms = GetRooms(null);
@@ -44,11 +47,9 @@ namespace Hospitality
 
         public override bool TryExecute(IncidentParms parms)
         {
-            if (parms == null) return false;
-            if (!TryResolveParms(parms)) return false;
+            Map map = (Map)parms.target;
 
-            // Set dummy target, just to make a point.
-            parms.target = Find.ListerThings.ThingsInGroup(ThingRequestGroup.Pawn).Where(p => p != null && p.Spawned).RandomElement();
+            if (!TryResolveParms(parms)) return false;
 
             if (parms.points < 40)
             {
@@ -92,11 +93,11 @@ namespace Hospitality
             var rooms = GetRooms(visitors[0]);
             if (rooms.Length > 0)
             {
-                var spot = rooms[0].room.Cells.Where(c=>c.Roofed()).RandomElement();
+                var spot = rooms[0].room.Cells.Where(c=>c.Roofed(map)).RandomElement();
 
                 GiveItems(visitors);
 
-                CreateLord(parms.faction, spot, visitors);
+                CreateLord(parms.faction, spot, visitors, map);
 
                 return true;
             }
@@ -125,7 +126,7 @@ namespace Hospitality
                     if (spaceFor > 0)
                     {
                         money.stackCount = Mathf.Min(spaceFor, amountS);
-                        var success = visitor.inventory.container.TryAdd(money);
+                        var success = visitor.inventory.GetInnerContainer().TryAdd(money);
                         if (success) totalValue += money.MarketValue*money.stackCount;
                         else if(!money.Destroyed) money.Destroy();
                     }
@@ -186,7 +187,7 @@ namespace Hospitality
                     if (spaceFor > 0)
                     {
                         item.stackCount = Mathf.Min(spaceFor, item.stackCount);
-                        var success = visitor.inventory.container.TryAdd(item);
+                        var success = visitor.inventory.GetInnerContainer().TryAdd(item);
                         if (success) totalValue += item.MarketValue*item.stackCount;
                         else if(!item.Destroyed) item.Destroy();
                     }
@@ -251,17 +252,17 @@ namespace Hospitality
             return (float) TechLevel.Transcendent - Mathf.Abs((float) target - (float) def);
         }
 
-        private static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns)
+        private static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map)
         {
             var lordJob = new LordJob_VisitColony(faction, chillSpot);
-            LordMaker.MakeNewLord(faction, lordJob, pawns);
+            LordMaker.MakeNewLord(faction, lordJob, map, pawns);
 
             // Set default interaction
             pawns.ForEach(delegate(Pawn p) {
                 var comp = p.GetComp<CompGuest>();
                 if (comp != null)
                 {
-                    comp.chat = Hospitality_MapComponent.Instance.defaultInteractionMode == PrisonerInteractionMode.Chat;
+                    comp.chat = Hospitality_MapComponent.Instance(map).defaultInteractionMode == PrisonerInteractionMode.Chat;
                 }
             });
 
@@ -280,7 +281,7 @@ namespace Hospitality
                 label = "LetterLabelSingleVisitorArrives".Translate();
                 description = "SingleVisitorArrives".Translate(new object[]
 				{
-					pawns[0].story.adulthood.title.ToLower(),
+					pawns[0].story.adulthood.Title.ToLower(),
 					faction.Name,
 					pawns[0].Name,
 					traderDesc,
@@ -319,7 +320,7 @@ namespace Hospitality
 
             pawn.TryGiveBackpack();
 
-            foreach (Thing current in TraderStockGenerator.GenerateTraderThings(traderKindDef))
+            foreach (Thing current in TraderStockGenerator.GenerateTraderThings(traderKindDef, lord.Map))
             {
                 Pawn slave = current as Pawn;
                 if (slave != null)
@@ -328,8 +329,8 @@ namespace Hospitality
                     {
                         slave.SetFaction(pawn.Faction);
                     }
-                    IntVec3 loc = CellFinder.RandomClosewalkCellNear(pawn.Position, 5);
-                    GenSpawn.Spawn(slave, loc);
+                    IntVec3 loc = CellFinder.RandomClosewalkCellNear(pawn.Position, lord.Map, 5);
+                    GenSpawn.Spawn(slave, loc, lord.Map);
                     lord.AddPawn(slave);
                 }
                 else
@@ -345,7 +346,7 @@ namespace Hospitality
                     current.stackCount = spaceFor;
 
                     // Core stuff
-                    if (!pawn.inventory.container.TryAdd(current))
+                    if (!pawn.inventory.GetInnerContainer().TryAdd(current))
                     {
                         current.Destroy();
                     }
@@ -362,11 +363,13 @@ namespace Hospitality
 
         private static RoomAndScore[] GetRooms(Pawn searcher)
         {
+            var map = searcher.MapHeld;
             var rooms = new HashSet<Room>();
-            foreach (var building in Find.ListerBuildings.allBuildingsColonist)
+            foreach (var building in map.listerBuildings.allBuildingsColonist)
             {
-                var room = RoomQuery.RoomAtFast(building.Position);
-                if (room != null && room.CellCount > 8 && !room.PsychologicallyOutdoors && room.Cells.First(cell => cell.Walkable()).CanReachColony())
+                var room = RoomQuery.RoomAtFast(building.Position, map);
+                // Only check one cell per room - otherwise this may be way too expensive (e.g. far away room, when colony is closed off)
+                if (room != null && room.CellCount > 8 && !room.PsychologicallyOutdoors && map.reachability.CanReachColony(room.Cells.First(cell => cell.Walkable(map))))
                 {
                     rooms.Add(room);
                 }

@@ -89,7 +89,7 @@ namespace Hospitality
                 if (!def.inspectorTabs.Contains(tabType))
                 {
                     def.inspectorTabs.Add(tabType);
-                    def.inspectorTabsResolved.Add(ITabManager.GetSharedInstance(tabType));
+                    def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(tabType));
                     //Log.Message(def.defName+": "+def.inspectorTabsResolved.Select(d=>d.GetType().Name).Aggregate((a,b)=>a+", "+b));
                 }
             }

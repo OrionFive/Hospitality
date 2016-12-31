@@ -18,7 +18,7 @@ namespace Hospitality
                 if (pawn == null) return ThoughtState.Inactive;
                 if (pawn.thingIDNumber == 0) return ThoughtState.Inactive; // What do you know!!!
 
-                if (Current.ProgramState != ProgramState.MapPlaying)
+                if (Current.ProgramState != ProgramState.Playing)
                 {
                     return ThoughtState.Inactive;
                 }

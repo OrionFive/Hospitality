@@ -3,7 +3,8 @@ using Verse;
 
 namespace Hospitality
 {
-    public abstract class EventAction_Pawns : EventAction {
+    public abstract class EventAction_Pawns : EventAction
+    {
         protected List<Pawn> pawns = new List<Pawn>();
 
         public void RemovePawn(Pawn p)
@@ -13,7 +14,7 @@ namespace Hospitality
 
         public override void ExposeData()
         {
-            Scribe_Collections.LookList(ref pawns, "visitingPawns", LookMode.MapReference);
+            Scribe_Collections.LookList(ref pawns, "visitingPawns", LookMode.Reference); // TODO: Make sure the lookmode is correct
         }
     }
 }

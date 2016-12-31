@@ -62,7 +62,7 @@ namespace Hospitality
         private void PlaceFlag()
         {
             var def = ThingDef.Named("VisitorFlag");
-            Data.visitorFlag = (VisitorFlag)GenSpawn.Spawn(def, FlagLoc);
+            Data.visitorFlag = (VisitorFlag)GenSpawn.Spawn(def, FlagLoc, Map);
             //Data.visitorFlag.SetFaction(lord.faction);
             var pawn = lord.ownedPawns.FirstOrDefault();
             Data.visitorFlag.SetLord(lord);
@@ -82,8 +82,8 @@ namespace Hospitality
         {
             get
             {
-                if (Find.MapPawns.FreeColonistsSpawnedCount == 0) return false;
-                return Find.MapPawns.FreeColonistsSpawned.Any(
+                if (Map.mapPawns.FreeColonistsSpawnedCount == 0) return false;
+                return Map.mapPawns.FreeColonistsSpawned.Any(
                     p => p != null && !p.Dead
                         && p.skills.AverageOfRelevantSkillsFor(DefDatabase<WorkTypeDef>.GetNamed("Warden")) >= 9);
             }
@@ -120,10 +120,10 @@ namespace Hospitality
                 }
                 pawn.needs.AddOrRemoveNeedsAsAppropriate();
                 //Find.Reservations.ReleaseAllClaimedBy(pawn);
-                var allReservedThings = Find.Reservations.AllReservedThings().ToArray();
+                var allReservedThings = Map.reservationManager.AllReservedThings().ToArray();
                 foreach (var t in allReservedThings)
                 {
-                    if (Find.Reservations.ReservedBy(t, pawn)) Find.Reservations.Release(t, pawn);
+                    if (Map.reservationManager.ReservedBy(t, pawn)) Map.reservationManager.Release(t, pawn);
                 }
             }
 
@@ -167,14 +167,15 @@ namespace Hospitality
         private static List<Thing> GetLoot(Pawn pawn, float desiredValue)
         {
             var totalValue = 0f;
-            var items = pawn.inventory.container.Where(i => WillDrop(pawn, i)).InRandomOrder().ToList();
+            var items = pawn.inventory.GetInnerContainer().Where(i => WillDrop(pawn, i)).InRandomOrder().ToList();
             var dropped = new List<Thing>();
             while (totalValue < desiredValue && items.Count > 0)
             {
                 var item = items.First();
                 items.Remove(item);
                 if (totalValue + item.MarketValue > desiredValue) continue;
-                if (pawn.inventory.container.TryDrop(item, pawn.Position, ThingPlaceMode.Near, out item))
+                Map map = pawn.MapHeld;
+                if (pawn.inventory.GetInnerContainer().TryDrop(item, pawn.Position, map, ThingPlaceMode.Near, out item))
                 {
                     dropped.Add(item);
                     totalValue += item.MarketValue;
@@ -182,14 +183,14 @@ namespace Hospitality
 
                 // Handle trade stuff
                 var twc = item as ThingWithComps;
-                if (twc != null && Find.MapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerBuys, Find.MapPawns.FreeColonistsSpawned.RandomElement(), pawn);
+                if (twc != null && map.mapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerBuys, map.mapPawns.FreeColonistsSpawned.RandomElement(), pawn);
             }
             return dropped;
         }
 
         private static void LeaveVerySatisfied(Pawn pawn, float score)
         {
-            if (pawn.inventory.container.Count == 0) return;
+            if (pawn.inventory.GetInnerContainer().Count == 0) return;
 
             var dropped = GetLoot(pawn, (score + 10)*1.5f);
             if (dropped.Count == 0) return;
@@ -203,16 +204,16 @@ namespace Hospitality
 
         private static void LeaveSatisfied(Pawn pawn, float score)
         {
-            if (pawn.inventory.container.Count == 0) return;
+            if (pawn.inventory.GetInnerContainer().Count == 0) return;
 
             var desiredValue = (score + 10)*2;
-            var things = pawn.inventory.container.Where(i => WillDrop(pawn, i) && i.MarketValue < desiredValue).ToArray();
+            var things = pawn.inventory.GetInnerContainer().Where(i => WillDrop(pawn, i) && i.MarketValue < desiredValue).ToArray();
             if (!things.Any()) return;
 
             var item = things.MaxBy(i => i.MarketValue); // MaxBy throws exception when list is empty!!!
             if (item == null) return;
 
-            pawn.inventory.container.TryDrop(item, pawn.Position, ThingPlaceMode.Near, out item);
+            pawn.inventory.GetInnerContainer().TryDrop(item, pawn.Position, pawn.MapHeld, ThingPlaceMode.Near, out item);
 
             var text = "VisitorSatisfied".Translate(pawn.Name.ToStringShort, pawn.Possessive(), pawn.ProSubjCap(), GetItemName(item));
             Messages.Message(text, item, MessageSound.Benefit);
