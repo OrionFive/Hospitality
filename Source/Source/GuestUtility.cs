@@ -65,6 +65,32 @@ namespace Hospitality
             }
         }
 
+        public static bool IsTrader(this Pawn pawn)
+        {
+            try
+            {
+                if (pawn == null) return false;
+                if (pawn.Destroyed) return false;
+                if (!pawn.Spawned) return false;
+                if (pawn.thingIDNumber == 0) return false; // Yeah, this can happen O.O
+                if (pawn.Name == null) return false;
+                if (pawn.Dead) return false;
+                if (pawn.RaceProps == null || !pawn.RaceProps.Humanlike) return false;
+                if (pawn.guest == null) return false;
+                if (pawn.IsPrisonerOfColony || pawn.Faction == Faction.OfPlayer) return false;
+                if (pawn.HostileTo(Faction.OfPlayer)) return false;
+                if (!pawn.IsInTraderState()) return false;
+                return true;
+            }
+            catch(Exception e)
+            {
+                Log.Warning(e.Message);
+                //Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
+                //Log.Message("Ticks: "+Find.TickManager.TicksGame);
+                return false;
+            }
+        }
+
         public static float RecruitPenalty(this Pawn guest)
         {
             return guest.GetStatValue(statRecruitRelationshipDamage);
@@ -112,6 +138,15 @@ namespace Hospitality
 
             var job = lord.LordJob;
             return  job is LordJob_VisitColony;
+        }
+
+        private static bool IsInTraderState(this Pawn guest)
+        {
+            var lord = guest.GetLord();
+            if (lord == null) return false;
+
+            var job = lord.LordJob;
+            return  job is LordJob_TradeWithColony;
         }
 
         public static bool HasDismissiveThought(this Pawn guest)

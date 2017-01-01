@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
@@ -23,14 +24,34 @@ namespace Hospitality
             size = new Vector2(400f, 380f);
         }
 
-        public override bool IsVisible { get { return SelPawn.IsGuest(); } }
+        public override bool IsVisible { get { return SelPawn.IsGuest() || SelPawn.IsTrader(); } }
 
         protected override void FillTab()
         {
-            //ConceptDatabase.KnowledgeDemonstrated(ConceptDefOf.PrisonerTab, KnowledgeAmount.GuiFrame);
             Text.Font = GameFont.Small;
-            Rect rect1 = new Rect(0f, 20f, size.x, size.y - 20).ContractedBy(10f);
-            var listingStandard = new Listing_Standard(rect1);
+            Rect rect = new Rect(0f, 20f, size.x, size.y - 20).ContractedBy(10f);
+            var listingStandard = new Listing_Standard(rect);
+            {
+                if (SelPawn.IsTrader())
+                {
+                    FillTabTrader(listingStandard);
+                }
+                else
+                {
+                    FillTabGuest(listingStandard, rect);
+                }
+            }
+            listingStandard.End();
+        }
+
+        private void FillTabTrader(Listing_Standard listingStandard)
+        {
+            listingStandard.Label("IsATrader".Translate().AdjustedFor(SelPawn));
+        }
+
+        private void FillTabGuest(Listing_Standard listingStandard, Rect rect)
+        {
+            //ConceptDatabase.KnowledgeDemonstrated(ConceptDefOf.PrisonerTab, KnowledgeAmount.GuiFrame);
 
             var trust = SelPawn.RelativeTrust();
 
@@ -53,7 +74,7 @@ namespace Hospitality
 
                     listingStandard.Gap(50);
 
-                    DrawSetDefaultButton(rect1);
+                    DrawSetDefaultButton(rect);
                 }
 
                 if (SelPawn.Faction != null)
@@ -85,7 +106,6 @@ namespace Hospitality
                     }
                 }
             }
-            listingStandard.End();
         }
 
         public void CheckboxLabeled(Listing_Standard listing, string label, ref bool checkOn, bool disabled = false, string tooltip = null)
