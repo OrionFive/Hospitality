@@ -22,20 +22,24 @@ namespace Hospitality
                 return false;
             }
 
-            var pawn = GenericUtility.GetAnyRelatedWorldPawn(other => other.Faction != null && !other.Faction.HostileTo(Faction.OfPlayer), 100) ?? VanillaPawnCreation();
+            var pawn = GenericUtility.GetAnyRelatedWorldPawn(other => other.Faction != null && !other.Faction.HostileTo(Faction.OfPlayer), 100) ?? CreateNewPawn();
             if (pawn == null) return false;
 
             ShowWandererJoinDialog(pawn, spawnSpot, map);
             return true;
         }
 
-        private static Pawn VanillaPawnCreation()
+        private static Pawn CreateNewPawn()
         {
-            PawnKindDef pawnKindDef = new List<PawnKindDef>
-			{
-				PawnKindDefOf.Villager
-			}.RandomElement();
-            var request = new PawnGenerationRequest(pawnKindDef, Faction.OfPlayer, PawnGenerationContext.NonPlayer, null, false, false, false, false, true, false, 20f, false, true, true, null, null, null, null, null, null);
+            PawnKindDef pawnKindDef = new List<PawnKindDef> { PawnKindDefOf.Villager, PawnKindDefOf.Drifter, PawnKindDefOf.Slave }.RandomElement();
+
+            // Get a non-player faction
+            Faction otherFaction;
+            if (Find.FactionManager.TryGetRandomNonColonyHumanlikeFaction(out otherFaction, true)) {} // Get a non medieval faction
+            else if (Find.FactionManager.TryGetRandomNonColonyHumanlikeFaction(out otherFaction, false, true)) {} // No? Then medieval is ok, also defeated is ok
+            else return null; // Nope, nothing. Everyone's dead?
+
+            var request = new PawnGenerationRequest(pawnKindDef, otherFaction, PawnGenerationContext.NonPlayer, null, false, false, false, false, true, false, 20f, false, true, true, null, null, null, null, null, null);
             Pawn pawn = PawnGenerator.GeneratePawn(request);
             return pawn;
         }
