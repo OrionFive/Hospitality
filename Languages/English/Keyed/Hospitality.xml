@@ -46,7 +46,7 @@
   <FactionGoodwill>Faction goodwill</FactionGoodwill>
   <Hospitality>Hospitality</Hospitality>
   <SetDefault>Set Default</SetDefault>
-  <TrustTooLow>NAME does not know your colonists well enough</TrustTooLow>
+  <TrustTooLow>NAME does not know or like your colonists enough.</TrustTooLow>
   <IsATrader>NAME is part of a trading caravan and not a guest.</IsATrader>
 
   <!-- Infos -->
