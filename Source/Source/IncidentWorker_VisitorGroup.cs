@@ -41,7 +41,7 @@ namespace Hospitality
             if (map.mapPawns.AllPawnsSpawned.Any(p => !p.Dead && !p.IsPrisoner && p.Faction != null && p.Faction.HostileTo(Faction.OfPlayer) && p.Faction != Faction.OfInsects && !p.Downed)) return false;
 
              //if (Find.MapConditionManager.GetActiveCondition<MapCondition_VolcanicWinter>() != null) return false;
-            var rooms = GetRooms(null);
+            var rooms = GetRooms(null, map);
             return rooms.Length > 0;
         }
 
@@ -90,7 +90,7 @@ namespace Hospitality
                 //            + visitor.drugs.CurrentPolicy[ThingDefOf.Luciferium].allowedForJoy);
             }
 
-            var rooms = GetRooms(visitors[0]);
+            var rooms = GetRooms(visitors[0], map);
             if (rooms.Length > 0)
             {
                 var spot = rooms[0].room.Cells.Where(c=>c.Roofed(map)).RandomElement();
@@ -361,9 +361,8 @@ namespace Hospitality
             public float score;
         }
 
-        private static RoomAndScore[] GetRooms(Pawn searcher)
+        private static RoomAndScore[] GetRooms(Pawn searcher, Map map)
         {
-            var map = searcher.MapHeld;
             var rooms = new HashSet<Room>();
             foreach (var building in map.listerBuildings.allBuildingsColonist)
             {
