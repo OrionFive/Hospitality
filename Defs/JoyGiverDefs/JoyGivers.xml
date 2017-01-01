@@ -5,7 +5,7 @@
     <defName>BuyFood</defName>
     <giverClass>Hospitality.JoyGiver_BuyFood</giverClass>
     <baseChance>15</baseChance>
-    <joyKind>Gluttonous</joyKind>
+    <joyKind>Study</joyKind>
     <desireSit>false</desireSit>
     <jobDef>BuyItem</jobDef>
     <requiredCapacities>
