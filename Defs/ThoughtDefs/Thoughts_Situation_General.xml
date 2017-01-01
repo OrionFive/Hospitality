@@ -26,6 +26,7 @@
         <baseMoodEffect>20</baseMoodEffect>
       </li>
     </stages>
+    <validWhileDespawned>true</validWhileDespawned>
   </ThoughtDef>
 
   <ThoughtDef>
