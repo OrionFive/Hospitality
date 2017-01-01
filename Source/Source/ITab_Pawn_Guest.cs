@@ -38,13 +38,13 @@ namespace Hospitality
                 var tryImprove = SelPawn.ImproveRelationship();
                 var tryRecruit = SelPawn.TryRecruit();
 
-                listingStandard.ColumnWidth = size.x-20;
+                listingStandard.ColumnWidth = size.x - 20;
 
                 var comp = SelPawn.GetComp<CompGuest>();
                 if (comp != null)
                 {
                     listingStandard.Gap();
-                    
+
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
                     CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
 
@@ -59,23 +59,24 @@ namespace Hospitality
                 if (SelPawn.Faction != null)
                 {
                     listingStandard.Label(txtRecruitmentPenalty + ": " + SelPawn.RecruitPenalty().ToString("##0"));
-                    listingStandard.Label(txtFactionGoodwill+": " + SelPawn.Faction.PlayerGoodwill.ToString("##0"));
+                    listingStandard.Label(txtFactionGoodwill + ": " + SelPawn.Faction.PlayerGoodwill.ToString("##0"));
                 }
                 listingStandard.Gap();
 
-                listingStandard.Label(string.Format("{0}:", txtRecruitmentChance));
-                listingStandard.Slider(Mathf.Clamp(trust, 0, 100), 0, 100);
-                if (trust < 50)
-                {
-                    var color = GUI.color;
-                    GUI.color = Color.red;
-                    listingStandard.Label("TrustTooLow".Translate().AdjustedFor(SelPawn));
-                    GUI.color = color;
-                }
-
+                // Will only have squadBrain while "checked in", becomes null again when guests leave
                 var squadBrain = SelPawn.GetLord();
                 if (squadBrain != null)
                 {
+                    listingStandard.Label(string.Format("{0}:", txtRecruitmentChance));
+                    listingStandard.Slider(Mathf.Clamp(trust, 0, 100), 0, 100);
+                    if (trust < 50)
+                    {
+                        var color = GUI.color;
+                        GUI.color = Color.red;
+                        listingStandard.Label("TrustTooLow".Translate().AdjustedFor(SelPawn));
+                        GUI.color = color;
+                    }
+
                     var lordToil = squadBrain.CurLordToil as LordToil_VisitPoint;
                     if (lordToil != null && SelPawn.Faction != null)
                     {
