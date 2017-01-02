@@ -21,10 +21,8 @@ namespace Hospitality
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
-            this.FailOn(() => {
-                if (!JoyGiver_BuyStuff.IsBuyableNow(pawn, Item)) return true;
-                return false;
-            });
+
+            this.FailOn(() => !JoyGiver_BuyStuff.IsBuyableNow(pawn, Item));
             //AddEndCondition(() =>
             //{
             //    if (Deliveree.health.ShouldGetTreatment)
