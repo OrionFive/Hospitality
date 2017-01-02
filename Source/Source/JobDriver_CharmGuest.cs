@@ -39,12 +39,13 @@ namespace Hospitality
         private static void CheckAnger(Pawn recruiter, Pawn guest)
         {
             if (guest.Faction == null || recruiter == null || guest.Faction==Faction.OfPlayer) return;
-            var allies = Find.MapPawns.PawnsInFaction(guest.Faction).ToArray(); // copy, since source can change!
+            var map = recruiter.MapHeld;
+            var allies = map.mapPawns.PawnsInFaction(guest.Faction).ToArray();
             foreach (var ally in allies)
             {
                 if (ally != guest && !ally.Dead && ally.Spawned && ally.CanSee(recruiter) && ally.CanSee(guest))
                 {
-                    if (ally.needs.mood.thoughts.Thoughts.Any(t=>t.def.defName=="GuestAngered")) continue;
+                    if (ally.needs.mood.thoughts.memories.Memories.Any(t=>t.def.defName=="GuestAngered")) continue;
 
                     float pleaseChance = recruiter.GetStatValue(statPleaseGuestChance);
                     pleaseChance = GuestUtility.AdjustPleaseChance(pleaseChance, recruiter, ally);

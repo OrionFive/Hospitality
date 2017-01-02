@@ -21,11 +21,10 @@ namespace Hospitality
 
     public class Hospitality_MapComponent : MapComponent
     {
-        public static Hospitality_MapComponent Instance
+        public static Hospitality_MapComponent Instance(Map map)
         {
-            get
             {
-                return Find.Map.GetComponent<Hospitality_MapComponent>() ?? new Hospitality_MapComponent(true);
+                return map.GetComponent<Hospitality_MapComponent>() ?? new Hospitality_MapComponent(true, map);
             }
         }
 
@@ -42,15 +41,15 @@ namespace Hospitality
             Scribe_Collections.LookList(ref eventQueue, "eventQueue", LookMode.Deep, new object[0]);
         }
 
-        public Hospitality_MapComponent()
+        public Hospitality_MapComponent(Map map) : base(map)
         {
         }
 
-        public Hospitality_MapComponent(bool forReal)
+        public Hospitality_MapComponent(bool forReal, Map map) : base(map)
         {
             // Multi-Threading killed the elegant solution
             if (!forReal) return;
-            Find.Map.components.Add(this);
+            map.components.Add(this);
         }
 
         public override void MapComponentTick()

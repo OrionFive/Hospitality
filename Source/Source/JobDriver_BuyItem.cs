@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -20,10 +21,8 @@ namespace Hospitality
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
-            this.FailOn(() => {
-                if (!JoyGiver_BuyStuff.IsBuyableNow(pawn, Item)) return true;
-                return false;
-            });
+
+            this.FailOn(() => !JoyGiver_BuyStuff.IsBuyableNow(pawn, Item));
             //AddEndCondition(() =>
             //{
             //    if (Deliveree.health.ShouldGetTreatment)
@@ -43,7 +42,7 @@ namespace Hospitality
 
                 Toil takeThing = new Toil();
                 takeThing.initAction = () => TakeThing(takeThing);
-                yield return takeThing;
+                yield return takeThing.FailOnDespawnedNullOrForbidden(TargetIndex.A);
             }
 
             //yield return Toils_Jump.Jump(gotoToil); // shop some more
@@ -51,23 +50,43 @@ namespace Hospitality
 
         private void TakeThing(Toil toil)
         {
-            if (Toils_Haul.ErrorCheckForCarry(Item, toil.actor)) return;
+            Job curJob = toil.actor.jobs.curJob; 
+            //Toils_Haul.ErrorCheckForCarry(toil.actor, Item);
+            if (curJob.count == 0)
+            {
+                throw new Exception(string.Concat(new object[] { "BuyItem job had count = ", curJob.count, ". Job: ", curJob }));
+            }
+
             if (Item.MarketValue <= 0) return;
             int maxSpace = toil.actor.GetInventorySpaceFor(Item);
-            int count = Mathf.Min(CurJob.maxNumToCarry, Item.stackCount, maxSpace);
-            Thing silver = toil.actor.inventory.GetContainer().FirstOrDefault(i => i.def == ThingDefOf.Silver);
-            var price = Mathf.FloorToInt(Item.MarketValue*count*PriceFactor);
-            if (silver == null || silver.stackCount < price) return;
+            var inventory = toil.actor.inventory.GetInnerContainer();
 
-            var inventoryItemsBefore = toil.actor.inventory.GetContainer().ToArray();
-            var tookItem = toil.actor.inventory.GetContainer().TryAdd(Item, count);
-            toil.actor.inventory.GetContainer().TryDrop(silver, toil.actor.Position, ThingPlaceMode.Near, price, out silver);
+            Thing silver = inventory.FirstOrDefault(i => i.def == ThingDefOf.Silver);
+            if (silver == null) return;
+
+            var itemCost = Item.MarketValue*PriceFactor;
+            var maxAffordable = Mathf.FloorToInt(silver.stackCount/itemCost);
+            if (maxAffordable < 1) return;
+
+            // Changed formula a bit, so guests are less likely to leave small stacks if they can afford it
+            var maxWanted = Rand.RangeInclusive(1, maxAffordable);
+            int count = Mathf.Min(Item.stackCount, maxSpace, maxWanted);
+
+            var price = Mathf.FloorToInt(count*itemCost);
+
+            if(silver.stackCount < price) return;
+
+            var map = toil.actor.MapHeld;
+            var inventoryItemsBefore = inventory.ToArray();
+            var tookItems = inventory.TryAdd(Item, count);
 
             var comp = toil.actor.GetComp<CompGuest>();
-            if (tookItem && comp != null)
+            if (tookItems > 0 && comp != null)
             {
+                inventory.TryDrop(silver, toil.actor.Position, map, ThingPlaceMode.Near, price, out silver);
+
                 // Check what's new in the inventory (TryAdd creates a copy of the original object!)
-                var newItems = toil.actor.inventory.GetContainer().Except(inventoryItemsBefore).ToArray();
+                var newItems = toil.actor.inventory.GetInnerContainer().Except(inventoryItemsBefore).ToArray();
                 foreach (var item in newItems)
                 {
                     //Log.Message(pawn.NameStringShort + " bought " + item.Label);
@@ -75,7 +94,7 @@ namespace Hospitality
 
                     // Handle trade stuff
                     var twc = item as ThingWithComps;
-                    if (twc != null && Find.MapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerSells, Find.MapPawns.FreeColonistsSpawned.RandomElement(), toil.actor);
+                    if (twc != null && map.mapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerSells, map.mapPawns.FreeColonistsSpawned.RandomElement(), toil.actor);
                 }
             }
         }

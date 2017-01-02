@@ -15,7 +15,7 @@ internal static class GenericUtility
     public static Pawn GetAnyRelatedWorldPawn(Func<Pawn, bool> selector, int minImportance)
     {
         // Get all important relations from all colonists
-        var importantRelations = from colonist in Find.MapPawns.FreeColonistsSpawned.Where(c => !c.Dead)
+        var importantRelations = from colonist in PawnsFinder.AllMaps_FreeColonistsSpawned.Where(c => !c.Dead)
             from otherPawn in colonist.relations.RelatedPawns
             where !otherPawn.Dead && !otherPawn.Spawned && selector(otherPawn) && otherPawn.IsWorldPawn()
             select new {otherPawn, colonist, relationDef = colonist.GetMostImportantRelation(otherPawn)};

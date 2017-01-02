@@ -63,7 +63,8 @@
       <MaxHitPoints>140</MaxHitPoints>
       <Flammability>1.0</Flammability>
       <Beauty>8</Beauty>
-      <WorkToMake>870</WorkToMake>
+      <WorkToBuild>870</WorkToBuild>
+      <Mass>50</Mass>
       <BedRestEffectiveness>1</BedRestEffectiveness>
       <Comfort>0.75</Comfort>
       <ImmunityGainSpeedFactor>1.1</ImmunityGainSpeedFactor>
@@ -77,7 +78,7 @@
     <costStuffCount>35</costStuffCount>
     <building>
       <Bed_ShowSleeperBody>False</Bed_ShowSleeperBody>
-      <Bed_HealTickInterval>2100</Bed_HealTickInterval>
+      <bed_healPerDay>7</bed_healPerDay>
     </building>
     <comps>
       <li Class="CompProperties_AffectedByFacilities">
@@ -85,6 +86,9 @@
           <li>VitalsMonitor</li>
         </linkableFacilities>
       </li>
+	  <li Class="CompProperties_RoomIdentifier">
+		  <roomStat>Impressiveness</roomStat>
+	  </li>
     </comps>
     <fillPercent>0.4</fillPercent>
     <PathCost>60</PathCost>

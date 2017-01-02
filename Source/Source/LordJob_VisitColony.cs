@@ -40,7 +40,7 @@ namespace Hospitality
                 case PawnLostCondition.MadePrisoner:
                 case PawnLostCondition.LeftVoluntarily:
                 case PawnLostCondition.Drafted:
-                    Hospitality_MapComponent.Instance.QueueEvent(new Event
+                    Hospitality_MapComponent.Instance(lord.Map).QueueEvent(new Event
                     {
                         delayTicks = (int)(GenDate.TicksPerHour * Rand.Range(1f, 3f)),
                         actions =

@@ -5,7 +5,7 @@
 
   <ConceptDef>
     <defName>GuestBeds</defName>
-    <label>Guest Beds</label>
+    <label>Guest beds</label>
     <priority>50</priority>
     <needsOpportunity>True</needsOpportunity>
     <helpText>Visitors prefer to sleep in beds.\n\nThere are specific guest beds you can build for them.</helpText>
@@ -18,7 +18,7 @@
 
   <ConceptDef>
     <defName>RecruitGuest</defName>
-    <label>Recruiting Guests</label>
+    <label>Recruiting guests</label>
     <priority>50</priority>
     <needsOpportunity>True</needsOpportunity>
     <helpText>You can recruit guests.\n\nRecruiting a guest will cost you goodwill with the guest's faction. Make sure you have a colonist with good social skills assigned for negotiation.</helpText>

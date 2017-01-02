@@ -13,7 +13,7 @@
         <labelSocial>convinced me</labelSocial>
         <description>That colonist and I had a talk about the colony. It sounds like a good place...</description>
         <baseMoodEffect>1</baseMoodEffect>
-        <baseOpinionOffset>3.5</baseOpinionOffset>
+        <baseOpinionOffset>1</baseOpinionOffset>
       </li>
     </stages>
   </ThoughtDef>
@@ -64,7 +64,7 @@
         <labelSocial>insulted me</labelSocial>
         <description>These guys are losers!</description>
         <baseMoodEffect>-2</baseMoodEffect>
-        <baseOpinionOffset>-1.5</baseOpinionOffset>
+        <baseOpinionOffset>-2</baseOpinionOffset>
       </li>
     </stages>
   </ThoughtDef>
@@ -81,7 +81,7 @@
         <labelSocial>charmed me</labelSocial>
         <description>Such nice people!</description>
         <baseMoodEffect>3</baseMoodEffect>
-        <baseOpinionOffset>2.5</baseOpinionOffset>
+        <baseOpinionOffset>4</baseOpinionOffset>
      </li>
     </stages>
   </ThoughtDef>
@@ -98,36 +98,4 @@
     </stages>
   </ThoughtDef>
   
-  <ThoughtDef>
-    <defName>GuestBedCount</defName>
-    <workerClass>Hospitality.ThoughtWorker_Beds</workerClass>
-    <nullifyingTraits>
-      <li>Masochist</li>
-      <li>Ascetic</li>
-    </nullifyingTraits>
-    <stages>
-      <li>
-        <label>no guest beds</label>
-        <description>They don't even have beds here.</description>
-        <baseMoodEffect>-15</baseMoodEffect>
-      </li>
-      <li>
-        <label>not enough guest beds</label>
-        <description>There should be more beds in our room.</description>
-        <baseMoodEffect>-7</baseMoodEffect>
-      </li>
-      <li>
-        <label>enough beds</label>
-        <description>There are enough beds in our room for all of us.</description>
-        <baseMoodEffect>3</baseMoodEffect>
-      </li>
-      <li>
-        <label>lots of beds</label>
-        <description>Wow, so many beds!</description>
-        <baseMoodEffect>5</baseMoodEffect>
-      </li>
-    </stages>
-  </ThoughtDef>
-
-
 </ThoughtDefs>

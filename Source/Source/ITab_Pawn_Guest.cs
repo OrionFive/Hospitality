@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
+using Verse.Sound;
 
 namespace Hospitality
 {
@@ -22,14 +24,34 @@ namespace Hospitality
             size = new Vector2(400f, 380f);
         }
 
-        public override bool IsVisible { get { return SelPawn.IsGuest(); } }
+        public override bool IsVisible { get { return SelPawn.IsGuest() || SelPawn.IsTrader(); } }
 
         protected override void FillTab()
         {
-            //ConceptDatabase.KnowledgeDemonstrated(ConceptDefOf.PrisonerTab, KnowledgeAmount.GuiFrame);
             Text.Font = GameFont.Small;
-            Rect rect1 = new Rect(0f, 20f, size.x, size.y - 20).ContractedBy(10f);
-            var listingStandard = new Listing_Standard(rect1);
+            Rect rect = new Rect(0f, 20f, size.x, size.y - 20).ContractedBy(10f);
+            var listingStandard = new Listing_Standard(rect);
+            {
+                if (SelPawn.IsTrader())
+                {
+                    FillTabTrader(listingStandard);
+                }
+                else
+                {
+                    FillTabGuest(listingStandard, rect);
+                }
+            }
+            listingStandard.End();
+        }
+
+        private void FillTabTrader(Listing_Standard listingStandard)
+        {
+            listingStandard.Label("IsATrader".Translate().AdjustedFor(SelPawn));
+        }
+
+        private void FillTabGuest(Listing_Standard listingStandard, Rect rect)
+        {
+            //ConceptDatabase.KnowledgeDemonstrated(ConceptDefOf.PrisonerTab, KnowledgeAmount.GuiFrame);
 
             var trust = SelPawn.RelativeTrust();
 
@@ -37,13 +59,13 @@ namespace Hospitality
                 var tryImprove = SelPawn.ImproveRelationship();
                 var tryRecruit = SelPawn.TryRecruit();
 
-                listingStandard.ColumnWidth = size.x-20;
+                listingStandard.ColumnWidth = size.x - 20;
 
                 var comp = SelPawn.GetComp<CompGuest>();
                 if (comp != null)
                 {
                     listingStandard.Gap();
-                    
+
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
                     CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
 
@@ -52,29 +74,30 @@ namespace Hospitality
 
                     listingStandard.Gap(50);
 
-                    DrawSetDefaultButton(rect1);
+                    DrawSetDefaultButton(rect);
                 }
 
                 if (SelPawn.Faction != null)
                 {
                     listingStandard.Label(txtRecruitmentPenalty + ": " + SelPawn.RecruitPenalty().ToString("##0"));
-                    listingStandard.Label(txtFactionGoodwill+": " + SelPawn.Faction.PlayerGoodwill.ToString("##0"));
+                    listingStandard.Label(txtFactionGoodwill + ": " + SelPawn.Faction.PlayerGoodwill.ToString("##0"));
                 }
                 listingStandard.Gap();
 
-                listingStandard.Label(string.Format("{0}:", txtRecruitmentChance));
-                listingStandard.Slider(Mathf.Clamp(trust, 0, 100), 0, 100);
-                if (trust < 50)
-                {
-                    var color = GUI.color;
-                    GUI.color = Color.red;
-                    listingStandard.Label("TrustTooLow".Translate().AdjustedFor(SelPawn));
-                    GUI.color = color;
-                }
-
+                // Will only have squadBrain while "checked in", becomes null again when guests leave
                 var squadBrain = SelPawn.GetLord();
                 if (squadBrain != null)
                 {
+                    listingStandard.Label(string.Format("{0}:", txtRecruitmentChance));
+                    listingStandard.Slider(Mathf.Clamp(trust, 0, 100), 0, 100);
+                    if (trust < 50)
+                    {
+                        var color = GUI.color;
+                        GUI.color = Color.red;
+                        listingStandard.Label("TrustTooLow".Translate().AdjustedFor(SelPawn));
+                        GUI.color = color;
+                    }
+
                     var lordToil = squadBrain.CurLordToil as LordToil_VisitPoint;
                     if (lordToil != null && SelPawn.Faction != null)
                     {
@@ -83,7 +106,6 @@ namespace Hospitality
                     }
                 }
             }
-            listingStandard.End();
         }
 
         public void CheckboxLabeled(Listing_Standard listing, string label, ref bool checkOn, bool disabled = false, string tooltip = null)
@@ -118,14 +140,17 @@ namespace Hospitality
             }
         }
 
-        private static void SetDefaults(PrisonerInteractionMode mode)
+        private void SetDefaults(PrisonerInteractionMode mode)
         {
-            var oldMode = Hospitality_MapComponent.Instance.defaultInteractionMode;
+            Map map = SelPawn.MapHeld;
+            if (map == null) return;
+
+            var oldMode = Hospitality_MapComponent.Instance(map).defaultInteractionMode;
             if (oldMode == mode) return;
 
-            Hospitality_MapComponent.Instance.defaultInteractionMode = mode;
+            Hospitality_MapComponent.Instance(map).defaultInteractionMode = mode;
 
-            var guests = GuestUtility.GetAllGuests();
+            var guests = GuestUtility.GetAllGuests(map);
             foreach (var guest in guests)
             {
                 var comp = guest.GetComp<CompGuest>();
