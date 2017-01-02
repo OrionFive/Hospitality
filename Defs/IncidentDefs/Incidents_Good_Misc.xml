@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<IncidentDefs>
+
+  <IncidentDef>
+    <defName>VisitorGroup</defName>
+    <workerClass>Hospitality.IncidentWorker_VisitorGroup</workerClass>
+    <baseChance>10</baseChance>
+    <pointsScaleable>true</pointsScaleable>
+    <minRefireDays>1</minRefireDays>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>RefugeeChased</defName>
+    <label>chased refugee</label>
+    <workerClass>Hospitality.IncidentWorker_RefugeeChased</workerClass>
+    <baseChance>2</baseChance>
+    <populationEffect>Increase</populationEffect>
+    <minRefireDays>10</minRefireDays>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>WandererJoin</defName>
+    <label>wanderer join</label>
+    <workerClass>Hospitality.IncidentWorker_WandererJoin</workerClass>
+    <baseChance>2</baseChance>
+    <populationEffect>Increase</populationEffect>
+    <minRefireDays>2</minRefireDays>
+  </IncidentDef>
+
+</IncidentDefs>

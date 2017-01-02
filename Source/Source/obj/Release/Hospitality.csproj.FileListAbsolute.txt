@@ -1,0 +1,15 @@
+C:\Users\Christian\Desktop\Hospitality\Assemblies\Hospitality.dll
+C:\Users\Christian\Desktop\Hospitality\Source\Source\obj\Release\Hospitality.csprojResolveAssemblyReference.cache
+C:\Users\Christian\Desktop\Hospitality\Source\Source\obj\Release\Hospitality.dll
+E:\Users\MikeHawk\Downloads\Rimworld\RimWorld911Win\Mods\Hospitality\Assemblies\Hospitality.dll
+E:\Users\MikeHawk\Downloads\Rimworld\RimWorld911Win\Mods\Hospitality\Source\Source\obj\Release\Hospitality.csprojResolveAssemblyReference.cache
+E:\Users\MikeHawk\Downloads\Rimworld\RimWorld911Win\Mods\Hospitality\Source\Source\obj\Release\Hospitality.dll
+C:\Dropbox\Games\RimWorld914Win\Mods\Hospitality\Assemblies\Hospitality.dll
+C:\Dropbox\Games\RimWorld914Win\Mods\Hospitality\Source\Source\obj\Release\Hospitality.csprojResolveAssemblyReference.cache
+C:\Dropbox\Games\RimWorld914Win\Mods\Hospitality\Source\Source\obj\Release\Hospitality.dll
+C:\Users\Wiltschek\Dropbox\Games\RimWorld914Win\Mods\Hospitality\Assemblies\Hospitality.dll
+C:\Users\Wiltschek\Dropbox\Games\RimWorld914Win\Mods\Hospitality\Source\Source\obj\Release\Hospitality.csprojResolveAssemblyReference.cache
+C:\Users\Wiltschek\Dropbox\Games\RimWorld914Win\Mods\Hospitality\Source\Source\obj\Release\Hospitality.dll
+E:\Dropbox (Personal)\Games\RimWorld914Win\Mods\Hospitality\Assemblies\Hospitality.dll
+E:\Dropbox (Personal)\Games\RimWorld914Win\Mods\Hospitality\Source\Source\obj\Release\Hospitality.csprojResolveAssemblyReference.cache
+E:\Dropbox (Personal)\Games\RimWorld914Win\Mods\Hospitality\Source\Source\obj\Release\Hospitality.dll
