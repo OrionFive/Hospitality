@@ -17,6 +17,7 @@
 		<defName>BuyItem</defName>
 		<driverClass>Hospitality.JobDriver_BuyItem</driverClass>
 		<reportString>Checking out TargetA.</reportString>
+		<joyMaxParticipants>1</joyMaxParticipants>
 		<joyDuration>8000</joyDuration>
 		<joyGainRate>1</joyGainRate>
 		<joyKind>Study</joyKind>
@@ -27,7 +28,7 @@
     <driverClass>Hospitality.JobDriver_BrowseItems</driverClass>
     <reportString>Checking out TargetA.</reportString>
     <joyDuration>3000</joyDuration>
-    <joyMaxParticipants>8</joyMaxParticipants>
+    <joyMaxParticipants>1</joyMaxParticipants>
     <joyGainRate>1</joyGainRate>
     <joyKind>Study</joyKind>
   </JobDef>

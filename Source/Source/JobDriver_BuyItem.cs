@@ -21,10 +21,8 @@ namespace Hospitality
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
-            this.FailOn(() => {
-                if (!JoyGiver_BuyStuff.IsBuyableNow(pawn, Item)) return true;
-                return false;
-            });
+
+            this.FailOn(() => !JoyGiver_BuyStuff.IsBuyableNow(pawn, Item));
             //AddEndCondition(() =>
             //{
             //    if (Deliveree.health.ShouldGetTreatment)
@@ -44,7 +42,7 @@ namespace Hospitality
 
                 Toil takeThing = new Toil();
                 takeThing.initAction = () => TakeThing(takeThing);
-                yield return takeThing;
+                yield return takeThing.FailOnDespawnedNullOrForbidden(TargetIndex.A);
             }
 
             //yield return Toils_Jump.Jump(gotoToil); // shop some more
@@ -53,7 +51,7 @@ namespace Hospitality
         private void TakeThing(Toil toil)
         {
             Job curJob = toil.actor.jobs.curJob; 
-            Toils_Haul.ErrorCheckForCarry(toil.actor, Item);
+            //Toils_Haul.ErrorCheckForCarry(toil.actor, Item);
             if (curJob.count == 0)
             {
                 throw new Exception(string.Concat(new object[] { "BuyItem job had count = ", curJob.count, ". Job: ", curJob }));

@@ -364,6 +364,8 @@ namespace Hospitality
 
         public static void GainSocialThought(Pawn initiator, Pawn target, ThoughtDef thoughtDef)
         {
+            if (!target.needs.mood.thoughts.CanGetThought(thoughtDef)) return;
+
             float impact = initiator.GetStatValue(StatDefOf.SocialImpact);
             var thoughtMemory = (Thought_Memory) ThoughtMaker.MakeThought(thoughtDef);
             thoughtMemory.moodPowerFactor = impact;
@@ -371,10 +373,9 @@ namespace Hospitality
             var thoughtSocialMemory = thoughtMemory as Thought_MemorySocial;
             if (thoughtSocialMemory != null)
             {
-                thoughtSocialMemory.otherPawn = initiator; // TODO: Make sure this works correctly
                 thoughtSocialMemory.opinionOffset *= impact;
             }
-            target.needs.mood.thoughts.memories.TryGainMemoryThought(thoughtMemory);
+            target.needs.mood.thoughts.memories.TryGainMemoryThought(thoughtMemory, initiator);
         }
 
         public static bool ShouldRecruit(this Pawn pawn, Pawn guest)
