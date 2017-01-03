@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 using Verse;
 using Source = RimWorld.Pawn_WorkSettings;
@@ -18,24 +19,57 @@ namespace Hospitality.Detouring
 
             Scribe_Deep.LookDeep(ref priorities, "priorities", new object[0]); // BASE
 
-            Check(_this, priorities, fieldPawn); // Added
+            // Added: Make checks?
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && priorities != null)
+            {
+                CheckForRemovedOrAdded(_this, ref priorities, fieldPriorities);
+
+                CheckForDisabledTypes(_this, (Pawn) fieldPawn.GetValue(_this));
+            }
 
             // Apply
             fieldPriorities.SetValue(_this, priorities);
+
         }
 
-        private static void Check(Source _this, DefMap<WorkTypeDef, int> priorities, FieldInfo fieldPawn)
+        private static void CheckForRemovedOrAdded(Source _this, ref DefMap<WorkTypeDef, int> priorities, FieldInfo fieldPriorities)
         {
-            // Check
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && priorities != null)
+            var newDefCount = DefDatabase<WorkTypeDef>.AllDefs.Count();
+            // Added
+            if (priorities.Count < newDefCount)
             {
-                var pawn = (Pawn) fieldPawn.GetValue(_this);
-                foreach (var workTypeDef in WorkTypeDefsUtility.WorkTypeDefsInPriorityOrder)
+                var newMap = new DefMap<WorkTypeDef, int>();
+
+                for (int i = 0; i < priorities.Count; i++)
                 {
-                    if (pawn.story.WorkTypeIsDisabled(workTypeDef))
-                    {
-                        _this.SetPriority(workTypeDef, 0);
-                    }
+                    newMap[i] = priorities[i];
+                }
+                // Apply
+                priorities = newMap;
+                fieldPriorities.SetValue(_this, priorities);
+            }
+            // Removed
+            else if (priorities.Count > newDefCount)
+            {
+                var newMap = new DefMap<WorkTypeDef, int>();
+
+                for (int i = 0; i < newDefCount; i++)
+                {
+                    newMap[i] = priorities[i];
+                }
+                // Apply
+                priorities = newMap;
+                fieldPriorities.SetValue(_this, priorities);
+            }
+        }
+
+        private static void CheckForDisabledTypes(Source _this, Pawn pawn)
+        {
+            foreach (var workTypeDef in WorkTypeDefsUtility.WorkTypeDefsInPriorityOrder)
+            {
+                if (pawn.story.WorkTypeIsDisabled(workTypeDef))
+                {
+                    _this.SetPriority(workTypeDef, 0);
                 }
             }
         }

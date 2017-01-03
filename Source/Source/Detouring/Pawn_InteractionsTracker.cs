@@ -21,6 +21,7 @@ namespace Hospitality.Detouring
                         BindingFlags.Instance | BindingFlags.NonPublic).GetValue(_this);
 
             if (!IsInteractable(pawn)) return false;
+            var workingList = (List<Pawn>)typeof(Source).GetField("workingList", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null); // Had to add
 
             // BASE
             if (_this.InteractedTooRecentlyToInteract())
@@ -32,7 +33,6 @@ namespace Hospitality.Detouring
                 return false;
             }
             var collection = pawn.MapHeld.mapPawns.AllPawnsSpawned.Where(IsInteractable).InRandomOrder(); // Added
-            var workingList = (List<Pawn>)typeof(Source).GetField("workingList", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null); // Had to add
             workingList.Clear();
             workingList.AddRange(collection);
             workingList.Shuffle<Pawn>();
@@ -40,7 +40,7 @@ namespace Hospitality.Detouring
             for (int i = 0; i < workingList.Count; i++)
             {
                 Pawn p = workingList[i];
-                if (p != pawn && CanInteractNowWith(pawn, p) && InteractionUtility.CanReceiveRandomInteraction(p))
+                if (p != pawn && CanInteractNowWith(pawn, p) && InteractionUtility.CanReceiveRandomInteraction(p) && !pawn.HostileTo(p))
                 {
                     InteractionDef intDef;
                     if (allDefsListForReading.TryRandomElementByWeight((InteractionDef x) => x.Worker.RandomSelectionWeight(pawn, p), out intDef))

@@ -34,7 +34,7 @@ namespace Hospitality
             var map = pawn.MapHeld;
             var things = map.listerThings.ThingsInGroup(RequestGroup).Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t)).ToList();
             var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(InGuestRoom);
-            things.AddRange(storage.SelectMany(s=>s.slotGroup.HeldThings));
+            things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t))));
             if (things.Count == 0) return null;
             Thing thing = things.RandomElement(); //things.MaxBy(t => Likey(pawn, t));
 
