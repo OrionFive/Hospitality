@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace Hospitality
@@ -30,6 +31,36 @@ namespace Hospitality
             base.CompTickRare();
             var pawn = parent as Pawn;
             if (pawn == null || !pawn.Spawned || pawn.Dead) return;
+
+            if (rescued) RescuedCheck();
+
+            //Log.Message((boughtItems == null) + " boughtItems of " + pawn.NameStringShort);
+            //if (boughtItems.Count > 0)
+            //{
+            //    Log.Message(pawn.NameStringShort + ": " + GenText.ToCommaList(boughtItems.Select(i => i.Label)));
+            //}
+        }
+
+        private void RescuedCheck()
+        {
+            var pawn = (Pawn) parent;
+            if (pawn.Faction == Faction.OfPlayer)
+            {
+                rescued = false;
+                return;
+            }
+            if (pawn.Downed || pawn.InBed()) return;
+
+            // Can walk again, make the roll
+            rescued = false;
+
+            // Copied from Pawn_GuestTracker
+            if (pawn.RaceProps.Humanlike && pawn.HostFaction == Faction.OfPlayer && (pawn.Faction == null || pawn.Faction.def.rescueesCanJoin) && !pawn.IsPrisoner)
+            {
+                if (!GuestUtility.WillRescueJoin(pawn)) return;
+
+                GuestUtility.ShowRescuedPawnDialog(pawn);
+            }
         }
     }
 }

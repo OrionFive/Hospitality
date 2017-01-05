@@ -504,8 +504,7 @@ namespace Hospitality
         {
             pawn.Adopt();
             Find.CameraDriver.JumpTo(pawn.Position);
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, pawn),
-                LetterType.Good, pawn);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, pawn), LetterType.Good, pawn);
         }
 
         public static void BreakupRelations(Pawn pawn)
@@ -543,6 +542,7 @@ namespace Hospitality
         public static bool WillRescueJoin(Pawn pawn)
         {
             if (DebugSettings.instantRecruit) return true;
+            if (IsEnvironmentHostile(pawn)) return true;
 
             float chance = 1 - pawn.RecruitDifficulty(Faction.OfPlayer, false)*0.5f; // was 0.75f
             chance = Mathf.Clamp(chance, 0.005f, 1f);
@@ -553,6 +553,11 @@ namespace Hospitality
             Rand.PopSeed();
 
             return value <= chance;
+        }
+
+        private static bool IsEnvironmentHostile(Pawn pawn)
+        {
+            return !pawn.SafeTemperatureRange().Includes(pawn.Map.mapTemperature.OutdoorTemp) || pawn.Map.mapConditionManager.ConditionIsActive(MapConditionDefOf.ToxicFallout);
         }
     }
 }
