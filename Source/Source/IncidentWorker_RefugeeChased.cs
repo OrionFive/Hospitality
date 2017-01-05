@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -22,7 +23,15 @@ namespace Hospitality
             }
 
 #region CHANGED
-            Pawn refugee = GenericUtility.GetAnyRelatedWorldPawn(other => other.Faction != null && other.Faction.HostileTo(Faction.OfPlayer) && HasGroupMakers(other.Faction), 100);
+
+            Func<Pawn, bool> selector = other => other.RaceProps.Humanlike && other.Faction != null && other.Faction.HostileTo(Faction.OfPlayer) && HasGroupMakers(other.Faction);
+
+            Pawn refugee = GenericUtility.GetAnyRelatedWorldPawn(selector, 100);
+            if (refugee == null)
+            {
+                // Just ANYONE
+                Find.WorldPawns.AllPawnsAlive.Where(selector).TryRandomElement(out refugee);
+            }
             if (refugee == null) return false;
             
             refugee.relations.everSeenByPlayer = true;
