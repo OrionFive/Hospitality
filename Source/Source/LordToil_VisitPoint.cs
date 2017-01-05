@@ -184,7 +184,7 @@ namespace Hospitality
             if (pawn.needs == null || pawn.needs.mood == null) return 0;
             var increase = pawn.needs.mood.CurLevel - Data.visitorMoods[pawn.thingIDNumber];
             var score = Mathf.Lerp(increase * 2.75f, pawn.needs.mood.CurLevel * 1.35f, 0.5f);
-            Log.Message(pawn.NameStringShort + " increase: " + (increase * 2.75f) + " mood: " + (pawn.needs.mood.CurLevel * 1.35f) + " score: " + score);
+            //Log.Message(pawn.NameStringShort + " increase: " + (increase * 2.75f) + " mood: " + (pawn.needs.mood.CurLevel * 1.35f) + " score: " + score);
             return score;
         }
 
