@@ -55,7 +55,7 @@ namespace Hospitality
             rescued = false;
 
             // Copied from Pawn_GuestTracker
-            if (pawn.RaceProps.Humanlike && pawn.HostFaction == Faction.OfPlayer && (pawn.Faction == null || pawn.Faction.def.rescueesCanJoin) && !pawn.IsPrisoner)
+            if (pawn.RaceProps.Humanlike && pawn.HostFaction == Faction.OfPlayer && !pawn.IsPrisoner)
             {
                 if (!GuestUtility.WillRescueJoin(pawn)) return;
 
