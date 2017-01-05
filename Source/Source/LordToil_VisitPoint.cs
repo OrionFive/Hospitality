@@ -44,7 +44,7 @@ namespace Hospitality
             {
                 if (pawn.needs == null || pawn.needs.mood == null) Data.visitorMoods.Add(pawn.thingIDNumber, 0.5f);
                 else
-                    Data.visitorMoods.Add(pawn.thingIDNumber, pawn.needs.mood.CurLevel);
+                    Data.visitorMoods.Add(pawn.thingIDNumber, pawn.needs.mood.CurInstantLevel);
                 //Log.Message("Added "+pawn.NameStringShort+": "+pawn.needs.mood.CurLevel);
 
                 var newColony = -0.1f; // Mathf.Lerp(-0.15f, -0.05f, GenDate.MonthsPassed/20f); // bonus for new colony
@@ -128,12 +128,11 @@ namespace Hospitality
             }
 
             var avgScore = lord.ownedPawns.Count > 0 ? lord.ownedPawns.Average(pawn => GetVisitScore(pawn)) : 0;
-            DisplayLeaveMessage(avgScore, lord.faction, lord.ownedPawns.Count);
+            DisplayLeaveMessage(avgScore, lord.faction, lord.ownedPawns.Count, lord.Map);
         }
 
-        private static void DisplayLeaveMessage(float score, Faction faction, int visitorCount)
+        private static void DisplayLeaveMessage(float score, Faction faction, int visitorCount, Map currentMap)
         {
-            //int goodwillChange = (int) Mathf.Clamp((score-0.5f)*20*visitorCount,-30, 30);
             float targetGoodwill = Mathf.Lerp(-100, 100, score);
             float goodwillChangeMax = Mathf.Lerp(10, 45, Mathf.InverseLerp(1, 8, visitorCount));
             float currentGoodwill = faction.GoodwillWith(Faction.OfPlayer);
@@ -141,26 +140,51 @@ namespace Hospitality
             int goodwillChange = Mathf.RoundToInt(Mathf.Clamp(offset, -goodwillChangeMax, goodwillChangeMax));
             
             faction.AffectGoodwillWith(Faction.OfPlayer, goodwillChange);
-            //float newGoodwill = faction.GoodwillWith(Faction.OfPlayer);
+
+            var days = PlanRevisit(faction, targetGoodwill, currentMap);
+
+            string messageReturn = " ";
+            if (days < 5)
+                messageReturn += "VisitorsReturnSoon".Translate();
+            else if (days < 11)
+                messageReturn += "VisitorsReturnWhile".Translate();
+            else if (days < 30)
+                messageReturn += "VisitorsReturnNotSoon".Translate();
+            else
+                messageReturn += "VisitorsReturnNot".Translate();
 
             if (offset >= 15)
-                Messages.Message("VisitorsLeavingGreat".Translate(faction.Name, goodwillChange.ToStringWithSign()), MessageSound.Benefit);
+                Messages.Message("VisitorsLeavingGreat".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Benefit);
             else if (offset >= 5)
-                Messages.Message("VisitorsLeavingGood".Translate(faction.Name, goodwillChange.ToStringWithSign()), MessageSound.Benefit);
+                Messages.Message("VisitorsLeavingGood".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Benefit);
             else if (offset <= -15)
-                Messages.Message("VisitorsLeavingAwful".Translate(faction.Name, goodwillChange.ToStringWithSign()), MessageSound.Negative);
+                Messages.Message("VisitorsLeavingAwful".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Negative);
             else if (offset <= -5)
-                Messages.Message("VisitorsLeavingBad".Translate(faction.Name, goodwillChange.ToStringWithSign()), MessageSound.Negative);
+                Messages.Message("VisitorsLeavingBad".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Negative);
             else
-                Messages.Message("VisitorsLeavingNormal".Translate(faction.Name, goodwillChange.ToStringWithSign()), MessageSound.Standard);
+                Messages.Message("VisitorsLeavingNormal".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Standard);
+        }
+
+        private static float PlanRevisit(Faction faction, float targetGoodwill, Map currentMap)
+        {
+            float days;
+            if (targetGoodwill > 0)
+                days = Mathf.Lerp(Rand.RangeInclusive(5, 7), Rand.RangeInclusive(2, 3), targetGoodwill/100f);
+            else
+                days = Mathf.Lerp(Rand.RangeInclusive(7, 10), Rand.RangeInclusive(20, 30), targetGoodwill/-100f);
+            Log.Message(faction.def.LabelCap + " will visit again in " + days + " days.");
+            Map randomVisitMap = Rand.Value < 0.1f ? Find.Maps.Where(m => m.IsPlayerHome).RandomElement() : currentMap;
+
+            GuestUtility.PlanNewVisit(faction, randomVisitMap, days);
+            return days;
         }
 
         public float GetVisitScore(Pawn pawn)
         {
             if (pawn.needs == null || pawn.needs.mood == null) return 0;
             var increase = pawn.needs.mood.CurLevel - Data.visitorMoods[pawn.thingIDNumber];
-            var score = Mathf.Lerp(increase * 2.5f, pawn.needs.mood.CurLevel * 1.25f, 0.5f);
-            //Log.Message(pawn.NameStringShort + " increase: " + (increase*2.5f) +" mood: "+(pawn.needs.mood.CurLevel*1.25f) + " score: "+score);
+            var score = Mathf.Lerp(increase * 2.75f, pawn.needs.mood.CurLevel * 1.35f, 0.5f);
+            Log.Message(pawn.NameStringShort + " increase: " + (increase * 2.75f) + " mood: " + (pawn.needs.mood.CurLevel * 1.35f) + " score: " + score);
             return score;
         }
 

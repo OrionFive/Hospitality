@@ -35,6 +35,11 @@
   <MessageMissingPawnsFactionAnger>{1} members of faction {0} have gone missing on your territory! ({2})</MessageMissingPawnsFactionAnger>
   <MessageKilledPawnFactionAnger>Faction {0} has heard about what happened to {1} and blames you for it. ({2})</MessageKilledPawnFactionAnger>
   <LetterLabelMissingPawnsFactionAnger>Chief angered</LetterLabelMissingPawnsFactionAnger>
+  
+  <VisitorsReturnSoon>They will visit again in a few days.</VisitorsReturnSoon>
+  <VisitorsReturnWhile>They will visit again in a while.</VisitorsReturnWhile>
+  <VisitorsReturnNotSoon>They won't come back any time soon.</VisitorsReturnNotSoon>
+  <VisitorsReturnNot>They've had enough of you.</VisitorsReturnNot>
 
 
   <!-- Tab -->
