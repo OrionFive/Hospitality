@@ -21,7 +21,6 @@ namespace Hospitality
         {
             get
             {
-                if (ForPrisoners) ForPrisoners = false;
                 var list = Map.thingGrid.ThingsListAt(Position);
                 return list.OfType<Pawn>()
                     .Where(pawn => pawn.jobs.curJob != null)
@@ -39,6 +38,12 @@ namespace Hospitality
                 }
                 return DrawColorTwo;
             }
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
+            if (ForPrisoners) ForPrisoners = false;
         }
 
         public override Color DrawColorTwo { get { return sheetColorForGuests; } }
