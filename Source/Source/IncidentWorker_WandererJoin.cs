@@ -48,7 +48,7 @@ namespace Hospitality
         {
             // Added option to reject wanderer
 
-            string textAsk = "WandererInitial".Translate(pawn.Faction.Name, pawn.story.adulthood.Title.ToLower(), GenText.ToCommaList(pawn.story.traits.allTraits.Select(t=>t.Label)));
+            string textAsk = "WandererInitial".Translate(pawn.Faction.Name, pawn.GetTitle().ToLower(), GenText.ToCommaList(pawn.story.traits.allTraits.Select(t=>t.Label)));
             textAsk = textAsk.AdjustedFor(pawn);
             PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref textAsk, pawn);
             DiaNode nodeAsk = new DiaNode(textAsk);

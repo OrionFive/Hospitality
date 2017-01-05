@@ -465,32 +465,47 @@ namespace Hospitality
 
         public static void ShowRescuedPawnDialog(Pawn pawn)
         {
-            string textAsk = "RescuedInitial".Translate(pawn.story.adulthood.Title.ToLower(), GenText.ToCommaList(pawn.story.traits.allTraits.Select(t=>t.Label)));
+            if (pawn.story.traits == null) throw new Exception(pawn.Name + "'s traits are null!");
+            
+            string textAsk = "RescuedInitial".Translate(pawn.GetTitle().ToLower(), GenText.ToCommaList(pawn.story.traits.allTraits.Select(t=>t.Label)));
             textAsk = textAsk.AdjustedFor(pawn);
             PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref textAsk, pawn);
             DiaNode nodeAsk = new DiaNode(textAsk);
             var textAccept = "RescuedInitial_Accept".Translate();
             textAccept = textAccept.AdjustedFor(pawn);
 
-            DiaOption optionAccept = new DiaOption(textAccept);
-            optionAccept.action = () => {
-                pawn.Adopt();
-                Find.CameraDriver.JumpTo(pawn.Position);
-                Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, pawn),
-                    LetterType.Good, pawn);
+            DiaOption optionAccept = new DiaOption(textAccept)
+            {
+                action = () => OptionAdopt(pawn), 
+                resolveTree = true
             };
-            optionAccept.resolveTree = true;
             nodeAsk.options.Add(optionAccept);
 
             var textReject = "RescuedInitial_Reject".Translate();
             textReject = textReject.AdjustedFor(pawn);
 
-            DiaOption optionReject = new DiaOption(textReject);
-            optionReject.action = null;
-            optionReject.resolveTree = true;
+            DiaOption optionReject = new DiaOption(textReject)
+            {
+                action = null, 
+                resolveTree = true
+            };
 
             nodeAsk.options.Add(optionReject);
             Find.WindowStack.Add(new Dialog_NodeTree(nodeAsk, true));
+        }
+
+        public static string GetTitle(this Pawn pawn)
+        {
+            var title = pawn.story.adulthood != null ? pawn.story.adulthood.Title : pawn.story.childhood != null ? pawn.story.childhood.Title : pawn.KindLabel;
+            return title;
+        }
+
+        private static void OptionAdopt(Pawn pawn)
+        {
+            pawn.Adopt();
+            Find.CameraDriver.JumpTo(pawn.Position);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, pawn),
+                LetterType.Good, pawn);
         }
 
         public static void BreakupRelations(Pawn pawn)

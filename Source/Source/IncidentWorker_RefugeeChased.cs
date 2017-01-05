@@ -31,7 +31,7 @@ namespace Hospitality
             string text = "RefugeeChasedInitial".Translate(new object[]
             {
                 refugee.Name.ToStringFull,
-                refugee.story.adulthood.Title.ToLower(),
+                refugee.GetTitle().ToLower(),
                 enemyFac.def.pawnsPlural, enemyFac.Name,
                 refugee.ageTracker.AgeBiologicalYears
             });
