@@ -92,7 +92,7 @@ namespace Hospitality
             diaOption3.action = delegate
             {
                 HealthUtility.GiveInjuriesToKill(refugee);
-                Log.Message(refugee.Name + " dead? " + refugee.Dead);
+                //Log.Message(refugee.Name + " dead? " + refugee.Dead);
                 //Find.WorldPawns.PassToWorld(refugee,PawnDiscardDecideMode.Discard);
             };
 #endregion
