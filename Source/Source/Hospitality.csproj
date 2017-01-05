@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="DetourAttribute.cs" />
     <Compile Include="Detouring\ModContentPack.cs" />
+    <Compile Include="Detouring\Pawn_GuestTracker.cs" />
     <Compile Include="Detouring\ThoughtWorker_PrisonBarracksImpressiveness.cs" />
     <Compile Include="Detouring\ThoughtWorker_PrisonCellImpressiveness.cs" />
     <Compile Include="GenericUtility.cs" />

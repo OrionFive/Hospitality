@@ -504,7 +504,7 @@ namespace Hospitality
         {
             pawn.Adopt();
             Find.CameraDriver.JumpTo(pawn.Position);
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, pawn),
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, pawn),
                 LetterType.Good, pawn);
         }
 
@@ -538,6 +538,21 @@ namespace Hospitality
 
             //Log.Message(pawn.NameStringShort+": bought "+thing.Label + "? " + (comp.boughtItems.Contains(thing.thingIDNumber) ? "Yes" : "No"));
             return comp.boughtItems.Contains(thing.thingIDNumber);
+        }
+
+        public static bool WillRescueJoin(Pawn pawn)
+        {
+            if (DebugSettings.instantRecruit) return true;
+
+            float chance = 1 - pawn.RecruitDifficulty(Faction.OfPlayer, false)*0.5f; // was 0.75f
+            chance = Mathf.Clamp(chance, 0.005f, 1f);
+
+            Rand.PushSeed();
+            Rand.Seed = pawn.HashOffset();
+            float value = Rand.Value;
+            Rand.PopSeed();
+
+            return value <= chance;
         }
     }
 }
