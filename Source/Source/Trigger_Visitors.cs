@@ -25,7 +25,7 @@ namespace Hospitality
 
         public Trigger_VisitorsPleasedMax(float threshold)
         {
-            data = new TriggerData_VisitorsPleasedMax { threshold = threshold,arriveTick = Find.TickManager.TicksGame, minStayTicks = Rand.Range(25000,75000) };
+            data = new TriggerData_VisitorsPleasedMax { threshold = threshold,arriveTick = Find.TickManager.TicksGame, minStayTicks = Rand.Range(40000,75000) };
         }
 
         public override bool ActivateOn(Lord lord, TriggerSignal signal)

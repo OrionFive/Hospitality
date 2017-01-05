@@ -281,7 +281,7 @@ namespace Hospitality
                 label = "LetterLabelSingleVisitorArrives".Translate();
                 description = "SingleVisitorArrives".Translate(new object[]
 				{
-					pawns[0].story.adulthood.Title.ToLower(),
+					pawns[0].GetTitle().ToLower(),
 					faction.Name,
 					pawns[0].Name,
 					traderDesc,

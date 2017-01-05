@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace Hospitality
@@ -54,26 +53,14 @@ namespace Hospitality
 
             // Can walk again, make the roll
             rescued = false;
-            if (!WillRescueJoin(pawn)) return;
 
-            GuestUtility.ShowRescuedPawnDialog(pawn);
-        }
+            // Copied from Pawn_GuestTracker
+            if (pawn.RaceProps.Humanlike && pawn.HostFaction == Faction.OfPlayer && !pawn.IsPrisoner)
+            {
+                if (!GuestUtility.WillRescueJoin(pawn)) return;
 
-        private static bool WillRescueJoin(Pawn pawn)
-        {
-            float chance = 1f;
-            if (DebugSettings.instantRecruit)
-            {
-                chance = 1f;
+                GuestUtility.ShowRescuedPawnDialog(pawn);
             }
-            else
-            {
-                chance *= 1f - pawn.RecruitDifficulty(Faction.OfPlayer, false)*0.75f;
-//                chance *= 2f; // rescued
-                chance = Mathf.Clamp(chance, 0.005f, 1f);
-            }
-            Log.Message(pawn.NameStringShort + " is considering joining. Chance: " + chance);
-            return Rand.Value <= chance;
         }
     }
 }

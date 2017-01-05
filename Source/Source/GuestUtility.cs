@@ -465,32 +465,46 @@ namespace Hospitality
 
         public static void ShowRescuedPawnDialog(Pawn pawn)
         {
-            string textAsk = "RescuedInitial".Translate(pawn.story.adulthood.Title.ToLower(), GenText.ToCommaList(pawn.story.traits.allTraits.Select(t=>t.Label)));
+            if (pawn.story.traits == null) throw new Exception(pawn.Name + "'s traits are null!");
+            
+            string textAsk = "RescuedInitial".Translate(pawn.GetTitle().ToLower(), GenText.ToCommaList(pawn.story.traits.allTraits.Select(t=>t.Label)));
             textAsk = textAsk.AdjustedFor(pawn);
             PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref textAsk, pawn);
             DiaNode nodeAsk = new DiaNode(textAsk);
             var textAccept = "RescuedInitial_Accept".Translate();
             textAccept = textAccept.AdjustedFor(pawn);
 
-            DiaOption optionAccept = new DiaOption(textAccept);
-            optionAccept.action = () => {
-                pawn.Adopt();
-                Find.CameraDriver.JumpTo(pawn.Position);
-                Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, pawn),
-                    LetterType.Good, pawn);
+            DiaOption optionAccept = new DiaOption(textAccept)
+            {
+                action = () => OptionAdopt(pawn), 
+                resolveTree = true
             };
-            optionAccept.resolveTree = true;
             nodeAsk.options.Add(optionAccept);
 
             var textReject = "RescuedInitial_Reject".Translate();
             textReject = textReject.AdjustedFor(pawn);
 
-            DiaOption optionReject = new DiaOption(textReject);
-            optionReject.action = null;
-            optionReject.resolveTree = true;
+            DiaOption optionReject = new DiaOption(textReject)
+            {
+                action = null, 
+                resolveTree = true
+            };
 
             nodeAsk.options.Add(optionReject);
             Find.WindowStack.Add(new Dialog_NodeTree(nodeAsk, true));
+        }
+
+        public static string GetTitle(this Pawn pawn)
+        {
+            var title = pawn.story.adulthood != null ? pawn.story.adulthood.Title : pawn.story.childhood != null ? pawn.story.childhood.Title : pawn.KindLabel;
+            return title;
+        }
+
+        private static void OptionAdopt(Pawn pawn)
+        {
+            pawn.Adopt();
+            Find.CameraDriver.JumpTo(pawn.Position);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, pawn), LetterType.Good, pawn);
         }
 
         public static void BreakupRelations(Pawn pawn)
@@ -523,6 +537,37 @@ namespace Hospitality
 
             //Log.Message(pawn.NameStringShort+": bought "+thing.Label + "? " + (comp.boughtItems.Contains(thing.thingIDNumber) ? "Yes" : "No"));
             return comp.boughtItems.Contains(thing.thingIDNumber);
+        }
+
+        public static bool WillRescueJoin(Pawn pawn)
+        {
+            if (DebugSettings.instantRecruit) return true;
+            if (IsEnvironmentHostile(pawn)) return true;
+
+            float chance = 1 - pawn.RecruitDifficulty(Faction.OfPlayer, false)*0.5f; // was 0.75f
+            chance = Mathf.Clamp(chance, 0.005f, 1f);
+
+            Rand.PushSeed();
+            Rand.Seed = pawn.HashOffset();
+            float value = Rand.Value;
+            Rand.PopSeed();
+
+            return value <= chance;
+        }
+
+        private static bool IsEnvironmentHostile(Pawn pawn)
+        {
+            return !pawn.SafeTemperatureRange().Includes(pawn.Map.mapTemperature.OutdoorTemp) || pawn.Map.mapConditionManager.ConditionIsActive(MapConditionDefOf.ToxicFallout);
+        }
+
+        public static void PlanNewVisit(Faction faction, Map map, float afterDays)
+        {
+            IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(Find.Storyteller.def, IncidentCategory.AllyArrival, map);
+            incidentParms.forced = true;
+            incidentParms.faction = faction;
+            var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
+            QueuedIncident qi = new QueuedIncident(incident, (int) (Find.TickManager.TicksGame + GenDate.TicksPerDay*afterDays));
+            Find.Storyteller.incidentQueue.Add(qi);
         }
     }
 }
