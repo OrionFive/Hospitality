@@ -9,7 +9,7 @@ using Verse.AI.Group;
 namespace Hospitality
 {
     // Note that this implementation is VERY different from vanilla
-    public partial class IncidentWorker_VisitorGroup : IncidentWorker_NeutralGroup
+    public class IncidentWorker_VisitorGroup : IncidentWorker_NeutralGroup
     {
         private static readonly RoomRoleDef _roomRoleDefGuestRoom = DefDatabase<RoomRoleDef>.GetNamed("GuestRoom");
         private static ThingDef[] _items;
@@ -44,7 +44,6 @@ namespace Hospitality
 
             if (!noRooms && !fallout && !hostiles.Any()) return true;
             // TODO: Show messages explaining why they can't come
-            Log.Error("Visitor group could not come. Requeueing new visit.");
             return false;
         }
 
