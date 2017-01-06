@@ -17,7 +17,7 @@ internal static class GenericUtility
         // Get all important relations from all colonists
         var importantRelations = from colonist in PawnsFinder.AllMaps_FreeColonistsSpawned.Where(c => !c.Dead)
             from otherPawn in colonist.relations.RelatedPawns
-            where !otherPawn.Dead && !otherPawn.Spawned && selector(otherPawn) && otherPawn.IsWorldPawn()
+            where !otherPawn.Dead && !otherPawn.Spawned && otherPawn.Faction != colonist.Faction && selector(otherPawn) && otherPawn.IsWorldPawn()
             select new {otherPawn, colonist, relationDef = colonist.GetMostImportantRelation(otherPawn)};
 
         var dictRelations = new Dictionary<Pawn, float>();

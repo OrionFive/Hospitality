@@ -40,6 +40,12 @@ namespace Hospitality
             }
         }
 
+        public override void Draw()
+        {
+            base.Draw();
+            if (ForPrisoners) ForPrisoners = false;
+        }
+
         public override Color DrawColorTwo { get { return sheetColorForGuests; } }
 
         public override void DeSpawn()

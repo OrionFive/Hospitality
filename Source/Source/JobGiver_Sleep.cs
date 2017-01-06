@@ -23,6 +23,11 @@ namespace Hospitality
 
             if (curLevel < 0.35f)
             {
+                return 6f;
+            }
+
+            if (curLevel > 0.65f)
+            {
                 return 0f;
             }
             return 1-curLevel;

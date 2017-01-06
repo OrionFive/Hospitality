@@ -8,9 +8,8 @@ using Verse.AI.Group;
 
 namespace Hospitality
 {
-    // TODO: Compare this with vanilla - check what has changed and what we need to change as well
     // Note that this implementation is VERY different from vanilla
-    public partial class IncidentWorker_VisitorGroup : IncidentWorker_NeutralGroup
+    public class IncidentWorker_VisitorGroup : IncidentWorker_NeutralGroup
     {
         private static readonly RoomRoleDef _roomRoleDefGuestRoom = DefDatabase<RoomRoleDef>.GetNamed("GuestRoom");
         private static ThingDef[] _items;
@@ -34,22 +33,32 @@ namespace Hospitality
             return Mathf.Lerp(-20, 20, Mathf.InverseLerp(-100, 100, current));
         }
 
-        protected override bool CanFireNowSub(IIncidentTarget target)
+        private static bool CheckCanCome(Map map, Faction faction)
         {
-            Map map = (Map)target; 
-            if (map.mapConditionManager.GetActiveCondition<MapCondition_ToxicFallout>() != null) return false;
-            if (map.mapPawns.AllPawnsSpawned.Any(p => !p.Dead && !p.IsPrisoner && p.Faction != null && p.Faction.HostileTo(Faction.OfPlayer) && p.Faction != Faction.OfInsects && !p.Downed)) return false;
+            bool fallout = map.mapConditionManager.GetActiveCondition<MapCondition_ToxicFallout>() != null;
+            var hostiles = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed
+                                                                   && (p.Faction.HostileTo(Faction.OfPlayer) || p.Faction.HostileTo(faction)) && p.Faction != Faction.OfInsects);
 
-             //if (Find.MapConditionManager.GetActiveCondition<MapCondition_VolcanicWinter>() != null) return false;
-            var rooms = GetRooms(null, map);
-            return rooms.Length > 0;
+            //if (Find.MapConditionManager.GetActiveCondition<MapCondition_VolcanicWinter>() != null) canFire = false;
+            bool noRooms = GetRooms(null, map).Length == 0;
+
+            if (!noRooms && !fallout && !hostiles.Any()) return true;
+            // TODO: Show messages explaining why they can't come
+            return false;
         }
 
         public override bool TryExecute(IncidentParms parms)
         {
+            if (!TryResolveParms(parms)) return false;
+            
             Map map = (Map)parms.target;
 
-            if (!TryResolveParms(parms)) return false;
+            // We check here instead of CanFireNow, so we can reschedule the visit.
+            if (!CheckCanCome(map, parms.faction))
+            {
+                GuestUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
+                return false;
+            }
 
             if (parms.points < 40)
             {
