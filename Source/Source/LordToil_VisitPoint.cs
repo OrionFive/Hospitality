@@ -175,7 +175,7 @@ namespace Hospitality
             Log.Message(faction.def.LabelCap + " will visit again in " + days + " days.");
             Map randomVisitMap = Rand.Value < 0.1f ? Find.Maps.Where(m => m.IsPlayerHome).RandomElement() : currentMap;
 
-            GuestUtility.PlanNewVisit(faction, randomVisitMap, days);
+            GuestUtility.PlanNewVisit(randomVisitMap, days, faction);
             return days;
         }
 

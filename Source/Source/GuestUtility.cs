@@ -562,11 +562,11 @@ namespace Hospitality
             return !pawn.SafeTemperatureRange().Includes(pawn.Map.mapTemperature.OutdoorTemp) || pawn.Map.mapConditionManager.ConditionIsActive(MapConditionDefOf.ToxicFallout);
         }
 
-        public static void PlanNewVisit(Faction faction, Map map, float afterDays)
+        public static void PlanNewVisit(IIncidentTarget map, float afterDays, Faction faction = null)
         {
             IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(Find.Storyteller.def, IncidentCategory.AllyArrival, map);
-            incidentParms.forced = true;
-            incidentParms.faction = faction;
+
+            if(faction != null) incidentParms.faction = faction;
             var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
             QueuedIncident qi = new QueuedIncident(incident, (int) (Find.TickManager.TicksGame + GenDate.TicksPerDay*afterDays));
             Find.Storyteller.incidentQueue.Add(qi);
