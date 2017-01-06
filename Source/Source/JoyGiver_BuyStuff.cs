@@ -120,11 +120,11 @@ namespace Hospitality
                 Log.Message(thing.Label + ": is not tradeable.");
                 return false;
             }
-            if (!thing.IsSociallyProper(pawn))
-            {
-                Log.Message(thing.Label + ": is not proper for " + pawn.NameStringShort);
-                return false;
-            }
+            //if (!thing.IsSociallyProper(pawn))
+            //{
+            //    Log.Message(thing.Label + ": is not proper for " + pawn.NameStringShort);
+            //    return false;
+            //}
             var marketValue = thing.MarketValue * JobDriver_BuyItem.PriceFactor;
             if (marketValue < 1)
             {
