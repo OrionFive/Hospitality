@@ -49,7 +49,11 @@ namespace Hospitality
                 int duration = Rand.Range(JobDriver_BuyItem.MinShoppingDuration, JobDriver_BuyItem.MaxShoppingDuration);
 
                 var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, map, 2, out standTarget) && IsBuyableNow(pawn, thing);
-                return canBrowse ? new Job(jobDefBrowse, standTarget, thing){expiryInterval = duration * 2} : null;
+                if (canBrowse)
+                {
+                    return new Job(jobDefBrowse, standTarget, thing) {expiryInterval = duration*2};
+                }
+                return null;
             }
 
             return new Job(jobDefBuy, thing);
