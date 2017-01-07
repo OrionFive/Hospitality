@@ -50,4 +50,13 @@ internal static class GenericUtility
         }
         else return GetAnyRelatedWorldPawn(selector, minImportance - 50);
     }
+
+    public static float GetTravelDays(Faction faction, Map map)
+    {
+        float tilesFromBase = Find.WorldObjects.FactionBases.Where(b=>b.Faction==faction).Min(b=>Find.WorldGrid.ApproxDistanceInTiles(map.Tile, b.Tile));
+        var daysPerTile = 0.5f;
+        var days = tilesFromBase * daysPerTile;
+        //Log.Message("It takes the " + faction.def.pawnsPlural + " " + days + " days to travel to the player and back.");
+        return days;
+    }
 }
