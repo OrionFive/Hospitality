@@ -25,7 +25,7 @@ namespace Hospitality
                 {
                     return ThoughtState.ActiveAtStage(3);
                 }
-                float wealthTotal = Find.VisibleMap.wealthWatcher.WealthTotal * (isGuest ? 2 : 1);
+                float wealthTotal = pawn.MapHeld.wealthWatcher.WealthTotal * (isGuest ? 2 : 1);
                 if (wealthTotal < 10000f)
                 {
                     return ThoughtState.ActiveAtStage(3);
