@@ -168,14 +168,26 @@ namespace Hospitality
         private static float PlanRevisit(Faction faction, float targetGoodwill, Map currentMap)
         {
             float days;
-            if (targetGoodwill > 0)
-                days = Mathf.Lerp(Rand.RangeInclusive(5, 7), Rand.RangeInclusive(2, 3), targetGoodwill/100f);
+            if (faction.defeated) return 100;
+            if (targetGoodwill < -50) return 100;
+            else if (targetGoodwill > 0)
+                days = Mathf.Lerp(Rand.Range(5f, 7f), Rand.Range(0f, 2f), targetGoodwill/100f);
             else
-                days = Mathf.Lerp(Rand.RangeInclusive(7, 10), Rand.RangeInclusive(20, 30), targetGoodwill/-100f);
-            Log.Message(faction.def.LabelCap + " will visit again in " + days + " days.");
+                days = Mathf.Lerp(Rand.Range(7f, 12f), Rand.Range(25f, 30f), targetGoodwill/-100f);
             Map randomVisitMap = Rand.Value < 0.1f ? Find.Maps.Where(m => m.IsPlayerHome).RandomElement() : currentMap;
 
-            GuestUtility.PlanNewVisit(randomVisitMap, days, faction);
+            if (Rand.Value < targetGoodwill/100f && Rand.Value < 0.2f)
+            {
+                // Send another friendly faction as well
+                Faction newFaction;
+                if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && !f.HostileTo(Faction.OfPlayer)).TryRandomElement(out newFaction))
+                {
+                    GuestUtility.PlanNewVisit(currentMap, days * 2+GenericUtility.GetTravelDays(newFaction, currentMap), newFaction);
+                }
+            }
+
+            //Log.Message(faction.def.LabelCap + " will visit again in " + days + " days (+" + GenericUtility.GetTravelDays(faction, randomVisitMap)*2 + " days for travel).");
+            GuestUtility.PlanNewVisit(randomVisitMap, days + GenericUtility.GetTravelDays(faction, randomVisitMap)*2, faction);
             return days;
         }
 

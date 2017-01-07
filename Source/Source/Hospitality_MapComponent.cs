@@ -15,7 +15,7 @@ namespace Hospitality
         public void ExposeData()
         {
             Scribe_Values.LookValue(ref delayTicks, "delayTicks");
-            Scribe_Collections.LookList(ref actions, "actions", LookMode.Deep, new object[0]);
+            Scribe_Collections.LookList(ref actions, "actions", LookMode.Deep);
         }
     }
 
@@ -38,7 +38,7 @@ namespace Hospitality
             Scribe_Collections.LookDictionary(ref bribeCount, "bribeCount", LookMode.Value, LookMode.Value);
             Scribe_Values.LookValue(ref defaultInteractionMode, "defaultInteractionMode", PrisonerInteractionMode.NoInteraction);
             Scribe_Values.LookValue(ref lastEventKey, "lastEventKey", 0);
-            Scribe_Collections.LookList(ref eventQueue, "eventQueue", LookMode.Deep, new object[0]);
+            Scribe_Collections.LookList(ref eventQueue, "eventQueue", LookMode.Deep);
         }
 
         public Hospitality_MapComponent(Map map) : base(map)

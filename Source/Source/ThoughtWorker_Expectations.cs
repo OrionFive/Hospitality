@@ -15,6 +15,7 @@ namespace Hospitality
             {
                 if (pawn == null) return ThoughtState.Inactive;
                 if (pawn.thingIDNumber == 0) return ThoughtState.Inactive; // What do you know!!!
+                if(pawn.MapHeld == null) return ThoughtState.Inactive;
 
                 if (Current.ProgramState != ProgramState.Playing)
                 {
@@ -25,7 +26,7 @@ namespace Hospitality
                 {
                     return ThoughtState.ActiveAtStage(3);
                 }
-                float wealthTotal = Find.VisibleMap.wealthWatcher.WealthTotal * (isGuest ? 2 : 1);
+                float wealthTotal = pawn.MapHeld.wealthWatcher.WealthTotal * (isGuest ? 2 : 1);
                 if (wealthTotal < 10000f)
                 {
                     return ThoughtState.ActiveAtStage(3);

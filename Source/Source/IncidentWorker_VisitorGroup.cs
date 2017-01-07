@@ -84,7 +84,7 @@ namespace Hospitality
             }
             catch (Exception e)
             {
-                Log.ErrorOnce("Something failed when spawning visitors: " + e.Message, 464365853);
+                Log.ErrorOnce("Something failed when spawning visitors: " + e.Message+"\n"+e.StackTrace, 464365853);
                 return true; // be gone, event
             }
             if (visitors == null || visitors.Count == 0) return false;
