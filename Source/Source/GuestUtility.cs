@@ -248,10 +248,9 @@ namespace Hospitality
         public static void FixDrugPolicy(this Pawn pawn)
         {
             //if (pawn.drugs == null) 
-                pawn.drugs = new Pawn_DrugPolicyTracker(pawn);
+            pawn.drugs = new Pawn_DrugPolicyTracker(pawn);
             //if(pawn.drugs.CurrentPolicy == null) 
-                pawn.drugs.CurrentPolicy = new DrugPolicy();
-            pawn.drugs.CurrentPolicy.InitializeIfNeeded();
+            pawn.drugs.CurrentPolicy = Hospitality_MapComponent.visitorDrugPolicy;
         }
 
         public static bool CheckRecruitingSuccessful(this Pawn guest, Pawn recruiter)
