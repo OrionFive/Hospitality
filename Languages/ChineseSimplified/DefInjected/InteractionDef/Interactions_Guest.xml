@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL --><LanguageData>
+	
+	<GuestDiplomacy.label>提升好感度</GuestDiplomacy.label>
+	<rep>
+		<path>GuestDiplomacy.logRulesInitiator.rulesStrings[0]</path>
+		<trans>logentry-&gt;与 [other_nameShortIndef] 进行了愉快的交流。</trans>
+	</rep>
+	<rep>
+		<path>GuestDiplomacy.logRulesRecipient.rulesStrings[0]</path>
+		<trans>logentry-&gt;倾听 [other_nameShortIndef] 的有趣谈话。</trans>
+	</rep>
+
+	<CharmGuestAttempt.label>尝试示好</CharmGuestAttempt.label>
+	<rep>
+		<path>CharmGuestAttempt.logRulesInitiator.rulesStrings[0]</path>
+		<trans>logentry-&gt;尝试招募 [other_nameShortIndef] 。</trans>
+	</rep>
+	<rep>
+		<path>CharmGuestAttempt.logRulesRecipient.rulesStrings[0]</path>
+		<trans>logentry-&gt;听取了 [other_nameShortIndef] 关於招募的建议。</trans>
+	</rep>
+
+
+</LanguageData>
