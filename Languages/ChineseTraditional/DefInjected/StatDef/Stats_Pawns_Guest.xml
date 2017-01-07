@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL --><LanguageData>
+	
+	<PleaseGuestChance.label>外交技能</PleaseGuestChance.label>
+	<PleaseGuestChance.description>這個人能夠提升訪客滿意度的基礎幾率。</PleaseGuestChance.description>
+
+	<RecruitRelationshipDamage.label>招募好感度傷害</RecruitRelationshipDamage.label>
+	<RecruitRelationshipDamage.description>成功招募該人後，對該人所屬勢力造成的傷害</RecruitRelationshipDamage.description>
+
+</LanguageData>

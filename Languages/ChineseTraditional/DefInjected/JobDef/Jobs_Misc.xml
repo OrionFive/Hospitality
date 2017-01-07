@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL --><LanguageData>
+	
+	<CharmGuest.reportString>正嘗試招募TargetA。</CharmGuest.reportString>
+	<GuestImproveRelationship.reportString>正嘗試提升與TargetA的派系的好感度。</GuestImproveRelationship.reportString>
+	<BuyItem.reportString>準備購買TargetA。</BuyItem.reportString>
+	<BrowseItems.reportString>檢視TargetA。</BrowseItems.reportString>
+
+</LanguageData>
