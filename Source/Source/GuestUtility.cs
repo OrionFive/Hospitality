@@ -28,6 +28,8 @@ namespace Hospitality
 
         private static readonly StatDef statRecruitRelationshipDamage = StatDef.Named("RecruitRelationshipDamage");
 
+        private static DrugPolicy visitorDrugPolicy = new DrugPolicy();
+
         public static bool IsRelaxing(this Pawn pawn)
         {
             return pawn.mindState.duty != null && pawn.mindState.duty.def == relaxDef;
@@ -250,7 +252,8 @@ namespace Hospitality
             //if (pawn.drugs == null) 
             pawn.drugs = new Pawn_DrugPolicyTracker(pawn);
             //if(pawn.drugs.CurrentPolicy == null) 
-            pawn.drugs.CurrentPolicy = Hospitality_MapComponent.visitorDrugPolicy;
+            pawn.drugs.CurrentPolicy = visitorDrugPolicy;
+            pawn.drugs.CurrentPolicy.InitializeIfNeeded();
         }
 
         public static bool CheckRecruitingSuccessful(this Pawn guest, Pawn recruiter)

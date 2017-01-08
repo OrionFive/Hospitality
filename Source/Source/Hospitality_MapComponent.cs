@@ -32,7 +32,6 @@ namespace Hospitality
         private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
         public PrisonerInteractionMode defaultInteractionMode;
         private int lastEventKey;
-        public static DrugPolicy visitorDrugPolicy;
 
         public override void ExposeData()
         {
@@ -52,8 +51,6 @@ namespace Hospitality
             if (!forReal) return;
             map.components.Add(this);
 
-            visitorDrugPolicy = new DrugPolicy();
-            visitorDrugPolicy.InitializeIfNeeded();
         }
 
         public override void MapComponentTick()
