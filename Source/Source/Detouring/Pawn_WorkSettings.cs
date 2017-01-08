@@ -69,7 +69,7 @@ namespace Hospitality.Detouring
             {
                 if (pawn.story.WorkTypeIsDisabled(workTypeDef))
                 {
-                    _this.SetPriority(workTypeDef, 0);
+                    _this.Disable(workTypeDef);
                 }
             }
         }
