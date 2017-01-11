@@ -41,6 +41,8 @@ namespace Hospitality
             Scribe_References.LookReference(ref defaultAreaRestriction, "defaultAreaRestriction");
             Scribe_Values.LookValue(ref lastEventKey, "lastEventKey", 0);
             Scribe_Collections.LookList(ref eventQueue, "eventQueue", LookMode.Deep);
+
+            if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
         }
 
         public Hospitality_MapComponent(Map map) : base(map)

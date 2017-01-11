@@ -270,16 +270,11 @@ namespace Hospitality
 
             // Set default interaction
             pawns.ForEach(delegate(Pawn p) {
-                p.guest.SetGuestStatus(Faction.OfPlayer);
                 var comp = p.GetComp<CompGuest>();
                 if (comp != null)
                 {
                     comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
-                }
-                var pSettings = p.playerSettings;
-                if (pSettings != null)
-                {
-                    pSettings.AreaRestriction = mapComp.defaultAreaRestriction;
+                    comp.GuestArea = mapComp.defaultAreaRestriction;
                 }
             });
 

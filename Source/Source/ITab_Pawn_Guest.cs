@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CommunityCoreLibrary;
+using Hospitality.Detouring;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -65,15 +66,8 @@ namespace Hospitality
                 if (comp != null)
                 {
                     listingStandard.Gap();
-
-                    if (SelPawn.playerSettings != null)
-                    {
-                        var areaRect = listingStandard.GetRect(24);
-                        var oldArea = SelPawn.playerSettings.AreaRestriction;
-                        AreaAllowedGUI.DoAllowedAreaSelectors(areaRect, SelPawn, AllowedAreaMode.Humanlike);
-                        if (SelPawn.playerSettings.AreaRestriction != oldArea) SetAreaRestriction(SelPawn.GetLord(), SelPawn.playerSettings.AreaRestriction);
-                        Text.Anchor = TextAnchor.UpperLeft;
-                    }
+                    
+                    DoAreaRestriction(listingStandard, comp);
 
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
                     CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
@@ -117,11 +111,26 @@ namespace Hospitality
             }
         }
 
+        private void DoAreaRestriction(Listing_Standard listingStandard, CompGuest comp)
+        {
+            var areaRect = listingStandard.GetRect(24);
+            if (SelPawn.playerSettings == null)
+            {
+                var savedArea = comp.GuestArea;
+                SelPawn.playerSettings = new RimWorld.Pawn_PlayerSettings(SelPawn) {AreaRestriction = savedArea};
+            }
+
+            var oldArea = SelPawn.playerSettings.AreaRestriction = comp.GuestArea;
+            AreaAllowedGUI.DoAllowedAreaSelectors(areaRect, SelPawn, AllowedAreaMode.Humanlike);
+            if (SelPawn.playerSettings.AreaRestriction != oldArea) SetAreaRestriction(SelPawn.GetLord(), SelPawn.playerSettings.AreaRestriction);
+            Text.Anchor = TextAnchor.UpperLeft;
+        }
+
         private static void SetAreaRestriction(Lord lord, Area areaRestriction)
         {
             foreach (var pawn in lord.ownedPawns)
             {
-                pawn.playerSettings.AreaRestriction = areaRestriction;
+                pawn.GetComp<CompGuest>().GuestArea = areaRestriction;
             }
         }
 
@@ -176,7 +185,7 @@ namespace Hospitality
 
             if (pawn.playerSettings != null)
             {
-                mapComp.defaultAreaRestriction = pawn.playerSettings.AreaRestriction;
+                mapComp.defaultAreaRestriction = pawn.GetComp<CompGuest>().GuestArea;
             }
 
             var guests = GuestUtility.GetAllGuests(map);
@@ -186,11 +195,7 @@ namespace Hospitality
                 if (comp != null)
                 {
                     comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
-                }
-
-                if (guest.playerSettings != null)
-                {
-                    guest.playerSettings.AreaRestriction = mapComp.defaultAreaRestriction;
+                    comp.GuestArea = mapComp.defaultAreaRestriction;
                 }
             }
         }

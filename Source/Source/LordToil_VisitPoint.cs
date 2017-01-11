@@ -39,20 +39,25 @@ namespace Hospitality
         public override void Init()
         {
             base.Init();
+            Arrive();
+        }
+
+        private void Arrive()
+        {
             //Log.Message("Init State_VisitPoint "+brain.ownedPawns.Count + " - "+brain.faction.name);
             foreach (var pawn in lord.ownedPawns)
             {
                 if (pawn.needs == null || pawn.needs.mood == null) Data.visitorMoods.Add(pawn.thingIDNumber, 0.5f);
-                else
-                    Data.visitorMoods.Add(pawn.thingIDNumber, pawn.needs.mood.CurInstantLevel);
+                else Data.visitorMoods.Add(pawn.thingIDNumber, pawn.needs.mood.CurInstantLevel);
                 //Log.Message("Added "+pawn.NameStringShort+": "+pawn.needs.mood.CurLevel);
 
                 var newColony = -0.1f; // Mathf.Lerp(-0.15f, -0.05f, GenDate.MonthsPassed/20f); // bonus for new colony
-                var regularity = Mathf.Lerp(-0.5f, 0.25f, Mathf.InverseLerp(-100, 100, lord.faction.PlayerGoodwill)); // negative factions have lower expectations
+                var regularity = Mathf.Lerp(-0.5f, 0.25f, Mathf.InverseLerp(-100, 100, lord.faction.PlayerGoodwill));
+                    // negative factions have lower expectations
                 float expectations = newColony + regularity;
                 Data.visitorMoods[pawn.thingIDNumber] += expectations;
 
-
+                pawn.guest.SetGuestStatus(Faction.OfPlayer);
                 pawn.PocketHeadgear();
             }
 
