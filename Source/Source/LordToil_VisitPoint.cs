@@ -53,6 +53,7 @@ namespace Hospitality
                 Data.visitorMoods[pawn.thingIDNumber] += expectations;
 
 
+                pawn.guest.SetGuestStatus(Faction.OfPlayer);
                 pawn.PocketHeadgear();
             }
 
@@ -119,6 +120,9 @@ namespace Hospitality
                     else if (score > 0.65f) LeaveSatisfied(pawn, score);
                 }
                 pawn.needs.AddOrRemoveNeedsAsAppropriate();
+
+                pawn.guest.SetGuestStatus(null);
+
                 //Find.Reservations.ReleaseAllClaimedBy(pawn);
                 var allReservedThings = Map.reservationManager.AllReservedThings().ToArray();
                 foreach (var t in allReservedThings)
