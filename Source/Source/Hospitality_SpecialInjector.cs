@@ -31,9 +31,6 @@ namespace Hospitality
             if(!Detours.TryDetourFromTo(
                 typeof (Building_GuestBed).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public),
                 typeof (Building).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public))) return false;
-            if(!Detours.TryDetourFromTo(
-                typeof(RimWorld.ITab_Pawn_Guest).GetProperty("IsVisible", BindingFlags.Instance | BindingFlags.Public).GetGetMethod(),
-                typeof(Detouring.ITab_Pawn_Guest).GetMethod("IsVisible_Get", BindingFlags.Instance | BindingFlags.Public))) return false;
             #endregion
 
             #region Automatic hookup
