@@ -528,10 +528,12 @@ namespace Hospitality
             }
         }
 
-        public static Room GetGuestRoom(this Pawn p)
+        public static Area GetGuestArea(this Pawn p)
         {
-            var lord = p.GetLord();
-            return lord.CurLordToil.FlagLoc.GetRoom(lord.Map);
+            var compGuest = p.GetComp<CompGuest>();
+            if (compGuest == null) return null;
+
+            return compGuest.GuestArea;
         }
 
         public static bool Bought(this Pawn pawn, Thing thing)
@@ -572,6 +574,20 @@ namespace Hospitality
             var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
             QueuedIncident qi = new QueuedIncident(incident, (int) (Find.TickManager.TicksGame + GenDate.TicksPerDay*afterDays));
             Find.Storyteller.incidentQueue.Add(qi);
+        }
+
+        public static bool IsInGuestZone(this Pawn p, Thing s)
+        {
+            var area = p.GetGuestArea();
+            if (area == null) return true;
+            return area[s.Position];
+        }
+
+        public static IEnumerable<Building_GuestBed> GetGuestBeds(this Pawn pawn)
+        {
+            var area = pawn.GetGuestArea();
+            if (area == null) return pawn.MapHeld.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>();
+            return pawn.MapHeld.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Where(b => area[b.Position]);
         }
     }
 }

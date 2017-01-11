@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
@@ -25,12 +26,11 @@ namespace Hospitality
                 if (!pawn.IsGuest()) return ThoughtState.Inactive;
                 if(pawn.InBed()) return ThoughtState.Inactive;
 
-                var room = pawn.GetGuestRoom();
-                if (room == null) return ThoughtState.ActiveAtStage(0);
-                if(room.Role==RoomRoleDefOf.None) return ThoughtState.Inactive;
+                var area = pawn.GetGuestArea();
+                if (area == null) return ThoughtState.ActiveAtStage(0);
 
                 var groupSize = pawn.GetLord().ownedPawns.Count;
-                var bedCount = room.ContainedBeds.Count(bed => bed is Building_GuestBed);
+                var bedCount = pawn.GetGuestBeds().Count();
 
                 if (bedCount == 0) return ThoughtState.ActiveAtStage(0);
                 if (bedCount < groupSize) return ThoughtState.ActiveAtStage(1);

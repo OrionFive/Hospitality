@@ -11,7 +11,6 @@ namespace Hospitality
     // Note that this implementation is VERY different from vanilla
     public class IncidentWorker_VisitorGroup : IncidentWorker_NeutralGroup
     {
-        private static readonly RoomRoleDef _roomRoleDefGuestRoom = DefDatabase<RoomRoleDef>.GetNamed("GuestRoom");
         private static ThingDef[] _items;
         private static float highestValue;
 
@@ -40,9 +39,8 @@ namespace Hospitality
                                                                    && (p.Faction.HostileTo(Faction.OfPlayer) || p.Faction.HostileTo(faction)) && p.Faction != Faction.OfInsects);
 
             //if (Find.MapConditionManager.GetActiveCondition<MapCondition_VolcanicWinter>() != null) canFire = false;
-            bool noRooms = GetRooms(null, map).Length == 0;
-
-            if (!noRooms && !fallout && !hostiles.Any()) return true;
+ 
+            if (!fallout && !hostiles.Any()) return true;
             // TODO: Show messages explaining why they can't come
             return false;
         }
@@ -99,11 +97,10 @@ namespace Hospitality
                 //            + visitor.drugs.CurrentPolicy[ThingDefOf.Luciferium].allowedForJoy);
             }
 
-            var rooms = GetRooms(visitors[0], map);
-            if (rooms.Length > 0)
-            {
-                var spot = rooms[0].room.Cells.Where(c=>c.Roofed(map)).RandomElement();
+            var spot = GetSpot(visitors, map);
 
+            if(spot.IsValid)
+            {
                 GiveItems(visitors);
 
                 CreateLord(parms.faction, spot, visitors, map);
@@ -111,6 +108,19 @@ namespace Hospitality
                 return true;
             }
             return false;
+        }
+
+        private static IntVec3 GetSpot(List<Pawn> visitors, Map map)
+        {
+            var area = visitors.First().GetGuestArea();
+
+            if (area == null) return DropCellFinder.TradeDropSpot(map);
+
+            var cells = area.ActiveCells.Where(c => c.Walkable(map) && c.Roofed(map));
+
+            if (!cells.Any()) return DropCellFinder.TradeDropSpot(map);
+            
+            return cells.RandomElement();
         }
 
         private static void GiveItems(IEnumerable<Pawn> visitors)
@@ -263,10 +273,11 @@ namespace Hospitality
 
         private static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map)
         {
+            var mapComp = Hospitality_MapComponent.Instance(map);
+
             var lordJob = new LordJob_VisitColony(faction, chillSpot);
             LordMaker.MakeNewLord(faction, lordJob, map, pawns);
 
-            var mapComp = Hospitality_MapComponent.Instance(map);
 
             // Set default interaction
             pawns.ForEach(delegate(Pawn p) {
@@ -275,6 +286,7 @@ namespace Hospitality
                 {
                     comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
                     comp.GuestArea = mapComp.defaultAreaRestriction;
+                    Log.Message("initialized "+p.Name);
                 }
             });
 
@@ -365,66 +377,6 @@ namespace Hospitality
                 }
             }
             return true;
-        }
-
-        private struct RoomAndScore
-        {
-            public Room room;
-            public float score;
-        }
-
-        private static RoomAndScore[] GetRooms(Pawn searcher, Map map)
-        {
-            var rooms = new HashSet<Room>();
-            foreach (var building in map.listerBuildings.allBuildingsColonist)
-            {
-                var room = RoomQuery.RoomAtFast(building.Position, map);
-                // Only check one cell per room - otherwise this may be way too expensive (e.g. far away room, when colony is closed off)
-                if (room != null && room.CellCount > 8 && !room.PsychologicallyOutdoors && map.reachability.CanReachColony(room.Cells.First(cell => cell.Walkable(map))))
-                {
-                    rooms.Add(room);
-                }
-            }
-            return
-                rooms.Select(room => new RoomAndScore {room = room, score = RoomScore(room, searcher)})
-                    .OrderByDescending(r => r.score)
-                    .ToArray();
-        }
-
-        private static float RoomScore(Room room, Pawn searcher)
-        {
-            int score = 0;
-            score += (int) (room.GetStat(RoomStatDefOf.Impressiveness)*1.5); // -150 to 215
-            score += Math.Min((int) room.GetStat(RoomStatDefOf.Space), 40);
-
-            if (room.Role == _roomRoleDefGuestRoom) score += 500;
-            else if (room.Role == RoomRoleDefOf.Barracks) score -= 100;
-            else if (room.Role == RoomRoleDefOf.Bedroom) score -= 500;
-            else if (room.Role == RoomRoleDefOf.DiningRoom) score += 50;
-            else if (room.Role == RoomRoleDefOf.Hospital) score -= 50;
-            else if (room.Role == RoomRoleDefOf.Laboratory) score -= 100;
-            else if (room.Role == RoomRoleDefOf.PrisonBarracks) score -= 150;
-            else if (room.Role == RoomRoleDefOf.PrisonCell) score -= 150;
-            else if (room.Role == RoomRoleDefOf.RecRoom) score += 50;
-
-            var flags = room.AllContainedThings.OfType<VisitorFlag>().Count();
-            score -= flags*500;
-
-            if (room.UsesOutdoorTemperature) score -= 150;
-
-            if (searcher != null && !searcher.ComfortableTemperatureRange().Includes(room.Temperature)) score -= 75;
-
-            if (room.IsHuge) return score;
-
-            // count beds
-            foreach (var bed in room.ContainedBeds)
-            {
-                if (!bed.def.building.bed_humanlike) score -= 25;
-                else if (bed.owners.Count > 0) score -= 50;
-            }
-            score += room.AllContainedThings.OfType<Building_GuestBed>().Sum(buildingGuestBed => 50);
-
-            return score;
         }
     }
 }
