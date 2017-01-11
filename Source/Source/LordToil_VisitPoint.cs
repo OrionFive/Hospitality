@@ -53,7 +53,6 @@ namespace Hospitality
                 Data.visitorMoods[pawn.thingIDNumber] += expectations;
 
 
-                pawn.guest.SetGuestStatus(Faction.OfPlayer);
                 pawn.PocketHeadgear();
             }
 

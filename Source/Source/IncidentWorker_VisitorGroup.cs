@@ -266,12 +266,20 @@ namespace Hospitality
             var lordJob = new LordJob_VisitColony(faction, chillSpot);
             LordMaker.MakeNewLord(faction, lordJob, map, pawns);
 
+            var mapComp = Hospitality_MapComponent.Instance(map);
+
             // Set default interaction
             pawns.ForEach(delegate(Pawn p) {
+                p.guest.SetGuestStatus(Faction.OfPlayer);
                 var comp = p.GetComp<CompGuest>();
                 if (comp != null)
                 {
-                    comp.chat = Hospitality_MapComponent.Instance(map).defaultInteractionMode == PrisonerInteractionMode.Chat;
+                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
+                }
+                var pSettings = p.playerSettings;
+                if (pSettings != null)
+                {
+                    pSettings.AreaRestriction = mapComp.defaultAreaRestriction;
                 }
             });
 

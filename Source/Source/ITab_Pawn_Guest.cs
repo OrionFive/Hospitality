@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using CommunityCoreLibrary;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
+using Verse.Sound;
 
 namespace Hospitality
 {
@@ -12,7 +14,7 @@ namespace Hospitality
         private static readonly string txtRecruitmentPenalty = "RecruitmentPenalty".Translate();
         private static readonly string txtFactionGoodwill = "FactionGoodwill".Translate();
         private static readonly string txtHospitality = "Hospitality".Translate();
-        private static readonly string txtSetDefault = "SetDefault".Translate();
+        private static readonly string txtMakeDefault = "MakeDefault".Translate();
 
         protected readonly Vector2 setDefaultButtonSize = new Vector2(120f, 30f);
        
@@ -64,6 +66,15 @@ namespace Hospitality
                 {
                     listingStandard.Gap();
 
+                    if (SelPawn.playerSettings != null)
+                    {
+                        var areaRect = listingStandard.GetRect(24);
+                        var oldArea = SelPawn.playerSettings.AreaRestriction;
+                        AreaAllowedGUI.DoAllowedAreaSelectors(areaRect, SelPawn, AllowedAreaMode.Humanlike);
+                        if (SelPawn.playerSettings.AreaRestriction != oldArea) SetAreaRestriction(SelPawn.GetLord(), SelPawn.playerSettings.AreaRestriction);
+                        Text.Anchor = TextAnchor.UpperLeft;
+                    }
+
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
                     CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
 
@@ -106,6 +117,14 @@ namespace Hospitality
             }
         }
 
+        private static void SetAreaRestriction(Lord lord, Area areaRestriction)
+        {
+            foreach (var pawn in lord.ownedPawns)
+            {
+                pawn.playerSettings.AreaRestriction = areaRestriction;
+            }
+        }
+
         public void CheckboxLabeled(Listing_Standard listing, string label, ref bool checkOn, bool disabled = false, string tooltip = null)
         {
             Rect rect = listing.GetRect(Text.LineHeight);
@@ -122,19 +141,57 @@ namespace Hospitality
 
         private void DrawSetDefaultButton(Rect rect1)
         {
-            Rect rect2 = new Rect(rect1.xMax - setDefaultButtonSize.x - 10f, 70f, setDefaultButtonSize.x, setDefaultButtonSize.y);
-            if (Widgets.ButtonText(rect2, txtSetDefault))
+            Rect rect2 = new Rect(rect1.xMax - setDefaultButtonSize.x - 10f, 90f, setDefaultButtonSize.x, setDefaultButtonSize.y);
+            if (Widgets.ButtonText(rect2, txtMakeDefault))
             {
-                var list = new List<FloatMenuOption>
+                SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
+
+                SetAllDefaults(SelPawn);
+                //var list = new List<FloatMenuOption>
+                //{
+                //    new FloatMenuOption("LeaveAlone".Translate(),
+                //        () => SetDefaults(PrisonerInteractionMode.NoInteraction), 0),
+                //
+                //    new FloatMenuOption("ImproveRelationship".Translate(),
+                //        () => SetDefaults(PrisonerInteractionMode.Chat), 0)
+                //};
+                //
+                //Find.WindowStack.Add(new FloatMenu(list));
+            }
+        }
+
+        private void SetAllDefaults(Pawn pawn)
+        {
+            Map map = SelPawn.MapHeld;
+            if (map == null) return;
+
+            var mapComp = Hospitality_MapComponent.Instance(map);
+
+            if(pawn.GetComp<CompGuest>() != null)
+            {
+                mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat
+                ? PrisonerInteractionMode.Chat
+                : PrisonerInteractionMode.NoInteraction;
+            }
+
+            if (pawn.playerSettings != null)
+            {
+                mapComp.defaultAreaRestriction = pawn.playerSettings.AreaRestriction;
+            }
+
+            var guests = GuestUtility.GetAllGuests(map);
+            foreach (var guest in guests)
+            {
+                var comp = guest.GetComp<CompGuest>();
+                if (comp != null)
                 {
-                    new FloatMenuOption("LeaveAlone".Translate(),
-                        () => SetDefaults(PrisonerInteractionMode.NoInteraction), 0),
+                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
+                }
 
-                    new FloatMenuOption("ImproveRelationship".Translate(),
-                        () => SetDefaults(PrisonerInteractionMode.Chat), 0)
-                };
-
-                Find.WindowStack.Add(new FloatMenu(list));
+                if (guest.playerSettings != null)
+                {
+                    guest.playerSettings.AreaRestriction = mapComp.defaultAreaRestriction;
+                }
             }
         }
 
