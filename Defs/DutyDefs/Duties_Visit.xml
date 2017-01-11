@@ -27,5 +27,18 @@
     </thinkNode>
   </DutyDef>
 
+  <DutyDef>
+    <defName>TakeWoundedGuest</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="JobGiver_TakeWoundedGuest" />
+        <li Class="JobGiver_ExitMapBest">
+          <defaultLocomotion>Jog</defaultLocomotion>
+          <jobMaxDuration>500</jobMaxDuration>
+          <forceCanDig>false</forceCanDig>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
 
 </Defs>
