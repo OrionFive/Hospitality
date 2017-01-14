@@ -10,6 +10,9 @@ namespace Hospitality
         private bool rescued;
         public bool chat;
         public bool recruit;
+
+        public bool arrived;
+
         private Area guestArea_int;
         public Area GuestArea
         {
@@ -31,6 +34,7 @@ namespace Hospitality
         {
             base.PostExposeData();
             Scribe_Values.LookValue(ref rescued, "rescued");
+            Scribe_Values.LookValue(ref arrived, "arrived");
             Scribe_Values.LookValue(ref chat, "chat");
             Scribe_Values.LookValue(ref recruit, "recruit");
             Scribe_Collections.LookList(ref boughtItems, "boughtItems", LookMode.Value);
@@ -76,6 +80,17 @@ namespace Hospitality
 
                 GuestUtility.ShowRescuedPawnDialog(Pawn);
             }
+        }
+
+        public void Arrive()
+        {
+            Pawn.playerSettings.AreaRestriction = guestArea_int;
+            arrived = true;
+        }
+
+        public void Leave()
+        {
+            arrived = false;
         }
     }
 }

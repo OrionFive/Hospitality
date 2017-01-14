@@ -106,7 +106,7 @@ namespace Hospitality
             t4.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
             graphArrive.transitions.Add(t4);
             Transition t5 = new Transition(toilVisit, toilExit);
-            t5.triggers.Add(new Trigger_TicksPassed(Rand.Range(16000, 44000)));
+            t5.triggers.Add(new Trigger_TicksPassed((int) (Rand.Range(0.4f, 1.2f) * GenDate.TicksPerDay)));
             t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(new object[] {faction.Name})));
             t5.preActions.Add(new TransitionAction_WakeAll());
             t5.preActions.Add(new TransitionAction_EnsureHaveExitDestination());

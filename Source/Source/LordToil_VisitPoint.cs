@@ -57,8 +57,7 @@ namespace Hospitality
                 float expectations = newColony + regularity;
                 Data.visitorMoods[pawn.thingIDNumber] += expectations;
 
-                pawn.guest.SetGuestStatus(Faction.OfPlayer);
-                pawn.PocketHeadgear();
+                pawn.Arrive();
             }
 
             PlaceFlag();
@@ -115,24 +114,12 @@ namespace Hospitality
             RemoveFlag();
             foreach (var pawn in pawns)
             {
-                //if (!success)
                 {
-                    pawn.WearHeadgear();
-
                     var score = GetVisitScore(pawn);
                     if (score > 0.99f) LeaveVerySatisfied(pawn, score);
                     else if (score > 0.65f) LeaveSatisfied(pawn, score);
                 }
-                pawn.needs.AddOrRemoveNeedsAsAppropriate();
-
-                pawn.guest.SetGuestStatus(null);
-
-                //Find.Reservations.ReleaseAllClaimedBy(pawn);
-                var allReservedThings = Map.reservationManager.AllReservedThings().ToArray();
-                foreach (var t in allReservedThings)
-                {
-                    if (Map.reservationManager.ReservedBy(t, pawn)) Map.reservationManager.Release(t, pawn);
-                }
+                pawn.Leave();
             }
 
             var avgScore = lord.ownedPawns.Count > 0 ? lord.ownedPawns.Average(pawn => GetVisitScore(pawn)) : 0;

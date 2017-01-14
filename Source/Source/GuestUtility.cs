@@ -133,6 +133,31 @@ namespace Hospitality
             return !(!guest.IsGuest() || guest.Downed || (!sleepingIsOk && !guest.Awake()) || !guest.MapHeld.areaManager.Home[guest.Position] || guest.HasDismissiveThought());
         }
 
+        public static void Arrive(this Pawn pawn)
+        {
+            pawn.PocketHeadgear();
+            pawn.guest.SetGuestStatus(Faction.OfPlayer);
+            pawn.GetComp<CompGuest>().Arrive();
+        }
+
+        public static void Leave(this Pawn pawn)
+        {
+            pawn.WearHeadgear();
+
+            pawn.needs.AddOrRemoveNeedsAsAppropriate();
+
+            pawn.guest.SetGuestStatus(null);
+
+            pawn.GetComp<CompGuest>().Leave();
+
+            //var reservationManager = pawn.MapHeld.reservationManager;
+            //var allReservedThings = reservationManager.AllReservedThings().ToArray();
+            //foreach (var t in allReservedThings)
+            //{
+            //    if (reservationManager.ReservedBy(t, pawn)) reservationManager.Release(t, pawn);
+            //}
+        }
+
         private static bool IsInVisitState(this Pawn guest)
         {
             var lord = guest.GetLord();

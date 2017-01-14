@@ -122,8 +122,9 @@ namespace Hospitality
 
             var oldArea = SelPawn.playerSettings.AreaRestriction = comp.GuestArea;
             AreaAllowedGUI.DoAllowedAreaSelectors(areaRect, SelPawn, AllowedAreaMode.Humanlike);
-            if (SelPawn.playerSettings.AreaRestriction != oldArea) SetAreaRestriction(SelPawn.GetLord(), SelPawn.playerSettings.AreaRestriction);
             Text.Anchor = TextAnchor.UpperLeft;
+
+            if (SelPawn.playerSettings.AreaRestriction != oldArea) SetAreaRestriction(SelPawn.GetLord(), SelPawn.playerSettings.AreaRestriction);
         }
 
         private static void SetAreaRestriction(Lord lord, Area areaRestriction)
