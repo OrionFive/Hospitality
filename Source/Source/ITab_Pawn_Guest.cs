@@ -183,7 +183,10 @@ namespace Hospitality
 
         private void SendHome(Lord lord)
         {
-            
+            foreach (var pawn in lord.ownedPawns)
+            {
+                pawn.GetComp<CompGuest>().sentAway = true;
+            }
         }
 
         private void SetAllDefaults(Pawn pawn)

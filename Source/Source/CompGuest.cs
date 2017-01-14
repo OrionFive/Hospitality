@@ -12,6 +12,7 @@ namespace Hospitality
         public bool recruit;
 
         public bool arrived;
+        public bool sentAway;
 
         private Area guestArea_int;
         public Area GuestArea
@@ -35,6 +36,7 @@ namespace Hospitality
             base.PostExposeData();
             Scribe_Values.LookValue(ref rescued, "rescued");
             Scribe_Values.LookValue(ref arrived, "arrived");
+            Scribe_Values.LookValue(ref sentAway, "sentAway");
             Scribe_Values.LookValue(ref chat, "chat");
             Scribe_Values.LookValue(ref recruit, "recruit");
             Scribe_Collections.LookList(ref boughtItems, "boughtItems", LookMode.Value);

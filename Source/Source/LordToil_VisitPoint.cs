@@ -112,21 +112,30 @@ namespace Hospitality
             var pawns = lord.ownedPawns.ToArray(); // Copy, because recruiting changes brain
 
             RemoveFlag();
+
+            bool sentAway = false;
             foreach (var pawn in pawns)
             {
                 {
                     var score = GetVisitScore(pawn);
-                    if (score > 0.99f) LeaveVerySatisfied(pawn, score);
-                    else if (score > 0.65f) LeaveSatisfied(pawn, score);
+                    if (pawn.GetComp<CompGuest>().sentAway)
+                    {
+                        sentAway = true;
+                    }
+                    {
+                        if (score > 0.99f) LeaveVerySatisfied(pawn, score);
+                        else if (score > 0.65f) LeaveSatisfied(pawn, score);
+                    }
                 }
                 pawn.Leave();
             }
 
             var avgScore = lord.ownedPawns.Count > 0 ? lord.ownedPawns.Average(pawn => GetVisitScore(pawn)) : 0;
-            DisplayLeaveMessage(avgScore, lord.faction, lord.ownedPawns.Count, lord.Map);
+            
+            DisplayLeaveMessage(avgScore, lord.faction, lord.ownedPawns.Count, lord.Map, sentAway);
         }
 
-        private static void DisplayLeaveMessage(float score, Faction faction, int visitorCount, Map currentMap)
+        private static void DisplayLeaveMessage(float score, Faction faction, int visitorCount, Map currentMap, bool sentAway)
         {
             float targetGoodwill = Mathf.Lerp(-100, 100, score);
             float goodwillChangeMax = Mathf.Lerp(10, 45, Mathf.InverseLerp(1, 8, visitorCount));
@@ -148,7 +157,9 @@ namespace Hospitality
             else
                 messageReturn += "VisitorsReturnNot".Translate();
 
-            if (offset >= 15)
+            if(sentAway)
+                Messages.Message("VisitorsSentAway".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Standard);
+            else if (offset >= 15)
                 Messages.Message("VisitorsLeavingGreat".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Benefit);
             else if (offset >= 5)
                 Messages.Message("VisitorsLeavingGood".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Benefit);
