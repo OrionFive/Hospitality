@@ -31,14 +31,18 @@ namespace Hospitality
         private List<Event> eventQueue = new List<Event>();
         private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
         public PrisonerInteractionMode defaultInteractionMode;
+        public Area defaultAreaRestriction;
         private int lastEventKey;
 
         public override void ExposeData()
         {
             Scribe_Collections.LookDictionary(ref bribeCount, "bribeCount", LookMode.Value, LookMode.Value);
             Scribe_Values.LookValue(ref defaultInteractionMode, "defaultInteractionMode", PrisonerInteractionMode.NoInteraction);
+            Scribe_References.LookReference(ref defaultAreaRestriction, "defaultAreaRestriction");
             Scribe_Values.LookValue(ref lastEventKey, "lastEventKey", 0);
             Scribe_Collections.LookList(ref eventQueue, "eventQueue", LookMode.Deep);
+
+            if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
         }
 
         public Hospitality_MapComponent(Map map) : base(map)
@@ -50,7 +54,7 @@ namespace Hospitality
             // Multi-Threading killed the elegant solution
             if (!forReal) return;
             map.components.Add(this);
-
+            defaultAreaRestriction = map.areaManager.Home;
         }
 
         public override void MapComponentTick()

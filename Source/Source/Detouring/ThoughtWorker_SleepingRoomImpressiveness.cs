@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 using RimWorld;
 using Verse;
@@ -22,7 +23,10 @@ namespace Hospitality.Detouring
             #region Added
             if (p.IsGuest())
             {
-                return CheckRoom(_this, p.GetGuestRoom());
+                var beds = p.GetGuestBeds();
+                if(!beds.Any()) return ThoughtState.Inactive;
+
+                return CheckRoom(_this, beds.MinBy(b=>b.Position.DistanceToSquared(p.PositionHeld)).GetRoom());
             }
             #endregion
 
