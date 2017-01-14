@@ -16,8 +16,11 @@ namespace Hospitality
         private static readonly string txtFactionGoodwill = "FactionGoodwill".Translate();
         private static readonly string txtHospitality = "Hospitality".Translate();
         private static readonly string txtMakeDefault = "MakeDefault".Translate();
+        private static readonly string txtSendAway = "SendAway".Translate();
+        private static readonly string txtSendAwayQuestion = "SendAwayQuestion".Translate();
 
         protected readonly Vector2 setDefaultButtonSize = new Vector2(120f, 30f);
+        protected readonly Vector2 sendHomeButtonSize = new Vector2(120f, 30f);
        
         public ITab_Pawn_Guest()
         {
@@ -78,6 +81,7 @@ namespace Hospitality
                     listingStandard.Gap(50);
 
                     DrawSetDefaultButton(rect);
+                    DrawSendHomeButton(rect);
                 }
 
                 if (SelPawn.Faction != null)
@@ -149,24 +153,39 @@ namespace Hospitality
         }
 
 
-        private void DrawSetDefaultButton(Rect rect1)
+        private void DrawSetDefaultButton(Rect rect)
         {
-            Rect rect2 = new Rect(rect1.xMax - setDefaultButtonSize.x - 10f, 90f, setDefaultButtonSize.x, setDefaultButtonSize.y);
-            if (Widgets.ButtonText(rect2, txtMakeDefault))
+            rect = new Rect(rect.xMax - setDefaultButtonSize.x - 10f, 90f, setDefaultButtonSize.x, setDefaultButtonSize.y);
+            if (Widgets.ButtonText(rect, txtMakeDefault))
             {
                 SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
 
                 SetAllDefaults(SelPawn);
-                //var list = new List<FloatMenuOption>
-                //{
-                //    new FloatMenuOption("LeaveAlone".Translate(),
-                //        () => SetDefaults(PrisonerInteractionMode.NoInteraction), 0),
-                //
-                //    new FloatMenuOption("ImproveRelationship".Translate(),
-                //        () => SetDefaults(PrisonerInteractionMode.Chat), 0)
-                //};
-                //
-                //Find.WindowStack.Add(new FloatMenu(list));
+            }
+        }
+
+        private void DrawSendHomeButton(Rect rect)
+        {
+            rect = new Rect(rect.xMax - sendHomeButtonSize.x - 20f - setDefaultButtonSize.x, 90f, sendHomeButtonSize.x, sendHomeButtonSize.y);
+            if (Widgets.ButtonText(rect, txtSendAway))
+            {
+                SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
+
+                SendHomeDialog(SelPawn.GetLord());
+            }
+        }
+
+        private void SendHomeDialog(Lord lord)
+        {
+            var text = string.Format(txtSendAwayQuestion, lord.faction.Name);
+            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => SendHome(lord)));
+        }
+
+        private void SendHome(Lord lord)
+        {
+            foreach (var pawn in lord.ownedPawns)
+            {
+                pawn.GetComp<CompGuest>().sentAway = true;
             }
         }
 
