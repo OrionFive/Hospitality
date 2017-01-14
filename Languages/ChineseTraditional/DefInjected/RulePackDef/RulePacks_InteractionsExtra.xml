@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
+<LanguageData>
+	
+	<rep>
+		<path>Sentence_CharmAttemptAccepted.rulePack.rulesStrings[0]</path>
+		<trans>sent->對於 [initiator_nameShortDef] 流露出的招募意願，[recipient_nameShortDef] 顯得非常高興。</trans>
+	</rep>	
+	<rep>
+		<path>Sentence_CharmAttemptRejected.rulePack.rulesStrings[0]</path>
+		<trans>sent->對於 [initiator_nameShortDef] 希望招募自己，[recipient_nameShortDef] 表示無法理解，並且有點不高興。</trans>
+	</rep>
+	
+</LanguageData>

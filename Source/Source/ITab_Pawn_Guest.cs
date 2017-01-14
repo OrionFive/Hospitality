@@ -175,13 +175,13 @@ namespace Hospitality
             }
         }
 
-        private void SendHomeDialog(Lord lord)
+        private static void SendHomeDialog(Lord lord)
         {
             var text = string.Format(txtSendAwayQuestion, lord.faction.Name);
             Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => SendHome(lord)));
         }
 
-        private void SendHome(Lord lord)
+        private static void SendHome(Lord lord)
         {
             foreach (var pawn in lord.ownedPawns)
             {

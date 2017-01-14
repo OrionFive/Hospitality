@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+	<rep>
+		<path>GuestConvinced.stages[0].label</path>
+		<trans>招募：已被说服</trans>
+	</rep>
+	<rep>
+		<path>GuestConvinced.stages[0].labelSocial</path>
+		<trans>我被说服了</trans>
+	</rep>
+	<rep>
+		<path>GuestConvinced.stages[0].description</path>
+		<trans>那位殖民者跟我讨论了这个殖民地。这里听起来是个不错的地方...</trans>
+	</rep>
+
+	<rep>
+		<path>GuestOffended.stages[0].label</path>
+		<trans>招募：说服失败</trans>
+	</rep>
+	<rep>
+		<path>GuestOffended.stages[0].labelSocial</path>
+		<trans>因被试图招募而感到被冒犯</trans>
+	</rep>
+	<rep>
+		<path>GuestOffended.stages[0].description</path>
+		<trans>那个殖民者在试着招募我。可我根本不想离开自己的派系！</trans>
+	</rep>
+
+	<rep>
+		<path>GuestAngered.stages[0].label</path>
+		<trans>因目睹招募而生气</trans>
+	</rep>
+	<rep>
+		<path>GuestAngered.stages[0].labelSocial</path>
+		<trans>招募的事使我生气</trans>
+	</rep>
+	<rep>
+		<path>GuestAngered.stages[0].description</path>
+		<trans>那群家伙正试图挖角我们的人！</trans>
+	</rep>
+
+	<rep>
+		<path>GuestOffendedRelationship.stages[0].label</path>
+		<trans>被殖民者侮辱</trans>
+	</rep>
+	<rep>
+		<path>GuestOffendedRelationship.stages[0].labelSocial</path>
+		<trans>我被侮辱了</trans>
+	</rep>
+	<rep>
+		<path>GuestOffendedRelationship.stages[0].description</path>
+		<trans>那群混蛋！</trans>
+	</rep>
+
+	<rep>
+		<path>GuestPleasedRelationship.stages[0].label</path>
+		<trans>被殖民者迷住</trans>
+	</rep>
+	<rep>
+		<path>GuestPleasedRelationship.stages[0].labelSocial</path>
+		<trans>我被迷住了</trans>
+	</rep>
+	<rep>
+		<path>GuestPleasedRelationship.stages[0].description</path>
+		<trans>多麽好的一群人啊！</trans>
+	</rep>
+
+	<rep>
+		<path>GuestDismissiveAttitude.stages[0].label</path>
+		<trans>说累了</trans>
+	</rep>
+	<rep>
+		<path>GuestDismissiveAttitude.stages[0].description</path>
+		<trans>我暂时不想再交流了。</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[0].label</path>
+		<trans>没有床</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[0].description</path>
+		<trans>他们没有在这设访客室</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[1].label</path>
+		<trans>床不够了</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[1].description</path>
+		<trans>我们的房间应该有更多的床</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[2].label</path>
+		<trans>足够的床</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[2].description</path>
+		<trans>这里为我们提供了足够的床</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[3].label</path>
+		<trans>很多的床</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[3].description</path>
+		<trans>哇哦！很多的床！</trans>
+	</rep>
+
+</LanguageData>

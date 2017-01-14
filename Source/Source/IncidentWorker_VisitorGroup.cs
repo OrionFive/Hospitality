@@ -95,6 +95,7 @@ namespace Hospitality
                 visitor.FixDrugPolicy();
                 //Log.Message(visitor.NameStringShort + ": "
                 //            + visitor.drugs.CurrentPolicy[ThingDefOf.Luciferium].allowedForJoy);
+                visitor.GetComp<CompGuest>().sentAway = false;
             }
 
             var spot = GetSpot(visitors, map);

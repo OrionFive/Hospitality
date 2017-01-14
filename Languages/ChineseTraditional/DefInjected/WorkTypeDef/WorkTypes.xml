@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
+<LanguageData>
+	
+	<Warden.labelShort>交涉</Warden.labelShort>
+<Warden.pawnLabel>外交者</Warden.pawnLabel>
+	<Warden.gerundLabel>交涉</Warden.gerundLabel>
+	<Warden.description>外交者與訪客及俘虜交涉。</Warden.description>
+<Warden.verb>處理</Warden.verb>
+
+</LanguageData>
