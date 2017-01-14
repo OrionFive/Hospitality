@@ -30,7 +30,7 @@
   <VisitorSatisfied>{0} enjoyed {1} stay. {2} left you {3}.</VisitorSatisfied>
   <VisitorVerySatisfied>{0} absolutely enjoyed {1} stay. {2} left you {3}.</VisitorVerySatisfied>
   <MessageVisitorsLeavingCold>The visitors from {0} are leaving again because it is too cold.</MessageVisitorsLeavingCold>
-  <VisitorsSentAway>You have sent them away. (Score: {1})</VisitorsSentAway>
+  <VisitorsSentAway>You have sent them away.</VisitorsSentAway>
   
   <MessageMissingPawnFactionAnger>One member of faction {0} has gone missing on your territory! ({2})</MessageMissingPawnFactionAnger>
   <MessageMissingPawnsFactionAnger>{1} members of faction {0} have gone missing on your territory! ({2})</MessageMissingPawnsFactionAnger>
