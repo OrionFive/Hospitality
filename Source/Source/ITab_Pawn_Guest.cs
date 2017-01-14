@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using CommunityCoreLibrary;
+using Hospitality.Detouring;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
+using Verse.Sound;
 
 namespace Hospitality
 {
@@ -12,9 +15,12 @@ namespace Hospitality
         private static readonly string txtRecruitmentPenalty = "RecruitmentPenalty".Translate();
         private static readonly string txtFactionGoodwill = "FactionGoodwill".Translate();
         private static readonly string txtHospitality = "Hospitality".Translate();
-        private static readonly string txtSetDefault = "SetDefault".Translate();
+        private static readonly string txtMakeDefault = "MakeDefault".Translate();
+        private static readonly string txtSendAway = "SendAway".Translate();
+        private static readonly string txtSendAwayQuestion = "SendAwayQuestion".Translate();
 
         protected readonly Vector2 setDefaultButtonSize = new Vector2(120f, 30f);
+        protected readonly Vector2 sendHomeButtonSize = new Vector2(120f, 30f);
        
         public ITab_Pawn_Guest()
         {
@@ -63,6 +69,8 @@ namespace Hospitality
                 if (comp != null)
                 {
                     listingStandard.Gap();
+                    
+                    DoAreaRestriction(listingStandard, comp);
 
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
                     CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
@@ -73,6 +81,7 @@ namespace Hospitality
                     listingStandard.Gap(50);
 
                     DrawSetDefaultButton(rect);
+                    DrawSendHomeButton(rect);
                 }
 
                 if (SelPawn.Faction != null)
@@ -106,6 +115,30 @@ namespace Hospitality
             }
         }
 
+        private void DoAreaRestriction(Listing_Standard listingStandard, CompGuest comp)
+        {
+            var areaRect = listingStandard.GetRect(24);
+            if (SelPawn.playerSettings == null)
+            {
+                var savedArea = comp.GuestArea;
+                SelPawn.playerSettings = new RimWorld.Pawn_PlayerSettings(SelPawn) {AreaRestriction = savedArea};
+            }
+
+            var oldArea = SelPawn.playerSettings.AreaRestriction = comp.GuestArea;
+            AreaAllowedGUI.DoAllowedAreaSelectors(areaRect, SelPawn, AllowedAreaMode.Humanlike);
+            Text.Anchor = TextAnchor.UpperLeft;
+
+            if (SelPawn.playerSettings.AreaRestriction != oldArea) SetAreaRestriction(SelPawn.GetLord(), SelPawn.playerSettings.AreaRestriction);
+        }
+
+        private static void SetAreaRestriction(Lord lord, Area areaRestriction)
+        {
+            foreach (var pawn in lord.ownedPawns)
+            {
+                pawn.GetComp<CompGuest>().GuestArea = areaRestriction;
+            }
+        }
+
         public void CheckboxLabeled(Listing_Standard listing, string label, ref bool checkOn, bool disabled = false, string tooltip = null)
         {
             Rect rect = listing.GetRect(Text.LineHeight);
@@ -120,21 +153,70 @@ namespace Hospitality
         }
 
 
-        private void DrawSetDefaultButton(Rect rect1)
+        private void DrawSetDefaultButton(Rect rect)
         {
-            Rect rect2 = new Rect(rect1.xMax - setDefaultButtonSize.x - 10f, 70f, setDefaultButtonSize.x, setDefaultButtonSize.y);
-            if (Widgets.ButtonText(rect2, txtSetDefault))
+            rect = new Rect(rect.xMax - setDefaultButtonSize.x - 10f, 90f, setDefaultButtonSize.x, setDefaultButtonSize.y);
+            if (Widgets.ButtonText(rect, txtMakeDefault))
             {
-                var list = new List<FloatMenuOption>
+                SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
+
+                SetAllDefaults(SelPawn);
+            }
+        }
+
+        private void DrawSendHomeButton(Rect rect)
+        {
+            rect = new Rect(rect.xMax - sendHomeButtonSize.x - 20f - setDefaultButtonSize.x, 90f, sendHomeButtonSize.x, sendHomeButtonSize.y);
+            if (Widgets.ButtonText(rect, txtSendAway))
+            {
+                SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
+
+                SendHomeDialog(SelPawn.GetLord());
+            }
+        }
+
+        private void SendHomeDialog(Lord lord)
+        {
+            var text = string.Format(txtSendAwayQuestion, lord.faction.Name);
+            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => SendHome(lord)));
+        }
+
+        private void SendHome(Lord lord)
+        {
+            foreach (var pawn in lord.ownedPawns)
+            {
+                pawn.GetComp<CompGuest>().sentAway = true;
+            }
+        }
+
+        private void SetAllDefaults(Pawn pawn)
+        {
+            Map map = SelPawn.MapHeld;
+            if (map == null) return;
+
+            var mapComp = Hospitality_MapComponent.Instance(map);
+
+            if(pawn.GetComp<CompGuest>() != null)
+            {
+                mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat
+                ? PrisonerInteractionMode.Chat
+                : PrisonerInteractionMode.NoInteraction;
+            }
+
+            if (pawn.playerSettings != null)
+            {
+                mapComp.defaultAreaRestriction = pawn.GetComp<CompGuest>().GuestArea;
+            }
+
+            var guests = GuestUtility.GetAllGuests(map);
+            foreach (var guest in guests)
+            {
+                var comp = guest.GetComp<CompGuest>();
+                if (comp != null)
                 {
-                    new FloatMenuOption("LeaveAlone".Translate(),
-                        () => SetDefaults(PrisonerInteractionMode.NoInteraction), 0),
-
-                    new FloatMenuOption("ImproveRelationship".Translate(),
-                        () => SetDefaults(PrisonerInteractionMode.Chat), 0)
-                };
-
-                Find.WindowStack.Add(new FloatMenu(list));
+                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
+                    comp.GuestArea = mapComp.defaultAreaRestriction;
+                }
             }
         }
 

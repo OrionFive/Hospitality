@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DetourAttribute.cs" />
+    <Compile Include="Detouring\ForbidUtility.cs" />
+    <Compile Include="Detouring\Getters.cs" />
     <Compile Include="Detouring\ModContentPack.cs" />
     <Compile Include="Detouring\Pawn_GuestTracker.cs" />
     <Compile Include="Detouring\ThoughtWorker_PrisonBarracksImpressiveness.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="GenericUtility.cs" />
     <Compile Include="IncidentWorker_RefugeeChased.cs" />
     <Compile Include="IncidentWorker_WandererJoin.cs" />
+    <Compile Include="JobGiver_GotoGuestArea.cs" />
     <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="CompGuest.cs" />
     <Compile Include="CompProperties_Guest.cs" />
@@ -92,8 +95,10 @@
     <Compile Include="LordToil_CustomTravel.cs" />
     <Compile Include="Detouring\Pawn_InteractionsTracker.cs" />
     <Compile Include="ModConfigMenu.cs" />
+    <Compile Include="ThinkNode_InGuestArea.cs" />
     <Compile Include="ThoughtWorker_Beds.cs" />
     <Compile Include="ThoughtWorker_Expectations.cs" />
+    <Compile Include="Trigger_SentAway.cs" />
     <Compile Include="Trigger_UrgentlyCold.cs" />
     <Compile Include="VisitorFlag.cs" />
     <Compile Include="Building_GuestBed.cs" />

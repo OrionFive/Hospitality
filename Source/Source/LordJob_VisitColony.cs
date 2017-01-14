@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
@@ -106,11 +107,20 @@ namespace Hospitality
             t4.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
             graphArrive.transitions.Add(t4);
             Transition t5 = new Transition(toilVisit, toilExit);
-            t5.triggers.Add(new Trigger_TicksPassed(Rand.Range(16000, 44000)));
-            t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(new object[] {faction.Name})));
+            t5.triggers.Add(new Trigger_TicksPassed((int) (Rand.Range(0.4f, 1.2f) * GenDate.TicksPerDay)));
+            t5.triggers.Add(new Trigger_SentAway());
+            t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(new object[] { faction.Name })));
             t5.preActions.Add(new TransitionAction_WakeAll());
             t5.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
             graphArrive.transitions.Add(t5);
+            Transition t7 = new Transition(toilArrive, toilExitCold);
+            t7.triggers.Add(new Trigger_SentAway());
+            t7.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(new object[] { faction.Name })));
+            t7.preActions.Add(new TransitionAction_WakeAll());
+            t7.preActions.Add(new TransitionAction_Custom(() => StopPawns(lord.ownedPawns)));
+            t7.preActions.Add(new TransitionAction_Custom(() => LordToil_VisitPoint.DisplayLeaveMessage(Mathf.InverseLerp(-100, 100, faction.PlayerGoodwill), faction, lord.ownedPawns.Count, Map, true)));
+            graphArrive.transitions.Add(t7);
+
             return graphArrive;
         }
 

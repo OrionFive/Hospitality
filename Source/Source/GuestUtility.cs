@@ -28,6 +28,8 @@ namespace Hospitality
 
         private static readonly StatDef statRecruitRelationshipDamage = StatDef.Named("RecruitRelationshipDamage");
 
+        private static DrugPolicy visitorDrugPolicy = new DrugPolicy();
+
         public static bool IsRelaxing(this Pawn pawn)
         {
             return pawn.mindState.duty != null && pawn.mindState.duty.def == relaxDef;
@@ -129,6 +131,31 @@ namespace Hospitality
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
             return !(!guest.IsGuest() || guest.Downed || (!sleepingIsOk && !guest.Awake()) || !guest.MapHeld.areaManager.Home[guest.Position] || guest.HasDismissiveThought());
+        }
+
+        public static void Arrive(this Pawn pawn)
+        {
+            pawn.PocketHeadgear();
+            pawn.guest.SetGuestStatus(Faction.OfPlayer);
+            pawn.GetComp<CompGuest>().Arrive();
+        }
+
+        public static void Leave(this Pawn pawn)
+        {
+            pawn.WearHeadgear();
+
+            pawn.needs.AddOrRemoveNeedsAsAppropriate();
+
+            pawn.guest.SetGuestStatus(null);
+
+            pawn.GetComp<CompGuest>().Leave();
+
+            //var reservationManager = pawn.MapHeld.reservationManager;
+            //var allReservedThings = reservationManager.AllReservedThings().ToArray();
+            //foreach (var t in allReservedThings)
+            //{
+            //    if (reservationManager.ReservedBy(t, pawn)) reservationManager.Release(t, pawn);
+            //}
         }
 
         private static bool IsInVisitState(this Pawn guest)
@@ -248,9 +275,9 @@ namespace Hospitality
         public static void FixDrugPolicy(this Pawn pawn)
         {
             //if (pawn.drugs == null) 
-                pawn.drugs = new Pawn_DrugPolicyTracker(pawn);
+            pawn.drugs = new Pawn_DrugPolicyTracker(pawn);
             //if(pawn.drugs.CurrentPolicy == null) 
-                pawn.drugs.CurrentPolicy = new DrugPolicy();
+            pawn.drugs.CurrentPolicy = visitorDrugPolicy;
             pawn.drugs.CurrentPolicy.InitializeIfNeeded();
         }
 
@@ -526,10 +553,12 @@ namespace Hospitality
             }
         }
 
-        public static Room GetGuestRoom(this Pawn p)
+        public static Area GetGuestArea(this Pawn p)
         {
-            var lord = p.GetLord();
-            return lord.CurLordToil.FlagLoc.GetRoom(lord.Map);
+            var compGuest = p.GetComp<CompGuest>();
+            if (compGuest == null) return null;
+
+            return compGuest.GuestArea;
         }
 
         public static bool Bought(this Pawn pawn, Thing thing)
@@ -570,6 +599,20 @@ namespace Hospitality
             var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
             QueuedIncident qi = new QueuedIncident(incident, (int) (Find.TickManager.TicksGame + GenDate.TicksPerDay*afterDays));
             Find.Storyteller.incidentQueue.Add(qi);
+        }
+
+        public static bool IsInGuestZone(this Pawn p, Thing s)
+        {
+            var area = p.GetGuestArea();
+            if (area == null) return true;
+            return area[s.Position];
+        }
+
+        public static IEnumerable<Building_GuestBed> GetGuestBeds(this Pawn pawn)
+        {
+            var area = pawn.GetGuestArea();
+            if (area == null) return pawn.MapHeld.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>();
+            return pawn.MapHeld.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Where(b => area[b.Position]);
         }
     }
 }

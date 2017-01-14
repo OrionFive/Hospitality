@@ -11,14 +11,37 @@ namespace Hospitality
         public bool chat;
         public bool recruit;
 
+        public bool arrived;
+        public bool sentAway;
+
+        private Area guestArea_int;
+        public Area GuestArea
+        {
+            get
+            {
+                if (Pawn.playerSettings != null) return Pawn.playerSettings.AreaRestrictionInPawnCurrentMap;
+                return guestArea_int;
+            }
+            set
+            {
+                if (Pawn.playerSettings != null) Pawn.playerSettings.AreaRestriction = value;
+                guestArea_int = value;
+            }
+        }
+
+        private Pawn Pawn { get { return (Pawn) parent; } }
+
         public override void PostExposeData()
         {
             base.PostExposeData();
             Scribe_Values.LookValue(ref rescued, "rescued");
+            Scribe_Values.LookValue(ref arrived, "arrived");
+            Scribe_Values.LookValue(ref sentAway, "sentAway");
             Scribe_Values.LookValue(ref chat, "chat");
             Scribe_Values.LookValue(ref recruit, "recruit");
             Scribe_Collections.LookList(ref boughtItems, "boughtItems", LookMode.Value);
-            if(boughtItems == null) boughtItems = new List<int>();
+            Scribe_References.LookReference(ref guestArea_int, "guestArea");
+            if (boughtItems == null) boughtItems = new List<int>();
         }
 
         public void OnRescued()
@@ -29,8 +52,7 @@ namespace Hospitality
         public override void CompTickRare()
         {
             base.CompTickRare();
-            var pawn = parent as Pawn;
-            if (pawn == null || !pawn.Spawned || pawn.Dead) return;
+            if (Pawn == null || !Pawn.Spawned || Pawn.Dead) return;
 
             if (rescued) RescuedCheck();
 
@@ -43,24 +65,34 @@ namespace Hospitality
 
         private void RescuedCheck()
         {
-            var pawn = (Pawn) parent;
-            if (pawn.Faction == Faction.OfPlayer)
+            if (Pawn.Faction == Faction.OfPlayer)
             {
                 rescued = false;
                 return;
             }
-            if (pawn.Downed || pawn.InBed()) return;
+            if (Pawn.Downed || Pawn.InBed()) return;
 
             // Can walk again, make the roll
             rescued = false;
 
             // Copied from Pawn_GuestTracker
-            if (pawn.RaceProps.Humanlike && pawn.HostFaction == Faction.OfPlayer && !pawn.IsPrisoner)
+            if (Pawn.RaceProps.Humanlike && Pawn.HostFaction == Faction.OfPlayer && !Pawn.IsPrisoner)
             {
-                if (!GuestUtility.WillRescueJoin(pawn)) return;
+                if (!GuestUtility.WillRescueJoin(Pawn)) return;
 
-                GuestUtility.ShowRescuedPawnDialog(pawn);
+                GuestUtility.ShowRescuedPawnDialog(Pawn);
             }
+        }
+
+        public void Arrive()
+        {
+            Pawn.playerSettings.AreaRestriction = guestArea_int;
+            arrived = true;
+        }
+
+        public void Leave()
+        {
+            arrived = false;
         }
     }
 }

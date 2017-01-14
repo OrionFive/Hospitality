@@ -8,7 +8,6 @@ namespace Hospitality
 {
     public class JoyGiver_BuyStuff : JoyGiver
     {
-        private static RoomRoleDef roomRoleGuestRoom = DefDatabase<RoomRoleDef>.GetNamed("GuestRoom");
         private JobDef jobDefBuy = DefDatabase<JobDef>.GetNamed("BuyItem");
         private JobDef jobDefBrowse = DefDatabase<JobDef>.GetNamed("BrowseItems");
         protected virtual ThingRequestGroup RequestGroup { get { return ThingRequestGroup.HaulableEver; } }
@@ -33,7 +32,7 @@ namespace Hospitality
         {
             var map = pawn.MapHeld;
             var things = map.listerThings.ThingsInGroup(RequestGroup).Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t)).ToList();
-            var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(InGuestRoom);
+            var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(pawn.IsInGuestZone);
             things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t))));
             if (things.Count == 0) return null;
             Thing thing = things.RandomElement(); //things.MaxBy(t => Likey(pawn, t));
@@ -57,13 +56,6 @@ namespace Hospitality
             }
 
             return new Job(jobDefBuy, thing);
-        }
-
-        private static bool InGuestRoom(Thing s)
-        {
-            var room = s.GetRoom();
-            if (room == null) return false;
-            return room.Role == roomRoleGuestRoom;
         }
 
         private static float Likey(Pawn pawn, Thing thing)
@@ -105,7 +97,7 @@ namespace Hospitality
         public static bool IsBuyableAtAll(Pawn pawn, Thing thing)
         {
             if (!IsBuyableNow(pawn, thing)) return false;
-            if (!InGuestRoom(thing))
+            if (!pawn.IsInGuestZone(thing))
             {
                 //if (thing.GetRoom() == null) Log.Message(thing.Label + ": not in room");
                 //else Log.Message(thing.Label + ": in room " + thing.GetRoom().Role.LabelCap);
@@ -121,7 +113,6 @@ namespace Hospitality
             }
             if (thing.def.tradeability == Tradeability.Never)
             {
-                Log.Message(thing.Label + ": is not tradeable.");
                 return false;
             }
             //if (!thing.IsSociallyProper(pawn))
