@@ -98,6 +98,7 @@
     <Compile Include="ThinkNode_InGuestArea.cs" />
     <Compile Include="ThoughtWorker_Beds.cs" />
     <Compile Include="ThoughtWorker_Expectations.cs" />
+    <Compile Include="Trigger_SentAway.cs" />
     <Compile Include="Trigger_UrgentlyCold.cs" />
     <Compile Include="VisitorFlag.cs" />
     <Compile Include="Building_GuestBed.cs" />

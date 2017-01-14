@@ -86,6 +86,7 @@ namespace Hospitality
             graphArrive.AddToil(toilExitCold);
             Transition t6 = new Transition(toilArrive, toilExitCold); // ADDED TRANSITION
             t6.triggers.Add(new Trigger_UrgentlyCold());
+            t6.triggers.Add(new Trigger_SentAway());
             t6.preActions.Add(new TransitionAction_Message("MessageVisitorsLeavingCold".Translate(new object[] { faction.Name })));
             t6.preActions.Add(new TransitionAction_Custom(() => StopPawns(lord.ownedPawns)));
             graphArrive.transitions.Add(t6);
@@ -107,10 +108,12 @@ namespace Hospitality
             graphArrive.transitions.Add(t4);
             Transition t5 = new Transition(toilVisit, toilExit);
             t5.triggers.Add(new Trigger_TicksPassed((int) (Rand.Range(0.4f, 1.2f) * GenDate.TicksPerDay)));
-            t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(new object[] {faction.Name})));
+            t5.triggers.Add(new Trigger_SentAway());
+            t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(new object[] { faction.Name })));
             t5.preActions.Add(new TransitionAction_WakeAll());
             t5.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
             graphArrive.transitions.Add(t5);
+
             return graphArrive;
         }
 
