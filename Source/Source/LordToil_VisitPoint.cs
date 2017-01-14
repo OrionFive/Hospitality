@@ -145,7 +145,9 @@ namespace Hospitality
             
             faction.AffectGoodwillWith(Faction.OfPlayer, goodwillChange);
 
-            var days = PlanRevisit(faction, targetGoodwill, currentMap);
+            
+
+            var days = PlanRevisit(faction, targetGoodwill, currentMap, sentAway);
 
             string messageReturn = " ";
             if (days < 5)
@@ -171,7 +173,7 @@ namespace Hospitality
                 Messages.Message("VisitorsLeavingNormal".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Standard);
         }
 
-        private static float PlanRevisit(Faction faction, float targetGoodwill, Map currentMap)
+        private static float PlanRevisit(Faction faction, float targetGoodwill, Map currentMap, bool sentAway)
         {
             float days;
             if (faction.defeated) return 100;
@@ -180,6 +182,9 @@ namespace Hospitality
                 days = Mathf.Lerp(Rand.Range(5f, 7f), Rand.Range(0f, 2f), targetGoodwill/100f);
             else
                 days = Mathf.Lerp(Rand.Range(7f, 12f), Rand.Range(25f, 30f), targetGoodwill/-100f);
+
+            if (sentAway) days += 10;
+
             Map randomVisitMap = Rand.Value < 0.1f ? Find.Maps.Where(m => m.IsPlayerHome).RandomElement() : currentMap;
 
             if (Rand.Value < targetGoodwill/100f && Rand.Value < 0.2f)
