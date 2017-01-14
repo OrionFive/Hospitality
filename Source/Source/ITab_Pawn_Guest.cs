@@ -16,7 +16,8 @@ namespace Hospitality
         private static readonly string txtFactionGoodwill = "FactionGoodwill".Translate();
         private static readonly string txtHospitality = "Hospitality".Translate();
         private static readonly string txtMakeDefault = "MakeDefault".Translate();
-        private static readonly string txtSendHome = "SendHome".Translate();
+        private static readonly string txtSendAway = "SendAway".Translate();
+        private static readonly string txtSendAwayQuestion = "SendAwayQuestion".Translate();
 
         protected readonly Vector2 setDefaultButtonSize = new Vector2(120f, 30f);
         protected readonly Vector2 sendHomeButtonSize = new Vector2(120f, 30f);
@@ -166,12 +167,18 @@ namespace Hospitality
         private void DrawSendHomeButton(Rect rect)
         {
             rect = new Rect(rect.xMax - sendHomeButtonSize.x - 20f - setDefaultButtonSize.x, 90f, sendHomeButtonSize.x, sendHomeButtonSize.y);
-            if (Widgets.ButtonText(rect, txtSendHome))
+            if (Widgets.ButtonText(rect, txtSendAway))
             {
                 SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
 
-                SendHome(SelPawn.GetLord());
+                SendHomeDialog(SelPawn.GetLord());
             }
+        }
+
+        private void SendHomeDialog(Lord lord)
+        {
+            var text = string.Format(txtSendAwayQuestion, lord.faction.Name);
+            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => SendHome(lord)));
         }
 
         private void SendHome(Lord lord)

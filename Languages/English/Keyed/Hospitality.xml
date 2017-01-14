@@ -51,7 +51,8 @@
   <FactionGoodwill>Faction goodwill</FactionGoodwill>
   <Hospitality>Hospitality</Hospitality>
   <MakeDefault>Make Default</MakeDefault>
-  <SendHome>Send Home</SendHome>
+  <SendAway>Send Away</SendAway>
+  <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?</SendAwayQuestion>
   <TrustTooLow>NAME does not know or like your colonists enough.</TrustTooLow>
   <IsATrader>NAME is part of a trading caravan and not a guest.</IsATrader>
 
