@@ -137,8 +137,8 @@ namespace Hospitality
 
         public static void DisplayLeaveMessage(float score, Faction faction, int visitorCount, Map currentMap, bool sentAway)
         {
-            float targetGoodwill = Mathf.Lerp(-100, 100, score);
-            float goodwillChangeMax = Mathf.Lerp(10, 45, Mathf.InverseLerp(1, 8, visitorCount));
+            int targetGoodwill = Mathf.RoundToInt(Mathf.Lerp(-100, 100, score));
+            float goodwillChangeMax = Mathf.Lerp(20, 40, Mathf.InverseLerp(1, 8, visitorCount));
             float currentGoodwill = faction.GoodwillWith(Faction.OfPlayer);
             float offset = targetGoodwill - currentGoodwill;
             int goodwillChange = Mathf.RoundToInt(Mathf.Clamp(offset, -goodwillChangeMax, goodwillChangeMax));
@@ -160,17 +160,17 @@ namespace Hospitality
                 messageReturn += "VisitorsReturnNot".Translate();
 
             if(sentAway)
-                Messages.Message("VisitorsSentAway".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Standard);
-            else if (offset >= 15)
-                Messages.Message("VisitorsLeavingGreat".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Benefit);
-            else if (offset >= 5)
-                Messages.Message("VisitorsLeavingGood".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Benefit);
-            else if (offset <= -15)
-                Messages.Message("VisitorsLeavingAwful".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Negative);
-            else if (offset <= -5)
-                Messages.Message("VisitorsLeavingBad".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Negative);
+                Messages.Message("VisitorsSentAway".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Standard);
+            else if (targetGoodwill >= 90)
+                Messages.Message("VisitorsLeavingGreat".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Benefit);
+            else if (targetGoodwill >= 50)
+                Messages.Message("VisitorsLeavingGood".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Benefit);
+            else if (targetGoodwill <= -25)
+                Messages.Message("VisitorsLeavingAwful".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Negative);
+            else if (targetGoodwill <= 5)
+                Messages.Message("VisitorsLeavingBad".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Negative);
             else
-                Messages.Message("VisitorsLeavingNormal".Translate(faction.Name, goodwillChange.ToStringWithSign()) + messageReturn, MessageSound.Standard);
+                Messages.Message("VisitorsLeavingNormal".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Standard);
         }
 
         private static float PlanRevisit(Faction faction, float targetGoodwill, Map currentMap, bool sentAway)
