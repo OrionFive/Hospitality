@@ -67,5 +67,4 @@ namespace Hospitality.Detouring
             throw new Exception("DrugDef " + drugDef.LabelCap + " is not a drug or of ThingCategory Item.");
         }
     }
-
 }
