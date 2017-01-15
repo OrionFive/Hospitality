@@ -60,6 +60,7 @@ namespace Hospitality
             var trust = SelPawn.RelativeTrust();
 
             {
+                var mayBuy = SelPawn.MayBuy();
                 var tryImprove = SelPawn.ImproveRelationship();
                 var tryRecruit = SelPawn.TryRecruit();
 
@@ -72,9 +73,11 @@ namespace Hospitality
                     
                     DoAreaRestriction(listingStandard, comp);
 
+                    CheckboxLabeled(listingStandard, "MayBuy".Translate(), ref mayBuy);
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
                     CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
 
+                    comp.mayBuy = mayBuy;
                     comp.chat = tryImprove;
                     comp.recruit = tryRecruit;
 
@@ -155,7 +158,7 @@ namespace Hospitality
 
         private void DrawSetDefaultButton(Rect rect)
         {
-            rect = new Rect(rect.xMax - setDefaultButtonSize.x - 10f, 90f, setDefaultButtonSize.x, setDefaultButtonSize.y);
+            rect = new Rect(rect.xMax - setDefaultButtonSize.x - 10f, 110f, setDefaultButtonSize.x, setDefaultButtonSize.y);
             if (Widgets.ButtonText(rect, txtMakeDefault))
             {
                 SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
@@ -166,7 +169,7 @@ namespace Hospitality
 
         private void DrawSendHomeButton(Rect rect)
         {
-            rect = new Rect(rect.xMax - sendHomeButtonSize.x - 20f - setDefaultButtonSize.x, 90f, sendHomeButtonSize.x, sendHomeButtonSize.y);
+            rect = new Rect(rect.xMax - sendHomeButtonSize.x - 20f - setDefaultButtonSize.x, 110f, sendHomeButtonSize.x, sendHomeButtonSize.y);
             if (Widgets.ButtonText(rect, txtSendAway))
             {
                 SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
@@ -201,6 +204,8 @@ namespace Hospitality
                 mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat
                 ? PrisonerInteractionMode.Chat
                 : PrisonerInteractionMode.NoInteraction;
+
+                mapComp.defaultMayBuy = pawn.GetComp<CompGuest>().mayBuy;
             }
 
             if (pawn.playerSettings != null)
@@ -216,6 +221,7 @@ namespace Hospitality
                 {
                     comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
                     comp.GuestArea = mapComp.defaultAreaRestriction;
+                    comp.mayBuy = mapComp.defaultMayBuy;
                 }
             }
         }

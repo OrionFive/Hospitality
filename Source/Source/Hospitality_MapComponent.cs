@@ -32,11 +32,13 @@ namespace Hospitality
         private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
         public PrisonerInteractionMode defaultInteractionMode;
         public Area defaultAreaRestriction;
+        public bool defaultMayBuy;
         private int lastEventKey;
 
         public override void ExposeData()
         {
             Scribe_Collections.LookDictionary(ref bribeCount, "bribeCount", LookMode.Value, LookMode.Value);
+            Scribe_Values.LookValue(ref defaultMayBuy, "defaultMayBuy", false);
             Scribe_Values.LookValue(ref defaultInteractionMode, "defaultInteractionMode", PrisonerInteractionMode.NoInteraction);
             Scribe_References.LookReference(ref defaultAreaRestriction, "defaultAreaRestriction");
             Scribe_Values.LookValue(ref lastEventKey, "lastEventKey", 0);

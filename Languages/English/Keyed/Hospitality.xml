@@ -49,6 +49,7 @@
   <RecruitmentPenalty>Relationship damage when recruited</RecruitmentPenalty>
   <ImproveRelationship>Try to entertain</ImproveRelationship>
   <LeaveAlone>Leave alone</LeaveAlone>
+  <MayBuy>Allow buying items in area</MayBuy>
   <FactionGoodwill>Faction goodwill</FactionGoodwill>
   <Hospitality>Hospitality</Hospitality>
   <MakeDefault>Make Default</MakeDefault>

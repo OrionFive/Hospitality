@@ -38,9 +38,9 @@ namespace Hospitality
                 case PawnLostCondition.Undefined:
                 case PawnLostCondition.Vanished:
                 case PawnLostCondition.IncappedOrKilled:
-                case PawnLostCondition.MadePrisoner:
-                case PawnLostCondition.LeftVoluntarily:
-                case PawnLostCondition.Drafted:
+                //case PawnLostCondition.MadePrisoner:
+                //case PawnLostCondition.LeftVoluntarily:
+                //case PawnLostCondition.Drafted:
                     Hospitality_MapComponent.Instance(lord.Map).QueueEvent(new Event
                     {
                         delayTicks = (int)(GenDate.TicksPerHour * Rand.Range(1f, 3f)),
@@ -48,7 +48,7 @@ namespace Hospitality
                             new List<EventAction>
                     {
                         new EventAction_AngerForPawn(p, faction),
-                        new EventAction_BreakPawns(new List<Pawn>{p})
+                        new EventAction_BreakPawns(new List<Pawn>{p}, condition)
                     }
                     });
                     break;

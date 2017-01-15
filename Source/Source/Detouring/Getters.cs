@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using RimWorld;
 using Verse;
@@ -31,4 +33,39 @@ namespace Hospitality.Detouring
 
         public Pawn_PlayerSettings(Pawn pawn) : base(pawn) {}
     }
+
+    // This is so unknown drug policies get added automatically
+    public class DrugPolicy : RimWorld.DrugPolicy
+    {
+        //Detoured from SpecialInjector due to ambiguity
+        public DrugPolicyEntry Item(ThingDef drugDef)
+        {
+            var entriesInt = (List<DrugPolicyEntry>) GetType().GetField("entriesInt", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
+
+            foreach (DrugPolicyEntry entry in entriesInt)
+            {
+                if (entry.drug == drugDef)
+                {
+                    return entry;
+                }
+            }
+            // Added: Missing def
+            return AddDef(drugDef, entriesInt);
+        }
+
+        private static DrugPolicyEntry AddDef(ThingDef drugDef, List<DrugPolicyEntry> entriesInt)
+        {
+            if (drugDef.category == ThingCategory.Item && drugDef.IsDrug)
+            {
+                Log.Message("Processed " + drugDef);
+                DrugPolicyEntry drugPolicyEntry = new DrugPolicyEntry {drug = drugDef, allowedForAddiction = true};
+                entriesInt.Add(drugPolicyEntry);
+                entriesInt.SortBy(e => e.drug.GetCompProperties<CompProperties_Drug>().listOrder);
+
+                return drugPolicyEntry;
+            }
+            throw new Exception("DrugDef " + drugDef.LabelCap + " is not a drug or of ThingCategory Item.");
+        }
+    }
+
 }
