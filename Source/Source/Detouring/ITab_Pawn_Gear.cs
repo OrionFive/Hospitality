@@ -7,6 +7,7 @@ namespace Hospitality.Detouring
 {
     public class ITab_Pawn_Gear
     {
+        // This is so the player can't force visitors to drop items. The button remains, though, until fixed by Ludeon.
         [Detour(typeof(RimWorld.ITab_Pawn_Gear), bindingFlags = BindingFlags.NonPublic| BindingFlags.Instance)]
         public static void InterfaceDrop(RimWorld.ITab_Pawn_Gear _this, Thing t)
         {
