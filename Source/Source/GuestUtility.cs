@@ -40,6 +40,13 @@ namespace Hospitality
             return pawn.mindState.duty != null && pawn.mindState.duty.def == travelDef;
         }
 
+        public static bool MayBuy(this Pawn pawn)
+        {
+            var guestComp = pawn.GetComp<CompGuest>();
+            if (guestComp == null) return false;
+            return guestComp.mayBuy;
+        }
+
         public static bool IsGuest(this Pawn pawn)
         {
             try
