@@ -143,7 +143,21 @@ namespace Hospitality
         public static void Arrive(this Pawn pawn)
         {
             pawn.PocketHeadgear();
+
+            // Save trader info
+            bool trader = pawn.mindState.wantsToTradeWithColony;
+            TraderKindDef traderKindDef = trader?pawn.trader.traderKind:null;
+
             pawn.guest.SetGuestStatus(Faction.OfPlayer);
+
+            // Restore trader info
+            if (trader)
+            {
+                pawn.mindState.wantsToTradeWithColony = trader;
+                PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn);
+                pawn.trader.traderKind = traderKindDef;
+            }
+
             pawn.GetComp<CompGuest>().Arrive();
         }
 
