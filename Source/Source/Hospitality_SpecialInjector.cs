@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Linq;
+using Hospitality.Detouring;
 using Verse;
 
 // Toggle in Hospitality Properties
@@ -31,6 +32,10 @@ namespace Hospitality
             if(!Detours.TryDetourFromTo(
                 typeof (Building_GuestBed).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public),
                 typeof (Building).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public))) return false;
+
+            if(!Detours.TryDetourFromTo(
+                typeof(RimWorld.DrugPolicy).GetMethod( "get_Item",BindingFlags.Instance | BindingFlags.Public, null, new []{ typeof(ThingDef)},null),
+                typeof(DrugPolicy).GetMethod("Item", BindingFlags.Instance | BindingFlags.Public))) return false;
             #endregion
 
             #region Automatic hookup
