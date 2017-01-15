@@ -83,6 +83,7 @@ namespace Hospitality
             catch (Exception e)
             {
                 Log.ErrorOnce("Something failed when spawning visitors: " + e.Message+"\n"+e.StackTrace, 464365853);
+                GuestUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
                 return true; // be gone, event
             }
             if (visitors == null || visitors.Count == 0) return false;
