@@ -45,7 +45,7 @@
 
   <!-- Tab -->
   <ConvincingLeft>Convincing required</ConvincingLeft>
-  <RecruitmentChance>Recruitment chance</RecruitmentChance>
+  <FriendsRequirement>Enough friends to recruit: {0}/{1}</FriendsRequirement>
   <RecruitmentPenalty>Relationship damage when recruited</RecruitmentPenalty>
   <ImproveRelationship>Try to entertain</ImproveRelationship>
   <LeaveAlone>Leave alone</LeaveAlone>
@@ -55,7 +55,8 @@
   <MakeDefault>Make Default</MakeDefault>
   <SendAway>Send Away</SendAway>
   <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?</SendAwayQuestion>
-  <TrustTooLow>NAME does not know or like your colonists enough.</TrustTooLow>
+  <NotEnoughFriends>NAME does not like enough of your colonists (opinion > {1}).</NotEnoughFriends>
+  <CanNowBeRecruited>NAME can now be recruited.</CanNowBeRecruited>
   <IsATrader>NAME is part of a trading caravan and not a guest.</IsATrader>
 
   <!-- Infos -->

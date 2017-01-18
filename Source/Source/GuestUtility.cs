@@ -105,11 +105,25 @@ namespace Hospitality
             return guest.GetStatValue(statRecruitRelationshipDamage);
         }
 
-        public static float RelativeTrust(this Pawn guest)
+        public static int GetFriendsInColony(this Pawn guest)
+        {
+            float requiredOpinion = GetMinRecruitOpinion(guest);
+            return guest.MapHeld.mapPawns.FreeColonists.Count(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion);
+        }
+
+        public static int GetEnemiesInColony(this Pawn guest)
+        {
+            float maxOpinion = -10;
+            return guest.MapHeld.mapPawns.FreeColonists.Count(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= maxOpinion);
+        }
+
+        public static int GetMinRecruitOpinion(this Pawn guest)
         {
             var difficulty = guest.RecruitDifficulty(Faction.OfPlayer, true);
-            var trust = guest.CalculateColonyTrust(guest.MapHeld) / difficulty;
-            return trust;
+            var diffSqr = difficulty*difficulty*difficulty*difficulty;
+            const int min = 0;
+            const int max = 100;
+            return Mathf.CeilToInt(Mathf.Lerp(min, max, diffSqr));
         }
 
         public static bool ImproveRelationship(this Pawn guest)
@@ -306,10 +320,12 @@ namespace Hospitality
         {
             if (!guest.TryRecruit()) return false;
 
-            var trust = guest.RelativeTrust();
+            var friends = guest.GetFriendsInColony();
+            var friendsRequired = FriendsRequired(guest.MapHeld) + guest.GetEnemiesInColony();
+            float friendPercentage = 100f * friends / friendsRequired;
+
             //Log.Message(String.Format("Recruiting {0}: diff: {1} mood: {2}", guest.NameStringShort,recruitDifficulty, colonyTrust));
-            var chance = Rand.Gaussian(trust, 50);
-            if (chance >= 100)
+            if (friendPercentage > 99)
             {
                 RecruitingSuccess(guest);
                 return true;
@@ -317,20 +333,9 @@ namespace Hospitality
             else
             {
                 GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestDismissiveAttitude"));
+                guest.GetComp<CompGuest>().recruit = false;
                 return false;
             }
-        }
-
-        public static float CalculateColonyTrust(this Pawn guest, Map map)
-        {
-            const int requiredAvgOpinion = 1;
-            var sum = map.mapPawns.FreeColonists.Where(p => RelationsUtility.PawnsKnowEachOther(guest, p)).Sum(p => guest.relations.OpinionOf(p)/requiredAvgOpinion);
-            //var average = sum/Find.MapPawns.FreeColonistsCount;
-
-            float score = Mathf.Abs(sum) * sum * 1f / map.mapPawns.FreeColonistsCount;
-            //Log.Message(string.Format("{0}: sum = {1:F}, avg = {2:F}, score = {3:F}", guest.NameStringShort, sum, average, score));
-
-            return score;
         }
 
         private static void RecruitingSuccess(Pawn guest)
@@ -435,7 +440,7 @@ namespace Hospitality
             if (!guest.TryRecruit()) return false;
             if (guest.InMentalState) return false;
             //if (guest.relations.OpinionOf(pawn) >= 100) return false;
-            if (guest.RelativeTrust() < 50) return false;
+            //if (guest.RelativeTrust() < 50) return false;
             if (guest.relations.OpinionOf(pawn) <= -10) return false;
             if (guest.interactions.InteractedTooRecentlyToInteract()) return false;
             if (pawn.interactions.InteractedTooRecentlyToInteract()) return false;
@@ -635,6 +640,13 @@ namespace Hospitality
             var area = pawn.GetGuestArea();
             if (area == null) return pawn.MapHeld.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>();
             return pawn.MapHeld.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Where(b => area[b.Position]);
+        }
+
+        public static int FriendsRequired(Map map)
+        {
+            var required = map.mapPawns.FreeColonistsCount /3f;
+            if (required < 1) return 1;
+            else return Mathf.RoundToInt(required);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace Hospitality
                     if (!recruiter.CanTalkTo(guest)) return;
                     InteractionDef intDef = DefDatabase<InteractionDef>.GetNamed("CharmGuestAttempt");
                     recruiter.interactions.TryInteractWith(guest, intDef);
-                    var success = guest.CheckRecruitingSuccessful(recruiter);
+                    guest.CheckRecruitingSuccessful(recruiter);
                 },
                 socialMode = RandomSocialMode.Off,
                 defaultCompleteMode = ToilCompleteMode.Delay,
