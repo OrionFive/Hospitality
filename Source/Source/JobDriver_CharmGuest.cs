@@ -43,7 +43,7 @@ namespace Hospitality
             var allies = map.mapPawns.PawnsInFaction(guest.Faction).ToArray();
             foreach (var ally in allies)
             {
-                if (ally != guest && !ally.Dead && ally.Spawned && ally.CanSee(recruiter) && ally.CanSee(guest))
+                if (ally != guest && !ally.Dead && ally.Spawned && ally.Awake() && ally.CanSee(recruiter) && ally.CanSee(guest))
                 {
                     if (ally.needs.mood.thoughts.memories.Memories.Any(t=>t.def.defName=="GuestAngered")) continue;
 

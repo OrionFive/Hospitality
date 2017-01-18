@@ -316,6 +316,8 @@ namespace Hospitality
             pawn.drugs.CurrentPolicy.InitializeIfNeeded();
         }
 
+        private static readonly StatDef statPleaseGuestChance = StatDef.Named("PleaseGuestChance");
+
         public static bool CheckRecruitingSuccessful(this Pawn guest, Pawn recruiter)
         {
             if (!guest.TryRecruit()) return false;
@@ -332,8 +334,7 @@ namespace Hospitality
             }
             else
             {
-                GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestDismissiveAttitude"));
-                guest.GetComp<CompGuest>().recruit = false;
+                TryPleaseGuest(recruiter, guest, true);
                 return false;
             }
         }
@@ -644,12 +645,12 @@ namespace Hospitality
 
         public static int FriendsRequired(Map map)
         {
-            var required = map.mapPawns.FreeColonistsCount /3f;
+            var required = map.mapPawns.FreeColonistsCount /3.75f;
             if (required < 1) return 1;
             else return Mathf.RoundToInt(required);
         }
 
-        public static Pawn EndorseColonists(Pawn recruiter, Pawn guest)
+        public static Pawn EndorseColonists(Pawn recruiter, Pawn guest, bool focused)
         {
             if (guest.relations == null) return null;
             if (recruiter.relations == null) return null;
@@ -661,9 +662,45 @@ namespace Hospitality
             if (pawns.TryRandomElement(out target))
             {
                 GainSocialThought(target, guest, ThoughtDef.Named("EndorsedByRecruiter"));
-                Log.Message(recruiter.NameStringShort + " endorsed " + target + " to " + guest.Name);
+
+                // Double effect
+                if(focused) GainSocialThought(target, guest, ThoughtDef.Named("EndorsedByRecruiter"));
+
+                //Log.Message(recruiter.NameStringShort + " endorsed " + target + " to " + guest.Name);
             }
             return target;
+        }
+
+        public static void TryPleaseGuest(Pawn recruiter, Pawn guest, bool focusOnRecruiting)
+        {
+            // TODO: pawn.records.Increment(RecordDefOf.GuestsChatted);
+
+            float pleaseChance = recruiter.GetStatValue(statPleaseGuestChance);
+            pleaseChance = AdjustPleaseChance(pleaseChance, recruiter, guest);
+            pleaseChance = Mathf.Clamp01(pleaseChance);
+
+            if (Rand.Value <= pleaseChance)
+            {
+                var target = EndorseColonists(recruiter, guest, focusOnRecruiting);
+
+                Messages.Message(
+                    "ImproveFactionPlease".Translate(recruiter.NameStringShort, guest.NameStringShort,
+                        guest.Faction.Name, (pleaseChance).ToStringPercent(),
+                        target != null ? target.NameStringShort : "NoOne".Translate()), guest, MessageSound.Benefit);
+
+                if (!focusOnRecruiting)
+                    GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestPleasedRelationship"));
+            }
+            else
+            {
+                Messages.Message(
+                    "ImproveFactionAnger".Translate(recruiter.NameStringShort, guest.NameStringShort, guest.Faction.Name,
+                        (1 - pleaseChance).ToStringPercent()), guest, MessageSound.Negative);
+
+                GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestOffendedRelationship"));
+            }
+
+            GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestDismissiveAttitude"));
         }
     }
 }

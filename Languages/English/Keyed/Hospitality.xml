@@ -16,6 +16,7 @@
   <LetterLabelRecruitFactionAnger>Faction angered</LetterLabelRecruitFactionAnger>
   <LetterLabelRecruitFactionChiefPlease>Chief pleased</LetterLabelRecruitFactionChiefPlease>
   <LetterLabelRecruitFactionPlease>Faction pleased</LetterLabelRecruitFactionPlease>
+  <NoOne>no one</NoOne>
   
   <!-- Diplomacy --> 
   <ImproveFactionPlease>{0} improved the relationship between {4} and {1} from {2} ({3} chance).</ImproveFactionPlease>

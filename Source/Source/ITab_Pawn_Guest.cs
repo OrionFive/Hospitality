@@ -79,7 +79,6 @@ namespace Hospitality
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
 
                     CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
-                    if(friendPercentage<=99) tryRecruit = false;
 
                     comp.mayBuy = mayBuy;
                     comp.chat = tryImprove;
