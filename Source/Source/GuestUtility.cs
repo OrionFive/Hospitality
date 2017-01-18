@@ -122,7 +122,7 @@ namespace Hospitality
             var difficulty = guest.RecruitDifficulty(Faction.OfPlayer, true);
             var diffSqr = difficulty*difficulty*difficulty*difficulty;
             const int min = 0;
-            const int max = 40;
+            const int max = 30;
             return Mathf.CeilToInt(Mathf.Lerp(min, max, diffSqr));
         }
 

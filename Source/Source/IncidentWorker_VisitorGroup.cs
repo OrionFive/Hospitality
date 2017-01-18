@@ -48,6 +48,7 @@ namespace Hospitality
         public override bool TryExecute(IncidentParms parms)
         {
             if (!TryResolveParms(parms)) return false;
+            if (parms.faction == Faction.OfPlayer) return false;
             
             Map map = (Map)parms.target;
 
