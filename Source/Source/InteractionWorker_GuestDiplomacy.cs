@@ -22,17 +22,17 @@ namespace Hospitality
             if (Rand.Value > pleaseChance)
             {
                 Messages.Message(
-                    "ImproveFactionAnger".Translate(new object[]
-                    {recruiter.NameStringShort, guest.NameStringShort, guest.Faction.Name, (1 - pleaseChance).ToStringPercent()}), guest,
+                    "ImproveFactionAnger".Translate(recruiter.NameStringShort, guest.NameStringShort, guest.Faction.Name, (1 - pleaseChance).ToStringPercent()), guest,
                     MessageSound.Negative);
 
                 GuestUtility.GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestOffendedRelationship"));
             }
             else
             {
+                var target = GuestUtility.EndorseColonists(recruiter, guest);
+
                 Messages.Message(
-                    "ImproveFactionPlease".Translate(new object[]
-                    {recruiter.NameStringShort, guest.NameStringShort, guest.Faction.Name, (pleaseChance).ToStringPercent()}), guest,
+                    "ImproveFactionPlease".Translate(recruiter.NameStringShort, guest.NameStringShort, guest.Faction.Name, (pleaseChance).ToStringPercent(), target!=null?target.NameStringShort:"no one".Translate()), guest,
                     MessageSound.Benefit);
 
                 GuestUtility.GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestPleasedRelationship"));

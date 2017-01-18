@@ -289,7 +289,6 @@ namespace Hospitality
                     comp.mayBuy = mapComp.defaultMayBuy;
                     comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
                     comp.GuestArea = mapComp.defaultAreaRestriction;
-                    Log.Message("initialized "+p.Name);
                 }
             });
 

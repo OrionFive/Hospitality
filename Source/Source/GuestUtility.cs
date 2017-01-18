@@ -113,7 +113,7 @@ namespace Hospitality
 
         public static int GetEnemiesInColony(this Pawn guest)
         {
-            float maxOpinion = -10;
+            const int maxOpinion = -20;
             return guest.MapHeld.mapPawns.FreeColonists.Count(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= maxOpinion);
         }
 
@@ -122,7 +122,7 @@ namespace Hospitality
             var difficulty = guest.RecruitDifficulty(Faction.OfPlayer, true);
             var diffSqr = difficulty*difficulty*difficulty*difficulty;
             const int min = 0;
-            const int max = 100;
+            const int max = 40;
             return Mathf.CeilToInt(Mathf.Lerp(min, max, diffSqr));
         }
 
@@ -647,6 +647,23 @@ namespace Hospitality
             var required = map.mapPawns.FreeColonistsCount /3f;
             if (required < 1) return 1;
             else return Mathf.RoundToInt(required);
+        }
+
+        public static Pawn EndorseColonists(Pawn recruiter, Pawn guest)
+        {
+            if (guest.relations == null) return null;
+            if (recruiter.relations == null) return null;
+
+            Pawn target;
+            var pawns = guest.MapHeld.mapPawns.FreeColonistsSpawned.Where(c=> c != recruiter && recruiter.relations.OpinionOf(c) > 0).ToArray();
+            if (pawns.Length == 0) return null;
+
+            if (pawns.TryRandomElement(out target))
+            {
+                GainSocialThought(target, guest, ThoughtDef.Named("EndorsedByRecruiter"));
+                Log.Message(recruiter.NameStringShort + " endorsed " + target + " to " + guest.Name);
+            }
+            return target;
         }
     }
 }

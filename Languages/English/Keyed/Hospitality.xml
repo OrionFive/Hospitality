@@ -18,7 +18,7 @@
   <LetterLabelRecruitFactionPlease>Faction pleased</LetterLabelRecruitFactionPlease>
   
   <!-- Diplomacy --> 
-  <ImproveFactionPlease>{0} improved the relationship with {1} from {2} ({3} chance).</ImproveFactionPlease>
+  <ImproveFactionPlease>{0} improved the relationship between {4} and {1} from {2} ({3} chance).</ImproveFactionPlease>
   <ImproveFactionAnger>{0} worsened the relationship with {1} from {2} ({3} chance).</ImproveFactionAnger>
   
   <!-- Incident Results -->
@@ -55,7 +55,7 @@
   <MakeDefault>Make Default</MakeDefault>
   <SendAway>Send Away</SendAway>
   <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?</SendAwayQuestion>
-  <NotEnoughFriends>NAME does not like enough of your colonists (opinion > {1}).</NotEnoughFriends>
+  <NotEnoughFriends>NAME does not like enough of your colonists (opinion > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>NAME can now be recruited.</CanNowBeRecruited>
   <IsATrader>NAME is part of a trading caravan and not a guest.</IsATrader>
 
