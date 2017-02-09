@@ -9,7 +9,7 @@
 You can also improve your relationship with visiting factions and sell items to visiting guests. Guests will buy and use things inside of their allowed area.
 
 
-Errors and bugs: If you get errors, most likely Hospitality is clashing with another mod you're using, or you forgot to install / enable the Community Core Library.
+Errors and bugs: If you get errors, most likely Hospitality is clashing with another mod you're using.
 
 So to help me fix bugs, please describe clearly what happened. Also please upload the output_log.txt file from Rimworld's data folder or enable the developer console and upload a screenshot of the first error you're getting. If you think it might be conflicting with another mod, please list the mods you're using in the order they get loaded. 
 
