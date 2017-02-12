@@ -24,7 +24,7 @@ namespace Hospitality.Detouring
             {
                 CheckForRemovedOrAdded(_this, ref priorities, fieldPriorities);
 
-                //CheckForDisabledTypes(_this, (Pawn) fieldPawn.GetValue(_this));
+                CheckForDisabledTypes(_this, (Pawn) fieldPawn.GetValue(_this));
             }
 
             // Apply
