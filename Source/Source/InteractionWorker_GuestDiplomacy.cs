@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace Hospitality
@@ -11,7 +10,7 @@ namespace Hospitality
         {
             if (recruiter == null || guest == null || guest.guest == null) return;
 
-            GuestUtility.TryPleaseGuest(recruiter, guest, false);
+            GuestUtility.TryPleaseGuest(recruiter, guest, false, extraSentencePacks);
         }
     }
 }

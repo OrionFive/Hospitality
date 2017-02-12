@@ -2,6 +2,7 @@
 <ThoughtDefs>
 
   <ThoughtDef>
+    <!-- OBSOLETE - delete next alpha -->
     <defName>GuestConvinced</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
     <durationDays>1.6</durationDays>
@@ -19,6 +20,7 @@
   </ThoughtDef>
 
   <ThoughtDef>
+    <!-- OBSOLETE - delete next alpha -->
     <defName>GuestOffended</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
     <durationDays>1.6</durationDays>
@@ -55,7 +57,7 @@
     <ThoughtDef>
     <defName>GuestOffendedRelationship</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
-    <durationDays>1</durationDays>
+    <durationDays>1.6</durationDays>
     <stackedEffectMultiplier>0.98</stackedEffectMultiplier>
     <stackLimit>10</stackLimit>
     <stages>
@@ -72,7 +74,7 @@
     <ThoughtDef>
     <defName>GuestPleasedRelationship</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
-    <durationDays>1</durationDays>
+    <durationDays>1.6</durationDays>
     <stackedEffectMultiplier>0.98</stackedEffectMultiplier>
     <stackLimit>20</stackLimit>
     <stages>

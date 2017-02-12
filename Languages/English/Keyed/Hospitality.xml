@@ -2,10 +2,7 @@
 <LanguageData>
 
   <!-- Recruiting -->
-  <RecruitAngerSelfM>{0} upset {1}{3} ({2} chance).</RecruitAngerSelfM>
-  <RecruitAngerSelfF>{0} upset {1}{3} ({2} chance).</RecruitAngerSelfF>
-  <RecruitPleaseSelfM>{0} charmed {1}{3} ({2} chance).</RecruitPleaseSelfM>
-  <RecruitPleaseSelfF>{0} charmed {1}{3} ({2} chance).</RecruitPleaseSelfF>
+  <RecruitAngerMultiple>{0} upset {1} {2}x in a row.</RecruitAngerMultiple>
   <RecruitAngerOther>{3} noticed {0} try to recruit {1} and got offended ({2} chance).</RecruitAngerOther>
   <RecruitFactionAnger>{0} of {1} is upset with you for recruiting {2} ({3}).</RecruitFactionAnger>
   <RecruitFactionAngerLeaderless>The members of {0} are upset with you for recruiting {1} ({2}).</RecruitFactionAngerLeaderless>
@@ -16,7 +13,9 @@
   <LetterLabelRecruitFactionAnger>Faction angered</LetterLabelRecruitFactionAnger>
   <LetterLabelRecruitFactionChiefPlease>Chief pleased</LetterLabelRecruitFactionChiefPlease>
   <LetterLabelRecruitFactionPlease>Faction pleased</LetterLabelRecruitFactionPlease>
-  <NoOne>no one</NoOne>
+  
+  <TextMote_CharmFail>Offended</TextMote_CharmFail>
+  <TextMote_CharmSuccess>Charmed</TextMote_CharmSuccess>
   
   <!-- Diplomacy --> 
   <ImproveFactionPlease>{0} improved the relationship between {4} and {1} from {2} ({3} chance).</ImproveFactionPlease>

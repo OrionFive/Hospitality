@@ -27,6 +27,8 @@ namespace Hospitality
         private static readonly string txtRecruitFactionPleaseLeaderless = "RecruitFactionPleaseLeaderless".Translate();
 
         private static readonly StatDef statRecruitRelationshipDamage = StatDef.Named("RecruitRelationshipDamage");
+        private static readonly StatDef statPleaseGuestChance = StatDef.Named("PleaseGuestChance");
+        private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
 
         private static DrugPolicy visitorDrugPolicy = new DrugPolicy();
 
@@ -316,11 +318,9 @@ namespace Hospitality
             pawn.drugs.CurrentPolicy.InitializeIfNeeded();
         }
 
-        private static readonly StatDef statPleaseGuestChance = StatDef.Named("PleaseGuestChance");
-
-        public static bool CheckRecruitingSuccessful(this Pawn guest, Pawn recruiter)
+        public static void CheckRecruitingSuccessful(this Pawn guest, Pawn recruiter, List<RulePackDef> extraSentencePacks)
         {
-            if (!guest.TryRecruit()) return false;
+            if (!guest.TryRecruit()) return;
 
             var friends = guest.GetFriendsInColony();
             var friendsRequired = FriendsRequired(guest.MapHeld) + guest.GetEnemiesInColony();
@@ -330,12 +330,10 @@ namespace Hospitality
             if (friendPercentage > 99)
             {
                 RecruitingSuccess(guest);
-                return true;
             }
             else
             {
-                TryPleaseGuest(recruiter, guest, true);
-                return false;
+                TryPleaseGuest(recruiter, guest, true, extraSentencePacks);
             }
         }
 
@@ -650,7 +648,7 @@ namespace Hospitality
             else return Mathf.RoundToInt(required);
         }
 
-        public static Pawn EndorseColonists(Pawn recruiter, Pawn guest, bool focused)
+        public static Pawn EndorseColonists(Pawn recruiter, Pawn guest)
         {
             if (guest.relations == null) return null;
             if (recruiter.relations == null) return null;
@@ -663,43 +661,83 @@ namespace Hospitality
             {
                 GainSocialThought(target, guest, ThoughtDef.Named("EndorsedByRecruiter"));
 
-                // Double effect
-                if(focused) GainSocialThought(target, guest, ThoughtDef.Named("EndorsedByRecruiter"));
-
                 //Log.Message(recruiter.NameStringShort + " endorsed " + target + " to " + guest.Name);
             }
             return target;
         }
 
-        public static void TryPleaseGuest(Pawn recruiter, Pawn guest, bool focusOnRecruiting)
+        public static void TryPleaseGuest(Pawn recruiter, Pawn guest, bool focusOnRecruiting, List<RulePackDef> extraSentencePacks)
         {
-            // TODO: pawn.records.Increment(RecordDefOf.GuestsChatted);
-
+            // TODO: pawn.records.Increment(RecordDefOf.GuestsCharmAttempts);
+            recruiter.skills.Learn(SkillDefOf.Social, 35f);
             float pleaseChance = recruiter.GetStatValue(statPleaseGuestChance);
             pleaseChance = AdjustPleaseChance(pleaseChance, recruiter, guest);
             pleaseChance = Mathf.Clamp01(pleaseChance);
 
-            if (Rand.Value <= pleaseChance)
+            var failedCharms = guest.GetComp<CompGuest>().failedCharms;
+
+            if (Rand.Value > pleaseChance)
             {
-                var target = EndorseColonists(recruiter, guest, focusOnRecruiting);
+                var isAbrasive = recruiter.story.traits.HasTrait(TraitDefOf.Abrasive);
+                int multiplier = isAbrasive ? 2 : 1;
+                string multiplierText = multiplier > 1 ? " x" + multiplier : string.Empty;
 
-                Messages.Message(
-                    "ImproveFactionPlease".Translate(recruiter.NameStringShort, guest.NameStringShort,
-                        guest.Faction.Name, (pleaseChance).ToStringPercent(),
-                        target != null ? target.NameStringShort : "NoOne".Translate()), guest, MessageSound.Benefit);
+                int amount;
+                if (failedCharms.TryGetValue(recruiter, out amount))
+                {
+                    amount++;
+                    failedCharms[recruiter] = amount;
+                }
+                else
+                {
+                    failedCharms.Add(recruiter, 1);
+                }
 
-                if (!focusOnRecruiting)
-                    GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestPleasedRelationship"));
+                if (amount >= 3)
+                {
+                    Messages.Message(
+                        "RecruitAngerMultiple".Translate(recruiter.NameStringShort, guest.NameStringShort, amount),
+                        guest, MessageSound.Negative);
+                }
+
+                extraSentencePacks.Add(RulePackDef.Named("Sentence_CharmAttemptRejected"));
+                for (int i = 0; i < multiplier; i++)
+                {
+                    GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestOffendedRelationship"));
+                }
+
+                MoteMaker.ThrowText((recruiter.DrawPos + guest.DrawPos) / 2f, recruiter.Map, "TextMote_CharmFail".Translate()+multiplierText, 8f);
             }
             else
             {
-                Messages.Message(
-                    "ImproveFactionAnger".Translate(recruiter.NameStringShort, guest.NameStringShort, guest.Faction.Name,
-                        (1 - pleaseChance).ToStringPercent()), guest, MessageSound.Negative);
+                
+                failedCharms.Remove(recruiter);
 
-                GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestOffendedRelationship"));
+                var statValue = recruiter.GetStatValue(statRecruitEffectivity);
+                var floor = Mathf.FloorToInt(statValue);
+                int multiplier = floor + (Rand.Value < statValue - floor ? 1 : 0);
+
+                // Multiplier is for what the focus is one
+                for (int i = 0; i < multiplier; i++)
+                {
+                    if(focusOnRecruiting)
+                        EndorseColonists(recruiter, guest);
+                    else
+                        GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestPleasedRelationship"));
+                }
+                
+                // And then one more of the other
+                multiplier++; 
+                if (focusOnRecruiting)
+                    GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestPleasedRelationship"));
+                else
+                    EndorseColonists(recruiter, guest);
+
+                extraSentencePacks.Add(RulePackDef.Named("Sentence_CharmAttemptAccepted"));
+
+                string multiplierText = multiplier > 1 ? " x" + multiplier : string.Empty;
+                MoteMaker.ThrowText((recruiter.DrawPos + guest.DrawPos) / 2f, recruiter.Map, "TextMote_CharmSuccess".Translate() + multiplierText, 8f);
             }
-
             GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestDismissiveAttitude"));
         }
     }

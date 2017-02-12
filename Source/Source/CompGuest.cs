@@ -15,6 +15,8 @@ namespace Hospitality
         public bool sentAway;
         public bool mayBuy;
 
+        public readonly Dictionary<Pawn, int> failedCharms = new Dictionary<Pawn, int>();
+
         private Area guestArea_int;
         public Area GuestArea
         {
