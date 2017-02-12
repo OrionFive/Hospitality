@@ -16,6 +16,7 @@ namespace Hospitality
         {
             Scribe_Values.LookValue(ref delayTicks, "delayTicks");
             Scribe_Collections.LookList(ref actions, "actions", LookMode.Deep);
+            //Scribe_Values.LookValue(ref GuestUtility.visitorDrugPolicy, "visitorDrugPolicy");
         }
     }
 
