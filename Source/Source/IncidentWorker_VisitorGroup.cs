@@ -278,7 +278,8 @@ namespace Hospitality
         {
             var mapComp = Hospitality_MapComponent.Instance(map);
 
-            var lordJob = new LordJob_VisitColony(faction, chillSpot);
+            int stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
+            var lordJob = new LordJob_VisitColony(faction, chillSpot, stayDuration);
             LordMaker.MakeNewLord(faction, lordJob, map, pawns);
 
 
