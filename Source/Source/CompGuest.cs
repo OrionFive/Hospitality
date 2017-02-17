@@ -15,7 +15,11 @@ namespace Hospitality
         public bool sentAway;
         public bool mayBuy;
 
+        public readonly Dictionary<Pawn, int> failedCharms = new Dictionary<Pawn, int>();
+
         private Area guestArea_int;
+        private DrugPolicy drugPolicy;
+
         public Area GuestArea
         {
             get
@@ -42,6 +46,7 @@ namespace Hospitality
             Scribe_Values.LookValue(ref recruit, "recruit");
             Scribe_Collections.LookList(ref boughtItems, "boughtItems", LookMode.Value);
             Scribe_References.LookReference(ref guestArea_int, "guestArea");
+            Scribe_Deep.LookDeep(ref drugPolicy, "drugPolicy");
             if (boughtItems == null) boughtItems = new List<int>();
         }
 
@@ -94,6 +99,16 @@ namespace Hospitality
         public void Leave()
         {
             arrived = false;
+        }
+
+        public DrugPolicy GetDrugPolicy(Pawn pawn)
+        {
+            if (drugPolicy == null)
+            {
+                drugPolicy = new DrugPolicy(pawn.thingIDNumber, "GuestDrugPolicy");
+                drugPolicy.InitializeIfNeeded();
+            }
+            return drugPolicy;
         }
     }
 }

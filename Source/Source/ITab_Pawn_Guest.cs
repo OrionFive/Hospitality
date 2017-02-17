@@ -57,7 +57,9 @@ namespace Hospitality
         {
             //ConceptDatabase.KnowledgeDemonstrated(ConceptDefOf.PrisonerTab, KnowledgeAmount.GuiFrame);
 
-            var trust = SelPawn.RelativeTrust();
+            var friends = SelPawn.GetFriendsInColony();
+            var friendsRequired = GuestUtility.FriendsRequired(SelPawn.MapHeld) + SelPawn.GetEnemiesInColony();
+            float friendPercentage = 100f*friends/friendsRequired;
 
             {
                 var mayBuy = SelPawn.MayBuy();
@@ -75,6 +77,7 @@ namespace Hospitality
 
                     CheckboxLabeled(listingStandard, "MayBuy".Translate(), ref mayBuy);
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
+
                     CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
 
                     comp.mayBuy = mayBuy;
@@ -94,20 +97,26 @@ namespace Hospitality
                 }
                 listingStandard.Gap();
 
+                listingStandard.Label(string.Format("{0}:", "FriendsRequirement".Translate(friends, friendsRequired)));
+
+                listingStandard.Slider(Mathf.Clamp(friendPercentage, 0, 100), 0, 100);
+                if (friendPercentage <= 99)
+                {
+                    var color = GUI.color;
+                    GUI.color = Color.red;
+                    listingStandard.Label("NotEnoughFriends".Translate(SelPawn.GetMinRecruitOpinion()).AdjustedFor(SelPawn));
+                    GUI.color = color;
+                }
+                else
+                {
+                    listingStandard.Label("CanNowBeRecruited".Translate().AdjustedFor(SelPawn));
+                }
+
+
                 // Will only have squadBrain while "checked in", becomes null again when guests leave
                 var squadBrain = SelPawn.GetLord();
                 if (squadBrain != null)
                 {
-                    listingStandard.Label(string.Format("{0}:", txtRecruitmentChance));
-                    listingStandard.Slider(Mathf.Clamp(trust, 0, 100), 0, 100);
-                    if (trust < 50)
-                    {
-                        var color = GUI.color;
-                        GUI.color = Color.red;
-                        listingStandard.Label("TrustTooLow".Translate().AdjustedFor(SelPawn));
-                        GUI.color = color;
-                    }
-
                     var lordToil = squadBrain.CurLordToil as LordToil_VisitPoint;
                     if (lordToil != null && SelPawn.Faction != null)
                     {

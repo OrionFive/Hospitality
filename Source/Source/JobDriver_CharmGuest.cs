@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using CommunityCoreLibrary;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -19,11 +18,11 @@ namespace Hospitality
             this.FailOn(FailCondition);
             yield return GotoGuest(pawn, Talkee);
             yield return Toils_Reserve.Reserve(TargetIndex.A);
-            //yield return GotoGuest(pawn, Talkee);
+
             yield return Interact(Talkee, InteractionDefOf.RecruitAttempt, 150);
-            //yield return Toils_General.Wait(150);
+            
             yield return TryRecruitGuest(pawn, Talkee);
-            //yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.A);
+            
             yield return RiskAnger(pawn, Talkee);
         }
 
@@ -43,7 +42,7 @@ namespace Hospitality
             var allies = map.mapPawns.PawnsInFaction(guest.Faction).ToArray();
             foreach (var ally in allies)
             {
-                if (ally != guest && !ally.Dead && ally.Spawned && ally.CanSee(recruiter) && ally.CanSee(guest))
+                if (ally != guest && !ally.Dead && ally.Spawned && ally.Awake() && ally.CanSee(recruiter) && ally.CanSee(guest))
                 {
                     if (ally.needs.mood.thoughts.memories.Memories.Any(t=>t.def.defName=="GuestAngered")) continue;
 
@@ -76,7 +75,7 @@ namespace Hospitality
                     if (!recruiter.CanTalkTo(guest)) return;
                     InteractionDef intDef = DefDatabase<InteractionDef>.GetNamed("CharmGuestAttempt");
                     recruiter.interactions.TryInteractWith(guest, intDef);
-                    var success = guest.CheckRecruitingSuccessful(recruiter);
+                    //guest.CheckRecruitingSuccessful(recruiter);
                 },
                 socialMode = RandomSocialMode.Off,
                 defaultCompleteMode = ToilCompleteMode.Delay,

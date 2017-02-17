@@ -12,6 +12,7 @@ namespace Hospitality
     {
         private Faction faction;
         private IntVec3 chillSpot;
+        private int stayDuration;
         private int checkEventId = -1;
         
         public LordJob_VisitColony()
@@ -19,10 +20,11 @@ namespace Hospitality
             // Required
         }
 
-        public LordJob_VisitColony(Faction faction, IntVec3 chillSpot)
+        public LordJob_VisitColony(Faction faction, IntVec3 chillSpot, int stayDuration)
         {
             this.faction = faction;
             this.chillSpot = chillSpot;
+            this.stayDuration = stayDuration;
         }
 
         public override void Notify_PawnLost(Pawn p, PawnLostCondition condition)
@@ -63,13 +65,14 @@ namespace Hospitality
             Scribe_References.LookReference(ref faction, "faction");
             Scribe_Values.LookValue(ref chillSpot, "chillSpot", default(IntVec3));
             Scribe_Values.LookValue(ref checkEventId, "checkEventId", -1);
+            Scribe_Values.LookValue(ref stayDuration, "stayDuration", GenDate.TicksPerDay);
         }
 
         public override StateGraph CreateGraph()
         {
             StateGraph graphArrive = new StateGraph();
             var travelGraph = new LordJob_Travel(chillSpot).CreateGraph();
-            travelGraph.StartingToil = new LordToil_CustomTravel(chillSpot, 0.49f); // CHANGED: override StartingToil
+            travelGraph.StartingToil = new LordToil_CustomTravel(chillSpot, 0.49f, 85); // CHANGED: override StartingToil
             LordToil toilArrive = graphArrive.AttachSubgraph(travelGraph).StartingToil;
             var toilVisit = new LordToil_VisitPoint(chillSpot); // CHANGED
             graphArrive.lordToils.Add(toilVisit);
@@ -107,7 +110,7 @@ namespace Hospitality
             t4.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
             graphArrive.transitions.Add(t4);
             Transition t5 = new Transition(toilVisit, toilExit);
-            t5.triggers.Add(new Trigger_TicksPassed((int) (Rand.Range(0.4f, 1.2f) * GenDate.TicksPerDay)));
+            t5.triggers.Add(new Trigger_TicksPassed(stayDuration));
             t5.triggers.Add(new Trigger_SentAway());
             t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(new object[] { faction.Name })));
             t5.preActions.Add(new TransitionAction_WakeAll());

@@ -11,12 +11,14 @@ namespace Hospitality
         public IntVec3 dest;
         public bool destAssigned;
         public float percentRequired;
+        public float distance;
 
         public override void ExposeData()
         {
             Scribe_Values.LookValue(ref dest, "dest", default(IntVec3));
             Scribe_Values.LookValue(ref destAssigned, "destAssigned", false);
             Scribe_Values.LookValue(ref percentRequired, "percentRequired", 1);
+            Scribe_Values.LookValue(ref distance, "distance", 10);
         }
     }
 
@@ -27,9 +29,9 @@ namespace Hospitality
 
         public LordToil_CustomTravel() {}
 
-        public LordToil_CustomTravel(IntVec3 dest, float percentRequired = 1)
+        public LordToil_CustomTravel(IntVec3 dest, float percentRequired = 1, float distance = 10)
         {
-            data = new LordToilData_CustomTravel {dest = dest, destAssigned = true, percentRequired = percentRequired};
+            data = new LordToilData_CustomTravel {dest = dest, destAssigned = true, percentRequired = percentRequired, distance = distance};
         }
 
         public override void UpdateAllDuties()
@@ -52,7 +54,7 @@ namespace Hospitality
         public override void LordToilTick()
         {
             if (Find.TickManager.TicksGame%205 != 0) return;
-            int count = lord.ownedPawns.Count(pawn => pawn != null && pawn.Position.InHorDistOf(Data.dest, 10f) && pawn.CanReach(Data.dest, PathEndMode.OnCell, Danger.Some));
+            int count = lord.ownedPawns.Count(pawn => pawn != null && pawn.Position.InHorDistOf(Data.dest, Data.distance) && pawn.CanReach(Data.dest, PathEndMode.OnCell, Danger.Some));
             float percent = 1f*count/lord.ownedPawns.Count(pawn => pawn != null);
             if (Data == null) return;
             if (percent < Data.percentRequired) return;
