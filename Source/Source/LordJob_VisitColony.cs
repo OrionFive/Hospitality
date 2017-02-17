@@ -72,7 +72,7 @@ namespace Hospitality
         {
             StateGraph graphArrive = new StateGraph();
             var travelGraph = new LordJob_Travel(chillSpot).CreateGraph();
-            travelGraph.StartingToil = new LordToil_CustomTravel(chillSpot, 0.49f); // CHANGED: override StartingToil
+            travelGraph.StartingToil = new LordToil_CustomTravel(chillSpot, 0.49f, 85); // CHANGED: override StartingToil
             LordToil toilArrive = graphArrive.AttachSubgraph(travelGraph).StartingToil;
             var toilVisit = new LordToil_VisitPoint(chillSpot); // CHANGED
             graphArrive.lordToils.Add(toilVisit);
