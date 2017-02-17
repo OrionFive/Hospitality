@@ -60,13 +60,13 @@ namespace Hospitality
                 pawn.Arrive();
             }
 
-            PlaceFlag();
+            PlaceFlag(lord.ownedPawns.Any() ? lord.ownedPawns.First().PositionHeld : FlagLoc);
         }
 
-        private void PlaceFlag()
+        private void PlaceFlag(IntVec3 location)
         {
             var def = ThingDef.Named("VisitorFlag");
-            Data.visitorFlag = (VisitorFlag)GenSpawn.Spawn(def, FlagLoc, Map);
+            Data.visitorFlag = (VisitorFlag)GenSpawn.Spawn(def, location, Map);
             //Data.visitorFlag.SetFaction(lord.faction);
             var pawn = lord.ownedPawns.FirstOrDefault();
             Data.visitorFlag.SetLord(lord);
