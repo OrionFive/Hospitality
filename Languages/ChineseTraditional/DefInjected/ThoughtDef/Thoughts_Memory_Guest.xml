@@ -1,32 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <GuestConvinced.stages.0.label>已被說服</GuestConvinced.stages.0.label>
-  <GuestConvinced.stages.0.labelSocial>我被說服了</GuestConvinced.stages.0.labelSocial>
-  <GuestConvinced.stages.0.description>那位殖民者跟我討論了這個殖民地。這裡聽起來是個不錯的地方...</GuestConvinced.stages.0.description>
+  <GuestConvinced.stages.0.label>受到招募嘗試的遊說</GuestConvinced.stages.0.label>
+  <GuestConvinced.stages.0.labelSocial>我被遊說了</GuestConvinced.stages.0.labelSocial>
+  <GuestConvinced.stages.0.description>那位殖民者跟我談論了這個殖民地。這裡聽起來是個不錯的地方...</GuestConvinced.stages.0.description>
 
-  <GuestOffended.stages.0.label>說服失敗</GuestOffended.stages.0.label>
-  <GuestOffended.stages.0.labelSocial>我被惹怒了</GuestOffended.stages.0.labelSocial>
-  <GuestOffended.stages.0.description>那個殖民者在試著招募我。可我根本不想離開自己的派系！</GuestOffended.stages.0.description>
+  <GuestOffended.stages.0.label>受到招募嘗試的冒犯</GuestOffended.stages.0.label>
+  <GuestOffended.stages.0.labelSocial>我被冒犯了</GuestOffended.stages.0.labelSocial>
+  <GuestOffended.stages.0.description>那個殖民者在試著招募我。但是我根本不想離開自己的派系！</GuestOffended.stages.0.description>
 
-  <GuestAngered.stages.0.label>因目睹招募而生氣</GuestAngered.stages.0.label>
-  <GuestAngered.stages.0.labelSocial>招募的事使我生氣</GuestAngered.stages.0.labelSocial>
-  <GuestAngered.stages.0.description>那群傢伙正試圖挖角我們的人！</GuestAngered.stages.0.description>
+  <GuestAngered.stages.0.label>因目睹招募而憤怒</GuestAngered.stages.0.label>
+  <GuestAngered.stages.0.labelSocial>我對招募之事感到憤怒</GuestAngered.stages.0.labelSocial>
+  <GuestAngered.stages.0.description>那群傢伙正試圖挖走我們的人！</GuestAngered.stages.0.description>
 
   <GuestOffendedRelationship.stages.0.label>被殖民者侮辱</GuestOffendedRelationship.stages.0.label>
   <GuestOffendedRelationship.stages.0.labelSocial>我被侮辱了</GuestOffendedRelationship.stages.0.labelSocial>
-  <GuestOffendedRelationship.stages.0.description>那群混蛋！</GuestOffendedRelationship.stages.0.description>
+  <GuestOffendedRelationship.stages.0.description>那群失敗者！</GuestOffendedRelationship.stages.0.description>
 
-  <GuestPleasedRelationship.stages.0.label>被殖民者迷住</GuestPleasedRelationship.stages.0.label>
-  <GuestPleasedRelationship.stages.0.labelSocial>我被迷住了</GuestPleasedRelationship.stages.0.labelSocial>
+  <GuestPleasedRelationship.stages.0.label>被殖民者说服</GuestPleasedRelationship.stages.0.label>
+  <GuestPleasedRelationship.stages.0.labelSocial>我被说服了</GuestPleasedRelationship.stages.0.labelSocial>
   <GuestPleasedRelationship.stages.0.description>多麼好的一群人啊！</GuestPleasedRelationship.stages.0.description>
 
   <EndorsedByRecruiter.stages.0.label>被招募者認可</EndorsedByRecruiter.stages.0.label>
   <EndorsedByRecruiter.stages.0.labelSocial>招募者認可了我</EndorsedByRecruiter.stages.0.labelSocial>
-  <EndorsedByRecruiter.stages.0.description>這個人的認可使我很開心。</EndorsedByRecruiter.stages.0.description>
+  <EndorsedByRecruiter.stages.0.description>這個人對我很推崇。</EndorsedByRecruiter.stages.0.description>
 
-  <GuestDismissiveAttitude.stages.0.label>說累了</GuestDismissiveAttitude.stages.0.label>
-  <GuestDismissiveAttitude.stages.0.description>我暫時不想再交流了。</GuestDismissiveAttitude.stages.0.description>
+  <GuestDismissiveAttitude.stages.0.label>对交谈感到厌烦</GuestDismissiveAttitude.stages.0.label>
+  <GuestDismissiveAttitude.stages.0.description>我暫時不想再聊天了。</GuestDismissiveAttitude.stages.0.description>
 
 
 </LanguageData>

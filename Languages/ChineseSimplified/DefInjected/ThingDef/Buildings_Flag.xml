@@ -2,7 +2,7 @@
 <LanguageData>
 
   <VisitorFlag.label>访客旗子</VisitorFlag.label>
-  <VisitorFlag.description>访客近期会在这房间住宿。</VisitorFlag.description>
+  <VisitorFlag.description>由访客在停留期间放置的旗子。</VisitorFlag.description>
 
 
 </LanguageData>

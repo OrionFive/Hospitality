@@ -2,11 +2,11 @@
 <LanguageData>
 
   <GuestBedCount.stages.0.label>没有访客用床</GuestBedCount.stages.0.label>
-  <GuestBedCount.stages.0.description>他们一张床也没有。</GuestBedCount.stages.0.description>
+  <GuestBedCount.stages.0.description>他们甚至连张床都没有。</GuestBedCount.stages.0.description>
   <GuestBedCount.stages.1.label>没有足够的访客用床</GuestBedCount.stages.1.label>
-  <GuestBedCount.stages.1.description>我们的房间应该有更多的床。</GuestBedCount.stages.1.description>
+  <GuestBedCount.stages.1.description>我们的房间应该多放几张床。</GuestBedCount.stages.1.description>
   <GuestBedCount.stages.2.label>足够的访客用床</GuestBedCount.stages.2.label>
-  <GuestBedCount.stages.2.description>这里为我们提供了足够的床。</GuestBedCount.stages.2.description>
+  <GuestBedCount.stages.2.description>我们的房间有足够我们所有人用的床。</GuestBedCount.stages.2.description>
   <GuestBedCount.stages.3.label>好多的床</GuestBedCount.stages.3.label>
   <GuestBedCount.stages.3.description>哇哦！很多的床！</GuestBedCount.stages.3.description>
 

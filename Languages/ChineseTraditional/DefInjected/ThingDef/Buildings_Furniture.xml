@@ -4,10 +4,10 @@
   <!-- Beds -->
 
   <GuestBed.label>訪客用床</GuestBed.label>
-  <GuestBed.description>當訪客駐紮時使用的床。</GuestBed.description>
-  <GuestBed_Blueprint.label>訪客用床(藍圖)</GuestBed_Blueprint.label>
-  <GuestBed_Blueprint_Install.label>訪客用床(藍圖)</GuestBed_Blueprint_Install.label>
-  <GuestBed_Frame.label>訪客用床(建造中)</GuestBed_Frame.label>
+  <GuestBed.description>供訪客停留期間睡覺的地方。</GuestBed.description>
+  <GuestBed_Blueprint.label>訪客用床（藍圖）</GuestBed_Blueprint.label>
+  <GuestBed_Blueprint_Install.label>訪客用床（藍圖）</GuestBed_Blueprint_Install.label>
+  <GuestBed_Frame.label>訪客用床（建造中）</GuestBed_Frame.label>
 
 
 </LanguageData>
