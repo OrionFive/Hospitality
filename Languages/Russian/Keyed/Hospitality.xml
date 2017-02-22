@@ -2,21 +2,21 @@
 <LanguageData>
 
   <!-- Recruiting -->
-  <RecruitAngerSelfM>{0} расстроил {1} неуклюжей попыткой вербовки {3} ({2} шанс).</RecruitAngerSelfM>
-  <RecruitAngerSelfF>{0} расстроил {1} неуклюжей попыткой вербовки {3} ({2} шанс).</RecruitAngerSelfF>
-  <RecruitPleaseSelfF>{0} очаровал {1} искусной попыткой завербовать {3} ({2} шанс).</RecruitPleaseSelfF>
-  <RecruitPleaseSelfM>{0} очаровал {1} искусной попыткой завербовать {3} ({2} шанс).</RecruitPleaseSelfM>
-  <RecruitAngerOther>{3} заметил, как {0} пытается завербовать {1}, и обиделся ({2} шанс).</RecruitAngerOther>
-  <RecruitFactionAnger>{0} из {1} расстроен из-за Вашей вербовки {2} ({3}).</RecruitFactionAnger>
-  <RecruitFactionAngerLeaderless>Члены {0} расстроены вербовкой {1} ({2}).</RecruitFactionAngerLeaderless>
-  <RecruitFactionPlease>{0} из {1} рад, что Вы взяли {2} к себе ({3}).</RecruitFactionPlease>
+  <RecruitAngerMultiple>{0} расстроил {1} {2}x подряд.</RecruitAngerMultiple>
+  <RecruitAngerOther>{3} заметил, как {0} пытается завербовать {1} и обиделся ({2} шанс).</RecruitAngerOther>
+  <RecruitFactionAnger>{0} из {1} расстроены из-за вашей вербовки {2} ({3}).</RecruitFactionAnger>
+  <RecruitFactionAngerLeaderless>The members of {0} are upset with you for recruiting {1} ({2}).</RecruitFactionAngerLeaderless>
+  <RecruitFactionPlease>{0} из {1} рад, что вы взяли {2} к себе ({3}).</RecruitFactionPlease>
   <RecruitFactionPleaseLeaderless>Члены {0} рады, что вы забрали у них {1} ({2}).</RecruitFactionPleaseLeaderless>
-  <MessageGuestRecruitSuccess>{0} решил к вам присоединиться!</MessageGuestRecruitSuccess>
+  <MessageGuestRecruitSuccess>{0} с радостью решил присоединиться к вашей колонии!</MessageGuestRecruitSuccess>
   <LetterLabelRecruitFactionChiefAnger>Вождь возмущен</LetterLabelRecruitFactionChiefAnger>
   <LetterLabelRecruitFactionAnger>Фракция возмущёна</LetterLabelRecruitFactionAnger>
   <LetterLabelRecruitFactionChiefPlease>Вождь доволен</LetterLabelRecruitFactionChiefPlease>
   <LetterLabelRecruitFactionPlease>Фракция довольна</LetterLabelRecruitFactionPlease>
-
+  
+  <TextMote_CharmFail>Обиженный</TextMote_CharmFail>
+  <TextMote_CharmSuccess>Очарованный</TextMote_CharmSuccess>
+  
   <!-- Diplomacy -->
   <ImproveFactionPlease>{0} улучшил отношения с {1} из {2} ({3} шанс).</ImproveFactionPlease>
   <ImproveFactionAnger>{0} ухудшил отношения с {1} из {2} ({3} шанс).</ImproveFactionAnger>
@@ -53,9 +53,10 @@
   <FactionGoodwill>Текущие отношения с фракцией</FactionGoodwill>
   <Hospitality>Довольство от гостеприимства</Hospitality>
   <MakeDefault>Установить по умолчанию</MakeDefault>
-  <SendAway>Send Away</SendAway>
-  <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?</SendAwayQuestion>
-  <TrustTooLow>NAME does not know or like your colonists enough.</TrustTooLow>
+  <SendAway>Выгнать</SendAway>
+  <SendAwayQuestion>Вы уверены, что хотите послать посетителей из {0} прочь?</SendAwayQuestion>
+  <NotEnoughFriends>NAME недостаточно нравятся ваши колонисты (мнение > {0}).</NotEnoughFriends>
+  <CanNowBeRecruited>NAME теперь может быть завербован.</CanNowBeRecruited>
   <IsATrader>NAME - часть торгового каравана и не является гость.</IsATrader>
 
   <!-- Infos -->
