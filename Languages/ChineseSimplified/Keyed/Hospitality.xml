@@ -2,10 +2,7 @@
 <LanguageData>
 
   <!-- Recruiting -->
-  <RecruitAngerSelfM>{0} 冒犯了 {1}{3}。（{2}机率）</RecruitAngerSelfM>
-  <RecruitAngerSelfF>{0} 冒犯了 {1}{3}。（{2}机率）</RecruitAngerSelfF>
-  <RecruitPleaseSelfM>{0} 说服了 {1}{3}。（{2}机率）</RecruitPleaseSelfM>
-  <RecruitPleaseSelfF>{0} 说服了 {1}{3}。（{2}机率）</RecruitPleaseSelfF>
+  <RecruitAngerMultiple>{0} 在一次争吵中激怒了 {1} x{2} 。</RecruitAngerMultiple>
   <RecruitAngerOther>{3} 注意到 {0} 试图招募 {1} 而被触怒了。（{2}机率）</RecruitAngerOther>
   <RecruitFactionAnger>{1} 的 {0} 对於你招募 {2} 的行为感到愤怒。（{3}）</RecruitFactionAnger>
   <RecruitFactionAngerLeaderless>{0} 的成员对你招募 {1} 的行为感到愤怒。（{2}）</RecruitFactionAngerLeaderless>
@@ -16,7 +13,9 @@
   <LetterLabelRecruitFactionAnger>派系的愤怒</LetterLabelRecruitFactionAnger>
   <LetterLabelRecruitFactionChiefPlease>首领的感谢</LetterLabelRecruitFactionChiefPlease>
   <LetterLabelRecruitFactionPlease>派系的感谢</LetterLabelRecruitFactionPlease>
-  <NoOne>没有人</NoOne>
+  
+  <TextMote_CharmFail>冒犯</TextMote_CharmFail>
+  <TextMote_CharmSuccess>说服</TextMote_CharmSuccess>
 
   <!-- Diplomacy -->
   <ImproveFactionPlease>{0} 改善了 {4} 与 {1} （来自 {2}）的关系。（{3}机率）</ImproveFactionPlease>
