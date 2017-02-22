@@ -1,26 +1,12 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!--suppress ALL -->
+<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-	
-	<GuestDiplomacy.label>提升好感度</GuestDiplomacy.label>
-	<rep>
-		<path>GuestDiplomacy.logRulesInitiator.rulesStrings[0]</path>
-		<trans>logentry->與 [other_nameShortIndef] 進行了愉快的交流。</trans>
-	</rep>
-	<rep>
-		<path>GuestDiplomacy.logRulesRecipient.rulesStrings[0]</path>
-		<trans>logentry->傾聽 [other_nameShortIndef] 的有趣談話。</trans>
-	</rep>
 
-	<CharmGuestAttempt.label>嘗試示好</CharmGuestAttempt.label>
-	<rep>
-		<path>CharmGuestAttempt.logRulesInitiator.rulesStrings[0]</path>
-		<trans>logentry->嘗試招募 [other_nameShortIndef] 。</trans>
-	</rep>
-	<rep>
-		<path>CharmGuestAttempt.logRulesRecipient.rulesStrings[0]</path>
-		<trans>logentry->聽取了 [other_nameShortIndef] 關於招募的建議。</trans>
-	</rep>
+  <GuestDiplomacy.label>提升关系</GuestDiplomacy.label>
+  <GuestDiplomacy.logRulesInitiator.rulesStrings.0>logentry->與[other_nameShortIndef]進行了愉快的交流。</GuestDiplomacy.logRulesInitiator.rulesStrings.0>
+  <GuestDiplomacy.logRulesRecipient.rulesStrings.0>logentry->傾聽了[other_nameShortIndef]的有趣談話。</GuestDiplomacy.logRulesRecipient.rulesStrings.0>
 
+  <CharmGuestAttempt.label>说服尝试</CharmGuestAttempt.label>
+  <CharmGuestAttempt.logRulesInitiator.rulesStrings.0>logentry->嘗試說服[other_nameShortIndef]留下來。</CharmGuestAttempt.logRulesInitiator.rulesStrings.0>
+  <CharmGuestAttempt.logRulesRecipient.rulesStrings.0>logentry->傾聽了[other_nameShortIndef]的招募說法。</CharmGuestAttempt.logRulesRecipient.rulesStrings.0>
 
 </LanguageData>
