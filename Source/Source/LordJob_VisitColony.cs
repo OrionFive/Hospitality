@@ -54,8 +54,8 @@ namespace Hospitality
                     }
                     });
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException("condition");
+                //default:
+                //    throw new ArgumentOutOfRangeException("condition");
             }
         }
 
