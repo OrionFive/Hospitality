@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
+<LanguageData>
+	
+	<PleaseGuestChance.label>habilidad diplomática</PleaseGuestChance.label>
+	<PleaseGuestChance.description>Posibilidad baja que esta persona tendrá que mejorar la opinión de un huésped.</PleaseGuestChance.description>
+
+	<RecruitRelationshipDamage.label>Reclutar relación daño</RecruitRelationshipDamage.label>
+	<RecruitRelationshipDamage.description>El daño hecho a la relación con la facción de esta persona al reclutar con éxito.</RecruitRelationshipDamage.description>
+
+</LanguageData>
