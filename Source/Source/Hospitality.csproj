@@ -70,6 +70,7 @@
     <Compile Include="Detouring\ThoughtWorker_PrisonBarracksImpressiveness.cs" />
     <Compile Include="Detouring\ThoughtWorker_PrisonCellImpressiveness.cs" />
     <Compile Include="GenericUtility.cs" />
+    <Compile Include="HugsLib\Mod.cs" />
     <Compile Include="IncidentWorker_RefugeeChased.cs" />
     <Compile Include="IncidentWorker_WandererJoin.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
