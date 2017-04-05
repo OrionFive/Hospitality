@@ -1,3 +1,4 @@
+using HugsLib.Source.Detour;
 using Verse;
 
 namespace Hospitality.Detouring
@@ -6,7 +7,7 @@ namespace Hospitality.Detouring
     /// Allow only visitors to use only guest beds
     /// </summary>
     internal static class RestUtility {
-        [Detour(typeof(RimWorld.RestUtility))]
+        [DetourMethod(typeof(RimWorld.RestUtility), "CanUseBedEver")]
         public static bool CanUseBedEver(Pawn p, ThingDef bedDef)
         {
 #region Added

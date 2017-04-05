@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using HugsLib.Source.Detour;
 using RimWorld;
 using Verse;
 
@@ -9,11 +10,14 @@ namespace Hospitality.Detouring
     public class ITab_Pawn_Guest : RimWorld.ITab_Pawn_Guest
     {
         // Added so guests will not show vanilla guest tab
-        [Detour(typeof(RimWorld.ITab_Pawn_Guest), bindingFlags = BindingFlags.Public| BindingFlags.Instance)]
-        public bool get_IsVisible()
+        [DetourProperty(typeof(RimWorld.ITab_Pawn_Guest), "IsVisible", DetourProperty.Getter)]
+        public new bool IsVisible
         {
-            if (SelPawn.HostFaction == Faction.OfPlayer) return !SelPawn.IsPrisoner && !SelPawn.IsGuest();
-            return false;
+            get
+            {
+                if (SelPawn.HostFaction == Faction.OfPlayer) return !SelPawn.IsPrisoner && !SelPawn.IsGuest();
+                return false;
+            }
         }
     }
 
@@ -25,10 +29,10 @@ namespace Hospitality.Detouring
         }
 
         // Added so guests will respect their assigned area
-        [Detour(typeof(RimWorld.Pawn_PlayerSettings), bindingFlags = BindingFlags.Public | BindingFlags.Instance)]
-        public bool get_RespectsAllowedArea()
+        [DetourProperty(typeof(RimWorld.Pawn_PlayerSettings), "RespectsAllowedArea", DetourProperty.Getter)]
+        public new bool RespectsAllowedArea
         {
-            return pawn.Faction == Faction.OfPlayer && pawn.HostFaction == null || pawn.IsGuest();
+            get { return pawn.Faction == Faction.OfPlayer && pawn.HostFaction == null || pawn.IsGuest(); }
         }
 
         public Pawn_PlayerSettings(Pawn pawn) : base(pawn) {}

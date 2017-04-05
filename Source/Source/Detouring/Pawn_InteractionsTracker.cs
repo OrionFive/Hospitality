@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using HugsLib.Source.Detour;
 using RimWorld;
 using Verse;
 using Source = RimWorld.Pawn_InteractionsTracker;
@@ -12,7 +13,7 @@ namespace Hospitality.Detouring
     /// </summary>
     internal static class Pawn_InteractionsTracker
     {
-        [Detour(typeof (Source), bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance)]
+        [DetourMethod(typeof(Source), "TryInteractRandomly")]
         public static bool TryInteractRandomly(this Source _this)
         {
             var pawn =

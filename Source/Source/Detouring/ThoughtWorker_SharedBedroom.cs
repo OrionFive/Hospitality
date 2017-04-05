@@ -1,4 +1,5 @@
 using System.Reflection;
+using HugsLib.Source.Detour;
 using RimWorld;
 using Verse;
 
@@ -9,7 +10,7 @@ namespace Hospitality.Detouring
     /// </summary>
     internal static class ThoughtWorker_SharedBedroom
     {
-        [Detour(typeof(RimWorld.ThoughtWorker_SharedBedroom), bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance)]
+        [DetourMethod(typeof(RimWorld.ThoughtWorker_SharedBedroom), "CurrentStateInternal")]
         public static ThoughtState CurrentStateInternal(this RimWorld.ThoughtWorker_SharedBedroom _this, Pawn p)
         {
             return p != null && !p.IsGuest() &&p.ownership != null && p.ownership.OwnedBed != null && p.ownership.OwnedRoom == null

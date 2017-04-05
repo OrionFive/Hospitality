@@ -45,6 +45,10 @@
       <HintPath>..\..\..\..\..\..\workshop\content\294100\729577707\Assemblies\Community Core Library.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HugsLib">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\818773962\Assemblies\HugsLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,6 +70,7 @@
     <Compile Include="Detouring\ThoughtWorker_PrisonBarracksImpressiveness.cs" />
     <Compile Include="Detouring\ThoughtWorker_PrisonCellImpressiveness.cs" />
     <Compile Include="GenericUtility.cs" />
+    <Compile Include="HugsLib\Mod.cs" />
     <Compile Include="IncidentWorker_RefugeeChased.cs" />
     <Compile Include="IncidentWorker_WandererJoin.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />

@@ -1,4 +1,5 @@
 using System.Reflection;
+using HugsLib.Source.Detour;
 using RimWorld;
 using Verse;
 using Source=RimWorld.Pawn_NeedsTracker;
@@ -14,7 +15,7 @@ namespace Hospitality.Detouring
         private static readonly NeedDef defBeauty = DefDatabase<NeedDef>.GetNamed("Beauty");
         private static readonly NeedDef defSpace = DefDatabase<NeedDef>.GetNamed("Space");
 
-        [Detour(typeof(Source), bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance)]
+        [DetourMethod(typeof(Source), "ShouldHaveNeed")]
         public static bool ShouldHaveNeed(this Source _this, NeedDef nd)
         {
             Pawn pawn =(Pawn)typeof(RimWorld.Pawn_NeedsTracker).GetField("pawn", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(_this);

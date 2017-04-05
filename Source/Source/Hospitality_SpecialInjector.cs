@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Linq;
 using Hospitality.Detouring;
+using HugsLib.Source.Detour;
 using Verse;
 
 // Toggle in Hospitality Properties
@@ -29,13 +30,14 @@ namespace Hospitality
             // Special detours
             #region Special detours
             // Change guest bed gizmos to default building gizmos
+            // Use old detours because this is a really special case
             if(!Detours.TryDetourFromTo(
                 typeof (Building_GuestBed).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public),
                 typeof (Building).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public))) return false;
 
-            if(!Detours.TryDetourFromTo(
-                typeof(RimWorld.DrugPolicy).GetMethod( "get_Item",BindingFlags.Instance | BindingFlags.Public, null, new []{ typeof(ThingDef)},null),
-                typeof(DrugPolicy).GetMethod("Item", BindingFlags.Instance | BindingFlags.Public))) return false;
+            DetourProvider.CompatibleDetour(
+                typeof(RimWorld.DrugPolicy).GetMethod("get_Item", BindingFlags.Instance | BindingFlags.Public, null, new[] {typeof(ThingDef)}, null),
+                typeof(DrugPolicy).GetMethod("Item", BindingFlags.Instance | BindingFlags.Public));
             #endregion
 
             #region Automatic hookup
@@ -46,7 +48,7 @@ namespace Hospitality
                 {
                     foreach (var targetMethod in targetType.GetMethods(bindingFlags))
                     {
-                        foreach (DetourAttribute detour in targetMethod.GetCustomAttributes(typeof(DetourAttribute), true))
+                        foreach (DetourOldAttribute detour in targetMethod.GetCustomAttributes(typeof(DetourOldAttribute), true))
                         {
                             var flags = detour.bindingFlags != default(BindingFlags) ? detour.bindingFlags : bindingFlags;
                             var sourceMethod = detour.source.GetMethod(targetMethod.Name, flags);

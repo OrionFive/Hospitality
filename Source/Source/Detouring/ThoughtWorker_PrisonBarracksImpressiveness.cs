@@ -1,4 +1,5 @@
 using System.Reflection;
+using HugsLib.Source.Detour;
 using RimWorld;
 using Verse;
 
@@ -7,10 +8,10 @@ namespace Hospitality.Detouring
     /// <summary>
     /// Against rare error, when guest's ownership.OwnedBed == null 
     /// </summary>
-    public class ThoughtWorker_PrisonBarracksImpressiveness
+    public static class ThoughtWorker_PrisonBarracksImpressiveness
     {
-        [Detour(typeof(RimWorld.ThoughtWorker_PrisonBarracksImpressiveness), bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance)]
-        public static ThoughtState CurrentStateInternal(RimWorld.ThoughtWorker_PrisonBarracksImpressiveness _this, Pawn p)
+        [DetourMethod(typeof(RimWorld.ThoughtWorker_PrisonBarracksImpressiveness), "CurrentStateInternal")]
+        public static ThoughtState CurrentStateInternal(this RimWorld.ThoughtWorker_PrisonBarracksImpressiveness _this, Pawn p)
         {
             if (p == null || p.ownership == null || p.ownership.OwnedBed == null) return ThoughtState.Inactive; // Added
             ThoughtState result = ThoughtWorker_SleepingRoomImpressiveness.CurrentStateInternal(_this, p); // Had to change
