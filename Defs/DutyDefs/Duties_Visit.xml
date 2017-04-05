@@ -23,28 +23,13 @@
 			  <insertTag>Humanlike_PreMain</insertTag>
 			</li>
 
-			<li Class="ThinkNode_ConditionalNeedPercentageAbove">
-			  <need>Food</need>
-			  <threshold>0.5</threshold>
-			  <invert>true</invert>
+			<li Class="ThinkNode_PrioritySorter">
 			  <subNodes>
+
 				<li Class="JobGiver_GetFood" />
-			  </subNodes>
-			</li>
-			<li Class="ThinkNode_ConditionalNeedPercentageAbove">
-			  <need>Rest</need>
-			  <threshold>0.4</threshold>
-			  <invert>true</invert>
-			  <subNodes>
 				<li Class="Hospitality.JobGiver_Sleep" />
-			  </subNodes>
-			</li>
-			<li Class="ThinkNode_ConditionalNeedPercentageAbove">
-			  <need>Joy</need>
-			  <threshold>0.9</threshold>
-			  <invert>true</invert>
-			  <subNodes>
 				<li Class="Hospitality.JobGiver_Relax" />
+				
 			  </subNodes>
 			</li>
             
