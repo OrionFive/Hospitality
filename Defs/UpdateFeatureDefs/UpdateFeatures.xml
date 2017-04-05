@@ -7,8 +7,8 @@
 	</HugsLib.UpdateFeatureDef>
 	
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-		<defName>Hospitality_0_16_1</defName>
-		<assemblyVersion>0.16.1</assemblyVersion>
+		<defName>Hospitality_0_16_7</defName>
+		<assemblyVersion>0.16.7</assemblyVersion>
 		<content>- Now using HugsLib|- Now compatible with Dubs Bad Hygiene mod</content>
 	</HugsLib.UpdateFeatureDef>
 	
