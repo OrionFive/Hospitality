@@ -3,14 +3,14 @@ using System.Reflection;
 
 namespace Hospitality
 {
-
+    // Discarded in favour of HugsLib
     [AttributeUsage(AttributeTargets.Method)]
-    internal class DetourAttribute : Attribute
+    internal class DetourOldAttribute : Attribute
     {
         public Type source;
         public BindingFlags bindingFlags;
 
-        public DetourAttribute(Type source)
+        public DetourOldAttribute(Type source)
         {
             this.source = source;
         }

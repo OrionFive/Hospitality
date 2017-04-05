@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Reflection;
+using HugsLib.Source.Detour;
 using Verse;
 using Source = RimWorld.Pawn_WorkSettings;
 
@@ -10,7 +11,7 @@ namespace Hospitality.Detouring
         /// <summary>
         /// Disable work types that the pawn can't do. This is a nasty fix for RimWorld not supporting adding new jobs to an existing savegame. :[
         /// </summary>
-        [Detour(typeof (Source), bindingFlags=BindingFlags.Instance|BindingFlags.Public)]
+        [DetourMethod(typeof(Source), "ExposeData")]
         public static void ExposeData(this Source _this)
         {
             var fieldPriorities = typeof(RimWorld.Pawn_WorkSettings).GetField("priorities", BindingFlags.Instance|BindingFlags.NonPublic);

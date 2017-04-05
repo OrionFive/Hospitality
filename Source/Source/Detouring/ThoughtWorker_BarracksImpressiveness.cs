@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Reflection;
+using HugsLib.Source.Detour;
 using RimWorld;
 using Verse;
 
@@ -10,9 +11,8 @@ namespace Hospitality.Detouring
     /// </summary>
     public static class ThoughtWorker_BarracksImpressiveness
     {
-        [Detour(typeof (RimWorld.ThoughtWorker_BarracksImpressiveness),
-            bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance)]
-        public static ThoughtState CurrentStateInternal(RimWorld.ThoughtWorker_BarracksImpressiveness _this, Pawn p)
+        [DetourMethod(typeof(RimWorld.ThoughtWorker_BarracksImpressiveness), "CurrentStateInternal")]
+        public static ThoughtState CurrentStateInternal(this RimWorld.ThoughtWorker_BarracksImpressiveness _this, Pawn p)
         {
             if (p == null) return ThoughtState.Inactive; // Added
 

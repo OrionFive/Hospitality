@@ -1,4 +1,5 @@
 using System.Reflection;
+using HugsLib.Source.Detour;
 using RimWorld;
 using Verse;
 
@@ -7,7 +8,7 @@ namespace Hospitality.Detouring
     internal static class ForbidUtility
     {
         // So guests will care
-        [Detour(typeof(RimWorld.ForbidUtility), bindingFlags = BindingFlags.NonPublic| BindingFlags.Static)]
+        [DetourMethod(typeof(RimWorld.ForbidUtility), "CaresAboutForbidden")]
         public static bool CaresAboutForbidden(Pawn pawn, bool cellTarget)
         {
             return !pawn.InMentalState && AddedFactionCheck(pawn) && (!cellTarget || !ThinkNode_ConditionalShouldFollowMaster.ShouldFollowMaster(pawn));

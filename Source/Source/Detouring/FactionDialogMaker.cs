@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Reflection;
+using HugsLib.Source.Detour;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -22,7 +23,7 @@ namespace Hospitality.Detouring
             get { return (Faction)typeof(Source).GetField("faction", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null); }
         }
 
-        [Detour(typeof(Source))]
+        [DetourMethod(typeof(Source), "OfferGiftOption")]
         private static DiaOption OfferGiftOption(Map map)
         {
             // TODO: Compare with vanilla method

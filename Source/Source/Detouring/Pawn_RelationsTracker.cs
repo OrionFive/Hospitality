@@ -1,4 +1,5 @@
 using System.Reflection;
+using HugsLib.Source.Detour;
 using RimWorld;
 using Verse;
 
@@ -9,8 +10,8 @@ namespace Hospitality.Detouring
     /// </summary>
     public static class Pawn_RelationsTracker
     {
-        [Detour(typeof (RimWorld.Pawn_RelationsTracker), bindingFlags = BindingFlags.Public | BindingFlags.Instance)]
-        public static void Notify_RescuedBy(RimWorld.Pawn_RelationsTracker _this, Pawn rescuer)
+        [DetourMethod(typeof(RimWorld.Pawn_RelationsTracker), "Notify_RescuedBy")]
+        public static void Notify_RescuedBy(this RimWorld.Pawn_RelationsTracker _this, Pawn rescuer)
         {
             if (rescuer.RaceProps.Humanlike && _this.canGetRescuedThought)
             {

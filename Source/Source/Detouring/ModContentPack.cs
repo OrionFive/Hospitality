@@ -1,5 +1,6 @@
 using System.IO;
 using System.Reflection;
+using HugsLib.Source.Detour;
 using Verse;
 using Source = Verse.ModContentPack;
 
@@ -10,7 +11,7 @@ namespace Hospitality.Detouring
     /// </summary>
     public class ModContentPack : Verse.ModContentPack
     {
-        [Detour(typeof(Source), bindingFlags = BindingFlags.Public | BindingFlags.Instance)]
+        [DetourMethod(typeof(Source), "ToString")]
         public override string ToString()
         {
             return Name; // Changed
