@@ -500,19 +500,11 @@ namespace Hospitality
         {
             if (!pawn.Spawned || pawn.Dead || pawn.Downed || pawn.InMentalState) return;
 
-            var mentalState = MentalStateDefOf.Berserk;
-            switch (Rand.Range(0, 3))
-            {
-                case 0:
-                    mentalState = MentalStateDefOf.Berserk;
-                    break;
-                case 1:
-                    mentalState = MentalStateDefOf.Manhunter;
-                    break;
-                case 2:
-                    mentalState = MentalStateDefOf.PanicFlee;
-                    break;
-            }
+            pawn.guest.SetGuestStatus(null);
+            bool canFlee = pawn.Map.reachability.CanReachMapEdge(pawn.PositionHeld, TraverseParms.For(TraverseMode.NoPassClosedDoors));
+            
+            var mentalState = canFlee ? MentalStateDefOf.PanicFlee : MentalStateDefOf.ManhunterPermanent;
+
             pawn.mindState.mentalStateHandler.TryStartMentalState(mentalState);
         }
 

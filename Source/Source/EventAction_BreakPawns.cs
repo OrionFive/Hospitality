@@ -9,7 +9,10 @@ namespace Hospitality
     {
         public EventAction_BreakPawns(List<Pawn> pawns, PawnLostCondition condition)
         {
-            Log.Message("Break reason: "+condition);
+            foreach (var pawn in pawns)
+            {
+                Log.Message(pawn.NameStringShort+" - Break reason: " + condition);
+            }
             this.pawns = pawns;
         }
         

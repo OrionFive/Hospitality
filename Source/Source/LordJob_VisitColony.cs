@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 using Verse.AI.Group;
 
 namespace Hospitality
@@ -35,27 +33,32 @@ namespace Hospitality
             {
                 case PawnLostCondition.ExitedMap:
                 case PawnLostCondition.ChangedFaction:
-                    //foreach (var action in e.actions.OfType<EventAction_Pawns>()) action.RemovePawn(p);
                     break;
                 case PawnLostCondition.Undefined:
                 case PawnLostCondition.Vanished:
                 case PawnLostCondition.IncappedOrKilled:
-                //case PawnLostCondition.MadePrisoner:
-                //case PawnLostCondition.LeftVoluntarily:
-                //case PawnLostCondition.Drafted:
+                    //case PawnLostCondition.LeftVoluntarily:
+                    //case PawnLostCondition.Drafted:
                     Hospitality_MapComponent.Instance(lord.Map).QueueEvent(new Event
-                    {
-                        delayTicks = (int)(GenDate.TicksPerHour * Rand.Range(1f, 3f)),
-                        actions =
-                            new List<EventAction>
-                    {
-                        new EventAction_AngerForPawn(p, faction),
-                        new EventAction_BreakPawns(new List<Pawn>{p}, condition)
-                    }
-                    });
+                        {
+                            delayTicks = (int) (GenDate.TicksPerHour*Rand.Range(1f, 3f)),
+                            actions = new List<EventAction> {new EventAction_AngerForPawn(p, faction)}
+                        });
+                    p.Break();
+
                     break;
-                //default:
-                //    throw new ArgumentOutOfRangeException("condition");
+                case PawnLostCondition.MadePrisoner:
+                    Hospitality_MapComponent.Instance(lord.Map).QueueEvent(new Event
+                        {
+                            delayTicks = 1, // almost immediately
+                            actions = new List<EventAction>
+                            {
+                                //new EventAction_AngerForPawn(p, faction), 
+                                new EventAction_BreakPawns(lord.ownedPawns, condition)
+                            }
+                        });
+                    faction.SetHostileTo(Faction.OfPlayer, true);
+                    break;
             }
         }
 
