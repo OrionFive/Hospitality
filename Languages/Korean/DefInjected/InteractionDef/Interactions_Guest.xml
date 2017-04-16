@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
+<LanguageData>
+	
+	<GuestDiplomacy.label>관개 개선</GuestDiplomacy.label>
+	<rep>
+		<path>GuestDiplomacy.logRulesInitiator.rulesStrings[0]</path>
+		<trans>logentry->[other_nameShortIndef] 와 함께 외교적 대화를 나눴습니다.</trans>
+	</rep>
+	<rep>
+		<path>GuestDiplomacy.logRulesRecipient.rulesStrings[0]</path>
+		<trans>logentry->[other_nameShortIndef] 의 외교적 협상에 귀를 귀울였습니다.</trans>
+	</rep>
+
+	<CharmGuestAttempt.label>charm attempt</CharmGuestAttempt.label>
+	<rep>
+		<path>CharmGuestAttempt.logRulesInitiator.rulesStrings[0]</path>
+		<trans>logentry->[other_nameShortIndef] 를 남게 하도록 설득했습니다.</trans>
+	</rep>
+	<rep>
+		<path>CharmGuestAttempt.logRulesRecipient.rulesStrings[0]</path>
+		<trans>logentry->[other_nameShortIndef] 의 모집 권유를 들었습니다.</trans>
+	</rep>
+
+
+</LanguageData>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
+<LanguageData>
+	
+	<PleaseGuestChance.label>외교술</PleaseGuestChance.label>
+	<PleaseGuestChance.description>방문객의 인상을 개선시킬수 있는 기본 확률</PleaseGuestChance.description>
+
+	<RecruitRelationshipDamage.label>모집 관계 손상</RecruitRelationshipDamage.label>
+	<RecruitRelationshipDamage.description>방문객을 성공적으로 모집하였을 때에 받은 관계 손상.</RecruitRelationshipDamage.description>
+
+</LanguageData>
