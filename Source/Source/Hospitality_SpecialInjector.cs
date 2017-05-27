@@ -27,6 +27,7 @@ namespace Hospitality
 
         public override bool Inject()
         {
+            MAKE THIS GO AWAY
             // Special detours
             #region Special detours
             // Change guest bed gizmos to default building gizmos
@@ -34,10 +35,6 @@ namespace Hospitality
             if(!Detours.TryDetourFromTo(
                 typeof (Building_GuestBed).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public),
                 typeof (Building).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public))) return false;
-
-            DetourProvider.CompatibleDetour(
-                typeof(RimWorld.DrugPolicy).GetMethod("get_Item", BindingFlags.Instance | BindingFlags.Public, null, new[] {typeof(ThingDef)}, null),
-                typeof(DrugPolicy).GetMethod("Item", BindingFlags.Instance | BindingFlags.Public));
             #endregion
 
             #region Automatic hookup

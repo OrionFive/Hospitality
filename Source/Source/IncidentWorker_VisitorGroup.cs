@@ -148,7 +148,7 @@ namespace Hospitality
                     if (spaceFor > 0)
                     {
                         money.stackCount = Mathf.Min(spaceFor, amountS);
-                        var success = visitor.inventory.GetInnerContainer().TryAdd(money);
+                        var success = visitor.inventory.innerContainer.TryAdd(money);
                         if (success) totalValue += money.MarketValue*money.stackCount;
                         else if(!money.Destroyed) money.Destroy();
                     }
@@ -209,7 +209,7 @@ namespace Hospitality
                     if (spaceFor > 0)
                     {
                         item.stackCount = Mathf.Min(spaceFor, item.stackCount);
-                        var success = visitor.inventory.GetInnerContainer().TryAdd(item);
+                        var success = visitor.inventory.innerContainer.TryAdd(item);
                         if (success) totalValue += item.MarketValue*item.stackCount;
                         else if(!item.Destroyed) item.Destroy();
                     }
@@ -289,7 +289,7 @@ namespace Hospitality
                 if (comp != null)
                 {
                     comp.mayBuy = mapComp.defaultMayBuy;
-                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
+                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.Chat;
                     comp.GuestArea = mapComp.defaultAreaRestriction;
                 }
             });
@@ -329,7 +329,7 @@ namespace Hospitality
                     leaderDesc
 				});
             }
-            Find.LetterStack.ReceiveLetter(label, description, LetterType.Good, pawns[0]);
+            Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.Good, pawns[0]);
         }
 
         private static bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction)
@@ -374,7 +374,7 @@ namespace Hospitality
                     current.stackCount = spaceFor;
 
                     // Core stuff
-                    if (!pawn.inventory.GetInnerContainer().TryAdd(current))
+                    if (!pawn.inventory.innerContainer.TryAdd(current))
                     {
                         current.Destroy();
                     }

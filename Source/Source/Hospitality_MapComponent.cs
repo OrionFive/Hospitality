@@ -14,9 +14,9 @@ namespace Hospitality
 
         public void ExposeData()
         {
-            Scribe_Values.LookValue(ref delayTicks, "delayTicks");
-            Scribe_Collections.LookList(ref actions, "actions", LookMode.Deep);
-            //Scribe_Values.LookValue(ref GuestUtility.visitorDrugPolicy, "visitorDrugPolicy");
+            Scribe_Values.Look(ref delayTicks, "delayTicks");
+            Scribe_Collections.Look(ref actions, "actions", LookMode.Deep);
+            //Scribe_Values.Look(ref GuestUtility.visitorDrugPolicy, "visitorDrugPolicy");
         }
     }
 
@@ -31,19 +31,19 @@ namespace Hospitality
 
         private List<Event> eventQueue = new List<Event>();
         private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
-        public PrisonerInteractionMode defaultInteractionMode;
+        public PrisonerInteractionModeDef defaultInteractionMode;
         public Area defaultAreaRestriction;
         public bool defaultMayBuy;
         private int lastEventKey;
 
         public override void ExposeData()
         {
-            Scribe_Collections.LookDictionary(ref bribeCount, "bribeCount", LookMode.Value, LookMode.Value);
-            Scribe_Values.LookValue(ref defaultMayBuy, "defaultMayBuy", false);
-            Scribe_Values.LookValue(ref defaultInteractionMode, "defaultInteractionMode", PrisonerInteractionMode.NoInteraction);
-            Scribe_References.LookReference(ref defaultAreaRestriction, "defaultAreaRestriction");
-            Scribe_Values.LookValue(ref lastEventKey, "lastEventKey", 0);
-            Scribe_Collections.LookList(ref eventQueue, "eventQueue", LookMode.Deep);
+            Scribe_Collections.Look(ref bribeCount, "bribeCount", LookMode.Value, LookMode.Value);
+            Scribe_Values.Look(ref defaultMayBuy, "defaultMayBuy", false);
+            Scribe_Defs.Look(ref defaultInteractionMode, "defaultInteractionMode");
+            Scribe_References.Look(ref defaultAreaRestriction, "defaultAreaRestriction");
+            Scribe_Values.Look(ref lastEventKey, "lastEventKey", 0);
+            Scribe_Collections.Look(ref eventQueue, "eventQueue", LookMode.Deep);
 
             if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
         }
@@ -58,6 +58,7 @@ namespace Hospitality
             if (!forReal) return;
             map.components.Add(this);
             defaultAreaRestriction = map.areaManager.Home;
+            defaultInteractionMode = PrisonerInteractionModeDefOf.NoInteraction;
         }
 
         public override void MapComponentTick()

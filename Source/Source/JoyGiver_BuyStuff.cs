@@ -24,7 +24,7 @@ namespace Hospitality
 
         public static int GetMoney(Pawn pawn)
         {
-            var money = pawn.inventory.GetInnerContainer().FirstOrDefault(i => i.def == ThingDefOf.Silver);
+            var money = pawn.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
             if (money == null) return 0;
             return money.stackCount;
         }

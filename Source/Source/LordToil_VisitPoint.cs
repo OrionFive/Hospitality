@@ -17,10 +17,10 @@ namespace Hospitality
 
         public override void ExposeData()
         {
-            Scribe_Values.LookValue(ref point, "point", default(IntVec3));
-            Scribe_Values.LookValue(ref radius, "radius", 45f);
-            Scribe_Collections.LookDictionary(ref visitorMoods, "visitorMoods");
-            Scribe_References.LookReference(ref visitorFlag, "flag");
+            Scribe_Values.Look(ref point, "point", default(IntVec3));
+            Scribe_Values.Look(ref radius, "radius", 45f);
+            Scribe_Collections.Look(ref visitorMoods, "visitorMoods");
+            Scribe_References.Look(ref visitorFlag, "flag");
         }
     }
     internal class LordToil_VisitPoint : LordToil
@@ -214,7 +214,7 @@ namespace Hospitality
         private static List<Thing> GetLoot(Pawn pawn, float desiredValue)
         {
             var totalValue = 0f;
-            var items = pawn.inventory.GetInnerContainer().Where(i => WillDrop(pawn, i)).InRandomOrder().ToList();
+            var items = pawn.inventory.innerContainer.Where(i => WillDrop(pawn, i)).InRandomOrder().ToList();
             var dropped = new List<Thing>();
             while (totalValue < desiredValue && items.Count > 0)
             {
@@ -222,7 +222,7 @@ namespace Hospitality
                 items.Remove(item);
                 if (totalValue + item.MarketValue > desiredValue) continue;
                 Map map = pawn.MapHeld;
-                if (pawn.inventory.GetInnerContainer().TryDrop(item, pawn.Position, map, ThingPlaceMode.Near, out item))
+                if (pawn.inventory.innerContainer.TryDrop(item, pawn.Position, map, ThingPlaceMode.Near, out item))
                 {
                     dropped.Add(item);
                     totalValue += item.MarketValue;
@@ -237,7 +237,7 @@ namespace Hospitality
 
         private static void LeaveVerySatisfied(Pawn pawn, float score)
         {
-            if (pawn.inventory.GetInnerContainer().Count == 0) return;
+            if (pawn.inventory.innerContainer.Count == 0) return;
 
             var dropped = GetLoot(pawn, (score + 10)*1.5f);
             if (dropped.Count == 0) return;
@@ -251,16 +251,16 @@ namespace Hospitality
 
         private static void LeaveSatisfied(Pawn pawn, float score)
         {
-            if (pawn.inventory.GetInnerContainer().Count == 0) return;
+            if (pawn.inventory.innerContainer.Count == 0) return;
 
             var desiredValue = (score + 10)*2;
-            var things = pawn.inventory.GetInnerContainer().Where(i => WillDrop(pawn, i) && i.MarketValue < desiredValue).ToArray();
+            var things = pawn.inventory.innerContainer.Where(i => WillDrop(pawn, i) && i.MarketValue < desiredValue).ToArray();
             if (!things.Any()) return;
 
             var item = things.MaxBy(i => i.MarketValue); // MaxBy throws exception when list is empty!!!
             if (item == null) return;
 
-            pawn.inventory.GetInnerContainer().TryDrop(item, pawn.Position, pawn.MapHeld, ThingPlaceMode.Near, out item);
+            pawn.inventory.innerContainer.TryDrop(item, pawn.Position, pawn.MapHeld, ThingPlaceMode.Near, out item);
 
             var text = "VisitorSatisfied".Translate(pawn.Name.ToStringShort, pawn.Possessive(), pawn.ProSubjCap(), GetItemName(item));
             Messages.Message(text, item, MessageSound.Benefit);

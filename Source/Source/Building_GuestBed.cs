@@ -58,7 +58,7 @@ namespace Hospitality
             base.DeSpawn();
             if (room != null)
             {
-                room.RoomChanged();
+                room.Notify_RoomShapeOrContainedBedsChanged();
             }
         }
 

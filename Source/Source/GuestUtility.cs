@@ -268,7 +268,7 @@ namespace Hospitality
                 Apparel droppedApp;
                 if (pawn.apparel.TryDrop(apparel, out droppedApp))
                 {
-                    bool success = pawn.inventory.GetInnerContainer().TryAdd(droppedApp);
+                    bool success = pawn.inventory.innerContainer.TryAdd(droppedApp);
                     if(!success) pawn.apparel.Wear(droppedApp);
                 }
             }
@@ -284,7 +284,7 @@ namespace Hospitality
 
         public static void WearHeadgear(this Pawn pawn)
         {
-            var container = pawn.inventory.GetInnerContainer();
+            var container = pawn.inventory.innerContainer;
             var headgear = container.OfType<Apparel>().Where(CoversHead).InRandomOrder().ToArray();
             foreach (var apparel in headgear)
             {
@@ -390,7 +390,7 @@ namespace Hospitality
             if (guest.jobQueue != null) guest.jobQueue.Clear();
             guest.jobs.EndCurrentJob(JobCondition.InterruptForced);
 
-            guest.inventory.GetInnerContainer().TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
+            guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
 
             // Clear reservations
             Find.Maps.ForEach(m => m.reservationManager.ReleaseAllClaimedBy(guest));
@@ -466,7 +466,7 @@ namespace Hospitality
             var def = DefDatabase<ThingDef>.GetNamed("Apparel_Backpack", false);
             if (def == null) return;
 
-            if (p.inventory.GetInnerContainer().Contains(def)) return;
+            if (p.inventory.innerContainer.Contains(def)) return;
 
             ThingDef stuff = GenStuff.RandomStuffFor(def);
             var item = (Apparel)ThingMaker.MakeThing(def, stuff);

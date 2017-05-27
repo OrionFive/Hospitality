@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using CommunityCoreLibrary;
-using Hospitality.Detouring;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -25,6 +22,7 @@ namespace Hospitality
         public ITab_Pawn_Guest()
         {
             labelKey = "TabGuest";
+            tutorTag = "Guest";
             size = new Vector2(400f, 380f);
         }
 
@@ -32,6 +30,7 @@ namespace Hospitality
 
         protected override void FillTab()
         {
+            // TODO: DRAWING WORKS DIFFERENTLY NOW!
             Text.Font = GameFont.Small;
             Rect rect = new Rect(0f, 20f, size.x, size.y - 20).ContractedBy(10f);
             var listingStandard = new Listing_Standard(rect);
@@ -211,8 +210,8 @@ namespace Hospitality
             if(pawn.GetComp<CompGuest>() != null)
             {
                 mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat
-                ? PrisonerInteractionMode.Chat
-                : PrisonerInteractionMode.NoInteraction;
+                ? PrisonerInteractionModeDefOf.Chat
+                : PrisonerInteractionModeDefOf.NoInteraction;
 
                 mapComp.defaultMayBuy = pawn.GetComp<CompGuest>().mayBuy;
             }
@@ -228,14 +227,14 @@ namespace Hospitality
                 var comp = guest.GetComp<CompGuest>();
                 if (comp != null)
                 {
-                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
+                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.Chat;
                     comp.GuestArea = mapComp.defaultAreaRestriction;
                     comp.mayBuy = mapComp.defaultMayBuy;
                 }
             }
         }
 
-        private void SetDefaults(PrisonerInteractionMode mode)
+        private void SetDefaults(PrisonerInteractionModeDef mode)
         {
             Map map = SelPawn.MapHeld;
             if (map == null) return;
@@ -250,7 +249,7 @@ namespace Hospitality
             {
                 var comp = guest.GetComp<CompGuest>();
                 if (comp == null) continue;
-                comp.chat = mode == PrisonerInteractionMode.Chat;
+                comp.chat = mode == PrisonerInteractionModeDefOf.Chat;
             }
         }
     }

@@ -31,14 +31,14 @@ namespace Hospitality
 
             var message = string.Format(txtMessageKilledPawnFactionAnger, faction.Name, pawnName,
                 (-penalty).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Offset));
-            Find.LetterStack.ReceiveLetter(labelMissingPawnsFactionAnger, message, LetterType.BadNonUrgent);
+            Find.LetterStack.ReceiveLetter(labelMissingPawnsFactionAnger, message, LetterDefOf.BadNonUrgent);
         }
 
         public override void ExposeData()
         {
-            Scribe_Values.LookValue(ref pawnName, "pawnName");
-            Scribe_Values.LookValue(ref pawnValue, "pawnValue");
-            Scribe_References.LookReference(ref faction, "faction");
+            Scribe_Values.Look(ref pawnName, "pawnName");
+            Scribe_Values.Look(ref pawnValue, "pawnValue");
+            Scribe_References.Look(ref faction, "faction");
         }
     }
 }

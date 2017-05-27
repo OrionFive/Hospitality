@@ -65,10 +65,10 @@ namespace Hospitality
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.LookReference(ref faction, "faction");
-            Scribe_Values.LookValue(ref chillSpot, "chillSpot", default(IntVec3));
-            Scribe_Values.LookValue(ref checkEventId, "checkEventId", -1);
-            Scribe_Values.LookValue(ref stayDuration, "stayDuration", GenDate.TicksPerDay);
+            Scribe_References.Look(ref faction, "faction");
+            Scribe_Values.Look(ref chillSpot, "chillSpot", default(IntVec3));
+            Scribe_Values.Look(ref checkEventId, "checkEventId", -1);
+            Scribe_Values.Look(ref stayDuration, "stayDuration", GenDate.TicksPerDay);
         }
 
         public override StateGraph CreateGraph()
@@ -89,7 +89,7 @@ namespace Hospitality
             Transition t1 = new Transition(toilArrive, toilVisit);
             t1.triggers.Add(new Trigger_Memo("TravelArrived"));
             graphArrive.transitions.Add(t1);
-            LordToil_ExitMapBest toilExitCold = new LordToil_ExitMapBest(); // ADDED TOIL
+            LordToil_ExitMap toilExitCold = new LordToil_ExitMap(); // ADDED TOIL
             graphArrive.AddToil(toilExitCold);
             Transition t6 = new Transition(toilArrive, toilExitCold); // ADDED TRANSITION
             t6.triggers.Add(new Trigger_UrgentlyCold());
