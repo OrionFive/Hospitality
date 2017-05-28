@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     public class DrugPolicy_Patch
     {
         [HarmonyPatch(typeof(DrugPolicy), "get_Item", new[] {typeof(ThingDef)})]
-        public static class Item
+        public class Item
         {
             [HarmonyPostfix]
             public static void Postfix(DrugPolicy __instance, ref DrugPolicyEntry __result, ThingDef drugDef)

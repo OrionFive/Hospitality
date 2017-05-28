@@ -1,7 +1,7 @@
 using Harmony;
 using Verse;
 
-namespace Hospitality.Detouring
+namespace Hospitality.Harmony
 {
     public static class ITab_Pawn_Guest_Patch
     {

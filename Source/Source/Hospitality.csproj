@@ -37,12 +37,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\818773962\Assemblies\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Community Core Library">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\729577707\Assemblies\Community Core Library.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HugsLib">
@@ -61,31 +61,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DetourAttribute.cs" />
-    <Compile Include="Detouring\ForbidUtility.cs" />
-    <Compile Include="Detouring\Getters.cs" />
-    <Compile Include="Detouring\ITab_Pawn_Gear.cs" />
-    <Compile Include="Detouring\ModContentPack.cs" />
-    <Compile Include="Detouring\Pawn_GuestTracker.cs" />
-    <Compile Include="Detouring\ThoughtWorker_PrisonBarracksImpressiveness.cs" />
-    <Compile Include="Detouring\ThoughtWorker_PrisonCellImpressiveness.cs" />
     <Compile Include="GenericUtility.cs" />
+    <Compile Include="Harmony\DrugPolicy_Patch.cs" />
+    <Compile Include="Harmony\FactionDialogMaker_Patch.cs" />
+    <Compile Include="Harmony\ForbidUtility_Patch.cs" />
+    <Compile Include="Harmony\ITab_Pawn_Gear_Patch.cs" />
+    <Compile Include="Harmony\ITab_Pawn_Guest_Patch.cs" />
+    <Compile Include="Harmony\Pawn_GuestTracker_Patch.cs" />
+    <Compile Include="Harmony\Pawn_InteractionsTracker_Patch.cs" />
+    <Compile Include="Harmony\Pawn_NeedsTracker_Patch.cs" />
+    <Compile Include="Harmony\Pawn_PlayerSettings_Patch.cs" />
+    <Compile Include="Harmony\Pawn_RelationsTracker_Patch.cs" />
+    <Compile Include="Harmony\Pawn_WorkSettings_Patch.cs" />
+    <Compile Include="Harmony\RestUtility_Patch.cs" />
+    <Compile Include="Harmony\ThoughtWorker_Patch.cs" />
+    <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
     <Compile Include="HugsLib\Mod.cs" />
     <Compile Include="IncidentWorker_RefugeeChased.cs" />
     <Compile Include="IncidentWorker_WandererJoin.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
-    <Compile Include="NoCCL\Detours.cs" />
     <Compile Include="CompGuest.cs" />
     <Compile Include="CompProperties_Guest.cs" />
     <Compile Include="Debugging.cs" />
-    <Compile Include="Detouring\Pawn_NeedsTracker.cs" />
-    <Compile Include="Detouring\Pawn_RelationsTracker.cs" />
-    <Compile Include="Detouring\RestUtility.cs" />
-    <Compile Include="Detouring\ThoughtWorker_BarracksImpressiveness.cs" />
-    <Compile Include="Detouring\ThoughtWorker_BedroomImpressiveness.cs" />
-    <Compile Include="NoCCL\SpecialInjector.cs" />
-    <Compile Include="Detouring\ThoughtWorker_SharedBedroom.cs" />
-    <Compile Include="Detouring\ThoughtWorker_SleepingRoomImpressiveness.cs" />
     <Compile Include="EventAction.cs" />
     <Compile Include="EventAction_AngerForPawn.cs" />
     <Compile Include="EventAction_BreakPawns.cs" />
@@ -94,13 +91,12 @@
     <Compile Include="InteractionWorker_GuestDiplomacy.cs" />
     <Compile Include="JobDriver_BrowseItems.cs" />
     <Compile Include="JobDriver_BuyItem.cs" />
-    <Compile Include="Detouring\Pawn_WorkSettings.cs" />
     <Compile Include="JoyGiver_BuyFood.cs" />
     <Compile Include="JoyGiver_BuyStuff.cs" />
     <Compile Include="LordJob_VisitColony.cs" />
     <Compile Include="LordToil_CustomTravel.cs" />
-    <Compile Include="Detouring\Pawn_InteractionsTracker.cs" />
     <Compile Include="ModConfigMenu.cs" />
+    <Compile Include="SpecialInjector.cs" />
     <Compile Include="ThinkNode_InGuestArea.cs" />
     <Compile Include="ThoughtWorker_Beds.cs" />
     <Compile Include="ThoughtWorker_Expectations.cs" />
@@ -113,7 +109,6 @@
     <Compile Include="JobDriver_GuestBase.cs" />
     <Compile Include="JobDriver_GuestImproveRelationship.cs" />
     <Compile Include="JobDriver_CharmGuest.cs" />
-    <Compile Include="Detouring\FactionDialogMaker.cs" />
     <Compile Include="JobGiver_Relax.cs" />
     <Compile Include="JobGiver_Sleep.cs" />
     <Compile Include="RoomRoleWorker_GuestRoom.cs" />
@@ -130,7 +125,10 @@
     <Compile Include="ITab_Pawn_Guest.cs" />
     <Compile Include="Hospitality_SpecialInjector.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Detouring\" />
+    <Folder Include="NoCCL\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

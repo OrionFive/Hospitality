@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -119,8 +120,11 @@ namespace Hospitality
 
         public override IEnumerable<Gizmo> GetGizmos()
         {
-            // Dummy for replacement
-            yield break;
+            // Get original gizmos
+            foreach (var gizmo in Traverse.Create<Building_Bed>().Method("GetGizmos").GetValue<IEnumerable<Gizmo>>())
+            {
+                yield return gizmo;
+            }
         }
 
         public override void PostMake()

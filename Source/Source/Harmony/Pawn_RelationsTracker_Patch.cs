@@ -4,13 +4,13 @@ using Verse;
 
 namespace Hospitality.Harmony
 {
-    public static class Pawn_RelationsTracker_Patch
+    public class Pawn_RelationsTracker_Patch
     {
         /// <summary>
         /// Rescued pawns get marked as rescued for follow up
         /// </summary>
         [HarmonyPatch(typeof(Pawn_RelationsTracker), "Notify_RescuedBy")]
-        public static class Notify_RescuedBy
+        public class Notify_RescuedBy
         {
             [HarmonyPostfix]
             public static void Postfix(Pawn_RelationsTracker __instance)
