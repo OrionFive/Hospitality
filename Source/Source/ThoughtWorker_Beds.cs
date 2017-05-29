@@ -25,8 +25,6 @@ namespace Hospitality
                 
                 if(!pawn.GetComp<CompGuest>().arrived) return ThoughtState.Inactive;
 
-                if(pawn.InBed()) return ThoughtState.Inactive;
-
                 var area = pawn.GetGuestArea();
                 if (area == null) return ThoughtState.ActiveAtStage(0);
 
@@ -34,7 +32,7 @@ namespace Hospitality
                 var bedCount = pawn.GetGuestBeds().Count();
 
                 if (bedCount == 0) return ThoughtState.ActiveAtStage(0);
-                if (bedCount < visitors) return ThoughtState.ActiveAtStage(1);
+                if (bedCount < visitors && !pawn.InBed()) return ThoughtState.ActiveAtStage(1);
                 if(bedCount > visitors*1.3f && bedCount > visitors+3) return ThoughtState.ActiveAtStage(3);
                 return ThoughtState.ActiveAtStage(2);
             }

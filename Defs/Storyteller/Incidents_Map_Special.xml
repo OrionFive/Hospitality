@@ -4,7 +4,7 @@
   <IncidentDef>
     <defName>VisitorGroup</defName>
     <label>visitor group</label>
-    <targetType>BaseMap</targetType>
+    <targetType>MapPlayerHome</targetType>
     <workerClass>Hospitality.IncidentWorker_VisitorGroup</workerClass>
     <category>AllyArrival</category>
     <baseChance>10</baseChance>

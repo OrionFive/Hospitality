@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -44,6 +44,7 @@ namespace Hospitality
         public override void Draw()
         {
             base.Draw();
+            if (Medical) Medical = false;
             if (ForPrisoners) ForPrisoners = false;
         }
 
@@ -88,43 +89,43 @@ namespace Hospitality
             var stringBuilder = new StringBuilder();
             //stringBuilder.Append(base.GetInspectString());
             stringBuilder.Append(InspectStringPartsFromComps());
-            //stringBuilder.AppendLine();
+            stringBuilder.AppendLine();
             stringBuilder.Append("ForGuestUse".Translate());
+            
+            stringBuilder.AppendLine();
+            if (owners.Count == 0)
             {
-                stringBuilder.AppendLine();
-                if (owners.Count == 0)
+                stringBuilder.Append("Owner".Translate() + ": " + "Nobody".Translate());
+            }
+            else if (owners.Count == 1)
+            {
+                stringBuilder.Append("Owner".Translate() + ": " + owners[0].LabelCap);
+            }
+            else
+            {
+                stringBuilder.Append("Owners".Translate() + ": ");
+                bool notFirst = false;
+                foreach (Pawn owner in owners)
                 {
-                    stringBuilder.AppendLine("Owner".Translate() + ": " + "Nobody".Translate());
-                }
-                else if (owners.Count == 1)
-                {
-                    stringBuilder.AppendLine("Owner".Translate() + ": " + owners[0].LabelCap);
-                }
-                else
-                {
-                    stringBuilder.Append("Owners".Translate() + ": ");
-                    bool notFirst = false;
-                    foreach (Pawn owner in owners) {
-                        if (notFirst)
-                        {
-                            stringBuilder.Append(", ");
-                        }
-                        notFirst = true;
-                        stringBuilder.Append(owner.Label);
+                    if (notFirst)
+                    {
+                        stringBuilder.Append(", ");
                     }
-                    stringBuilder.AppendLine();
+                    notFirst = true;
+                    stringBuilder.Append(owner.Label);
                 }
+                //if(notFirst) stringBuilder.AppendLine();
             }
             return stringBuilder.ToString();
         }
 
         public override IEnumerable<Gizmo> GetGizmos()
         {
-            // Get original gizmos
-            foreach (var gizmo in Traverse.Create<Building_Bed>().Method("GetGizmos").GetValue<IEnumerable<Gizmo>>())
-            {
-                yield return gizmo;
-            }
+            // Get original gizmos from Building class
+            var method = typeof(Building).GetMethod("GetGizmos");
+            var ftn = method.MethodHandle.GetFunctionPointer();
+            var func = (Func<IEnumerable<Gizmo>>)Activator.CreateInstance(typeof(Func<IEnumerable<Gizmo>>), this, ftn);
+            return func();
         }
 
         public override void PostMake()
