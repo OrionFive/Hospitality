@@ -76,7 +76,6 @@
     <Compile Include="Harmony\RestUtility_Patch.cs" />
     <Compile Include="Harmony\ThoughtWorker_Patch.cs" />
     <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
-    <Compile Include="HugsLib\Mod.cs" />
     <Compile Include="IncidentWorker_RefugeeChased.cs" />
     <Compile Include="IncidentWorker_WandererJoin.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
@@ -127,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Detouring\" />
+    <Folder Include="HugsLib\" />
     <Folder Include="NoCCL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
