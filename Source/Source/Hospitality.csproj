@@ -77,7 +77,7 @@
     <Compile Include="Harmony\ThoughtWorker_Patch.cs" />
     <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
     <Compile Include="IncidentWorker_RefugeeChased.cs" />
-    <Compile Include="IncidentWorker_WandererJoin.cs" />
+    <Compile Include="Harmony\IncidentWorker_WandererJoin_Patch.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
     <Compile Include="CompGuest.cs" />
     <Compile Include="CompProperties_Guest.cs" />
@@ -124,11 +124,7 @@
     <Compile Include="ITab_Pawn_Guest.cs" />
     <Compile Include="Hospitality_SpecialInjector.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Detouring\" />
-    <Folder Include="HugsLib\" />
-    <Folder Include="NoCCL\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
