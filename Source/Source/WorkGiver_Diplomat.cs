@@ -8,7 +8,7 @@ namespace Hospitality
     {
         private readonly JobDef jobDef = DefDatabase<JobDef>.GetNamed("GuestImproveRelationship");
 
-        public override bool HasJobOnThing(Pawn pawn, Thing t)
+        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             var guest = t as Pawn;
             return pawn.ShouldImproveRelationship(guest);
@@ -19,7 +19,7 @@ namespace Hospitality
             return pawn.story.WorkTagIsDisabled(def.workType.workTags);
         }
 
-        public override Job JobOnThing(Pawn pawn, Thing t)
+        public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             return new Job(jobDef, t);
         }
