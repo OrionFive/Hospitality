@@ -76,7 +76,7 @@
     <Compile Include="Harmony\RestUtility_Patch.cs" />
     <Compile Include="Harmony\ThoughtWorker_Patch.cs" />
     <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
-    <Compile Include="IncidentWorker_RefugeeChased.cs" />
+    <Compile Include="Harmony\IncidentWorker_RefugeeChased_Patch.cs" />
     <Compile Include="Harmony\IncidentWorker_WandererJoin_Patch.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
     <Compile Include="CompGuest.cs" />
@@ -104,7 +104,7 @@
     <Compile Include="VisitorFlag.cs" />
     <Compile Include="Building_GuestBed.cs" />
     <Compile Include="GuestUtility.cs" />
-    <Compile Include="IncidentWorker_VisitorGroup.cs" />
+    <Compile Include="Harmony\IncidentWorker_VisitorGroup.cs" />
     <Compile Include="JobDriver_GuestBase.cs" />
     <Compile Include="JobDriver_GuestImproveRelationship.cs" />
     <Compile Include="JobDriver_CharmGuest.cs" />

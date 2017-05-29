@@ -25,7 +25,8 @@ namespace Hospitality.Harmony
                     return false;
                 }
 
-                var pawn = GenericUtility.GetAnyRelatedWorldPawn(other => other.Faction != null && !other.Faction.HostileTo(Faction.OfPlayer), 100) ?? CreateNewPawn();
+                bool getRelated = Rand.Value < 0.7f;
+                var pawn = (getRelated ? GenericUtility.GetAnyRelatedWorldPawn(other => other.Faction != null && !other.Faction.HostileTo(Faction.OfPlayer), 100) : null) ?? CreateNewPawn();
                 if (pawn == null)
                 {
                     __result = false;
@@ -81,7 +82,7 @@ namespace Hospitality.Harmony
                         pawn.SetFaction(Faction.OfPlayer);
                     }
 
-                    Find.CameraDriver.JumpToVisibleMapLoc(pawn.Position);
+                    CameraJumper.TryJump(pawn);
                 };
                 optionAccept.resolveTree = true;
                 nodeAsk.options.Add(optionAccept);

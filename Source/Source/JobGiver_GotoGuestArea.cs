@@ -16,7 +16,7 @@ namespace Hospitality
 
         }
 
-        public override ThinkResult TryIssueJobPackage(Pawn pawn)
+        public override ThinkResult TryIssueJobPackage(Pawn pawn, JobIssueParams jobParams)
         {
             var area = pawn.GetGuestArea();
             if (area == null) return ThinkResult.NoJob;

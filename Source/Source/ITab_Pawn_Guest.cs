@@ -18,7 +18,8 @@ namespace Hospitality
 
         protected readonly Vector2 setDefaultButtonSize = new Vector2(120f, 30f);
         protected readonly Vector2 sendHomeButtonSize = new Vector2(120f, 30f);
-       
+        private static Listing_Standard listingStandard = new Listing_Standard();
+
         public ITab_Pawn_Guest()
         {
             labelKey = "TabGuest";
@@ -33,26 +34,26 @@ namespace Hospitality
             // TODO: DRAWING WORKS DIFFERENTLY NOW!
             Text.Font = GameFont.Small;
             Rect rect = new Rect(0f, 20f, size.x, size.y - 20).ContractedBy(10f);
-            var listingStandard = new Listing_Standard(rect);
+            listingStandard.Begin(rect);
             {
                 if (SelPawn.IsTrader())
                 {
-                    FillTabTrader(listingStandard);
+                    FillTabTrader();
                 }
                 else
                 {
-                    FillTabGuest(listingStandard, rect);
+                    FillTabGuest(rect);
                 }
             }
             listingStandard.End();
         }
 
-        private void FillTabTrader(Listing_Standard listingStandard)
+        private void FillTabTrader()
         {
             listingStandard.Label("IsATrader".Translate().AdjustedFor(SelPawn));
         }
 
-        private void FillTabGuest(Listing_Standard listingStandard, Rect rect)
+        private void FillTabGuest(Rect rect)
         {
             //ConceptDatabase.KnowledgeDemonstrated(ConceptDefOf.PrisonerTab, KnowledgeAmount.GuiFrame);
 
@@ -132,7 +133,7 @@ namespace Hospitality
             if (SelPawn.playerSettings == null)
             {
                 var savedArea = comp.GuestArea;
-                SelPawn.playerSettings = new RimWorld.Pawn_PlayerSettings(SelPawn) {AreaRestriction = savedArea};
+                SelPawn.playerSettings = new Pawn_PlayerSettings(SelPawn) {AreaRestriction = savedArea};
             }
 
             var oldArea = SelPawn.playerSettings.AreaRestriction = comp.GuestArea;
