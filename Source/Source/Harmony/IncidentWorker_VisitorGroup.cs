@@ -12,7 +12,6 @@ namespace Hospitality
     public class IncidentWorker_VisitorGroup : IncidentWorker_NeutralGroup
     {
         private static ThingDef[] _items;
-        private static float highestValue;
 
         public static float MaxPleaseAmount(float current)
         {
@@ -34,7 +33,7 @@ namespace Hospitality
 
         private static bool CheckCanCome(Map map, Faction faction)
         {
-            bool fallout = map.mapConditionManager.GetActiveCondition<MapCondition_ToxicFallout>() != null;
+            bool fallout = map.GameConditionManager.GetActiveCondition<GameCondition_ToxicFallout>() != null;
             var hostiles = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed
                                                                    && (p.Faction.HostileTo(Faction.OfPlayer) || p.Faction.HostileTo(faction)) && p.Faction != Faction.OfInsects);
 
@@ -148,7 +147,7 @@ namespace Hospitality
                     if (spaceFor > 0)
                     {
                         money.stackCount = Mathf.Min(spaceFor, amountS);
-                        var success = visitor.inventory.GetInnerContainer().TryAdd(money);
+                        var success = visitor.inventory.innerContainer.TryAdd(money);
                         if (success) totalValue += money.MarketValue*money.stackCount;
                         else if(!money.Destroyed) money.Destroy();
                     }
@@ -209,7 +208,7 @@ namespace Hospitality
                     if (spaceFor > 0)
                     {
                         item.stackCount = Mathf.Min(spaceFor, item.stackCount);
-                        var success = visitor.inventory.GetInnerContainer().TryAdd(item);
+                        var success = visitor.inventory.innerContainer.TryAdd(item);
                         if (success) totalValue += item.MarketValue*item.stackCount;
                         else if(!item.Destroyed) item.Destroy();
                     }
@@ -285,19 +284,19 @@ namespace Hospitality
 
             // Set default interaction
             pawns.ForEach(delegate(Pawn p) {
-                var comp = p.GetComp<CompGuest>();
-                if (comp != null)
+                var compGuest = p.GetComp<CompGuest>();
+                if (compGuest != null)
                 {
-                    comp.mayBuy = mapComp.defaultMayBuy;
-                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
-                    comp.GuestArea = mapComp.defaultAreaRestriction;
+                    compGuest.mayBuy = mapComp.defaultMayBuy;
+                    compGuest.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.Chat;
+                    compGuest.GuestArea = mapComp.defaultAreaRestriction;
                 }
             });
 
             bool gotTrader = false;
-            if (Rand.Value < 0.8f)
+            if (Rand.Value < 0.75f)
             {
-                gotTrader = TryConvertOnePawnToSmallTrader(pawns, faction);
+                gotTrader = TryConvertOnePawnToSmallTrader(pawns, faction, map);
             }
             string label;
             string description;
@@ -329,10 +328,10 @@ namespace Hospitality
                     leaderDesc
 				});
             }
-            Find.LetterStack.ReceiveLetter(label, description, LetterType.Good, pawns[0]);
+            Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.Good, pawns[0]);
         }
 
-        private static bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction)
+        private static bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction, Map map)
         {
             if (faction.def.visitorTraderKinds.NullOrEmpty())
             {
@@ -342,13 +341,18 @@ namespace Hospitality
             Lord lord = pawn.GetLord();
             pawn.mindState.wantsToTradeWithColony = true;
             PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, true);
-            TraderKindDef traderKindDef = faction.def.visitorTraderKinds.RandomElement();
+            TraderKindDef traderKindDef = faction.def.visitorTraderKinds.RandomElementByWeight(traderDef => traderDef.commonality);
             pawn.trader.traderKind = traderKindDef;
             pawn.inventory.DestroyAll();
 
             pawn.TryGiveBackpack();
 
-            foreach (Thing current in TraderStockGenerator.GenerateTraderThings(traderKindDef, lord.Map))
+            ItemCollectionGeneratorParams parms = default(ItemCollectionGeneratorParams);
+            parms.traderDef = traderKindDef;
+            parms.forTile = map.Tile;
+            parms.forFaction = faction;
+
+            foreach (Thing current in ItemCollectionGeneratorDefOf.TraderStock.Worker.Generate(parms))
             {
                 Pawn slave = current as Pawn;
                 if (slave != null)
@@ -374,7 +378,7 @@ namespace Hospitality
                     current.stackCount = spaceFor;
 
                     // Core stuff
-                    if (!pawn.inventory.GetInnerContainer().TryAdd(current))
+                    if (!pawn.inventory.innerContainer.TryAdd(current))
                     {
                         current.Destroy();
                     }

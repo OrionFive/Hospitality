@@ -11,7 +11,7 @@ namespace Hospitality
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.LookReference(ref lord, "lord");
+            Scribe_References.Look(ref lord, "lord");
         }
 
         public void SetLord(Lord lord)

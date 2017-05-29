@@ -24,7 +24,7 @@ namespace Hospitality
         {
             get
             {
-                if (Pawn.playerSettings != null) return Pawn.playerSettings.AreaRestrictionInPawnCurrentMap;
+                if (Pawn.playerSettings != null) return Pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap;
                 return guestArea_int;
             }
             set
@@ -39,14 +39,14 @@ namespace Hospitality
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.LookValue(ref rescued, "rescued");
-            Scribe_Values.LookValue(ref arrived, "arrived");
-            Scribe_Values.LookValue(ref mayBuy, "mayBuy");
-            Scribe_Values.LookValue(ref chat, "chat");
-            Scribe_Values.LookValue(ref recruit, "recruit");
-            Scribe_Collections.LookList(ref boughtItems, "boughtItems", LookMode.Value);
-            Scribe_References.LookReference(ref guestArea_int, "guestArea");
-            Scribe_Deep.LookDeep(ref drugPolicy, "drugPolicy");
+            Scribe_Values.Look(ref rescued, "rescued");
+            Scribe_Values.Look(ref arrived, "arrived");
+            Scribe_Values.Look(ref mayBuy, "mayBuy");
+            Scribe_Values.Look(ref chat, "chat");
+            Scribe_Values.Look(ref recruit, "recruit");
+            Scribe_Collections.Look(ref boughtItems, "boughtItems", LookMode.Value);
+            Scribe_References.Look(ref guestArea_int, "guestArea");
+            Scribe_Deep.Look(ref drugPolicy, "drugPolicy");
             if (boughtItems == null) boughtItems = new List<int>();
         }
 

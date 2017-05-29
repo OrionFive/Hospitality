@@ -268,7 +268,7 @@ namespace Hospitality
                 Apparel droppedApp;
                 if (pawn.apparel.TryDrop(apparel, out droppedApp))
                 {
-                    bool success = pawn.inventory.GetInnerContainer().TryAdd(droppedApp);
+                    bool success = pawn.inventory.innerContainer.TryAdd(droppedApp);
                     if(!success) pawn.apparel.Wear(droppedApp);
                 }
             }
@@ -284,7 +284,7 @@ namespace Hospitality
 
         public static void WearHeadgear(this Pawn pawn)
         {
-            var container = pawn.inventory.GetInnerContainer();
+            var container = pawn.inventory.innerContainer;
             var headgear = container.OfType<Apparel>().Where(CoversHead).InRandomOrder().ToArray();
             foreach (var apparel in headgear)
             {
@@ -339,7 +339,7 @@ namespace Hospitality
         {
             PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("RecruitGuest"), KnowledgeAmount.Total);
 
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, guest), LetterType.Good, guest);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, guest), LetterDefOf.Good, guest);
 
             if (guest.Faction != Faction.OfPlayer)
             {
@@ -353,12 +353,12 @@ namespace Hospitality
                         if (guest.Faction.leader != null)
                         {
                             message = String.Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.NameStringShort, (-guest.RecruitPenalty()).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Offset));
-                            Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterType.BadNonUrgent);
+                            Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.BadNonUrgent);
                         }
                         else
                         {
                             message = String.Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.NameStringShort, (-guest.RecruitPenalty()).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Offset));
-                            Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterType.BadNonUrgent);
+                            Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.BadNonUrgent);
                         }
                     }
                     else if (guest.RecruitPenalty() <= -1)
@@ -368,12 +368,12 @@ namespace Hospitality
                         if (guest.Faction.leader != null)
                         {
                             message = String.Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.NameStringShort, (-guest.RecruitPenalty()).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Offset));
-                            Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefPlease, message, LetterType.Good);
+                            Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefPlease, message, LetterDefOf.Good);
                         }
                         else
                         {
                             message = String.Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.NameStringShort, (-guest.RecruitPenalty()).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Offset));
-                            Find.LetterStack.ReceiveLetter(labelRecruitFactionPlease, message, LetterType.Good);
+                            Find.LetterStack.ReceiveLetter(labelRecruitFactionPlease, message, LetterDefOf.Good);
                         }
                     }
                 }
@@ -387,10 +387,10 @@ namespace Hospitality
         {
             // Clear mind
             guest.pather.StopDead();
-            if (guest.jobQueue != null) guest.jobQueue.Clear();
+            if (guest.jobs.jobQueue != null) guest.jobs.jobQueue.Clear();
             guest.jobs.EndCurrentJob(JobCondition.InterruptForced);
 
-            guest.inventory.GetInnerContainer().TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
+            guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
 
             // Clear reservations
             Find.Maps.ForEach(m => m.reservationManager.ReleaseAllClaimedBy(guest));
@@ -417,7 +417,7 @@ namespace Hospitality
 
         public static void GainSocialThought(Pawn initiator, Pawn target, ThoughtDef thoughtDef)
         {
-            if (!target.needs.mood.thoughts.CanGetThought(thoughtDef)) return;
+            if (!ThoughtUtility.CanGetThought(target, thoughtDef)) return;
 
             float impact = initiator.GetStatValue(StatDefOf.SocialImpact);
             var thoughtMemory = (Thought_Memory) ThoughtMaker.MakeThought(thoughtDef);
@@ -428,7 +428,7 @@ namespace Hospitality
             {
                 thoughtSocialMemory.opinionOffset *= impact;
             }
-            target.needs.mood.thoughts.memories.TryGainMemoryThought(thoughtMemory, initiator);
+            target.needs.mood.thoughts.memories.TryGainMemory(thoughtMemory, initiator);
         }
 
         public static bool ShouldRecruit(this Pawn pawn, Pawn guest)
@@ -466,7 +466,7 @@ namespace Hospitality
             var def = DefDatabase<ThingDef>.GetNamed("Apparel_Backpack", false);
             if (def == null) return;
 
-            if (p.inventory.GetInnerContainer().Contains(def)) return;
+            if (p.inventory.innerContainer.Contains(def)) return;
 
             ThingDef stuff = GenStuff.RandomStuffFor(def);
             var item = (Apparel)ThingMaker.MakeThing(def, stuff);
@@ -548,8 +548,8 @@ namespace Hospitality
         private static void OptionAdopt(Pawn pawn)
         {
             pawn.Adopt();
-            Find.CameraDriver.JumpTo(pawn.Position);
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, pawn), LetterType.Good, pawn);
+            CameraJumper.TryJump(pawn);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, pawn), LetterDefOf.Good, pawn);
         }
 
         public static void BreakupRelations(Pawn pawn)
@@ -594,17 +594,17 @@ namespace Hospitality
             float chance = 1 - pawn.RecruitDifficulty(Faction.OfPlayer, false)*0.5f; // was 0.75f
             chance = Mathf.Clamp(chance, 0.005f, 1f);
 
-            Rand.PushSeed();
+            Rand.PushState();
             Rand.Seed = pawn.HashOffset();
             float value = Rand.Value;
-            Rand.PopSeed();
+            Rand.PopState();
 
             return value <= chance;
         }
 
         private static bool IsEnvironmentHostile(Pawn pawn)
         {
-            return !pawn.SafeTemperatureRange().Includes(pawn.Map.mapTemperature.OutdoorTemp) || pawn.Map.mapConditionManager.ConditionIsActive(MapConditionDefOf.ToxicFallout);
+            return !pawn.SafeTemperatureRange().Includes(pawn.Map.mapTemperature.OutdoorTemp) || pawn.Map.gameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout);
         }
 
         public static void PlanNewVisit(IIncidentTarget map, float afterDays, Faction faction = null)

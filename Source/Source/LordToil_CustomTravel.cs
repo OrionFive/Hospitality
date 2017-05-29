@@ -15,10 +15,10 @@ namespace Hospitality
 
         public override void ExposeData()
         {
-            Scribe_Values.LookValue(ref dest, "dest", default(IntVec3));
-            Scribe_Values.LookValue(ref destAssigned, "destAssigned", false);
-            Scribe_Values.LookValue(ref percentRequired, "percentRequired", 1);
-            Scribe_Values.LookValue(ref distance, "distance", 10);
+            Scribe_Values.Look(ref dest, "dest", default(IntVec3));
+            Scribe_Values.Look(ref destAssigned, "destAssigned", false);
+            Scribe_Values.Look(ref percentRequired, "percentRequired", 1);
+            Scribe_Values.Look(ref distance, "distance", 10);
         }
     }
 

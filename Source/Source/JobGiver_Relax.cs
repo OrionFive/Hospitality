@@ -75,14 +75,14 @@ namespace Hospitality
                 {
                     goto IL_6B;
                 }
-                Rand.PushSeed();
+                Rand.PushState();
                 Rand.Seed = (pawn.thingIDNumber ^ 63216713);
                 if (Rand.Value < joyGiverDef.pctPawnsEverDo)
                 {
-                    Rand.PopSeed();
+                    Rand.PopState();
                     goto IL_6B;
                 }
-                Rand.PopSeed();
+                Rand.PopState();
                 IL_A5:
                 i++;
                 continue;

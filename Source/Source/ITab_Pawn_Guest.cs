@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using CommunityCoreLibrary;
-using Hospitality.Detouring;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -21,10 +18,12 @@ namespace Hospitality
 
         protected readonly Vector2 setDefaultButtonSize = new Vector2(120f, 30f);
         protected readonly Vector2 sendHomeButtonSize = new Vector2(120f, 30f);
-       
+        private static Listing_Standard listingStandard = new Listing_Standard();
+
         public ITab_Pawn_Guest()
         {
             labelKey = "TabGuest";
+            tutorTag = "Guest";
             size = new Vector2(400f, 380f);
         }
 
@@ -32,28 +31,29 @@ namespace Hospitality
 
         protected override void FillTab()
         {
+            // TODO: DRAWING WORKS DIFFERENTLY NOW!
             Text.Font = GameFont.Small;
             Rect rect = new Rect(0f, 20f, size.x, size.y - 20).ContractedBy(10f);
-            var listingStandard = new Listing_Standard(rect);
+            listingStandard.Begin(rect);
             {
                 if (SelPawn.IsTrader())
                 {
-                    FillTabTrader(listingStandard);
+                    FillTabTrader();
                 }
                 else
                 {
-                    FillTabGuest(listingStandard, rect);
+                    FillTabGuest(rect);
                 }
             }
             listingStandard.End();
         }
 
-        private void FillTabTrader(Listing_Standard listingStandard)
+        private void FillTabTrader()
         {
             listingStandard.Label("IsATrader".Translate().AdjustedFor(SelPawn));
         }
 
-        private void FillTabGuest(Listing_Standard listingStandard, Rect rect)
+        private void FillTabGuest(Rect rect)
         {
             //ConceptDatabase.KnowledgeDemonstrated(ConceptDefOf.PrisonerTab, KnowledgeAmount.GuiFrame);
 
@@ -133,7 +133,7 @@ namespace Hospitality
             if (SelPawn.playerSettings == null)
             {
                 var savedArea = comp.GuestArea;
-                SelPawn.playerSettings = new RimWorld.Pawn_PlayerSettings(SelPawn) {AreaRestriction = savedArea};
+                SelPawn.playerSettings = new Pawn_PlayerSettings(SelPawn) {AreaRestriction = savedArea};
             }
 
             var oldArea = SelPawn.playerSettings.AreaRestriction = comp.GuestArea;
@@ -211,8 +211,8 @@ namespace Hospitality
             if(pawn.GetComp<CompGuest>() != null)
             {
                 mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat
-                ? PrisonerInteractionMode.Chat
-                : PrisonerInteractionMode.NoInteraction;
+                ? PrisonerInteractionModeDefOf.Chat
+                : PrisonerInteractionModeDefOf.NoInteraction;
 
                 mapComp.defaultMayBuy = pawn.GetComp<CompGuest>().mayBuy;
             }
@@ -228,14 +228,14 @@ namespace Hospitality
                 var comp = guest.GetComp<CompGuest>();
                 if (comp != null)
                 {
-                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionMode.Chat;
+                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.Chat;
                     comp.GuestArea = mapComp.defaultAreaRestriction;
                     comp.mayBuy = mapComp.defaultMayBuy;
                 }
             }
         }
 
-        private void SetDefaults(PrisonerInteractionMode mode)
+        private void SetDefaults(PrisonerInteractionModeDef mode)
         {
             Map map = SelPawn.MapHeld;
             if (map == null) return;
@@ -250,7 +250,7 @@ namespace Hospitality
             {
                 var comp = guest.GetComp<CompGuest>();
                 if (comp == null) continue;
-                comp.chat = mode == PrisonerInteractionMode.Chat;
+                comp.chat = mode == PrisonerInteractionModeDefOf.Chat;
             }
         }
     }
