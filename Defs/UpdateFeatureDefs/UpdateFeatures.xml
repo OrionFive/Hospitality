@@ -12,6 +12,12 @@
 		<content>- Now using HugsLib|- Now compatible with Dubs Bad Hygiene mod</content>
 	</HugsLib.UpdateFeatureDef>
 	
+	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+		<defName>Hospitality_0_17_0</defName>
+		<assemblyVersion>0.17.0</assemblyVersion>
+		<content>- Updated to A17|Thank you for your patience and support!</content>
+	</HugsLib.UpdateFeatureDef>
+	
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
 		<defName>ModName_1_2_0</defName>
 		<assemblyVersion>1.2.0</assemblyVersion>
