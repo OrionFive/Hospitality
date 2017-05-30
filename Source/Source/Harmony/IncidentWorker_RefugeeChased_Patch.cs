@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Harmony;
 using RimWorld;
@@ -18,6 +19,13 @@ namespace Hospitality.Harmony
 
             private static readonly IntRange RaidDelay = new IntRange(1000, 2500);
 
+            #region Added
+
+            private static readonly Func<Pawn, bool> _isLeader = other => other.Faction.leader == other && Rand.Value > 0.05f;
+            private static readonly Func<Pawn, bool> _selector = other => other.RaceProps.Humanlike && other.Faction != null && other.Faction.HostileTo(Faction.OfPlayer) && HasGroupMakers(other.Faction) && !_isLeader(other);
+
+            #endregion
+
             [HarmonyPrefix]
             public static bool Replacement(IncidentParms parms, ref bool __result)
             {
@@ -31,13 +39,11 @@ namespace Hospitality.Harmony
 
                 #region CHANGED
 
-                Func<Pawn, bool> selector = other => other.RaceProps.Humanlike && other.Faction != null && other.Faction.HostileTo(Faction.OfPlayer) && HasGroupMakers(other.Faction);
-
-                Pawn refugee = Rand.Value < 0.7f ? GenericUtility.GetAnyRelatedWorldPawn(selector, 100) : null;
+                Pawn refugee = Rand.Value < 0.7f ? GenericUtility.GetAnyRelatedWorldPawn(_selector, 100) : null;
                 if (refugee == null)
                 {
                     // Just ANYONE
-                    Find.WorldPawns.AllPawnsAlive.Where(selector).TryRandomElement(out refugee);
+                    Find.WorldPawns.AllPawnsAlive.Where(_selector).TryRandomElement(out refugee);
                 }
                 if (refugee == null)
                 {
