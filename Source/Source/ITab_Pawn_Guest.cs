@@ -24,14 +24,13 @@ namespace Hospitality
         {
             labelKey = "TabGuest";
             tutorTag = "Guest";
-            size = new Vector2(400f, 380f);
+            size = new Vector2(500f, 450f);
         }
 
         public override bool IsVisible { get { return SelPawn.IsGuest() || SelPawn.IsTrader(); } }
 
         protected override void FillTab()
         {
-            // TODO: DRAWING WORKS DIFFERENTLY NOW!
             Text.Font = GameFont.Small;
             Rect rect = new Rect(0f, 20f, size.x, size.y - 20).ContractedBy(10f);
             listingStandard.Begin(rect);
