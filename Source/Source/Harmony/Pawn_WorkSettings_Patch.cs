@@ -2,6 +2,7 @@ using System.Linq;
 using Harmony;
 using RimWorld;
 using Verse;
+using Source = RimWorld.Pawn_WorkSettings;
 
 namespace Hospitality.Harmony
 {
@@ -10,10 +11,10 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Disable work types that the pawn can't do. This is a nasty fix for RimWorld not supporting adding new jobs to an existing savegame. :[
         /// </summary>
-        //[HarmonyPatch(typeof(Source), "ExposeData")]
+        [HarmonyPatch(typeof(Source), "ExposeData")]
         public class ExposeData
         {
-            //[HarmonyPostfix]      ---- Disabled until we know it's required! // TODO: CHECK!
+            [HarmonyPostfix] 
             public static void Postfix(Pawn_WorkSettings __instance)
             {
                 var fieldPriorities = Traverse.Create(__instance).Field("priorities");
