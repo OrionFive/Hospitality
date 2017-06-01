@@ -9,7 +9,7 @@
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
 		<defName>Hospitality_0_17_0</defName>
 		<assemblyVersion>0.17.0</assemblyVersion>
-		<content>- Updated to A17|Thank you for your patience and support!</content>
+		<content>- Updated to A17|Thank you for your patience and support!|Should you encounter any issues, press Ctrl-F12 to upload your log and paste the link and a description of what went wrong in the comments of this mod.</content>
 	</HugsLib.UpdateFeatureDef>
 	
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
