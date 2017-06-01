@@ -3,6 +3,7 @@ using System.Linq;
 using Harmony;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace Hospitality.Harmony
 {
@@ -19,7 +20,7 @@ namespace Hospitality.Harmony
             {
                 // Added
                 var pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-
+                
                 if (!IsInteractable(pawn))
                 {
                     __result = false;
@@ -27,12 +28,12 @@ namespace Hospitality.Harmony
                 }
                 var workingList = Traverse.Create(__instance).Field("workingList").GetValue<List<Pawn>>(); // Had to add
 
-                // BASE
-                if (__instance.InteractedTooRecentlyToInteract())
+                if (InteractedTooRecentlyToInteract(__instance)) // Changed to own
                 {
                     __result = false;
                     return false;
                 }
+                // BASE
                 if (!InteractionUtility.CanInitiateRandomInteraction(pawn))
                 {
                     __result = false;
@@ -57,7 +58,7 @@ namespace Hospitality.Harmony
                             if (__instance.TryInteractWith(p, intDef))
                             {
                                 __result = true;
-                                return true;
+                                return false;
                             }
                             Log.Error(pawn + " failed to interact with " + p);
                         }
@@ -79,7 +80,15 @@ namespace Hospitality.Harmony
                        && ((pawn.Position - recipient.Position).LengthHorizontalSquared <= 36.0
                            && InteractionUtility.CanInitiateInteraction(pawn)
                            && (InteractionUtility.CanReceiveInteraction(recipient)
+                           && pawn.CanReserve(recipient) && recipient.CanReserve(pawn)
                                && GenSight.LineOfSight(pawn.Position, recipient.Position, pawn.MapHeld, true)));
+            }
+
+            // Added to changed InteractIntervalAbsoluteMind
+            public static bool InteractedTooRecentlyToInteract(Pawn_InteractionsTracker tracker)
+            {
+                var lastInteractionTime = Traverse.Create(tracker).Field("lastInteractionTime").GetValue<int>();
+                return Find.TickManager.TicksGame < lastInteractionTime + GuestUtility.InteractIntervalAbsoluteMin;
             }
         }
     }

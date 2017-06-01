@@ -439,8 +439,8 @@ namespace Hospitality
             //if (guest.relations.OpinionOf(pawn) >= 100) return false;
             //if (guest.RelativeTrust() < 50) return false;
             if (guest.relations.OpinionOf(pawn) <= -10) return false;
-            if (guest.interactions.InteractedTooRecentlyToInteract()) return false;
-            if (pawn.interactions.InteractedTooRecentlyToInteract()) return false;
+            //if (guest.interactions.InteractedTooRecentlyToInteract()) return false;
+            //if (pawn.interactions.InteractedTooRecentlyToInteract()) return false;
             if (!guest.Awake()) return false;
             if (!pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
 
@@ -454,8 +454,8 @@ namespace Hospitality
             //if (guest.Faction.ColonyGoodwill >= 100) return false;
             if (guest.relations.OpinionOf(pawn) >= 100) return false;
             if (guest.InMentalState) return false;
-            if (guest.interactions.InteractedTooRecentlyToInteract()) return false;
-            if (pawn.interactions.InteractedTooRecentlyToInteract()) return false;
+            //if (guest.interactions.InteractedTooRecentlyToInteract()) return false;
+            //if (pawn.interactions.InteractedTooRecentlyToInteract()) return false;
             if (!pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
 
             return true;
@@ -670,7 +670,7 @@ namespace Hospitality
             {
                 var isAbrasive = recruiter.story.traits.HasTrait(TraitDefOf.Abrasive);
                 int multiplier = isAbrasive ? 2 : 1;
-                string multiplierText = multiplier > 1 ? " x" + multiplier : string.Empty;
+                string multiplierText = multiplier > 1 ? " x" + multiplier : String.Empty;
 
                 int amount;
                 if (failedCharms.TryGetValue(recruiter, out amount))
@@ -725,10 +725,12 @@ namespace Hospitality
 
                 extraSentencePacks.Add(RulePackDef.Named("Sentence_CharmAttemptAccepted"));
 
-                string multiplierText = multiplier > 1 ? " x" + multiplier : string.Empty;
+                string multiplierText = multiplier > 1 ? " x" + multiplier : String.Empty;
                 MoteMaker.ThrowText((recruiter.DrawPos + guest.DrawPos) / 2f, recruiter.Map, "TextMote_CharmSuccess".Translate() + multiplierText, 8f);
             }
             GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestDismissiveAttitude"));
         }
+
+        public const int InteractIntervalAbsoluteMin = 360; // changed from 120
     }
 }

@@ -12,6 +12,7 @@ namespace Hospitality.Harmony
         [HarmonyPatch(typeof(JoyGiver_Ingest), "CanIngestForJoy")]
         public class CanIngestForJoy
         {
+            [HarmonyPostfix]
             public static void Postfix(ref bool __result, Pawn pawn, Thing t)
             {
                 if (!__result) return;

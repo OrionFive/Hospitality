@@ -71,6 +71,7 @@
     <Compile Include="Harmony\ITab_Pawn_Gear_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Guest_Patch.cs" />
     <Compile Include="Harmony\JobDriver_Ingest_Patch.cs" />
+    <Compile Include="Harmony\PawnUtility_Patch.cs" />
     <Compile Include="Harmony\Pawn_GuestTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_InteractionsTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_NeedsTracker_Patch.cs" />
