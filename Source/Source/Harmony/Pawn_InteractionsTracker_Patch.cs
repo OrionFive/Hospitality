@@ -74,17 +74,17 @@ namespace Hospitality.Harmony
                        && pawn.story != null && pawn.story.traits != null;
             }
 
-            private static bool CanInteractNowWith(Pawn pawn, Pawn recipient) // Had to add, copy
+            private static bool CanInteractNowWith(Pawn pawn, Pawn recipient) 
             {
                 return recipient.Spawned
                        && ((pawn.Position - recipient.Position).LengthHorizontalSquared <= 36.0
                            && InteractionUtility.CanInitiateInteraction(pawn)
                            && (InteractionUtility.CanReceiveInteraction(recipient)
-                           && pawn.CanReserve(recipient) && recipient.CanReserve(pawn)
+                           && pawn.CanReserve(recipient) && recipient.CanReserve(pawn) // Added
                                && GenSight.LineOfSight(pawn.Position, recipient.Position, pawn.MapHeld, true)));
             }
 
-            // Added to changed InteractIntervalAbsoluteMind
+            // Added to change InteractIntervalAbsoluteMin
             public static bool InteractedTooRecentlyToInteract(Pawn_InteractionsTracker tracker)
             {
                 var lastInteractionTime = Traverse.Create(tracker).Field("lastInteractionTime").GetValue<int>();
