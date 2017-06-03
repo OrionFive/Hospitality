@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Recruiter.label>recrute des visiteurs et des prisonniers</Recruiter.label>
+  <Recruiter.verb>recruter</Recruiter.verb>
+  <Recruiter.gerund>recrute</Recruiter.gerund>
+
+  <Diplomat.label>distrait les invités</Diplomat.label>
+  <Diplomat.verb>distraire</Diplomat.verb>
+  <Diplomat.gerund>distrait</Diplomat.gerund>
+
+
+</LanguageData>
