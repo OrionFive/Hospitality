@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <GuestDiplomacy.label>Améliorer la relation</GuestDiplomacy.label>
+  <GuestDiplomacy.logRulesInitiator.rulesStrings.0>logentry->Lance les négociations diplomatiques avec [other_nameShortIndef].</GuestDiplomacy.logRulesInitiator.rulesStrings.0>
+  <GuestDiplomacy.logRulesRecipient.rulesStrings.0>logentry->Ecoute le discours diplomatique de [other_nameShortIndef].</GuestDiplomacy.logRulesRecipient.rulesStrings.0>
+
+  <CharmGuestAttempt.label>Tentative de recrutement</CharmGuestAttempt.label>
+  <CharmGuestAttempt.logRulesInitiator.rulesStrings.0>logentry->Essaye de convaincre [other_nameShortIndef] de rester.</CharmGuestAttempt.logRulesInitiator.rulesStrings.0>
+  <CharmGuestAttempt.logRulesRecipient.rulesStrings.0>logentry->Ecoute attentivement la proposition de [other_nameShortIndef].</CharmGuestAttempt.logRulesRecipient.rulesStrings.0>
+
+
+</LanguageData>
