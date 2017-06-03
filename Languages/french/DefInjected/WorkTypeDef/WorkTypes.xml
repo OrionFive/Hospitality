@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Diplomat.label>Negocie</Diplomat.label>
+  <Diplomat.description>Le Diplomate distrait les invités et recrute de nouveaux membres.</Diplomat.description>
+  <Diplomat.labelShort>Négocie</Diplomat.labelShort>
+  <Diplomat.pawnLabel>Diplomate</Diplomat.pawnLabel>
+  <Diplomat.gerundLabel>Négocie</Diplomat.gerundLabel>
+  <Diplomat.verb>Gère</Diplomat.verb>
+
+
+</LanguageData>
