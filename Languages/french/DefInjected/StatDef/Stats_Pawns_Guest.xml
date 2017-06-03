@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <PleaseGuestChance.label>Compétence de Diplomacie</PleaseGuestChance.label>
+  <PleaseGuestChance.description>Chance que cette personne arrive à améliorer l'opinion d'un visiteur.</PleaseGuestChance.description>
+
+  <RecruitRelationshipDamage.label>Dégat de relation causé par le recrutement</RecruitRelationshipDamage.label>
+  <RecruitRelationshipDamage.description>The damage done to the relationship with the faction of this person when successfully recruiting.</RecruitRelationshipDamage.description>
+
+  <RecruitEffectivity.label>Facteur d'efficacité de recrutement</RecruitEffectivity.label>
+  <RecruitEffectivity.description>L'efficacité lorsque vous essayer de convaincre des visiteurs de rejoindre votre faction.</RecruitEffectivity.description>
+
+
+</LanguageData>
