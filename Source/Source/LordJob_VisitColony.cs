@@ -25,43 +25,6 @@ namespace Hospitality
             this.stayDuration = stayDuration;
         }
 
-        public override void Notify_PawnLost(Pawn p, PawnLostCondition condition)
-        {
-            base.Notify_PawnLost(p, condition);
-
-            switch (condition)
-            {
-                case PawnLostCondition.ExitedMap:
-                case PawnLostCondition.ChangedFaction:
-                    break;
-                case PawnLostCondition.Undefined:
-                case PawnLostCondition.Vanished:
-                case PawnLostCondition.IncappedOrKilled:
-                    //case PawnLostCondition.LeftVoluntarily:
-                    //case PawnLostCondition.Drafted:
-                    Hospitality_MapComponent.Instance(lord.Map).QueueEvent(new Event
-                        {
-                            delayTicks = (int) (GenDate.TicksPerHour*Rand.Range(1f, 3f)),
-                            actions = new List<EventAction> {new EventAction_AngerForPawn(p, faction)}
-                        });
-                    p.Break();
-
-                    break;
-                case PawnLostCondition.MadePrisoner:
-                    Hospitality_MapComponent.Instance(lord.Map).QueueEvent(new Event
-                        {
-                            delayTicks = 1, // almost immediately
-                            actions = new List<EventAction>
-                            {
-                                //new EventAction_AngerForPawn(p, faction), 
-                                new EventAction_BreakPawns(lord.ownedPawns, condition)
-                            }
-                        });
-                    faction.SetHostileTo(Faction.OfPlayer, true);
-                    break;
-            }
-        }
-
         public override void ExposeData()
         {
             base.ExposeData();

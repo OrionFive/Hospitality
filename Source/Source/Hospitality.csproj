@@ -89,8 +89,6 @@
     <Compile Include="CompProperties_Guest.cs" />
     <Compile Include="Debugging.cs" />
     <Compile Include="EventAction.cs" />
-    <Compile Include="EventAction_AngerForPawn.cs" />
-    <Compile Include="EventAction_BreakPawns.cs" />
     <Compile Include="EventAction_Pawns.cs" />
     <Compile Include="InteractionWorker_CharmGuestAttempt.cs" />
     <Compile Include="InteractionWorker_GuestDiplomacy.cs" />
