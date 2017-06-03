@@ -8,7 +8,7 @@ namespace Hospitality
         public override float GetScore(Room room)
         {
             int num = 0;
-            var allContainedThings = room.AllContainedThings;
+            var allContainedThings = room.ContainedAndAdjacentThings;
             foreach (var thing in allContainedThings)
             {
                 var building_Bed = thing as Building_Bed;

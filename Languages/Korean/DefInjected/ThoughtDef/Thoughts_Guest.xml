@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+	<rep>
+		<path>GuestConvinced.stages[0].label</path>
+		<trans>모집 시도에 의해 설득됨.</trans>
+	</rep>
+	<rep>
+		<path>GuestConvinced.stages[0].labelSocial</path>
+		<trans>확신함</trans>
+	</rep>
+	<rep>
+		<path>GuestConvinced.stages[0].description</path>
+		<trans>그 식민지원와 나는 식민지에 대해 이야기를 나누었어. 좋은 곳 같은데...</trans>
+	</rep>
+
+	<rep>
+		<path>GuestOffended.stages[0].label</path>
+		<trans>기분이 상함</trans>
+	</rep>
+	<rep>
+		<path>GuestOffended.stages[0].labelSocial</path>
+		<trans>모집 시도에 화가 남</trans>
+	</rep>
+	<rep>
+		<path>GuestOffended.stages[0].description</path>
+		<trans>저 식민지원은 날 모집하려 했어. 하지만 난 내 세력을 떠나고 싶진 않아!</trans>
+	</rep>
+
+	<rep>
+		<path>GuestAngered.stages[0].label</path>
+		<trans>모집을 본 것에 대해 분개함</trans>
+	</rep>
+	<rep>
+		<path>GuestAngered.stages[0].labelSocial</path>
+		<trans>모집을 당한 것에 분개함</trans>
+	</rep>
+	<rep>
+		<path>GuestAngered.stages[0].description</path>
+		<trans>이자들은 우리 사람을 훔치려 하고 있어!</trans>
+	</rep>
+
+	<rep>
+		<path>GuestOffendedRelationship.stages[0].label</path>
+		<trans>식민지원에게 모욕당함</trans>
+	</rep>
+	<rep>
+		<path>GuestOffendedRelationship.stages[0].labelSocial</path>
+		<trans>모욕당함</trans>
+	</rep>
+	<rep>
+		<path>GuestOffendedRelationship.stages[0].description</path>
+		<trans>이자들은 패배자들이야!</trans>
+	</rep>
+
+	<rep>
+		<path>GuestPleasedRelationship.stages[0].label</path>
+		<trans>charmed by colonist</trans>
+	</rep>
+	<rep>
+		<path>GuestPleasedRelationship.stages[0].labelSocial</path>
+		<trans>charmed me</trans>
+	</rep>
+	<rep>
+		<path>GuestPleasedRelationship.stages[0].description</path>
+		<trans>Such nice people!</trans>
+	</rep>
+
+	<rep>
+		<path>GuestDismissiveAttitude.stages[0].label</path>
+		<trans>tired of talking</trans>
+	</rep>
+	<rep>
+		<path>GuestDismissiveAttitude.stages[0].description</path>
+		<trans>I'm done talking for now. Leave me alone.</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[0].label</path>
+		<trans>no guest beds</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[0].description</path>
+		<trans>They don't even have beds here.</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[1].label</path>
+		<trans>not enough guest beds</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[1].description</path>
+		<trans>There should be more beds in our room.</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[2].label</path>
+		<trans>enough beds</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[2].description</path>
+		<trans>There are enough beds in our room for all of us.</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[3].label</path>
+		<trans>lots of beds</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[3].description</path>
+		<trans>Wow, so many beds!</trans>
+	</rep>
+
+</LanguageData>

@@ -1,4 +1,3 @@
-using System;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -34,7 +33,7 @@ namespace Hospitality
             return 1-curLevel;
         }
 
-        public override ThinkResult TryIssueJobPackage(Pawn pawn)
+        public override ThinkResult TryIssueJobPackage(Pawn pawn, JobIssueParams jobParams)
         {
             if (pawn.CurJob != null)
             {

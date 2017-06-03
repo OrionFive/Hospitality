@@ -167,16 +167,16 @@ namespace Hospitality
         public override void ExposeData()
         {
             // Graph parameters
-            Scribe_Values.LookValue(ref Graph.ATTRACTIVE_CONSTANT, "ATTRACTIVE_CONSTANT");
-            Scribe_Values.LookValue(ref Graph.CENTRAL_CONSTANT, "CENTRAL_CONSTANT");
-            Scribe_Values.LookValue(ref Graph.MAX_ITERATIONS, "MAX_ITERATIONS");
-            Scribe_Values.LookValue(ref Graph.MAX_TEMPERATURE, "MAX_TEMPERATURE");
-            Scribe_Values.LookValue(ref Graph.REPULSIVE_CONSTANT, "REPULSIVE_CONSTANT");
-            Scribe_Values.LookValue(ref Graph.THRESHOLD, "THRESHOLD");
+            Scribe_Values.Look(ref Graph.ATTRACTIVE_CONSTANT, "ATTRACTIVE_CONSTANT");
+            Scribe_Values.Look(ref Graph.CENTRAL_CONSTANT, "CENTRAL_CONSTANT");
+            Scribe_Values.Look(ref Graph.MAX_ITERATIONS, "MAX_ITERATIONS");
+            Scribe_Values.Look(ref Graph.MAX_TEMPERATURE, "MAX_TEMPERATURE");
+            Scribe_Values.Look(ref Graph.REPULSIVE_CONSTANT, "REPULSIVE_CONSTANT");
+            Scribe_Values.Look(ref Graph.THRESHOLD, "THRESHOLD");
 
             // Relation drawing parameters
-            Scribe_Values.LookValue(ref RelationsHelper.OPINION_THRESHOLD_NEG, "OPINION_THRESHOLD_NEG");
-            Scribe_Values.LookValue(ref RelationsHelper.OPINION_THRESHOLD_POS, "OPINION_THRESHOLD_POS");
+            Scribe_Values.Look(ref RelationsHelper.OPINION_THRESHOLD_NEG, "OPINION_THRESHOLD_NEG");
+            Scribe_Values.Look(ref RelationsHelper.OPINION_THRESHOLD_POS, "OPINION_THRESHOLD_POS");
 
             // DefMap with colours isn't scribed correctly.
             //Scribe_Deep.LookDeep( ref RelationsHelper.RELATIONS_COLOR, "RELATIONS_COLOR" );

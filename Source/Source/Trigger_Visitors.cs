@@ -11,9 +11,9 @@ namespace Hospitality
 
         public override void ExposeData()
         {
-            Scribe_Values.LookValue(ref threshold, "threshold", 100);
-            Scribe_Values.LookValue(ref arriveTick, "arriveTick");
-            Scribe_Values.LookValue(ref minStayTicks, "minStayTicks");
+            Scribe_Values.Look(ref threshold, "threshold", 100);
+            Scribe_Values.Look(ref arriveTick, "arriveTick");
+            Scribe_Values.Look(ref minStayTicks, "minStayTicks");
         }
     }
 
@@ -47,7 +47,7 @@ namespace Hospitality
 
         public override void ExposeData()
         {
-            Scribe_Values.LookValue(ref threshold, "threshold", -100);
+            Scribe_Values.Look(ref threshold, "threshold", -100);
         }
 
     }

@@ -59,7 +59,7 @@ namespace Hospitality
 
             if (Item.MarketValue <= 0) return;
             int maxSpace = toil.actor.GetInventorySpaceFor(Item);
-            var inventory = toil.actor.inventory.GetInnerContainer();
+            var inventory = toil.actor.inventory.innerContainer;
 
             Thing silver = inventory.FirstOrDefault(i => i.def == ThingDefOf.Silver);
             if (silver == null) return;
@@ -86,7 +86,7 @@ namespace Hospitality
                 inventory.TryDrop(silver, toil.actor.Position, map, ThingPlaceMode.Near, price, out silver);
 
                 // Check what's new in the inventory (TryAdd creates a copy of the original object!)
-                var newItems = toil.actor.inventory.GetInnerContainer().Except(inventoryItemsBefore).ToArray();
+                var newItems = toil.actor.inventory.innerContainer.Except(inventoryItemsBefore).ToArray();
                 foreach (var item in newItems)
                 {
                     //Log.Message(pawn.NameStringShort + " bought " + item.Label);

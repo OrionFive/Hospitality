@@ -25,50 +25,13 @@ namespace Hospitality
             this.stayDuration = stayDuration;
         }
 
-        public override void Notify_PawnLost(Pawn p, PawnLostCondition condition)
-        {
-            base.Notify_PawnLost(p, condition);
-
-            switch (condition)
-            {
-                case PawnLostCondition.ExitedMap:
-                case PawnLostCondition.ChangedFaction:
-                    break;
-                case PawnLostCondition.Undefined:
-                case PawnLostCondition.Vanished:
-                case PawnLostCondition.IncappedOrKilled:
-                    //case PawnLostCondition.LeftVoluntarily:
-                    //case PawnLostCondition.Drafted:
-                    Hospitality_MapComponent.Instance(lord.Map).QueueEvent(new Event
-                        {
-                            delayTicks = (int) (GenDate.TicksPerHour*Rand.Range(1f, 3f)),
-                            actions = new List<EventAction> {new EventAction_AngerForPawn(p, faction)}
-                        });
-                    p.Break();
-
-                    break;
-                case PawnLostCondition.MadePrisoner:
-                    Hospitality_MapComponent.Instance(lord.Map).QueueEvent(new Event
-                        {
-                            delayTicks = 1, // almost immediately
-                            actions = new List<EventAction>
-                            {
-                                //new EventAction_AngerForPawn(p, faction), 
-                                new EventAction_BreakPawns(lord.ownedPawns, condition)
-                            }
-                        });
-                    faction.SetHostileTo(Faction.OfPlayer, true);
-                    break;
-            }
-        }
-
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.LookReference(ref faction, "faction");
-            Scribe_Values.LookValue(ref chillSpot, "chillSpot", default(IntVec3));
-            Scribe_Values.LookValue(ref checkEventId, "checkEventId", -1);
-            Scribe_Values.LookValue(ref stayDuration, "stayDuration", GenDate.TicksPerDay);
+            Scribe_References.Look(ref faction, "faction");
+            Scribe_Values.Look(ref chillSpot, "chillSpot", default(IntVec3));
+            Scribe_Values.Look(ref checkEventId, "checkEventId", -1);
+            Scribe_Values.Look(ref stayDuration, "stayDuration", GenDate.TicksPerDay);
         }
 
         public override StateGraph CreateGraph()
@@ -89,7 +52,7 @@ namespace Hospitality
             Transition t1 = new Transition(toilArrive, toilVisit);
             t1.triggers.Add(new Trigger_Memo("TravelArrived"));
             graphArrive.transitions.Add(t1);
-            LordToil_ExitMapBest toilExitCold = new LordToil_ExitMapBest(); // ADDED TOIL
+            LordToil_ExitMap toilExitCold = new LordToil_ExitMap(); // ADDED TOIL
             graphArrive.AddToil(toilExitCold);
             Transition t6 = new Transition(toilArrive, toilExitCold); // ADDED TRANSITION
             t6.triggers.Add(new Trigger_UrgentlyCold());

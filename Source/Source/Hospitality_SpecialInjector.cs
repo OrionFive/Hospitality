@@ -1,79 +1,50 @@
 ﻿using System;
-using System.Reflection;
 using System.Linq;
-using Hospitality.Detouring;
-using HugsLib.Source.Detour;
+using System.Reflection;
+using Harmony;
+using RimWorld;
 using Verse;
-
-// Toggle in Hospitality Properties
-#if NoCCL
-using Hospitality.NoCCL;
-#else
-using CommunityCoreLibrary;
-#endif
 
 namespace Hospitality
 {
 
     public class Hospitality_SpecialInjector : SpecialInjector
     {
-
-        private static Assembly Assembly { get { return Assembly.GetAssembly(typeof(Hospitality_SpecialInjector)); } }
-
-        private static readonly BindingFlags[] bindingFlagCombos = {
-            BindingFlags.Instance | BindingFlags.Public, BindingFlags.Static | BindingFlags.Public,
-            BindingFlags.Instance | BindingFlags.NonPublic, BindingFlags.Static | BindingFlags.NonPublic,
-        };
-
         public override bool Inject()
         {
-            // Special detours
-            #region Special detours
-            // Change guest bed gizmos to default building gizmos
-            // Use old detours because this is a really special case
-            if(!Detours.TryDetourFromTo(
-                typeof (Building_GuestBed).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public),
-                typeof (Building).GetMethod("GetGizmos", BindingFlags.Instance | BindingFlags.Public))) return false;
-
-            DetourProvider.CompatibleDetour(
-                typeof(RimWorld.DrugPolicy).GetMethod("get_Item", BindingFlags.Instance | BindingFlags.Public, null, new[] {typeof(ThingDef)}, null),
-                typeof(DrugPolicy).GetMethod("Item", BindingFlags.Instance | BindingFlags.Public));
-            #endregion
-
-            #region Automatic hookup
-            // Loop through all detour attributes and try to hook them up
-            foreach (var targetType in Assembly.GetTypes())
-            {
-                foreach (var bindingFlags in bindingFlagCombos)
-                {
-                    foreach (var targetMethod in targetType.GetMethods(bindingFlags))
-                    {
-                        foreach (DetourOldAttribute detour in targetMethod.GetCustomAttributes(typeof(DetourOldAttribute), true))
-                        {
-                            var flags = detour.bindingFlags != default(BindingFlags) ? detour.bindingFlags : bindingFlags;
-                            var sourceMethod = detour.source.GetMethod(targetMethod.Name, flags);
-                            if (sourceMethod == null)
-                            {
-                                Log.Error( string.Format( "Hospitality :: Detours :: Can't find source method '{0} with bindingflags {1}", targetMethod.Name, flags ) );
-                                return false;
-                            }
-                            if (!Detours.TryDetourFromTo(sourceMethod, targetMethod)) return false;
-                        }
-                    }
-                }
-            }
-            #endregion
-
             InjectTab(typeof(ITab_Pawn_Guest), def => def.race != null && def.race.Humanlike);
 
             InjectComp(typeof(CompProperties_Guest), def => def.race != null && def.race.Humanlike);
 
+            CreateGuestBedDefs();
+
             return true;
+        }
+
+        private void CreateGuestBedDefs()
+        {
+            var bedDefs = DefDatabase<ThingDef>.AllDefsListForReading.Where(def => def.thingClass == typeof(Building_Bed)).ToArray();
+
+            var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var bedDef in bedDefs)
+            {
+                var guestBedDef = new ThingDef();
+                foreach (var field in fields)
+                {
+                    field.SetValue(guestBedDef, field.GetValue(bedDef));
+                }
+                guestBedDef.defName += "Guest";
+                guestBedDef.label = "GuestBedFormat".Translate(guestBedDef.label);
+                guestBedDef.thingClass = typeof(Building_GuestBed);
+                guestBedDef.shortHash = 0;
+                typeof(ShortHashGiver).GetMethod("GiveShortHash", BindingFlags.NonPublic|BindingFlags.Static).Invoke(null, new object[] {guestBedDef, typeof(ThingDef)});
+                DefDatabase<ThingDef>.Add(guestBedDef);
+            }
         }
 
         private void InjectComp(Type compType, Func<ThingDef, bool> qualifier)
         {
-            var defs = DefDatabase<ThingDef>.AllDefs.Where(qualifier).ToList();
+            var defs = DefDatabase<ThingDef>.AllDefsListForReading.Where(qualifier).ToList();
             defs.RemoveDuplicates();
 
             foreach (var def in defs)

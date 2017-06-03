@@ -16,14 +16,20 @@ namespace Hospitality
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOn(FailCondition);
-            yield return GotoGuest(pawn, Talkee);
+            var goTo = GotoGuest(pawn, Talkee);
+            yield return goTo;
             yield return Toils_Reserve.Reserve(TargetIndex.A);
 
-            yield return Interact(Talkee, InteractionDefOf.RecruitAttempt, 150);
+            yield return Interact(Talkee, InteractionDefOf.RecruitAttempt, GuestUtility.InteractIntervalAbsoluteMin).JumpIf(() => IsBusy(pawn) || IsBusy(Talkee), goTo);
             
             yield return TryRecruitGuest(pawn, Talkee);
             
             yield return RiskAnger(pawn, Talkee);
+        }
+
+        private static bool IsBusy(Pawn p)
+        {
+            return p.interactions.InteractedTooRecentlyToInteract();
         }
 
         public static Toil RiskAnger(Pawn pawn, Pawn guest)

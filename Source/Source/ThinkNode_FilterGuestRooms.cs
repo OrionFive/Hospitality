@@ -6,9 +6,9 @@ namespace Hospitality
 {
     public class ThinkNode_FilterGuestRooms : ThinkNode_Priority
     {
-        public override ThinkResult TryIssueJobPackage(Pawn pawn)
+        public override ThinkResult TryIssueJobPackage(Pawn pawn, JobIssueParams jobParams)
         {
-            ThinkResult result = base.TryIssueJobPackage(pawn);
+            ThinkResult result = base.TryIssueJobPackage(pawn, jobParams);
             if (result.IsValid)
             {
                 if(IsForbidden(result)) return ThinkResult.NoJob;

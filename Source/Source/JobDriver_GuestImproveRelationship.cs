@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
@@ -14,7 +13,7 @@ namespace Hospitality
             yield return GotoGuest(pawn, Talkee);
             yield return Toils_Reserve.Reserve(TargetIndex.A);
             //yield return GotoGuest(pawn, Talkee);
-            yield return Interact(Talkee, InteractionDefOf.BuildRapport, 150);
+            yield return Interact(Talkee, InteractionDefOf.BuildRapport, GuestUtility.InteractIntervalAbsoluteMin);
             yield return TryImproveRelationship(pawn, Talkee);
             //yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.A);
         }

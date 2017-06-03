@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
+<LanguageData>
+	
+	<Recruiter.label>죄수와 방문객 모집중</Recruiter.label>
+	<Recruiter.verb>모집</Recruiter.verb>
+	<Recruiter.gerund>모집중</Recruiter.gerund>
+
+	<Diplomat.label>방문객 접대</Diplomat.label>
+	<Diplomat.verb>교전</Diplomat.verb>
+	<Diplomat.gerund>교전중</Diplomat.gerund>
+
+</LanguageData>
