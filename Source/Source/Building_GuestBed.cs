@@ -186,7 +186,9 @@ namespace Hospitality
             spawnedBed.HitPoints = bed.HitPoints;
             spawnedBed.ForPrisoners = bed.ForPrisoners;
 
-            spawnedBed.GetComp<CompQuality>().SetQuality(bed.GetComp<CompQuality>().Quality, ArtGenerationContext.Outsider);
+            var compQuality = spawnedBed.TryGetComp<CompQuality>();
+
+            if(compQuality != null) compQuality.SetQuality(bed.GetComp<CompQuality>().Quality, ArtGenerationContext.Outsider);
             //var compArt = bed.TryGetComp<CompArt>();
             //if (compArt != null)
             //{
