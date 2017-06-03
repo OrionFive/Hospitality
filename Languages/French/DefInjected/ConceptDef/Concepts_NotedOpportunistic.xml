@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Concepts taught through the learning readout, when opportunities arise -->
+
+  <GuestBeds.label>Lit d'invité</GuestBeds.label>
+  <GuestBeds.helpText>Les visiteurs préfèrent dormir dans des lits.\n\nIl y  a des lits d'invités spéciaux que vous pouver construire pour eux.</GuestBeds.helpText>
+
+  <RecruitGuest.label>Recruter des visiteurs</RecruitGuest.label>
+  <RecruitGuest.helpText>Vous pouvez recruter des invités.\n\nRecruter un invité va abaisser les relations avec sa faction d'origine. Pour ce faire, préférez un de vos colons avec de bonne compétence en social, affecté au job négociation.</RecruitGuest.helpText>
+
+
+</LanguageData>
