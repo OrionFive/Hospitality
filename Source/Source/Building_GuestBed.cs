@@ -199,7 +199,7 @@ namespace Hospitality
             //
             //    // TODO: Make this work, art is now destroyed
             //}
-            
+            Find.Selector.Select(spawnedBed, false);
         }
 
         private static Thing MakeBed(Building_Bed bed, string defName)
