@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Sentence_CharmAttemptAccepted.rulePack.rulesStrings.0>sent->[recipient_nameShortDef] est excité par la proposition de [initiator_nameShortDef].</Sentence_CharmAttemptAccepted.rulePack.rulesStrings.0>
+  <Sentence_CharmAttemptRejected.rulePack.rulesStrings.0>sent->[recipient_nameShortDef] n'apprécie pas la tentative de [initiator_nameShortDef].</Sentence_CharmAttemptRejected.rulePack.rulesStrings.0>
+
+
+</LanguageData>
