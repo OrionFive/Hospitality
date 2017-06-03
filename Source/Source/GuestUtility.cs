@@ -243,8 +243,8 @@ namespace Hospitality
 
         public static Building_GuestBed FindBedFor(this Pawn pawn)
         {
-            Predicate<Thing> bedValidator = delegate(Thing t)
-                                            {
+            Predicate<Thing> bedValidator = delegate(Thing t) {
+                                                if (!(t is Building_GuestBed)) return false;
                                                 if (!pawn.CanReserveAndReach(t, PathEndMode.OnCell, Danger.Some)) return false;
                                                 var b = (Building_GuestBed) t;
                                                 if (b.CurOccupant != null) return false;
@@ -252,10 +252,8 @@ namespace Hospitality
                                                 Find.Maps.ForEach(m => m.reservationManager.ReleaseAllForTarget(b)); // TODO: Put this somewhere smarter
                                                 return (!b.IsForbidden(pawn) && !b.IsBurning());
                                             };
-            var thingDef = ThingDef.Named("GuestBed");
-            var bed = (Building_GuestBed) GenClosest.ClosestThingReachable(pawn.GetLord().CurLordToil.FlagLoc, pawn.MapHeld, ThingRequest.ForDef(thingDef), PathEndMode.OnCell, TraverseParms.For(pawn), 500f, bedValidator);
-            if (bed != null) return bed;
-            return null;
+            var bed = (Building_GuestBed)GenClosest.ClosestThingReachable(pawn.GetLord().CurLordToil.FlagLoc, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(pawn), 500f, bedValidator);
+            return bed;
         }
 
         public static void PocketHeadgear(this Pawn pawn)

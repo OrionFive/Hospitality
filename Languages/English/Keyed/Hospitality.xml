@@ -59,6 +59,9 @@
   
   <!-- Bed -->
   <ForGuestUse>For Guest Use</ForGuestUse>
+  <GuestBedFormat>guest {0}</GuestBedFormat>
+  <CommandBedSetAsGuestLabel>For guests</CommandBedSetAsGuestLabel>
+  <CommandBedSetAsGuestDesc>Whether this bed is for guests.</CommandBedSetAsGuestDesc>
   
   <!-- Rescue -->
   <RescuedInitial>The {0} named NAME that you rescued is very grateful for HIS rescue and would like to stay at your colony.\n\nHIS traits are: {1}.</RescuedInitial>
