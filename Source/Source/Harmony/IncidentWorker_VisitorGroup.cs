@@ -79,6 +79,8 @@ namespace Hospitality
             {
                 //Log.Message(string.Format("Spawning visitors from {0}, at {1}.", parms.faction, parms.spawnCenter));
                 visitors = SpawnPawns(parms);
+
+                CheckVisitorsValid(visitors);
             }
             catch (Exception e)
             {
@@ -110,6 +112,18 @@ namespace Hospitality
                 return true;
             }
             return false;
+        }
+
+        private static void CheckVisitorsValid(List<Pawn> visitors)
+        {
+            if (visitors.Any(v => v.TryGetComp<CompGuest>() == null))
+            {
+                foreach (var visitor in visitors)
+                {
+                    visitor.Destroy();
+                }
+                throw new Exception("Spawned visitors without GuestComp.");
+            }
         }
 
         private static IntVec3 GetSpot(List<Pawn> visitors, Map map)
