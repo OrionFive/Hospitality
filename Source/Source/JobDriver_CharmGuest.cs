@@ -18,6 +18,7 @@ namespace Hospitality
             this.FailOn(FailCondition);
             var goTo = GotoGuest(pawn, Talkee);
             yield return goTo;
+            yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
             yield return Toils_Reserve.Reserve(TargetIndex.A);
 
             yield return Interact(Talkee, InteractionDefOf.RecruitAttempt, GuestUtility.InteractIntervalAbsoluteMin).JumpIf(() => IsBusy(pawn) || IsBusy(Talkee), goTo);
