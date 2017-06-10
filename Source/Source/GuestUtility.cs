@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse.AI.Group;
 using Verse;
@@ -108,13 +109,35 @@ namespace Hospitality
         public static int GetFriendsInColony(this Pawn guest)
         {
             float requiredOpinion = GetMinRecruitOpinion(guest);
-            return guest.MapHeld.mapPawns.FreeColonists.Count(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion);
+            return GetPawnsFromBase(guest.MapHeld).Count(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion);
+        }
+
+        private static IEnumerable<Pawn> GetPawnsFromBase(Map mapHeld)
+        {
+            foreach (var pawn in mapHeld.mapPawns.FreeColonists)
+            {
+                yield return pawn;
+            }
+            var nearbyColonists = PawnsFinder.AllMapsCaravansAndTravelingTransportPods_FreeColonists.Where(p => IsNearby(mapHeld, p));
+            foreach (var pawn in nearbyColonists)
+            {
+                yield return pawn;
+            }
+        }
+
+        private static bool IsNearby(Map mapHeld, Pawn p)
+        {
+            if (p.Spawned && p.MapHeld.IsPlayerHome) return false;
+            var tile = p.GetRootTile();
+            if (tile == -1) return false;
+
+            return Find.WorldGrid.ApproxDistanceInTiles(mapHeld.Tile, tile) < 8; // within 3 tiles counts
         }
 
         public static int GetEnemiesInColony(this Pawn guest)
         {
             const int maxOpinion = -20;
-            return guest.MapHeld.mapPawns.FreeColonists.Count(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= maxOpinion);
+            return GetPawnsFromBase(guest.MapHeld).Count(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= maxOpinion);
         }
 
         public static int GetMinRecruitOpinion(this Pawn guest)
@@ -629,9 +652,9 @@ namespace Hospitality
             return pawn.MapHeld.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Where(b => area[b.Position]);
         }
 
-        public static int FriendsRequired(Map map)
+        public static int FriendsRequired(Map mapHeld)
         {
-            var required = map.mapPawns.FreeColonistsCount /3.75f;
+            var required = GetPawnsFromBase(mapHeld).Count() /3.75f;
             if (required < 1) return 1;
             else return Mathf.RoundToInt(required);
         }
