@@ -22,7 +22,7 @@ namespace Hospitality
             yield return Toils_Reserve.Reserve(TargetIndex.A);
 
             yield return Interact(Talkee, InteractionDefOf.RecruitAttempt, GuestUtility.InteractIntervalAbsoluteMin).JumpIf(() => IsBusy(pawn) || IsBusy(Talkee), goTo);
-            
+            yield return Toils_Reserve.Release(TargetIndex.A);
             yield return TryRecruitGuest(pawn, Talkee);
             
             yield return RiskAnger(pawn, Talkee);

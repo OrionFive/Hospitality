@@ -29,6 +29,8 @@ namespace Hospitality
                 defaultCompleteMode = ToilCompleteMode.Delay,
                 defaultDuration =  duration
             };
+            toil.AddFailCondition(talkee.interactions.InteractedTooRecentlyToInteract);
+            toil.AddFailCondition(pawn.interactions.InteractedTooRecentlyToInteract);
             return toil.WithProgressBarToilDelay(TargetIndex.B);
         }
 
