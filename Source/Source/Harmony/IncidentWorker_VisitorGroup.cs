@@ -43,7 +43,7 @@ namespace Hospitality
             // TODO: Show messages explaining why they can't come
             return false;
         }
-
+        
         public override bool TryExecute(IncidentParms parms)
         {
             if (!TryResolveParms(parms)) return false;

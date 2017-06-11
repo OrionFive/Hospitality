@@ -630,6 +630,7 @@ namespace Hospitality
 
         public static void PlanNewVisit(IIncidentTarget map, float afterDays, Faction faction = null)
         {
+            if (map == null) return;
             IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(Find.Storyteller.def, IncidentCategory.AllyArrival, map);
 
             if(faction != null) incidentParms.faction = faction;
