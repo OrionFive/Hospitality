@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
   <GuestDiplomacy.label>提升关系</GuestDiplomacy.label>
@@ -8,5 +8,6 @@
   <CharmGuestAttempt.label>说服尝试</CharmGuestAttempt.label>
   <CharmGuestAttempt.logRulesInitiator.rulesStrings.0>logentry->嘗試說服[other_nameShortIndef]留下來。</CharmGuestAttempt.logRulesInitiator.rulesStrings.0>
   <CharmGuestAttempt.logRulesRecipient.rulesStrings.0>logentry->傾聽了[other_nameShortIndef]的招募說法。</CharmGuestAttempt.logRulesRecipient.rulesStrings.0>
+
 
 </LanguageData>
