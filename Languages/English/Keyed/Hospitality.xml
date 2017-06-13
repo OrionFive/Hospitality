@@ -37,6 +37,10 @@
   <VisitorsReturnNotSoon>They won't come back any time soon.</VisitorsReturnNotSoon>
   <VisitorsReturnNot>They've had enough of you.</VisitorsReturnNot>
 
+  <VisitorsArrivedTitle>Visitors from {0} have arrived</VisitorsArrivedTitle>
+  <VisitorsArrivedDesc>They are afraid to enter your territory for the following reasons:\n{1}\n\nIf you send them away they will stay in the area and come back later.</VisitorsArrivedDesc>
+  <VisitorsArrivedAccept>Ensure safety</VisitorsArrivedAccept>
+  <VisitorsArrivedRefuse>Send away</VisitorsArrivedRefuse>
 
   <!-- Tab -->
   <ConvincingLeft>Convincing required</ConvincingLeft>

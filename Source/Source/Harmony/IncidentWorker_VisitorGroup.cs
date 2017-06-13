@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -31,32 +32,55 @@ namespace Hospitality
             return Mathf.Lerp(-20, 20, Mathf.InverseLerp(-100, 100, current));
         }
 
-        private static bool CheckCanCome(Map map, Faction faction)
+        private static bool CheckCanCome(Map map, Faction faction, out string reasons)
         {
-            bool fallout = map.GameConditionManager.GetActiveCondition<GameCondition_ToxicFallout>() != null;
-            var hostiles = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed
-                                                                   && (p.Faction.HostileTo(Faction.OfPlayer) || p.Faction.HostileTo(faction)) && p.Faction != Faction.OfInsects);
+            var fallout = map.GameConditionManager.GetActiveCondition<GameCondition_ToxicFallout>();
+            var hostileFactions = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed).Select(p => p.Faction).Distinct().Where(p =>
+                                                                   (p.HostileTo(Faction.OfPlayer) || p.HostileTo(faction)) && p != Faction.OfInsects).ToArray();
+            var winter = map.GameConditionManager.GetActiveCondition<GameCondition_ToxicFallout>();
 
-            //if (Find.MapConditionManager.GetActiveCondition<MapCondition_VolcanicWinter>() != null) canFire = false;
- 
-            if (!fallout && !hostiles.Any()) return true;
-            // TODO: Show messages explaining why they can't come
-            return false;
+            reasons = null;
+
+            if (fallout != null && !hostileFactions.Any()) return true; // All clear, don't ask
+
+            var reasonsSB = new StringBuilder();
+            if (fallout != null) reasonsSB.AppendLine("- "+fallout.LabelCap);
+            if (winter != null) reasonsSB.AppendLine("- "+winter.LabelCap);
+            foreach (var f in hostileFactions)
+            {
+                reasonsSB.AppendLine("- " + f.GetCallLabel());
+            }
+
+            reasons = reasonsSB.ToString();
+            return false; // Do ask
+    
         }
-        
+
+        private static void ShowAskMayComeDialog(Faction faction, string reasons, Action allow, Action refuse)
+        {
+            string text = "VisitorsArrivedDesc".Translate(faction, reasons);
+
+            DiaNode diaNode = new DiaNode(text);
+            DiaOption diaOption = new DiaOption("VisitorsArrivedAccept".Translate());
+            diaOption.action = allow;
+            diaOption.resolveTree = true;
+            diaNode.options.Add(diaOption);
+
+            DiaOption diaOption2 = new DiaOption("VisitorsArrivedRefuse".Translate());
+            diaOption.action = refuse;
+            diaOption2.resolveTree = true;
+            diaNode.options.Add(diaOption2);
+
+            string title = "VisitorsArrivedTitle".Translate(faction);
+            Find.WindowStack.Add(new Dialog_NodeTree(diaNode, true, true, title));
+        }
+
         public override bool TryExecute(IncidentParms parms)
         {
             if (!TryResolveParms(parms)) return false;
             if (parms.faction == Faction.OfPlayer) return false;
-            
-            Map map = (Map)parms.target;
 
-            // We check here instead of CanFireNow, so we can reschedule the visit.
-            if (!CheckCanCome(map, parms.faction))
-            {
-                GuestUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
-                return false;
-            }
+            Map map = (Map) parms.target;
 
             if (parms.points < 40)
             {
@@ -74,6 +98,27 @@ namespace Hospitality
                 Log.ErrorOnce("Trying to spawn visitors, but could not find a valid spawn point.", 94839643);
                 return false;
             }
+
+            string reasons;
+            // We check here instead of CanFireNow, so we can reschedule the visit.
+            // Any reasons not to come?
+            if (CheckCanCome(map, parms.faction, out reasons))
+            {
+                // No, spawn
+                return SpawnGroup(parms, map);
+            }
+            // Yes, ask the player for permission
+            ShowAskMayComeDialog(parms.faction, reasons,
+                // Permission, spawn
+                () => SpawnGroup(parms, map),
+                // No permission, come again later
+                () => GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction)
+                );
+            return true;
+        }
+
+        private bool SpawnGroup(IncidentParms parms, Map map)
+        {
             List<Pawn> visitors;
             try
             {
@@ -84,7 +129,7 @@ namespace Hospitality
             }
             catch (Exception e)
             {
-                Log.ErrorOnce("Something failed when spawning visitors: " + e.Message+"\n"+e.StackTrace, 464365853);
+                Log.ErrorOnce("Something failed when spawning visitors: " + e.Message + "\n" + e.StackTrace, 464365853);
                 GuestUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
                 return true; // be gone, event
             }
@@ -103,7 +148,7 @@ namespace Hospitality
 
             var spot = GetSpot(visitors, map);
 
-            if(spot.IsValid)
+            if (spot.IsValid)
             {
                 GiveItems(visitors);
 
