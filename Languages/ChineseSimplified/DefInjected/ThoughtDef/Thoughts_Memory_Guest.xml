@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <GuestConvinced.stages.0.label>受到招募尝试的游说</GuestConvinced.stages.0.label>
-  <GuestConvinced.stages.0.labelSocial>我被游说了</GuestConvinced.stages.0.labelSocial>
-  <GuestConvinced.stages.0.description>那位殖民者跟我谈论了这个殖民地。这里听起来是个不错的地方...</GuestConvinced.stages.0.description>
-
-  <GuestOffended.stages.0.label>受到招募尝试的冒犯</GuestOffended.stages.0.label>
-  <GuestOffended.stages.0.labelSocial>我被冒犯了</GuestOffended.stages.0.labelSocial>
-  <GuestOffended.stages.0.description>那个殖民者试图招募我。但是我根本不想离开自己的派系！</GuestOffended.stages.0.description>
-
   <GuestAngered.stages.0.label>因目睹招募而愤怒</GuestAngered.stages.0.label>
   <GuestAngered.stages.0.labelSocial>我对招募之事感到愤怒</GuestAngered.stages.0.labelSocial>
   <GuestAngered.stages.0.description>那群家伙正试图挖走我们的人！</GuestAngered.stages.0.description>

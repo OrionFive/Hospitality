@@ -13,7 +13,7 @@
   <LetterLabelRecruitFactionAnger>勢力的憤怒</LetterLabelRecruitFactionAnger>
   <LetterLabelRecruitFactionChiefPlease>首領的感謝</LetterLabelRecruitFactionChiefPlease>
   <LetterLabelRecruitFactionPlease>勢力的感謝</LetterLabelRecruitFactionPlease>
-  
+
   <TextMote_CharmFail>冒犯</TextMote_CharmFail>
   <TextMote_CharmSuccess>說服</TextMote_CharmSuccess>
 
@@ -31,11 +31,6 @@
   <VisitorVerySatisfied>{0} 非常享受停留 {1} 的時光。{2} 送給殖民地一些東西： {3}。</VisitorVerySatisfied>
   <MessageVisitorsLeavingCold>由於過於寒冷，來自 {0} 的訪客離開了。</MessageVisitorsLeavingCold>
   <VisitorsSentAway>你已經把訪客送走了。</VisitorsSentAway>
-
-  <MessageMissingPawnFactionAnger>勢力 {0} 的一名成員在你的領地失蹤了！（{2}）</MessageMissingPawnFactionAnger>
-  <MessageMissingPawnsFactionAnger>勢力 {0} 的{1}名成員在你的領地失蹤了！（{2}）</MessageMissingPawnsFactionAnger>
-  <MessageKilledPawnFactionAnger>勢力 {0} 聽說了發生在 {1} 身上的事，並將責任歸咎於你。（{2}）</MessageKilledPawnFactionAnger>
-  <LetterLabelMissingPawnsFactionAnger>首領的憤怒</LetterLabelMissingPawnsFactionAnger>
 
   <VisitorsReturnSoon>他們將在幾天後再次來訪。</VisitorsReturnSoon>
   <VisitorsReturnWhile>他們將在一段事件後再次來訪。</VisitorsReturnWhile>
@@ -64,6 +59,9 @@
 
   <!-- Bed -->
   <ForGuestUse>訪客專用</ForGuestUse>
+  <GuestBedFormat>訪客 {0}</GuestBedFormat>
+  <CommandBedSetAsGuestLabel>訪客專用</CommandBedSetAsGuestLabel>
+  <CommandBedSetAsGuestDesc>這張床是否給訪客使用。</CommandBedSetAsGuestDesc>
 
   <!-- Rescue -->
   <RescuedInitial>名叫 NAME 的 {0} 十分感謝你的援救，並且願意留在你的殖民地幫助你。\n\nHIS特性： {1}。</RescuedInitial>
