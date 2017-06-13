@@ -5,18 +5,9 @@ using Verse;
 
 namespace Hospitality
 {
-    public class SpecialInjector
+    internal class ModBaseHospitality : ModBase
     {
-        public virtual bool Inject()
-        {
-            Log.Error("This should never be called.");
-            return false;
-        }
-    }
-
-    internal class DetourInjector : ModBase
-    {
-        private static Assembly Assembly { get { return Assembly.GetAssembly(typeof(DetourInjector)); } }
+        private static Assembly Assembly { get { return Assembly.GetAssembly(typeof(ModBaseHospitality)); } }
         private static string AssemblyName { get { return Assembly.FullName.Split(',').First(); } }
 
         private static void Inject()

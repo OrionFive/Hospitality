@@ -99,8 +99,8 @@
     <Compile Include="JoyGiver_BuyStuff.cs" />
     <Compile Include="LordJob_VisitColony.cs" />
     <Compile Include="LordToil_CustomTravel.cs" />
+    <Compile Include="ModBaseHospitality.cs" />
     <Compile Include="ModConfigMenu.cs" />
-    <Compile Include="SpecialInjector.cs" />
     <Compile Include="ThinkNode_InGuestArea.cs" />
     <Compile Include="ThoughtWorker_Beds.cs" />
     <Compile Include="ThoughtWorker_Expectations.cs" />

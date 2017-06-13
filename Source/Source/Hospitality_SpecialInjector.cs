@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Harmony;
 using RimWorld;
 using Verse;
 
 namespace Hospitality
 {
 
-    public class Hospitality_SpecialInjector : SpecialInjector
+    public sealed class Hospitality_SpecialInjector
     {
-        public override bool Inject()
+        public bool Inject()
         {
             InjectTab(typeof(ITab_Pawn_Guest), def => def.race != null && def.race.Humanlike);
 
