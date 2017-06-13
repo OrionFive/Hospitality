@@ -32,26 +32,33 @@ namespace Hospitality
             return Mathf.Lerp(-20, 20, Mathf.InverseLerp(-100, 100, current));
         }
 
+        protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
+        {
+            return !f.IsPlayer && !f.defeated && !f.def.hidden && !f.HostileTo(Faction.OfPlayer);
+        }
+
         private static bool CheckCanCome(Map map, Faction faction, out string reasons)
         {
-            var fallout = map.GameConditionManager.GetActiveCondition<GameCondition_ToxicFallout>();
-            var hostileFactions = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed).Select(p => p.Faction).Distinct().Where(p =>
-                                                                   (p.HostileTo(Faction.OfPlayer) || p.HostileTo(faction)) && p != Faction.OfInsects).ToArray();
-            var winter = map.GameConditionManager.GetActiveCondition<GameCondition_ToxicFallout>();
+            var fallout = map.GameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout);
+            var hostileFactions = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed).Select(p => p.Faction).Where(p =>
+                                                                   p.HostileTo(Faction.OfPlayer) || p.HostileTo(faction)).ToArray();
+            var winter = map.GameConditionManager.ConditionIsActive(GameConditionDefOf.VolcanicWinter);
+            var temp = faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) && faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp);
 
             reasons = null;
 
-            if (fallout != null && !hostileFactions.Any()) return true; // All clear, don't ask
+            if (temp && !fallout && !winter && !hostileFactions.Any()) return true; // All clear, don't ask
 
-            var reasonsSB = new StringBuilder();
-            if (fallout != null) reasonsSB.AppendLine("- "+fallout.LabelCap);
-            if (winter != null) reasonsSB.AppendLine("- "+winter.LabelCap);
+            var reasonList = new List<string>();
+            if (fallout) reasonList.Add("- " + GameConditionDefOf.ToxicFallout.LabelCap);
+            if (winter) reasonList.Add("- " + GameConditionDefOf.VolcanicWinter.LabelCap);
+            if (!temp) reasonList.Add("- " + "Temperature".Translate());
             foreach (var f in hostileFactions)
             {
-                reasonsSB.AppendLine("- " + f.GetCallLabel());
+                reasonList.Add("- " + f.def.pawnsPlural.CapitalizeFirst());
             }
-
-            reasons = reasonsSB.ToString();
+            
+            reasons = reasonList.Distinct().Aggregate((a, b) => a+"\n"+b);
             return false; // Do ask
     
         }
@@ -67,7 +74,7 @@ namespace Hospitality
             diaNode.options.Add(diaOption);
 
             DiaOption diaOption2 = new DiaOption("VisitorsArrivedRefuse".Translate());
-            diaOption.action = refuse;
+            diaOption2.action = refuse;
             diaOption2.resolveTree = true;
             diaNode.options.Add(diaOption2);
 
@@ -112,13 +119,17 @@ namespace Hospitality
                 // Permission, spawn
                 () => SpawnGroup(parms, map),
                 // No permission, come again later
-                () => GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction)
-                );
+                () => {
+                    Log.Message("Come back later");
+
+                    GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
+                });
             return true;
         }
 
         private bool SpawnGroup(IncidentParms parms, Map map)
         {
+            Log.Message("Spawn group");
             List<Pawn> visitors;
             try
             {
