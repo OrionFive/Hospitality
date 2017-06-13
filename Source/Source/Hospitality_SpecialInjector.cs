@@ -63,14 +63,16 @@ namespace Hospitality
             var defs = DefDatabase<ThingDef>.AllDefs.Where(qualifier).ToList();
             defs.RemoveDuplicates();
 
+            var tabBase = InspectTabManager.GetSharedInstance(tabType);
+
             foreach (var def in defs)
             {
-                if (def.inspectorTabs == null) continue;
+                if (def.inspectorTabs == null || def.inspectorTabsResolved == null) continue;
 
                 if (!def.inspectorTabs.Contains(tabType))
                 {
                     def.inspectorTabs.Add(tabType);
-                    def.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(tabType));
+                    def.inspectorTabsResolved.Add(tabBase);
                     //Log.Message(def.defName+": "+def.inspectorTabsResolved.Select(d=>d.GetType().Name).Aggregate((a,b)=>a+", "+b));
                 }
             }
