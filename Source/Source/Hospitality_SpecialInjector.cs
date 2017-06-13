@@ -48,6 +48,8 @@ namespace Hospitality
 
             foreach (var def in defs)
             {
+                if (def.comps == null) continue;
+
                 if (!def.comps.Any(c=>c.GetType() == compType))
                 {
                     def.comps.Add((CompProperties) Activator.CreateInstance(compType));
@@ -63,6 +65,8 @@ namespace Hospitality
 
             foreach (var def in defs)
             {
+                if (def.inspectorTabs == null) continue;
+
                 if (!def.inspectorTabs.Contains(tabType))
                 {
                     def.inspectorTabs.Add(tabType);
