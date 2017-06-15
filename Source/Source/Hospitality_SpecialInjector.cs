@@ -22,7 +22,7 @@ namespace Hospitality
 
         private void CreateGuestBedDefs()
         {
-            var bedDefs = DefDatabase<ThingDef>.AllDefsListForReading.Where(def => def.thingClass == typeof(Building_Bed)).ToArray();
+            var bedDefs = DefDatabase<ThingDef>.AllDefsListForReading.Where(def => def.thingClass == typeof(Building_Bed) && def.building.bed_humanlike).ToArray();
 
             var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
             foreach (var bedDef in bedDefs)
