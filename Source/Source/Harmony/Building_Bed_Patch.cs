@@ -39,7 +39,7 @@ namespace Hospitality.Harmony
                 {
                     yield return gizmo;
                 }
-                if (!__instance.ForPrisoners && !__instance.Medical)
+                if (!__instance.ForPrisoners && !__instance.Medical && __instance.def.building.bed_humanlike)
                 {
                     yield return
                         new Command_Toggle

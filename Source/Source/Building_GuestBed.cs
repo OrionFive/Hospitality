@@ -120,6 +120,7 @@ namespace Hospitality
             return stringBuilder.ToString();
         }
 
+        // Is this one even being used??
         public override IEnumerable<Gizmo> GetGizmos()
         {
             // Get original gizmos from Building class
@@ -131,7 +132,10 @@ namespace Hospitality
             {
                 yield return gizmo;
             }
-            yield return
+
+            if(def.building.bed_humanlike)
+            {
+                yield return
                         new Command_Toggle
                         {
                             defaultLabel = "CommandBedSetAsGuestLabel".Translate(),
@@ -141,6 +145,7 @@ namespace Hospitality
                             toggleAction = () => Swap(this),
                             hotKey = KeyBindingDefOf.Misc4
                         };
+            }
         }
 
         public override void PostMake()
