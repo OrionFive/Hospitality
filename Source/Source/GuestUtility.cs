@@ -610,9 +610,9 @@ namespace Hospitality
         public static bool WillRescueJoin(Pawn pawn)
         {
             if (DebugSettings.instantRecruit) return true;
-            if (IsEnvironmentHostile(pawn)) return true;
 
-            float chance = 1 - pawn.RecruitDifficulty(Faction.OfPlayer, false)*0.5f; // was 0.75f
+            float chance = 1 - pawn.RecruitDifficulty(Faction.OfPlayer, false)*0.75f; // was 0.75f
+            if (IsEnvironmentHostile(pawn)) chance += 0.25f;
             chance = Mathf.Clamp(chance, 0.005f, 1f);
 
             Rand.PushState();
