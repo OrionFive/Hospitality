@@ -21,6 +21,9 @@ namespace Hospitality
         {
             var toil = new Toil {
                 initAction = () => {
+                    if (talkee.interactions.InteractedTooRecentlyToInteract()
+                        || pawn.interactions.InteractedTooRecentlyToInteract()) return;
+
                     PawnUtility.ForceWait(talkee, duration, pawn);
                     TargetThingB = pawn;
                     MoteMaker.MakeInteractionBubble(pawn, talkee, intDef.interactionMote, intDef.Symbol);
@@ -29,14 +32,12 @@ namespace Hospitality
                 defaultCompleteMode = ToilCompleteMode.Delay,
                 defaultDuration =  duration
             };
-            toil.AddFailCondition(talkee.interactions.InteractedTooRecentlyToInteract);
-            toil.AddFailCondition(pawn.interactions.InteractedTooRecentlyToInteract);
             return toil.WithProgressBarToilDelay(TargetIndex.B);
         }
 
         protected virtual bool FailCondition()
         {
-            return !GuestUtility.ViableGuestTarget(Talkee) || !pawn.CanReserve(Talkee);
+            return !GuestUtility.ViableGuestTarget(Talkee) || (!pawn.HasReserved(Talkee) && !pawn.CanReserve(Talkee));
         }
     }
 }

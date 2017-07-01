@@ -9,7 +9,7 @@ namespace Hospitality
     {
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOn(FailCondition);
+            //this.FailOn(FailCondition);
             yield return GotoGuest(pawn, Talkee);
             yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
             yield return Toils_Reserve.Reserve(TargetIndex.A);
@@ -25,8 +25,10 @@ namespace Hospitality
             var toil = new Toil
             {
                 initAction = () => {
-                    if (!recruiter.ShouldImproveRelationship(guest)) return;
-                    if (!recruiter.CanTalkTo(guest)) return;
+                    if (guest.interactions.InteractedTooRecentlyToInteract()
+                     || recruiter.interactions.InteractedTooRecentlyToInteract()) return;
+                    //if (!recruiter.ShouldImproveRelationship(guest)) return;
+                    //if (!recruiter.CanTalkTo(guest)) return;
                     InteractionDef intDef = DefDatabase<InteractionDef>.GetNamed("GuestDiplomacy"); 
                     recruiter.interactions.TryInteractWith(guest, intDef);
                 },
@@ -34,7 +36,7 @@ namespace Hospitality
                 defaultCompleteMode = ToilCompleteMode.Delay,
                 defaultDuration = 350
             };
-            toil.AddFailCondition(FailCondition);
+            //toil.AddFailCondition(FailCondition);
             return toil;
         }
 
