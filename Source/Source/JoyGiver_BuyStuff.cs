@@ -141,7 +141,7 @@ namespace Hospitality
                 //Log.Message(thing.Label+": is forbidden for "+pawn.NameStringShort);
                 return false;
             }
-            if (!pawn.CanReserveAndReach(thing, PathEndMode.OnCell, Danger.None))
+            if (!pawn.HasReserved(thing) && !pawn.CanReserveAndReach(thing, PathEndMode.OnCell, Danger.None))
             {
                 //Log.Message(thing.Label+": can't be reserved or reached by "+pawn.NameStringShort);
                 return false;

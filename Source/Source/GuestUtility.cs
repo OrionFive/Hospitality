@@ -463,7 +463,7 @@ namespace Hospitality
             //if (guest.interactions.InteractedTooRecentlyToInteract()) return false;
             //if (pawn.interactions.InteractedTooRecentlyToInteract()) return false;
             if (!guest.Awake()) return false;
-            if (!pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
+            if (!pawn.HasReserved(guest) && !pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
 
             return true;
         }
@@ -477,7 +477,7 @@ namespace Hospitality
             if (guest.InMentalState) return false;
             //if (guest.interactions.InteractedTooRecentlyToInteract()) return false;
             //if (pawn.interactions.InteractedTooRecentlyToInteract()) return false;
-            if (!pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
+            if (!pawn.HasReserved(guest) && !pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
 
             return true;
         }
