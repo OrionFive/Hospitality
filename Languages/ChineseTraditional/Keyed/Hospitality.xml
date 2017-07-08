@@ -37,6 +37,10 @@
   <VisitorsReturnNotSoon>近期內他們不會再來了。</VisitorsReturnNotSoon>
   <VisitorsReturnNot>他們已經受夠了你。</VisitorsReturnNot>
 
+  <VisitorsArrivedTitle>來自{0}的訪客已到達</VisitorsArrivedTitle>
+  <VisitorsArrivedDesc>由於以下原因，他們害怕進入你的領地：\n{1}\n\n如果你送他們離開，他們會稍作停留然後返回。</VisitorsArrivedDesc>
+  <VisitorsArrivedAccept>確保安全</VisitorsArrivedAccept>
+  <VisitorsArrivedRefuse>送離</VisitorsArrivedRefuse>
 
   <!-- Tab -->
   <ConvincingLeft>說服難度</ConvincingLeft>
