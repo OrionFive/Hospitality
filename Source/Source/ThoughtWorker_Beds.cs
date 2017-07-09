@@ -22,13 +22,15 @@ namespace Hospitality
                     return ThoughtState.Inactive;
                 }
                 if (!pawn.IsGuest()) return ThoughtState.Inactive;
-                
-                if(!pawn.GetComp<CompGuest>().arrived) return ThoughtState.Inactive;
+
+                var compGuest = pawn.GetComp<CompGuest>();
+                if (compGuest == null) return ThoughtState.Inactive;
+                if(!compGuest.arrived) return ThoughtState.Inactive;
 
                 var area = pawn.GetGuestArea();
                 if (area == null) return ThoughtState.ActiveAtStage(0);
 
-                var visitors = pawn.MapHeld.lordManager.lords.SelectMany(l => l.ownedPawns).Count(p => StaysInArea(p, area));
+                var visitors = pawn.MapHeld.lordManager.lords.Where(l=>l!=null).SelectMany(l => l.ownedPawns).Count(p => StaysInArea(p, area));
                 var bedCount = pawn.GetGuestBeds().Count();
 
                 if (bedCount == 0) return ThoughtState.ActiveAtStage(0);
