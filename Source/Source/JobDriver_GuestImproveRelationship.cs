@@ -17,7 +17,7 @@ namespace Hospitality
             yield return Interact(Talkee, InteractionDefOf.BuildRapport, GuestUtility.InteractIntervalAbsoluteMin);
             yield return TryImproveRelationship(pawn, Talkee);
             yield return Toils_Reserve.Release(TargetIndex.A);
-            //yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.A);
+            yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.A);
         }
 
         public Toil TryImproveRelationship(Pawn recruiter, Pawn guest)
