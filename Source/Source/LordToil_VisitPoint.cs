@@ -193,13 +193,23 @@ namespace Hospitality
                 Faction newFaction;
                 if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && !f.HostileTo(Faction.OfPlayer)).TryRandomElement(out newFaction))
                 {
-                    GuestUtility.PlanNewVisit(currentMap, days * 2+GenericUtility.GetTravelDays(newFaction, currentMap), newFaction);
+                    TryCreateVisit(currentMap, days*2, newFaction);
                 }
             }
 
             //Log.Message(faction.def.LabelCap + " will visit again in " + days + " days (+" + GenericUtility.GetTravelDays(faction, randomVisitMap)*2 + " days for travel).");
-            GuestUtility.PlanNewVisit(randomVisitMap, days + GenericUtility.GetTravelDays(faction, randomVisitMap)*2, faction);
+            TryCreateVisit(currentMap, days * 2, faction, 2);
             return days;
+        }
+
+        private static void TryCreateVisit(Map map, float days, Faction faction, float travelFactor = 1)
+        {
+            var travelDays = GenericUtility.GetTravelDays(faction, map);
+
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (travelDays == GenericUtility.NoBasesLeft) return;
+
+            GuestUtility.PlanNewVisit(map, days + travelDays * travelFactor, faction);
         }
 
         public float GetVisitScore(Pawn pawn)

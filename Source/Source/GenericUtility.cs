@@ -7,6 +7,8 @@ using Verse;
 
 internal static class GenericUtility
 {
+    internal const int NoBasesLeft = -1;
+
     public static bool IsMeal(this Thing thing)
     {
         return thing.def.ingestible != null && thing.def.ingestible.IsMeal;
@@ -53,10 +55,20 @@ internal static class GenericUtility
 
     public static float GetTravelDays(Faction faction, Map map)
     {
-        float tilesFromBase = Find.WorldObjects.FactionBases.Where(b=>b.Faction==faction).Min(b=>Find.WorldGrid.ApproxDistanceInTiles(map.Tile, b.Tile));
-        var daysPerTile = 0.5f;
+        var bases = Find.WorldObjects.FactionBases.Where(b=>b.Faction==faction && CanReach(b.Tile, map.Tile)).ToArray();
+        if (bases.Length == 0)
+        {
+            return NoBasesLeft;
+        }
+        float tilesFromBase = bases.Min(b=>Find.WorldGrid.ApproxDistanceInTiles(map.Tile, b.Tile));
+        const float daysPerTile = 0.5f;
         var days = tilesFromBase * daysPerTile;
         //Log.Message("It takes the " + faction.def.pawnsPlural + " " + days + " days to travel to the player and back.");
         return days;
+    }
+
+    private static bool CanReach(int tileA, int tileB)
+    {
+        return Find.WorldReachability.CanReach(tileA, tileB);
     }
 }
