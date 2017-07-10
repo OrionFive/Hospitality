@@ -413,11 +413,13 @@ namespace Hospitality
 
             guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
 
+            // Reset timetable to default
+            guest.timetable = new Pawn_TimetableTracker(guest);
+
             // Clear reservations
             Find.Maps.ForEach(m => m.reservationManager.ReleaseAllClaimedBy(guest));
 
             guest.SetFaction(Faction.OfPlayer);
-            // TODO: Check that this works with multiple bases
 
             guest.mindState.exitMapAfterTick = -99999;
             guest.MapHeld.mapPawns.UpdateRegistryForPawn(guest);
