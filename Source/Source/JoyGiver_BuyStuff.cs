@@ -3,6 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace Hospitality
 {
@@ -130,8 +131,21 @@ namespace Hospitality
             {
                 return false;
             }
+            if (BoughtByPlayer(pawn, thing))
+            {
+                return false;
+            }
             //if (thing.IsInValidStorage()) Log.Message(thing.Label + " in storage ");
             return true;
+        }
+
+        private static bool BoughtByPlayer(Pawn pawn, Thing thing)
+        {
+            var lord = pawn.GetLord();
+            if (lord == null) return true;
+            var toil = lord.CurLordToil as LordToil_VisitPoint;
+            if (toil == null) return true;
+            return toil.BoughtByPlayer(thing);
         }
 
         public static bool IsBuyableNow(Pawn pawn, Thing thing)

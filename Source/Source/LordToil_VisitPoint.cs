@@ -14,6 +14,7 @@ namespace Hospitality
         public float radius;
         public Dictionary<int, float> visitorMoods = new Dictionary<int, float>();
         public VisitorFlag visitorFlag;
+        public List<int> soldItemIDs = new List<int>(); // items that may not be bought
 
         public override void ExposeData()
         {
@@ -21,8 +22,10 @@ namespace Hospitality
             Scribe_Values.Look(ref radius, "radius", 45f);
             Scribe_Collections.Look(ref visitorMoods, "visitorMoods");
             Scribe_References.Look(ref visitorFlag, "flag");
+            Scribe_Collections.Look(ref soldItemIDs, "soldItemIDs");
         }
     }
+
     internal class LordToil_VisitPoint : LordToil
     {
         public override IntVec3 FlagLoc
@@ -40,6 +43,11 @@ namespace Hospitality
         {
             base.Init();
             Arrive();
+        }
+
+        public bool BoughtByPlayer(Thing thing)
+        {
+            return Data.soldItemIDs.Contains(thing.thingIDNumber);
         }
 
         private void Arrive()
@@ -198,7 +206,7 @@ namespace Hospitality
             }
 
             //Log.Message(faction.def.LabelCap + " will visit again in " + days + " days (+" + GenericUtility.GetTravelDays(faction, randomVisitMap)*2 + " days for travel).");
-            TryCreateVisit(currentMap, days * 2, faction, 2);
+            TryCreateVisit(randomVisitMap, days * 2, faction, 2);
             return days;
         }
 
@@ -294,6 +302,11 @@ namespace Hospitality
                 GuestUtility.AddNeedComfort(pawn);
                 pawn.mindState.duty = new PawnDuty(GuestUtility.relaxDef, FlagLoc, Data.radius);
             }
+        }
+
+        public void OnPlayerBoughtItem(Thing thing)
+        {
+            Data.soldItemIDs.Add(thing.thingIDNumber);
         }
     }
 }
