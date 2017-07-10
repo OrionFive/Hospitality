@@ -42,6 +42,7 @@ namespace Hospitality
                 {
                     guestBedDef.canBeSpawningInventory = false;
                     guestBedDef.destroyOnDrop = true;
+                    guestBedDef.scatterableOnMapGen = false;
                     guestBedDef.tradeability = Tradeability.Never;
                 }
 
