@@ -47,6 +47,7 @@ namespace Hospitality
 
         public bool BoughtByPlayer(Thing thing)
         {
+            if (Data.soldItemIDs == null) return false;
             return Data.soldItemIDs.Contains(thing.thingIDNumber);
         }
 
@@ -306,6 +307,7 @@ namespace Hospitality
 
         public void OnPlayerBoughtItem(Thing thing)
         {
+            if(Data.soldItemIDs == null) Data.soldItemIDs = new List<int>();
             Data.soldItemIDs.Add(thing.thingIDNumber);
         }
     }
