@@ -145,7 +145,7 @@ namespace Hospitality
             if (lord == null) return true;
             var toil = lord.CurLordToil as LordToil_VisitPoint;
             if (toil == null) return true;
-            return toil.BoughtByPlayer(thing);
+            return toil.BoughtOrSoldByPlayer(thing);
         }
 
         public static bool IsBuyableNow(Pawn pawn, Thing thing)

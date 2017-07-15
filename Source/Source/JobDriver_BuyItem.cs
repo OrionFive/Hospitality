@@ -5,6 +5,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace Hospitality
 {
@@ -93,10 +94,24 @@ namespace Hospitality
                     comp.boughtItems.Add(item.thingIDNumber);
 
                     // Handle trade stuff
-                    var twc = item as ThingWithComps;
-                    if (twc != null && map.mapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerSells, map.mapPawns.FreeColonistsSpawned.RandomElement(), toil.actor);
+                    Trade(toil, item, map);
                 }
             }
+        }
+
+        private void Trade(Toil toil, Thing item, Map map)
+        {
+            var twc = item as ThingWithComps;
+            if (twc != null && map.mapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerSells, map.mapPawns.FreeColonistsSpawned.RandomElement(), toil.actor);
+
+            // Register with lord toil
+            var lord = pawn.GetLord();
+            if (lord == null) return;
+            var lordToil = lord.CurLordToil as LordToil_VisitPoint;
+            if (lordToil == null) return;
+
+            lordToil.OnPlayerSoldItem(item);
+
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Hospitality
         public float radius;
         public Dictionary<int, float> visitorMoods = new Dictionary<int, float>();
         public VisitorFlag visitorFlag;
-        public List<int> soldItemIDs = new List<int>(); // items that may not be bought
+        public List<int> soldItemIDs = new List<int>(); // items that may not be bought or gifted back
 
         public override void ExposeData()
         {
@@ -45,7 +45,7 @@ namespace Hospitality
             Arrive();
         }
 
-        public bool BoughtByPlayer(Thing thing)
+        public bool BoughtOrSoldByPlayer(Thing thing)
         {
             if (Data.soldItemIDs == null) return false;
             return Data.soldItemIDs.Contains(thing.thingIDNumber);
@@ -230,7 +230,7 @@ namespace Hospitality
             return score;
         }
 
-        private static List<Thing> GetLoot(Pawn pawn, float desiredValue)
+        private List<Thing> GetLoot(Pawn pawn, float desiredValue)
         {
             var totalValue = 0f;
             var items = pawn.inventory.innerContainer.Where(i => WillDrop(pawn, i)).InRandomOrder().ToList();
@@ -254,7 +254,7 @@ namespace Hospitality
             return dropped;
         }
 
-        private static void LeaveVerySatisfied(Pawn pawn, float score)
+        private void LeaveVerySatisfied(Pawn pawn, float score)
         {
             if (pawn.inventory.innerContainer.Count == 0) return;
 
@@ -268,7 +268,7 @@ namespace Hospitality
             PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("Hospitality"), KnowledgeAmount.Total);
         }
 
-        private static void LeaveSatisfied(Pawn pawn, float score)
+        private void LeaveSatisfied(Pawn pawn, float score)
         {
             if (pawn.inventory.innerContainer.Count == 0) return;
 
@@ -285,9 +285,9 @@ namespace Hospitality
             Messages.Message(text, item, MessageSound.Benefit);
         }
 
-        private static bool WillDrop(Pawn pawn, Thing i)
+        private bool WillDrop(Pawn pawn, Thing i)
         {
-            return i.def != ThingDefOf.Silver && !i.IsMeal() && !pawn.Bought(i);
+            return i.def != ThingDefOf.Silver && !i.IsMeal() && !pawn.Bought(i) && !BoughtOrSoldByPlayer(i);
         }
 
         private static string GetItemName(Thing item)
@@ -309,6 +309,11 @@ namespace Hospitality
         {
             if(Data.soldItemIDs == null) Data.soldItemIDs = new List<int>();
             Data.soldItemIDs.Add(thing.thingIDNumber);
+        }
+
+        public void OnPlayerSoldItem(Thing thing)
+        {
+            OnPlayerBoughtItem(thing); // Same thing
         }
     }
 }
