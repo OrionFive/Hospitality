@@ -15,22 +15,36 @@ namespace Hospitality
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOn(FailCondition);
-            var goTo = GotoGuest(pawn, Talkee);
-            yield return goTo;
+            //this.FailOn(FailCondition);
+            var gotoGuest = GotoGuest(pawn, Talkee); // Jump target
+            yield return gotoGuest;
             yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
-            yield return Toils_Reserve.Reserve(TargetIndex.A);
+            yield return Toils_Reserve.ReserveQueue(TargetIndex.A);
 
-            yield return Interact(Talkee, InteractionDefOf.RecruitAttempt, GuestUtility.InteractIntervalAbsoluteMin).JumpIf(() => IsBusy(pawn) || IsBusy(Talkee), goTo);
-            yield return Toils_Reserve.Release(TargetIndex.A);
+            yield return Interact(Talkee, InteractionDefOf.RecruitAttempt, GuestUtility.InteractIntervalAbsoluteMin).JumpIf(() => IsBusy(pawn) || IsBusy(Talkee), gotoGuest);
             yield return TryRecruitGuest(pawn, Talkee);
             
             yield return RiskAnger(pawn, Talkee);
+            yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.A);
         }
 
-        private static bool IsBusy(Pawn p)
+        public Toil TryRecruitGuest(Pawn recruiter, Pawn guest)
         {
-            return p.interactions.InteractedTooRecentlyToInteract();
+            var toil = new Toil
+            {
+                initAction = () => {
+                    if (!recruiter.ShouldRecruit(guest)) return;
+                    if (!recruiter.CanTalkTo(guest)) return;
+                    InteractionDef intDef = DefDatabase<InteractionDef>.GetNamed("CharmGuestAttempt");
+                    recruiter.interactions.TryInteractWith(guest, intDef);
+                    //guest.CheckRecruitingSuccessful(recruiter);
+                },
+                socialMode = RandomSocialMode.Off,
+                defaultCompleteMode = ToilCompleteMode.Delay,
+                defaultDuration = 350
+            };
+            toil.AddFailCondition(FailCondition);
+            return toil;
         }
 
         public static Toil RiskAnger(Pawn pawn, Pawn guest)
@@ -71,25 +85,6 @@ namespace Hospitality
                     }
                 }
             }
-        }
-
-        public Toil TryRecruitGuest(Pawn recruiter, Pawn guest)
-        {
-            var toil = new Toil
-            {
-                initAction = () => {
-                    if (!recruiter.ShouldRecruit(guest)) return;
-                    if (!recruiter.CanTalkTo(guest)) return;
-                    InteractionDef intDef = DefDatabase<InteractionDef>.GetNamed("CharmGuestAttempt");
-                    recruiter.interactions.TryInteractWith(guest, intDef);
-                    //guest.CheckRecruitingSuccessful(recruiter);
-                },
-                socialMode = RandomSocialMode.Off,
-                defaultCompleteMode = ToilCompleteMode.Delay,
-                defaultDuration = 350
-            };
-            toil.AddFailCondition(FailCondition);
-            return toil;
         }
 
         protected override bool FailCondition()

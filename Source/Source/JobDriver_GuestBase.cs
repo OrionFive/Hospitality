@@ -39,5 +39,10 @@ namespace Hospitality
         {
             return !GuestUtility.ViableGuestTarget(Talkee) || (!pawn.HasReserved(Talkee) && !pawn.CanReserve(Talkee));
         }
+
+        protected static bool IsBusy(Pawn p)
+        {
+            return p.interactions.InteractedTooRecentlyToInteract() || p.Map.reservationManager.IsReserved(p, Faction.OfPlayer);
+        }
     }
 }

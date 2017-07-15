@@ -11,7 +11,7 @@ namespace Hospitality
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             var guest = t as Pawn;
-            return pawn.ShouldImproveRelationship(guest) && pawn.CanTalkTo(guest) && !guest.interactions.InteractedTooRecentlyToInteract();
+            return pawn.ShouldImproveRelationship(guest);
         }
 
         public override bool ShouldSkip(Pawn pawn)
