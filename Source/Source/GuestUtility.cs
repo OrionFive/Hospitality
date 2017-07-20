@@ -174,7 +174,7 @@ namespace Hospitality
         
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
-            return !(!guest.IsGuest() || guest.Downed || (!sleepingIsOk && !guest.Awake()) || !guest.MapHeld.areaManager.Home[guest.Position] || guest.HasDismissiveThought());
+            return !(!guest.IsGuest() || guest.Downed || (!sleepingIsOk && !guest.Awake()) || (!IsInGuestZone(guest, guest) || guest.HasDismissiveThought()));
         }
 
         public static void Arrive(this Pawn pawn)
