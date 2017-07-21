@@ -85,8 +85,6 @@ namespace Hospitality
         public override bool TryExecute(IncidentParms parms)
         {
             if (!TryResolveParms(parms)) return false;
-            if (parms.faction == Faction.OfPlayer) return false;
-
             Map map = (Map) parms.target;
 
             if (parms.points < 40)
@@ -106,6 +104,18 @@ namespace Hospitality
                 return false;
             }
 
+            if (parms.faction == Faction.OfPlayer)
+            {
+                Log.ErrorOnce("Trying to spawn visitors, but they are of Faction.OfPlayer.", 3464363);
+                return true;
+            }
+            if (parms.faction.RelationWith(Faction.OfPlayer).hostile)
+            {
+                Log.ErrorOnce("Trying to spawn visitors, but they are hostile to the player (now).", 4736345);
+                return true;
+            }
+
+
             string reasons;
             // We check here instead of CanFireNow, so we can reschedule the visit.
             // Any reasons not to come?
@@ -120,8 +130,6 @@ namespace Hospitality
                 () => SpawnGroup(parms, map),
                 // No permission, come again later
                 () => {
-                    Log.Message("Come back later");
-
                     GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
                 });
             return true;
@@ -129,7 +137,6 @@ namespace Hospitality
 
         private bool SpawnGroup(IncidentParms parms, Map map)
         {
-            Log.Message("Spawn group");
             List<Pawn> visitors;
             try
             {

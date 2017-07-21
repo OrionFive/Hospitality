@@ -6,6 +6,8 @@ namespace Hospitality
 {
     public abstract class JobDriver_GuestBase : JobDriver_ChatWithPrisoner
     {
+        public static readonly JobDef therapyJobDef = DefDatabase<JobDef>.GetNamedSilentFail("ReceiveTherapy");
+
         public static Toil GotoGuest(Pawn pawn, Pawn talkee, bool mayBeSleeping = false)
         {
             var toil = new Toil
@@ -42,7 +44,13 @@ namespace Hospitality
 
         protected static bool IsBusy(Pawn p)
         {
-            return p.interactions.InteractedTooRecentlyToInteract() || p.Map.reservationManager.IsReserved(p, Faction.OfPlayer);
+            return p.interactions.InteractedTooRecentlyToInteract() || p.Map.reservationManager.IsReserved(p, Faction.OfPlayer) || IsInTherapy(p);
+        }
+
+        // Compatibility fix to Therapy mod
+        private static bool IsInTherapy(Pawn p)
+        {
+            return therapyJobDef != null && p.CurJob != null && p.CurJob.def == therapyJobDef;
         }
     }
 }
