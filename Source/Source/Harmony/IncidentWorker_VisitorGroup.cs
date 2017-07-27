@@ -311,10 +311,16 @@ namespace Hospitality
             }
             if (item.def.useHitPoints)
             {
-                float randomInRange = visitor.kindDef.gearHealthRange.RandomInRange;
-                if (randomInRange < 1f)
+                // Make sure health is at least 60%. Otherwise too expensive items can become gifts.
+                const float minHealthPct = 0.6f;
+                var healthRange = visitor.kindDef.gearHealthRange;
+                healthRange.min = minHealthPct;
+                healthRange.max = Mathf.Max(minHealthPct, healthRange.max);
+
+                var health = healthRange.RandomInRange;
+                if (health < 1)
                 {
-                    int num = Mathf.RoundToInt(randomInRange*item.MaxHitPoints);
+                    int num = Mathf.RoundToInt(health * item.MaxHitPoints);
                     num = Mathf.Max(1, num);
                     item.HitPoints = num;
                 }
