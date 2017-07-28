@@ -86,6 +86,7 @@
     <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
     <Compile Include="Harmony\IncidentWorker_RefugeeChased_Patch.cs" />
     <Compile Include="Harmony\IncidentWorker_WandererJoin_Patch.cs" />
+    <Compile Include="Harmony\TransitionAction_EnsureHaveExitDestination_Patch.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
     <Compile Include="CompGuest.cs" />
     <Compile Include="CompProperties_Guest.cs" />
