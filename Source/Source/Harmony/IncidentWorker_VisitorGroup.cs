@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
@@ -63,7 +64,7 @@ namespace Hospitality
     
         }
 
-        private static void ShowAskMayComeDialog(Faction faction, string reasons, Action allow, Action refuse)
+        private static void ShowAskMayComeDialog(Faction faction, Map map, string reasons, Direction8Way spawnDirection, Action allow, Action refuse)
         {
             string text = "VisitorsArrivedDesc".Translate(faction, reasons);
 
@@ -78,7 +79,8 @@ namespace Hospitality
             diaOption2.resolveTree = true;
             diaNode.options.Add(diaOption2);
 
-            string title = "VisitorsArrivedTitle".Translate(faction);
+            var location = ((MapParent) map.ParentHolder).Label;
+            string title = "VisitorsArrivedTitle".Translate(location, spawnDirection.LabelShort());
             Find.WindowStack.Add(new Dialog_NodeTree(diaNode, true, true, title));
         }
 
@@ -125,7 +127,8 @@ namespace Hospitality
                 return SpawnGroup(parms, map);
             }
             // Yes, ask the player for permission
-            ShowAskMayComeDialog(parms.faction, reasons,
+            var spawnDirection = GetSpawnDirection(map, parms.spawnCenter);
+            ShowAskMayComeDialog(parms.faction, map, reasons, spawnDirection,
                 // Permission, spawn
                 () => SpawnGroup(parms, map),
                 // No permission, come again later
@@ -133,6 +136,23 @@ namespace Hospitality
                     GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
                 });
             return true;
+        }
+
+        private static Direction8Way GetSpawnDirection(Map map, IntVec3 position)
+        {
+            var offset = map.Center - position;
+            var angle = (offset.AngleFlat+180)%360;
+
+            const float step = 360/16f;
+            if(angle < 1*step) return Direction8Way.North;
+            if(angle < 3*step) return Direction8Way.NorthEast;
+            if(angle < 5*step) return Direction8Way.East;
+            if(angle < 7*step) return Direction8Way.SouthEast;
+            if(angle < 9*step) return Direction8Way.South;
+            if(angle < 11*step) return Direction8Way.SouthWest;
+            if(angle < 13*step) return Direction8Way.West;
+            if(angle < 15*step) return Direction8Way.NorthWest;
+            return Direction8Way.North;
         }
 
         private bool SpawnGroup(IncidentParms parms, Map map)
@@ -317,10 +337,10 @@ namespace Hospitality
                 healthRange.min = minHealthPct;
                 healthRange.max = Mathf.Max(minHealthPct, healthRange.max);
 
-                var health = healthRange.RandomInRange;
-                if (health < 1)
+                var healthPct = healthRange.RandomInRange;
+                if (healthPct < 1)
                 {
-                    int num = Mathf.RoundToInt(health * item.MaxHitPoints);
+                    int num = Mathf.RoundToInt(healthPct * item.MaxHitPoints);
                     num = Mathf.Max(1, num);
                     item.HitPoints = num;
                 }
