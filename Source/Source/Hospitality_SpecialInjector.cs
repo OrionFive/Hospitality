@@ -36,6 +36,7 @@ namespace Hospitality
                 guestBedDef.label = "GuestBedFormat".Translate(guestBedDef.label);
                 guestBedDef.thingClass = typeof(Building_GuestBed);
                 guestBedDef.shortHash = 0;
+                guestBedDef.minifiedDef = null;
 
                 // Animal bed (some people still have them in their saves... TODO: Remove this in A18, add check to bedDefs, so these won't get made
                 if (!bedDef.building.bed_humanlike)
