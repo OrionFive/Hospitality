@@ -12,7 +12,7 @@ namespace Hospitality.Harmony
         {
             public static bool Prefix(MinifiedThing __instance)
             {
-                if (!__instance.def.Minifiable)
+                if (!__instance.InnerThing.def.Minifiable)
                 {
                     // Destroy next tick
                     ModBaseHospitality.RegisterTickAction(DestroySafely(__instance));
@@ -26,7 +26,7 @@ namespace Hospitality.Harmony
                 return () => {
                     try
                     {
-                        Log.Message("Removing invalid minified thing of type "+__instance.def.LabelCap+".");
+                        Log.Message("Removing invalid minified thing of type "+__instance.InnerThing.def.LabelCap+".");
                         __instance.Destroy();
                     }
                     catch (NullReferenceException)
