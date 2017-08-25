@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HugsLib;
@@ -7,6 +9,7 @@ namespace Hospitality
 {
     internal class ModBaseHospitality : ModBase
     {
+        private static List<Action> TickActions = new List<Action>();
         private static Assembly Assembly { get { return Assembly.GetAssembly(typeof(ModBaseHospitality)); } }
         private static string AssemblyName { get { return Assembly.FullName.Split(',').First(); } }
 
@@ -22,6 +25,20 @@ namespace Hospitality
         public override void Initialize()
         {
             Inject();
+        }
+
+        public override void Tick(int currentTick)
+        {
+            foreach (var action in TickActions)
+            {
+                action();
+            }
+            TickActions.Clear();
+        }
+
+        public static void RegisterTickAction(Action action)
+        {
+            TickActions.Add(action);
         }
     }
 }
