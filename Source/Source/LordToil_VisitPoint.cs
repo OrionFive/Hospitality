@@ -192,7 +192,7 @@ namespace Hospitality
             else
                 days = Mathf.Lerp(Rand.Range(7f, 12f), Rand.Range(25f, 30f), targetGoodwill/-100f);
 
-            if (sentAway) days += 10;
+            if (sentAway) days += 5;
 
             Map randomVisitMap = Rand.Value < 0.1f ? Find.Maps.Where(m => m.IsPlayerHome).RandomElement() : currentMap;
 

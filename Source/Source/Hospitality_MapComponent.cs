@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
+using UnityEngine;
 
 namespace Hospitality
 {
@@ -29,7 +30,9 @@ namespace Hospitality
             }
         }
 
+        [Obsolete]
         private List<Event> eventQueue = new List<Event>();
+        private IncidentQueue incidentQueue = new IncidentQueue();
         private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
         public PrisonerInteractionModeDef defaultInteractionMode;
         public Area defaultAreaRestriction;
@@ -44,6 +47,7 @@ namespace Hospitality
             Scribe_References.Look(ref defaultAreaRestriction, "defaultAreaRestriction");
             Scribe_Values.Look(ref lastEventKey, "lastEventKey", 0);
             Scribe_Collections.Look(ref eventQueue, "eventQueue", LookMode.Deep);
+            Scribe_Deep.Look<IncidentQueue>(ref incidentQueue, "incidentQueue", new object[0]);
 
             if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
         }
@@ -65,6 +69,9 @@ namespace Hospitality
         {
             base.MapComponentTick();
 
+            if (incidentQueue == null) CreateNewIncidentQueue();
+            incidentQueue.IncidentQueueTick();
+            
             if (eventQueue == null) eventQueue = new List<Event>();
             var triggeredEvents = eventQueue.Where(e => --e.delayTicks <= 0).ToArray();
 
@@ -77,6 +84,27 @@ namespace Hospitality
                     action.DoAction();
                 }
             }
+        }
+
+        private void CreateNewIncidentQueue()
+        {
+            incidentQueue = new IncidentQueue();
+
+            // Add some visits
+            float days = Rand.Range(5, 10);
+            foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f.PlayerGoodwill > 0).OrderByDescending(f => f.PlayerGoodwill))
+            {
+                //Log.Message(faction.GetCallLabel() + " are coming after " + days + " days.");
+                GuestUtility.PlanNewVisit(map, days, faction);
+                days += Rand.Range(10f, 15f);
+            }
+        }
+
+        public void QueueIncident(FiringIncident incident, float afterDays)
+        {
+            var qi = new QueuedIncident(incident, (int)(Find.TickManager.TicksGame + GenDate.TicksPerDay * afterDays));
+            incidentQueue.Add(qi);
+            //Log.Message("Queued Hospitality incident after " + afterDays + " days. Queue has now " + incidentQueue.Count + " items.");
         }
 
         public int GetBribeCount(Faction faction)

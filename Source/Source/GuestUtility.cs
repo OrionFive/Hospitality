@@ -635,13 +635,14 @@ namespace Hospitality
 
         public static void PlanNewVisit(IIncidentTarget map, float afterDays, Faction faction = null)
         {
-            if (map == null) return;
-            IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(Find.Storyteller.def, IncidentCategory.AllyArrival, map);
+            var realMap = map as Map;
+            if (realMap == null) return;
+
+            IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(Find.Storyteller.def, IncidentCategory.AllyArrival, realMap);
 
             if(faction != null) incidentParms.faction = faction;
             var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
-            var qi = new QueuedIncident(incident, (int) (Find.TickManager.TicksGame + GenDate.TicksPerDay*afterDays));
-            Find.Storyteller.incidentQueue.Add(qi);
+            Hospitality_MapComponent.Instance(realMap).QueueIncident(incident, afterDays);
         }
 
         public static bool IsInGuestZone(this Pawn p, Thing s)
