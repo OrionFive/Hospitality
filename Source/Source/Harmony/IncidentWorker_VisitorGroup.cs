@@ -87,7 +87,10 @@ namespace Hospitality
         public override bool TryExecute(IncidentParms parms)
         {
             if (!TryResolveParms(parms)) return false;
-            Map map = (Map) parms.target;
+            Map map = parms.target as Map;
+
+            // Is map not available anymore?
+            if (map == null) return true;
 
             if (parms.points < 40)
             {
