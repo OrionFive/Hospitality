@@ -358,7 +358,8 @@ namespace Hospitality
                 Predicate<ThingDef> qualifies =
                     d =>
                         d.category == ThingCategory.Item && d.EverStoreable && d.alwaysHaulable
-                        && d.thingClass != typeof (MinifiedThing) && d.tradeability != Tradeability.Never;
+                        && d.thingClass != typeof(MinifiedThing) && d.tradeability != Tradeability.Never
+                        && d.GetCompProperties<CompProperties_Hatcher>() == null;
                 _items = DefDatabase<ThingDef>.AllDefs.Where(d => qualifies(d)).ToArray();
                 //highestValue = _items.Max(i => i.BaseMarketValue);
             }
