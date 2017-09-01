@@ -638,7 +638,7 @@ namespace Hospitality
             var realMap = map as Map;
             if (realMap == null) return;
 
-            IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(Find.Storyteller.def, IncidentCategory.AllyArrival, realMap);
+            var incidentParms = StorytellerUtility.DefaultParmsNow(Find.Storyteller.def, IncidentCategory.AllyArrival, realMap);
 
             if(faction != null) incidentParms.faction = faction;
             var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);

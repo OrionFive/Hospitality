@@ -7,20 +7,6 @@ using UnityEngine;
 
 namespace Hospitality
 {
-    public sealed class Event : IExposable
-    {
-        public int delayTicks;
-        public List<EventAction> actions = new List<EventAction>();
-        public int key;
-
-        public void ExposeData()
-        {
-            Scribe_Values.Look(ref delayTicks, "delayTicks");
-            Scribe_Collections.Look(ref actions, "actions", LookMode.Deep);
-            //Scribe_Values.Look(ref GuestUtility.visitorDrugPolicy, "visitorDrugPolicy");
-        }
-    }
-
     public class Hospitality_MapComponent : MapComponent
     {
         public static Hospitality_MapComponent Instance(Map map)
@@ -30,8 +16,6 @@ namespace Hospitality
             }
         }
 
-        [Obsolete]
-        private List<Event> eventQueue = new List<Event>();
         private IncidentQueue incidentQueue = new IncidentQueue();
         private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
         public PrisonerInteractionModeDef defaultInteractionMode;
@@ -46,8 +30,7 @@ namespace Hospitality
             Scribe_Defs.Look(ref defaultInteractionMode, "defaultInteractionMode");
             Scribe_References.Look(ref defaultAreaRestriction, "defaultAreaRestriction");
             Scribe_Values.Look(ref lastEventKey, "lastEventKey", 0);
-            Scribe_Collections.Look(ref eventQueue, "eventQueue", LookMode.Deep);
-            Scribe_Deep.Look<IncidentQueue>(ref incidentQueue, "incidentQueue", new object[0]);
+            Scribe_Deep.Look(ref incidentQueue, "incidentQueue");
 
             if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
         }
@@ -71,19 +54,6 @@ namespace Hospitality
 
             if (incidentQueue == null) CreateNewIncidentQueue();
             incidentQueue.IncidentQueueTick();
-            
-            if (eventQueue == null) eventQueue = new List<Event>();
-            var triggeredEvents = eventQueue.Where(e => --e.delayTicks <= 0).ToArray();
-
-            foreach (var e in triggeredEvents)
-            {
-                eventQueue.Remove(e);
-
-                foreach (var action in e.actions)
-                {
-                    action.DoAction();
-                }
-            }
         }
 
         private void CreateNewIncidentQueue()
@@ -121,18 +91,6 @@ namespace Hospitality
             if (faction == null) throw new NullReferenceException("Faction not set.");
 
             bribeCount[faction.randomKey] = GetBribeCount(faction) + 1;
-        }
-
-        public int QueueEvent(Event e)
-        {
-            e.key = ++lastEventKey;
-            eventQueue.Add(e);
-            return lastEventKey;
-        }
-
-        public Event GetEvent(int key)
-        {
-            return eventQueue.FirstOrDefault(e=>e.key == key);
         }
     }
 }
