@@ -30,7 +30,7 @@ namespace Hospitality
                 var area = pawn.GetGuestArea();
                 if (area == null) return ThoughtState.ActiveAtStage(0);
 
-                var visitors = pawn.MapHeld.lordManager.lords.Where(l=>l!=null).SelectMany(l => l.ownedPawns).Count(p => StaysInArea(p, area));
+                var visitors = pawn.MapHeld.lordManager.lords.Where(l=>l!=null && l.ownedPawns != null).SelectMany(l => l.ownedPawns).Count(p => StaysInArea(p, area));
                 var bedCount = pawn.GetGuestBeds().Count(b => b != null && b.def.useHitPoints); // Sleeping spots don't count
 
                 if (bedCount == 0) return ThoughtState.ActiveAtStage(0);
@@ -47,6 +47,8 @@ namespace Hospitality
 
         private static bool StaysInArea(Pawn pawn, Area area)
         {
+            if (pawn == null) return false;
+
             var comp = pawn.GetComp<CompGuest>();
             return comp != null && comp.arrived && comp.GuestArea == area;
         }
