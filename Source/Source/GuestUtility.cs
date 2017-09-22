@@ -653,6 +653,7 @@ namespace Hospitality
 
         public static IEnumerable<Building_GuestBed> GetGuestBeds(this Pawn pawn)
         {
+            if (pawn == null) return new Building_GuestBed[0];
             var area = pawn.GetGuestArea();
             if (area == null) return pawn.MapHeld.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>();
             return pawn.MapHeld.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Where(b => area[b.Position]);
