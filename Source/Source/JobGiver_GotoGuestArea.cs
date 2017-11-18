@@ -26,7 +26,7 @@ namespace Hospitality
             CellFinder.TryFindRandomReachableCellNear(area.ActiveCells.RandomElement(), pawn.MapHeld, 20,
                 TraverseParms.For(pawn, Danger.Some, TraverseMode.PassDoors), c=>area[c], null, out closeSpot);
 
-            return new ThinkResult(new Job(JobDefOf.Goto, closeSpot), this);
+            return new ThinkResult(new Job(JobDefOf.Goto, closeSpot){locomotionUrgency = LocomotionUrgency.Jog}, this);
         }
     }
 }
