@@ -22,7 +22,7 @@ namespace Hospitality
 
         private void CreateGuestBedDefs()
         {
-            var bedDefs = DefDatabase<ThingDef>.AllDefsListForReading.Where(def => def.thingClass == typeof(Building_Bed)).ToArray();
+            var bedDefs = DefDatabase<ThingDef>.AllDefsListForReading.Where(def => def.thingClass == typeof(Building_Bed) && def.building.bed_humanlike).ToArray();
 
             var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
             foreach (var bedDef in bedDefs)
@@ -37,15 +37,9 @@ namespace Hospitality
                 guestBedDef.thingClass = typeof(Building_GuestBed);
                 guestBedDef.shortHash = 0;
                 guestBedDef.minifiedDef = null;
-
-                // Animal bed (some people still have them in their saves... TODO: Remove this in A18, add check to bedDefs, so these won't get made
-                if (!bedDef.building.bed_humanlike)
-                {
-                    guestBedDef.canBeSpawningInventory = false;
-                    guestBedDef.destroyOnDrop = true;
-                    guestBedDef.scatterableOnMapGen = false;
-                    guestBedDef.tradeability = Tradeability.Never;
-                }
+                guestBedDef.tradeability = Tradeability.Never;
+                guestBedDef.scatterableOnMapGen = false;
+                guestBedDef.canBeSpawningInventory = false;
 
                 typeof(ShortHashGiver).GetMethod("GiveShortHash", BindingFlags.NonPublic|BindingFlags.Static).Invoke(null, new object[] {guestBedDef, typeof(ThingDef)});
                 DefDatabase<ThingDef>.Add(guestBedDef);
