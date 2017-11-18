@@ -60,7 +60,7 @@ namespace Hospitality
             //Toils_Haul.ErrorCheckForCarry(toil.actor, Item);
             if (curJob.count == 0)
             {
-                throw new Exception(string.Concat(new object[] { "BuyItem job had count = ", curJob.count, ". Job: ", curJob }));
+                throw new Exception(string.Concat("BuyItem job had count = ", curJob.count, ". Job: ", curJob));
             }
 
             if (Item.MarketValue <= 0) return;
@@ -84,7 +84,7 @@ namespace Hospitality
 
             var map = toil.actor.MapHeld;
             var inventoryItemsBefore = inventory.ToArray();
-            var tookItems = inventory.TryAdd(Item, count);
+            var tookItems = inventory.TryAdd(Item.SplitOff(count), count);
 
             var comp = toil.actor.GetComp<CompGuest>();
             if (tookItems > 0 && comp != null)
