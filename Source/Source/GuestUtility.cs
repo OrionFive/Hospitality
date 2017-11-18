@@ -406,6 +406,11 @@ namespace Hospitality
         {
             // Clear mind
             guest.pather.StopDead();
+
+            // Clear reservations
+            Find.Maps.ForEach(m => m.reservationManager.ReleaseAllClaimedBy(guest));
+
+            // Cancel jobs
             if (guest.jobs.jobQueue != null) guest.jobs.jobQueue = new JobQueue();
             guest.jobs.EndCurrentJob(JobCondition.InterruptForced);
 
@@ -414,8 +419,6 @@ namespace Hospitality
             // Reset timetable to default
             guest.timetable = new Pawn_TimetableTracker(guest);
 
-            // Clear reservations
-            Find.Maps.ForEach(m => m.reservationManager.ReleaseAllClaimedBy(guest));
 
             guest.SetFaction(Faction.OfPlayer);
 
@@ -460,8 +463,6 @@ namespace Hospitality
             //if (guest.relations.OpinionOf(pawn) >= 100) return false;
             //if (guest.RelativeTrust() < 50) return false;
             if (guest.relations.OpinionOf(pawn) <= -10) return false;
-            //if (guest.interactions.InteractedTooRecentlyToInteract()) return false;
-            //if (pawn.interactions.InteractedTooRecentlyToInteract()) return false;
             if (!InteractionUtility.CanInitiateInteraction(pawn)) return false;
             if (!InteractionUtility.CanReceiveInteraction(guest)) return false;
             if (!pawn.HasReserved(guest) && !pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
@@ -476,8 +477,6 @@ namespace Hospitality
             //if (guest.Faction.ColonyGoodwill >= 100) return false;
             if (guest.relations.OpinionOf(pawn) >= 100) return false;
             if (guest.InMentalState) return false;
-            //if (guest.interactions.InteractedTooRecentlyToInteract()) return false;
-            //if (pawn.interactions.InteractedTooRecentlyToInteract()) return false;
             if (!InteractionUtility.CanInitiateInteraction(pawn)) return false;
             if (!InteractionUtility.CanReceiveInteraction(guest)) return false;
             if (!pawn.HasReserved(guest) && !pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;

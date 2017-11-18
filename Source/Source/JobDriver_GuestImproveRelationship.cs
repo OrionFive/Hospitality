@@ -7,19 +7,6 @@ namespace Hospitality
 {
     public class JobDriver_GuestImproveRelationship : JobDriver_GuestBase
     {
-        protected override IEnumerable<Toil> MakeNewToils()
-        {
-            //this.FailOn(FailCondition);
-            var gotoGuest = GotoGuest(pawn, Talkee); // Jump target
-            yield return gotoGuest;
-            yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
-            yield return Toils_Reserve.ReserveQueue(TargetIndex.A);
-
-            yield return Interact(Talkee, InteractionDefOf.BuildRapport, GuestUtility.InteractIntervalAbsoluteMin).JumpIf(() => IsBusy(pawn) || IsBusy(Talkee), gotoGuest); 
-            yield return TryImproveRelationship(pawn, Talkee);
-            yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.A);
-        }
-
         public Toil TryImproveRelationship(Pawn recruiter, Pawn guest)
         {
             var toil = new Toil
@@ -28,6 +15,7 @@ namespace Hospitality
                     if (!recruiter.CanTalkTo(guest)) return;
                     InteractionDef intDef = DefDatabase<InteractionDef>.GetNamed("GuestDiplomacy"); 
                     recruiter.interactions.TryInteractWith(guest, intDef);
+                    PawnUtility.ForceWait(guest, 200, recruiter);
                 },
                 socialMode = RandomSocialMode.Off,
                 defaultCompleteMode = ToilCompleteMode.Delay,
@@ -37,9 +25,16 @@ namespace Hospitality
             return toil;
         }
 
+        protected override IEnumerable<Toil> Perform()
+        {
+            yield return TryImproveRelationship(pawn, Talkee);
+        }
+
         protected override bool FailCondition()
         {
             return base.FailCondition() || !Talkee.ImproveRelationship();
         }
+
+        protected override InteractionDef InteractionDef { get { return InteractionDefOf.BuildRapport; } }
     }
 }

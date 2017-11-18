@@ -10,21 +10,7 @@ namespace Hospitality
     public class JobDriver_CharmGuest : JobDriver_GuestBase
     {
         private static readonly string txtRecruitAngerOther = "RecruitAngerOther".Translate();
-
-        protected override IEnumerable<Toil> MakeNewToils()
-        {
-            //this.FailOn(FailCondition);
-            var gotoGuest = GotoGuest(pawn, Talkee); // Jump target
-            yield return gotoGuest;
-            yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
-            yield return Toils_Reserve.ReserveQueue(TargetIndex.A);
-
-            yield return Interact(Talkee, InteractionDefOf.RecruitAttempt, GuestUtility.InteractIntervalAbsoluteMin).JumpIf(() => IsBusy(pawn) || IsBusy(Talkee), gotoGuest);
-            yield return TryRecruitGuest(pawn, Talkee);
-            
-            yield return RiskAnger(pawn, Talkee);
-            yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.A);
-        }
+        protected override InteractionDef InteractionDef { get { return InteractionDefOf.RecruitAttempt; } }
 
         public Toil TryRecruitGuest(Pawn recruiter, Pawn guest)
         {
@@ -35,6 +21,7 @@ namespace Hospitality
                     if (!recruiter.CanTalkTo(guest)) return;
                     InteractionDef intDef = DefDatabase<InteractionDef>.GetNamed("CharmGuestAttempt");
                     recruiter.interactions.TryInteractWith(guest, intDef);
+                    PawnUtility.ForceWait(guest, 200, recruiter);
                     //guest.CheckRecruitingSuccessful(recruiter);
                 },
                 socialMode = RandomSocialMode.Off,
@@ -83,6 +70,12 @@ namespace Hospitality
                     }
                 }
             }
+        }
+
+        protected override IEnumerable<Toil> Perform()
+        {
+            yield return TryRecruitGuest(pawn, Talkee);
+            yield return RiskAnger(pawn, Talkee);
         }
 
         protected override bool FailCondition()
