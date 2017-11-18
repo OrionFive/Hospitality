@@ -118,7 +118,7 @@ namespace Hospitality
 
         private void Leave()
         {
-            var pawns = lord.ownedPawns.ToArray(); // Copy, because recruiting changes brain
+            var pawns = lord.ownedPawns.ToArray(); // Copy, because recruiting changes lord
 
             RemoveFlag();
 
@@ -157,6 +157,8 @@ namespace Hospitality
             
 
             var days = PlanRevisit(faction, targetGoodwill, currentMap, sentAway);
+
+            if (visitorCount == 0) return; // No message if noone is left (it says -100, which isn't true)
 
             string messageReturn = " ";
             if (days < 5)
