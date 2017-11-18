@@ -287,7 +287,7 @@ namespace Hospitality
                 Apparel droppedApp;
                 if (pawn.apparel.TryDrop(apparel, out droppedApp))
                 {
-                    bool success = pawn.inventory.innerContainer.TryAdd(droppedApp);
+                    bool success = pawn.inventory.innerContainer.TryAddOrTransfer(droppedApp.SplitOff(1));
                     if(!success) pawn.apparel.Wear(droppedApp);
                 }
             }
@@ -309,8 +309,8 @@ namespace Hospitality
             {
                 if (pawn.apparel.CanWearWithoutDroppingAnything(apparel.def))
                 {
-                    pawn.apparel.Wear(apparel);
                     container.Remove(apparel);
+                    pawn.apparel.Wear(apparel);
                 }
             }
         }
