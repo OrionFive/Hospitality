@@ -65,7 +65,6 @@ namespace Hospitality
             IntVec3 vec = CellFinder.RandomClosewalkCellNear(pawn.mindState.duty.focus.Cell, pawn.MapHeld, 4);
             if(!pawn.CanReserve(vec)) return ThinkResult.NoJob;
 
-            pawn.Reserve(vec);
             return new ThinkResult(new Job(JobDefOf.LayDown, vec), this);
         }
     }

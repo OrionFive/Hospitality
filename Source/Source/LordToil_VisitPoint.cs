@@ -169,17 +169,17 @@ namespace Hospitality
                 messageReturn += "VisitorsReturnNot".Translate();
 
             if(sentAway)
-                Messages.Message("VisitorsSentAway".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Standard);
+                Messages.Message("VisitorsSentAway".Translate(faction.Name, targetGoodwill) + messageReturn, MessageTypeDefOf.NeutralEvent);
             else if (targetGoodwill >= 90)
-                Messages.Message("VisitorsLeavingGreat".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Benefit);
+                Messages.Message("VisitorsLeavingGreat".Translate(faction.Name, targetGoodwill) + messageReturn, MessageTypeDefOf.PositiveEvent);
             else if (targetGoodwill >= 50)
-                Messages.Message("VisitorsLeavingGood".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Benefit);
+                Messages.Message("VisitorsLeavingGood".Translate(faction.Name, targetGoodwill) + messageReturn, MessageTypeDefOf.PositiveEvent);
             else if (targetGoodwill <= -25)
-                Messages.Message("VisitorsLeavingAwful".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Negative);
+                Messages.Message("VisitorsLeavingAwful".Translate(faction.Name, targetGoodwill) + messageReturn, MessageTypeDefOf.NegativeEvent);
             else if (targetGoodwill <= 5)
-                Messages.Message("VisitorsLeavingBad".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Negative);
+                Messages.Message("VisitorsLeavingBad".Translate(faction.Name, targetGoodwill) + messageReturn, MessageTypeDefOf.NegativeEvent);
             else
-                Messages.Message("VisitorsLeavingNormal".Translate(faction.Name, targetGoodwill) + messageReturn, MessageSound.Standard);
+                Messages.Message("VisitorsLeavingNormal".Translate(faction.Name, targetGoodwill) + messageReturn, MessageTypeDefOf.NeutralEvent);
         }
 
         private static float PlanRevisit(Faction faction, float targetGoodwill, Map currentMap, bool sentAway)
@@ -263,7 +263,7 @@ namespace Hospitality
             var itemNames = GenText.ToCommaList(dropped.Select(GetItemName));
             
             var text = "VisitorVerySatisfied".Translate(pawn.Name.ToStringShort, pawn.Possessive(), pawn.ProSubjCap(), itemNames);
-            Messages.Message(text, dropped.First(), MessageSound.Benefit);
+            Messages.Message(text, dropped.First(), MessageTypeDefOf.PositiveEvent);
 
             PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("Hospitality"), KnowledgeAmount.Total);
         }
@@ -282,7 +282,7 @@ namespace Hospitality
             pawn.inventory.innerContainer.TryDrop(item, pawn.Position, pawn.MapHeld, ThingPlaceMode.Near, out item);
 
             var text = "VisitorSatisfied".Translate(pawn.Name.ToStringShort, pawn.Possessive(), pawn.ProSubjCap(), GetItemName(item));
-            Messages.Message(text, item, MessageSound.Benefit);
+            Messages.Message(text, item, MessageTypeDefOf.PositiveEvent);
         }
 
         private bool WillDrop(Pawn pawn, Thing i)

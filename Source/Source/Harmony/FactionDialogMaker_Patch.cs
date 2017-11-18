@@ -37,7 +37,7 @@ namespace Hospitality.Harmony
                     __result = diaOption;
                     return false;
                 }
-                float goodwillDelta = 12f*negotiator.GetStatValue(StatDefOf.GiftImpact);
+                float goodwillDelta = 12f*negotiator.GetStatValue(StatDefOf.DiplomacyPower);
                 var diaOption2 = new DiaOption("OfferGift".Translate() + " (" + "SilverForGoodwill".Translate(cost, goodwillDelta.ToString("#####0")) + ")");
                 diaOption2.action = delegate {
                     TradeUtility.LaunchThingsOfType(ThingDefOf.Silver, cost, map, null);

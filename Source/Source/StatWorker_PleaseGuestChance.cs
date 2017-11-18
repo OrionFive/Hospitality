@@ -20,10 +20,10 @@ namespace Hospitality
 
             return abrasiveFactor*base.GetValueUnfinalized(req, applyPostProcess);
         }
-        public override string GetExplanation(StatRequest req, ToStringNumberSense numberSense)
+        public override string GetExplanationUnfinalized(StatRequest req, ToStringNumberSense numberSense)
         {
             var stringBuilder = new StringBuilder();
-            stringBuilder.Append(base.GetExplanation(req, numberSense));
+            stringBuilder.Append(base.GetExplanationUnfinalized(req, numberSense));
 
             var pawn = req.Thing as Pawn;
             if (pawn == null || pawn.story == null) return stringBuilder.ToString();

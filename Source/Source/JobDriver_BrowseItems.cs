@@ -7,12 +7,17 @@ namespace Hospitality
 {
     public class JobDriver_BrowseItems : JobDriver
     {
+        public override bool TryMakePreToilReservations()
+        {
+            return true;
+        }
+
         protected override IEnumerable<Toil> MakeNewToils()
         {
             //yield return Toils_Reserve.Reserve(TargetIndex.A);
             yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.Touch);
             yield return new Toil {tickAction = delegate {
-                pawn.Drawer.rotator.FaceCell(CurJob.GetTarget(TargetIndex.B).Cell);
+                pawn.rotationTracker.FaceCell(job.GetTarget(TargetIndex.B).Cell);
                 pawn.GainComfortFromCellIfPossible();
                 if (pawn.IsHashIntervalTick(100))
                 {

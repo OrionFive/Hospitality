@@ -17,7 +17,12 @@ namespace Hospitality
         public const float PriceFactor = 0.85f;
 
         //Properties
-        protected Thing Item { get { return CurJob.targetA.Thing; } }
+        protected Thing Item { get { return job.targetA.Thing; } }
+
+        public override bool TryMakePreToilReservations()
+        {
+            return pawn.Reserve(job.targetA.Thing, job);
+        }
 
         protected override IEnumerable<Toil> MakeNewToils()
         {

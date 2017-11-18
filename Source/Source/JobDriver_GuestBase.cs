@@ -44,7 +44,7 @@ namespace Hospitality
 
         protected static bool IsBusy(Pawn p)
         {
-            return p.interactions.InteractedTooRecentlyToInteract() || p.Map.reservationManager.IsReserved(p, Faction.OfPlayer) || IsInTherapy(p);
+            return p.interactions.InteractedTooRecentlyToInteract() || p.Map.reservationManager.IsReservedByAnyoneOf(p, Faction.OfPlayer) || IsInTherapy(p);
         }
 
         // Compatibility fix to Therapy mod

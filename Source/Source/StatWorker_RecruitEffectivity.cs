@@ -13,9 +13,9 @@ namespace Hospitality
             return stat.defaultBaseValue + pawn.skills.GetSkill(SkillDefOf.Social).Level/8f;
         }
 
-        public override string GetExplanation(StatRequest req, ToStringNumberSense numberSense)
+        public override string GetExplanationUnfinalized(StatRequest req, ToStringNumberSense numberSense)
         {
-            if (!req.HasThing || !(req.Thing is Pawn)) return base.GetExplanation(req, numberSense);
+            if (!req.HasThing || !(req.Thing is Pawn)) return base.GetExplanationUnfinalized(req, numberSense);
 
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("StatsReport_BaseValue".Translate());

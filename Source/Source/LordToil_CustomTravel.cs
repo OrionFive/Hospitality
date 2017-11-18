@@ -36,7 +36,7 @@ namespace Hospitality
 
         public override void UpdateAllDuties()
         {
-            foreach (Pawn pawn in lord.ownedPawns) pawn.mindState.duty = new PawnDuty(DutyDefOf.Travel, Data.dest, -1f);
+            foreach (Pawn pawn in lord.ownedPawns) pawn.mindState.duty = new PawnDuty(DutyDefOf.TravelOrLeave, Data.dest, -1f);
         }
 
         public override void Init()

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -84,7 +83,7 @@ namespace Hospitality
             Find.WindowStack.Add(new Dialog_NodeTree(diaNode, true, true, title));
         }
 
-        public override bool TryExecute(IncidentParms parms)
+        protected override bool TryExecuteWorker(IncidentParms parms)
         {
             if (!TryResolveParms(parms)) return false;
             Map map = parms.target as Map;
@@ -435,7 +434,7 @@ namespace Hospitality
                     leaderDesc
 				});
             }
-            Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.Good, pawns[0]);
+            Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, pawns[0]);
         }
 
         private static bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction, Map map)
@@ -454,10 +453,10 @@ namespace Hospitality
 
             pawn.TryGiveBackpack();
 
-            ItemCollectionGeneratorParams parms = default(ItemCollectionGeneratorParams);
+            var parms = default(ItemCollectionGeneratorParams);
             parms.traderDef = traderKindDef;
-            parms.forTile = map.Tile;
-            parms.forFaction = faction;
+            parms.tile = map.Tile;
+            parms.traderFaction = faction;
 
             foreach (Thing current in ItemCollectionGeneratorDefOf.TraderStock.Worker.Generate(parms))
             {

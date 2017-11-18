@@ -12,11 +12,11 @@ namespace Hospitality
             return factor*stat.defaultBaseValue-stat.defaultBaseValue/6;
         }
 
-        public override string GetExplanation(StatRequest req, ToStringNumberSense numberSense)
+        public override string GetExplanationUnfinalized(StatRequest req, ToStringNumberSense numberSense)
         {
-            if (!req.HasThing || !(req.Thing is Pawn)) return base.GetExplanation(req, numberSense);
-
             var stringBuilder = new StringBuilder();
+            if (!req.HasThing || !(req.Thing is Pawn)) return base.GetExplanationUnfinalized(req, numberSense);
+
             stringBuilder.AppendLine("StatsReport_BaseValue".Translate());
             float statValueAbstract = stat.defaultBaseValue;
             stringBuilder.AppendLine("    " + stat.ValueToString(statValueAbstract, numberSense));
