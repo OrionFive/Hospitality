@@ -25,6 +25,8 @@ namespace Hospitality
             this.stayDuration = stayDuration;
         }
 
+        public override bool NeverInRestraints { get { return true; } }
+
         public override void ExposeData()
         {
             base.ExposeData();
