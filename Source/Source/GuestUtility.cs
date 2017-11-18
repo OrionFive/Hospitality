@@ -13,7 +13,7 @@ namespace Hospitality
     internal static class GuestUtility
     {
         public static DutyDef relaxDef = DefDatabase<DutyDef>.GetNamed("Relax");
-        public static DutyDef travelDef = DefDatabase<DutyDef>.GetNamed("Travel");
+        public static DutyDef travelDef = DutyDefOf.TravelOrLeave;
 
         private static readonly string labelRecruitSuccess = "LetterLabelMessageRecruitSuccess".Translate(); // from core
         private static readonly string labelRecruitFactionAnger = "LetterLabelRecruitFactionAnger".Translate();

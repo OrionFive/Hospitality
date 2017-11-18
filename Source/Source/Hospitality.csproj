@@ -112,7 +112,7 @@
     <Compile Include="VisitorFlag.cs" />
     <Compile Include="Building_GuestBed.cs" />
     <Compile Include="GuestUtility.cs" />
-    <Compile Include="Harmony\IncidentWorker_VisitorGroup.cs" />
+    <Compile Include="IncidentWorker_VisitorGroup.cs" />
     <Compile Include="JobDriver_GuestBase.cs" />
     <Compile Include="JobDriver_GuestImproveRelationship.cs" />
     <Compile Include="JobDriver_CharmGuest.cs" />
