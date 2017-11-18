@@ -1,14 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <PleaseGuestChance.label>外交技能</PleaseGuestChance.label>
-  <PleaseGuestChance.description>此人能够提升访客看法的基础几率。</PleaseGuestChance.description>
-
   <RecruitRelationshipDamage.label>招募友好度损害</RecruitRelationshipDamage.label>
   <RecruitRelationshipDamage.description>当成功招募后，对此人所属派系友好度造成的损害。</RecruitRelationshipDamage.description>
-
-  <RecruitEffectivity.label>招募效率系数</RecruitEffectivity.label>
-  <RecruitEffectivity.description>尝试说服访客加入你们派系的效率。</RecruitEffectivity.description>
-
 
 </LanguageData>

@@ -27,7 +27,6 @@ namespace Hospitality
         private static readonly string txtRecruitFactionPleaseLeaderless = "RecruitFactionPleaseLeaderless".Translate();
 
         private static readonly StatDef statRecruitRelationshipDamage = StatDef.Named("RecruitRelationshipDamage");
-        private static readonly StatDef statPleaseGuestChance = StatDef.Named("PleaseGuestChance");
         private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
 
         public static bool IsRelaxing(this Pawn pawn)
@@ -434,7 +433,7 @@ namespace Hospitality
             var opinion = target.relations.OpinionOf(recruiter);
             //Log.Message(String.Format("Opinion of {0} about {1}: {2}", target.NameStringShort,recruiter.NameStringShort, opinion));
             //Log.Message(String.Format("{0} + {1} = {2}", pleaseChance, opinion*0.01f, pleaseChance + opinion*0.01f));
-            return pleaseChance + opinion*0.01f;
+            return pleaseChance * 0.8f + opinion*0.01f;
         }
 
         public static void GainSocialThought(Pawn initiator, Pawn target, ThoughtDef thoughtDef)
@@ -688,7 +687,7 @@ namespace Hospitality
         {
             // TODO: pawn.records.Increment(RecordDefOf.GuestsCharmAttempts);
             recruiter.skills.Learn(SkillDefOf.Social, 35f);
-            float pleaseChance = recruiter.GetStatValue(statPleaseGuestChance);
+            float pleaseChance = recruiter.GetStatValue(StatDefOf.DiplomacyPower);
             pleaseChance = AdjustPleaseChance(pleaseChance, recruiter, guest);
             pleaseChance = Mathf.Clamp01(pleaseChance);
 

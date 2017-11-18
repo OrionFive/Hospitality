@@ -11,8 +11,6 @@ namespace Hospitality
     {
         private static readonly string txtRecruitAngerOther = "RecruitAngerOther".Translate();
 
-        private static readonly StatDef statPleaseGuestChance = StatDef.Named("PleaseGuestChance");
-
         protected override IEnumerable<Toil> MakeNewToils()
         {
             //this.FailOn(FailCondition);
@@ -67,7 +65,7 @@ namespace Hospitality
                 {
                     if (ally.needs.mood.thoughts.memories.Memories.Any(t=>t.def.defName=="GuestAngered")) continue;
 
-                    float pleaseChance = recruiter.GetStatValue(statPleaseGuestChance);
+                    float pleaseChance = recruiter.GetStatValue(StatDefOf.DiplomacyPower);
                     pleaseChance = GuestUtility.AdjustPleaseChance(pleaseChance, recruiter, ally);
                     pleaseChance = Mathf.Clamp01(pleaseChance);
 

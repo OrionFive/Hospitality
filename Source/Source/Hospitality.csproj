@@ -120,7 +120,6 @@
     <Compile Include="JobGiver_Sleep.cs" />
     <Compile Include="RoomRoleWorker_GuestRoom.cs" />
     <Compile Include="LordToil_VisitPoint.cs" />
-    <Compile Include="StatWorker_PleaseGuestChance.cs" />
     <Compile Include="StatWorker_RecruitEffectivity.cs" />
     <Compile Include="StatWorker_RelationshipDamage.cs" />
     <Compile Include="ThinkNode_FilterGuestRooms.cs" />
