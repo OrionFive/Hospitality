@@ -10,8 +10,8 @@ namespace Hospitality.Harmony
     {
         // So we can show a dialog
         // So we can get related pawns first
-        [HarmonyPatch(typeof (IncidentWorker_WandererJoin), "TryExecute")]
-        public class TryExecute
+        [HarmonyPatch(typeof (IncidentWorker_WandererJoin), "TryExecuteWorker")]
+        public class TryExecuteWorker
         {
 
             [HarmonyPrefix]

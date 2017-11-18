@@ -11,8 +11,8 @@ namespace Hospitality.Harmony
     {
         // So we can kill the rejected pawn
         // So we can get related pawns first
-        [HarmonyPatch(typeof (IncidentWorker_RefugeeChased), "TryExecute")]
-        public class TryExecute
+        [HarmonyPatch(typeof (IncidentWorker_RefugeeChased), "TryExecuteWorker")]
+        public class TryExecuteWorker
         {
 
             private const float RaidPointsFactor = 1.35f;
