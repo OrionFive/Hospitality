@@ -10,7 +10,7 @@
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
 		<defName>Hospitality_0_18_1</defName>
 		<assemblyVersion>0.18.1</assemblyVersion>
-		<content>- Updated to A18|- Fixed various bugs|Thank you for your patience and support!|Wanna do me a personal favor? Then please click the link above for more information.</content>
+		<content>- Updated to B18|- Fixed various bugs|Thank you for your patience and support!|Wanna do me a personal favor? Then please click the link above for more information.</content>
 	</HugsLib.UpdateFeatureDef>
 	
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">

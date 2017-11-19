@@ -52,19 +52,18 @@ namespace Hospitality
         {
             base.MapComponentTick();
 
-            if (incidentQueue == null) CreateNewIncidentQueue();
+            if (incidentQueue == null) incidentQueue = new IncidentQueue();
+            if(incidentQueue.Count == 0) FillIncidentQueue();
             incidentQueue.IncidentQueueTick();
         }
 
-        private void CreateNewIncidentQueue()
+        private void FillIncidentQueue()
         {
-            incidentQueue = new IncidentQueue();
-
             // Add some visits
-            float days = Rand.Range(5, 10);
+            float days = Rand.Range(8f, 15f);
             foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f.PlayerGoodwill > 0).OrderByDescending(f => f.PlayerGoodwill))
             {
-                //Log.Message(faction.GetCallLabel() + " are coming after " + days + " days.");
+                Log.Message(faction.GetCallLabel() + " are coming after " + days + " days.");
                 GuestUtility.PlanNewVisit(map, days, faction);
                 days += Rand.Range(10f, 15f);
             }
