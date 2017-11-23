@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
+<LanguageData>
+	
+	<RecruitRelationshipDamage.label>Rekrutierungsbeziehungsschaden</RecruitRelationshipDamage.label>
+	<RecruitRelationshipDamage.description>Der Schaden, der der Beziehung mit der Fraktion dieser Person bei der erfolgreichen Rekrutierung zugefügt wurde.</RecruitRelationshipDamage.description>
+
+</LanguageData>

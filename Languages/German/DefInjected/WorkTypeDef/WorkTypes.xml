@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
+<LanguageData>
+	
+	<Diplomat.labelShort>Verhandeln</Diplomat.labelShort>
+	<Diplomat.pawnLabel>Diplomat</Diplomat.pawnLabel>
+	<Diplomat.gerundLabel>Verhandlung</Diplomat.gerundLabel>
+	<Diplomat.description>Diplomaten unterhalten Gäste und rekrutieren neue Kolonisten.</Diplomat.description>
+	<Diplomat.verb>Hebel</Diplomat.verb>
+
+</LanguageData>
