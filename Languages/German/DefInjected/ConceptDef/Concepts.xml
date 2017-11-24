@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+	<rep>
+		<path>GuestBeds.label</path>
+		<trans>Gästebett</trans>
+	</rep>
+	<rep>
+		<path>GuestBeds.helpText</path>
+		<trans>Besucher wollen lieber in Betten schlafen.\n\nDu kannst Betten zu Gäste betten machen, wenn du denn "Für Gäste" Button drückst.</trans>
+	</rep>
+
+	<rep>
+		<path>RecruitGuest.label</path>
+		<trans>Gäste rekrutieren</trans>
+	</rep>
+	<rep>
+		<path>RecruitGuest.helpText</path>
+		<trans>Du kannst Gäste rekrutieren.\n\nEinen Gast zu rekrutieren, kostet dich Wohlwollen bei der Fraktion zu der dieser gehört. Stellen Sie sicher, dass Sie einen Kolonisten mit guten sozialen Fähigkeiten zur Verhandlung haben.</trans>
+	</rep>
+
+	<rep>
+		<path>Hospitality.label</path>
+		<trans>Gastfreundschaft</trans>
+	</rep>
+	<rep>
+		<path>Hospitality.helpText</path>
+		<trans>Wenn eine Gruppe von Besuchern ankommt, werden sie Ihre Entspannungseinrichtungen nutzen, in Gästebetten schlafen und Gegenstände in ihrem erlaubten Bereich kaufen.\n\nWenn sie ihren Besuch genossen haben, wird dies Ihren Ruf mit ihrer Fraktion erhöhen.</trans>
+	</rep>
+
+</LanguageData>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <!-- Recruiting -->
+  <RecruitAngerMultiple>{0} verärgert {1} {2}x in einer Reihe.</RecruitAngerMultiple>
+  <RecruitAngerOther>{3} bemerkte {0} versuchte zu rekrutieren {1} und wurde beleidigt ({2} Chance).</RecruitAngerOther>
+  <RecruitFactionAnger>{0} von {1} ist verärgert über den Rekrutierungsversuch {2} ({3}).</RecruitFactionAnger>
+  <RecruitFactionAngerLeaderless>Die Mitglieder von {0} sind verärgert über deinen Rekrutierungsversuch {1} ({2}).</RecruitFactionAngerLeaderless>
+  <RecruitFactionPlease>{0} von {1} ist froh, dass du {2} ihm abgenommen hast({3}).</RecruitFactionPlease>
+  <RecruitFactionPleaseLeaderless>Die Mitglieder von {0} sind froh das du ihnen {1} abgenommen hast ({2}).</RecruitFactionPleaseLeaderless>
+  <MessageGuestRecruitSuccess>{0} ist glücklich deiner Kolonie beizutreten!</MessageGuestRecruitSuccess>
+  <LetterLabelRecruitFactionChiefAnger>Chief ist verärgert</LetterLabelRecruitFactionChiefAnger>
+  <LetterLabelRecruitFactionAnger>Fraktion ist verärgert</LetterLabelRecruitFactionAnger>
+  <LetterLabelRecruitFactionChiefPlease>Chief ist erfreut</LetterLabelRecruitFactionChiefPlease>
+  <LetterLabelRecruitFactionPlease>Fraktion ist erfreut</LetterLabelRecruitFactionPlease>
+  
+  <TextMote_CharmFail>Beleidigt</TextMote_CharmFail>
+  <TextMote_CharmSuccess>Fasziniert</TextMote_CharmSuccess>
+  
+  <!-- Diplomacy --> 
+  <ImproveFactionPlease>{0} verbessert die Beziehung zwischen {4} und {1} um {2} ({3} Chance).</ImproveFactionPlease>
+  <ImproveFactionAnger>{0} verschlechtert die Beziehungen mit {1} um {2} ({3} Chance).</ImproveFactionAnger>
+  
+  <!-- Incident Results -->
+  <VisitorsLeavingGreat>Sie sind absolut begeistert von eurer Gastfreundschaft! (Score: {1})</VisitorsLeavingGreat>
+  <VisitorsLeavingGood>Sie haben ihren Aufenthalt sehr genossen! (Score: {1})</VisitorsLeavingGood>
+  <VisitorsLeavingNormal>Ihr Aufenthalt war OK! (Score: {1})</VisitorsLeavingNormal>
+  <VisitorsLeavingBad>Sie hatten sich mehr erwartet. (Score: {1})</VisitorsLeavingBad>
+  <VisitorsLeavingAwful>Sie waren schrecklich enttäuscht von ihrem Aufenthalt. (Score: {1})</VisitorsLeavingAwful>
+  <VisitorSatisfied>{0} genoß {1} Aufenthalt. {2} hinterließ dir {3}.</VisitorSatisfied>
+  <VisitorVerySatisfied>{0} hat seinen Aufenthalt {1} absolut genoßen. {2} hinterließ dir {3}.</VisitorVerySatisfied>
+  <MessageVisitorsLeavingCold>Die Besucher von {0} verlassen dich wieder, da es zu kalt ist.</MessageVisitorsLeavingCold>
+  <VisitorsSentAway>Du hast sie weggeschickt.</VisitorsSentAway>
+  
+  <VisitorsReturnSoon>Sie werden in ein paar Tagen wiederkommen.</VisitorsReturnSoon>
+  <VisitorsReturnWhile>Sie werden nach einer Weile wiederkommen.</VisitorsReturnWhile>
+  <VisitorsReturnNotSoon>Sie werden nicht bald zurückkommen.</VisitorsReturnNotSoon>
+  <VisitorsReturnNot>Sie haben genug von dir.</VisitorsReturnNot>
+
+  <VisitorsArrivedTitle>Besucher sind in {0} angekommen (von {1})</VisitorsArrivedTitle>
+  <VisitorsArrivedDesc>Sie haben Angst, aus folgenden Gründen in dein Gebiet einzureisen::\n{1}\n\nWenn du sie wegschickst, bleiben sie in der Gegend und kommen später zurück.</VisitorsArrivedDesc>
+  <VisitorsArrivedAccept>Gewähre Sicherheit</VisitorsArrivedAccept>
+  <VisitorsArrivedRefuse>Schicke weg</VisitorsArrivedRefuse>
+
+  <!-- Tab -->
+  <ConvincingLeft>Überzeugend</ConvincingLeft>
+  <FriendsRequirement>Genug befreundet zum rekrutieren: {0}/{1}</FriendsRequirement>
+  <RecruitmentPenalty>Beziehungsschaden bei Rekrutierung</RecruitmentPenalty>
+  <ImproveRelationship>Versuche Sie zu unterhalten</ImproveRelationship>
+  <LeaveAlone>Lasse Sie allein</LeaveAlone>
+  <MayBuy>Erlaube ihnen Dinge hier zu kaufen</MayBuy>
+  <FactionGoodwill>Fraktions Wohlwollen</FactionGoodwill>
+  <Hospitality>Gastfreundschaft</Hospitality>
+  <MakeDefault>Standard Behandlung</MakeDefault>
+  <SendAway>Wegsenden</SendAway>
+  <SendAwayQuestion>Bist du sicher die Besucher von {0} wegzusenden?</SendAwayQuestion>
+  <NotEnoughFriends>NAME mag nicht genügend deiner Kolonisten (Meinung > {0}).</NotEnoughFriends>
+  <CanNowBeRecruited>NAME kann rekrutiert werden.</CanNowBeRecruited>
+  <IsATrader>NAME ist Teil einer Karavane und kein Gast.</IsATrader>
+
+  <!-- Infos -->
+  <StatsReport_FinalAdjustment>Einstellung</StatsReport_FinalAdjustment>
+  
+  <!-- Bed -->
+  <ForGuestUse>Zur Benutzung durch Gäste</ForGuestUse>
+  <GuestBedFormat>Gast {0}</GuestBedFormat>
+  <CommandBedSetAsGuestLabel>Für Gäste</CommandBedSetAsGuestLabel>
+  <CommandBedSetAsGuestDesc>Dieses Bett ist für Gäste.</CommandBedSetAsGuestDesc>
+  
+  <!-- Rescue -->
+  <RescuedInitial>Der {0} mit Namen NAME den du gerettet hast, ist sehr dankbar für seine Rettung und würde gerne hierbleiben.\n\nSeine Eigenschaften sind: {1}.</RescuedInitial>
+  <RescuedInitial_Accept>Akzeptiere Ihn</RescuedInitial_Accept>
+  <RescuedInitial_Reject>Seine Forderung ablehnen</RescuedInitial_Reject>
+  
+  <!-- Wanderer -->
+  <WandererInitial>NAME von den {0} wanderte in der Nähe und bemerkte, das du Hilfe gebrauchen kannst. HECAP würde sich gerne deiner Kolonie für eine Weile anschließen.\n\nHECAP ist ein {1} und seine Eigenschaften sind {2}.</WandererInitial>
+
+</LanguageData>
