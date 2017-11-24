@@ -4,8 +4,8 @@
 	
 	<Diplomat.labelShort>Verhandeln</Diplomat.labelShort>
 	<Diplomat.pawnLabel>Diplomat</Diplomat.pawnLabel>
-	<Diplomat.gerundLabel>Verhandlung</Diplomat.gerundLabel>
-	<Diplomat.description>Diplomaten unterhalten Gäste und rekrutieren neue Kolonisten.</Diplomat.description>
-	<Diplomat.verb>Hebel</Diplomat.verb>
+	<Diplomat.gerundLabel>Verhandeln</Diplomat.gerundLabel>
+	<Diplomat.description>Diplomaten unterhalten GÃ¤ste und rekrutieren neue Kolonisten.</Diplomat.description>
+	<Diplomat.verb>Unterhalte</Diplomat.verb>
 
 </LanguageData>

@@ -3,20 +3,20 @@
 
 	<rep>
 		<path>GuestBeds.label</path>
-		<trans>Gästebett</trans>
+		<trans>GÃ¤stebett</trans>
 	</rep>
 	<rep>
 		<path>GuestBeds.helpText</path>
-		<trans>Besucher wollen lieber in Betten schlafen.\n\nDu kannst Betten zu Gäste betten machen, wenn du denn "Für Gäste" Button drückst.</trans>
+		<trans>Besucher wollen lieber in Betten schlafen.\n\nDu kannst Betten zu GÃ¤ste betten machen, wenn du den "FÃ¼r GÃ¤ste" Knopf drÃ¼ckst.</trans>
 	</rep>
 
 	<rep>
 		<path>RecruitGuest.label</path>
-		<trans>Gäste rekrutieren</trans>
+		<trans>GÃ¤ste rekrutieren</trans>
 	</rep>
 	<rep>
 		<path>RecruitGuest.helpText</path>
-		<trans>Du kannst Gäste rekrutieren.\n\nEinen Gast zu rekrutieren, kostet dich Wohlwollen bei der Fraktion zu der dieser gehört. Stellen Sie sicher, dass Sie einen Kolonisten mit guten sozialen Fähigkeiten zur Verhandlung haben.</trans>
+		<trans>Du kannst GÃ¤ste rekrutieren.\n\nEinen Gast zu rekrutieren, kostet dich Wohlwollen bei der Fraktion zu der dieser gehÃ¶rt. Stelle sicher, dass du einen Kolonisten mit guten sozialen FÃ¤higkeiten zur Verhandlung verwendest.</trans>
 	</rep>
 
 	<rep>
@@ -25,7 +25,7 @@
 	</rep>
 	<rep>
 		<path>Hospitality.helpText</path>
-		<trans>Wenn eine Gruppe von Besuchern ankommt, werden sie Ihre Entspannungseinrichtungen nutzen, in Gästebetten schlafen und Gegenstände in ihrem erlaubten Bereich kaufen.\n\nWenn sie ihren Besuch genossen haben, wird dies Ihren Ruf mit ihrer Fraktion erhöhen.</trans>
+		<trans>Wenn eine Gruppe von Besuchern ankommt, werden deine Ihre Entspannungseinrichtungen nutzen, in GÃ¤stebetten schlafen und GegenstÃ¤nde in ihrem erlaubten Bereich kaufen.\n\nWenn sie ihren Besuch genossen haben, wird dies deinen Ruf mit ihrer Fraktion erhÃ¶hen.</trans>
 	</rep>
 
 </LanguageData>
