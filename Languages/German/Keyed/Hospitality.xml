@@ -2,15 +2,15 @@
 <LanguageData>
 
   <!-- Recruiting -->
-  <RecruitAngerMultiple>{0} verärgert {1} {2}x in einer Reihe.</RecruitAngerMultiple>
+  <RecruitAngerMultiple>{0} verÃ¤rgert {1} {2}x in einer Reihe.</RecruitAngerMultiple>
   <RecruitAngerOther>{3} bemerkte {0} versuchte zu rekrutieren {1} und wurde beleidigt ({2} Chance).</RecruitAngerOther>
-  <RecruitFactionAnger>{0} von {1} ist verärgert über den Rekrutierungsversuch {2} ({3}).</RecruitFactionAnger>
-  <RecruitFactionAngerLeaderless>Die Mitglieder von {0} sind verärgert über deinen Rekrutierungsversuch {1} ({2}).</RecruitFactionAngerLeaderless>
+  <RecruitFactionAnger>{0} von {1} ist verÃ¤rgert Ã¼ber den Rekrutierungsversuch {2} ({3}).</RecruitFactionAnger>
+  <RecruitFactionAngerLeaderless>Die Mitglieder von {0} sind verÃ¤rgert Ã¼ber deinen Rekrutierungsversuch {1} ({2}).</RecruitFactionAngerLeaderless>
   <RecruitFactionPlease>{0} von {1} ist froh, dass du {2} ihm abgenommen hast({3}).</RecruitFactionPlease>
   <RecruitFactionPleaseLeaderless>Die Mitglieder von {0} sind froh das du ihnen {1} abgenommen hast ({2}).</RecruitFactionPleaseLeaderless>
-  <MessageGuestRecruitSuccess>{0} ist glücklich deiner Kolonie beizutreten!</MessageGuestRecruitSuccess>
-  <LetterLabelRecruitFactionChiefAnger>Chief ist verärgert</LetterLabelRecruitFactionChiefAnger>
-  <LetterLabelRecruitFactionAnger>Fraktion ist verärgert</LetterLabelRecruitFactionAnger>
+  <MessageGuestRecruitSuccess>{0} ist glÃ¼cklich deiner Kolonie beizutreten!</MessageGuestRecruitSuccess>
+  <LetterLabelRecruitFactionChiefAnger>Chief ist verÃ¤rgert</LetterLabelRecruitFactionChiefAnger>
+  <LetterLabelRecruitFactionAnger>Fraktion ist verÃ¤rgert</LetterLabelRecruitFactionAnger>
   <LetterLabelRecruitFactionChiefPlease>Chief ist erfreut</LetterLabelRecruitFactionChiefPlease>
   <LetterLabelRecruitFactionPlease>Fraktion ist erfreut</LetterLabelRecruitFactionPlease>
   
@@ -26,24 +26,24 @@
   <VisitorsLeavingGood>Sie haben ihren Aufenthalt sehr genossen! (Score: {1})</VisitorsLeavingGood>
   <VisitorsLeavingNormal>Ihr Aufenthalt war OK! (Score: {1})</VisitorsLeavingNormal>
   <VisitorsLeavingBad>Sie hatten sich mehr erwartet. (Score: {1})</VisitorsLeavingBad>
-  <VisitorsLeavingAwful>Sie waren schrecklich enttäuscht von ihrem Aufenthalt. (Score: {1})</VisitorsLeavingAwful>
-  <VisitorSatisfied>{0} genoß {1} Aufenthalt. {2} hinterließ dir {3}.</VisitorSatisfied>
-  <VisitorVerySatisfied>{0} hat seinen Aufenthalt {1} absolut genoßen. {2} hinterließ dir {3}.</VisitorVerySatisfied>
+  <VisitorsLeavingAwful>Sie waren schrecklich enttÃ¤uscht von ihrem Aufenthalt. (Score: {1})</VisitorsLeavingAwful>
+  <VisitorSatisfied>{0} genoÃŸ {1} Aufenthalt. {2} hinterlieÃŸ dir {3}.</VisitorSatisfied>
+  <VisitorVerySatisfied>{0} hat seinen Aufenthalt {1} absolut genoÃŸen. {2} hinterlieÃŸ dir {3}.</VisitorVerySatisfied>
   <MessageVisitorsLeavingCold>Die Besucher von {0} verlassen dich wieder, da es zu kalt ist.</MessageVisitorsLeavingCold>
   <VisitorsSentAway>Du hast sie weggeschickt.</VisitorsSentAway>
   
   <VisitorsReturnSoon>Sie werden in ein paar Tagen wiederkommen.</VisitorsReturnSoon>
   <VisitorsReturnWhile>Sie werden nach einer Weile wiederkommen.</VisitorsReturnWhile>
-  <VisitorsReturnNotSoon>Sie werden nicht bald zurückkommen.</VisitorsReturnNotSoon>
+  <VisitorsReturnNotSoon>Sie werden nicht bald zurÃ¼ckkommen.</VisitorsReturnNotSoon>
   <VisitorsReturnNot>Sie haben genug von dir.</VisitorsReturnNot>
 
   <VisitorsArrivedTitle>Besucher sind in {0} angekommen (von {1})</VisitorsArrivedTitle>
-  <VisitorsArrivedDesc>Sie haben Angst, aus folgenden Gründen in dein Gebiet einzureisen::\n{1}\n\nWenn du sie wegschickst, bleiben sie in der Gegend und kommen später zurück.</VisitorsArrivedDesc>
-  <VisitorsArrivedAccept>Gewähre Sicherheit</VisitorsArrivedAccept>
+  <VisitorsArrivedDesc>Sie haben Angst, aus folgenden GrÃ¼nden in dein Gebiet einzureisen::\n{1}\n\nWenn du sie wegschickst, bleiben sie in der Gegend und kommen spÃ¤ter zurÃ¼ck.</VisitorsArrivedDesc>
+  <VisitorsArrivedAccept>GewÃ¤hre Sicherheit</VisitorsArrivedAccept>
   <VisitorsArrivedRefuse>Schicke weg</VisitorsArrivedRefuse>
 
   <!-- Tab -->
-  <ConvincingLeft>Überzeugend</ConvincingLeft>
+  <ConvincingLeft>Ãœberzeugend</ConvincingLeft>
   <FriendsRequirement>Genug befreundet zum rekrutieren: {0}/{1}</FriendsRequirement>
   <RecruitmentPenalty>Beziehungsschaden bei Rekrutierung</RecruitmentPenalty>
   <ImproveRelationship>Versuche Sie zu unterhalten</ImproveRelationship>
@@ -54,7 +54,7 @@
   <MakeDefault>Standard Behandlung</MakeDefault>
   <SendAway>Wegsenden</SendAway>
   <SendAwayQuestion>Bist du sicher die Besucher von {0} wegzusenden?</SendAwayQuestion>
-  <NotEnoughFriends>NAME mag nicht genügend deiner Kolonisten (Meinung > {0}).</NotEnoughFriends>
+  <NotEnoughFriends>NAME mag nicht genÃ¼gend deiner Kolonisten (Meinung > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>NAME kann rekrutiert werden.</CanNowBeRecruited>
   <IsATrader>NAME ist Teil einer Karavane und kein Gast.</IsATrader>
 
@@ -62,17 +62,17 @@
   <StatsReport_FinalAdjustment>Einstellung</StatsReport_FinalAdjustment>
   
   <!-- Bed -->
-  <ForGuestUse>Zur Benutzung durch Gäste</ForGuestUse>
+  <ForGuestUse>Zur Benutzung durch GÃ¤ste</ForGuestUse>
   <GuestBedFormat>Gast {0}</GuestBedFormat>
-  <CommandBedSetAsGuestLabel>Für Gäste</CommandBedSetAsGuestLabel>
-  <CommandBedSetAsGuestDesc>Dieses Bett ist für Gäste.</CommandBedSetAsGuestDesc>
+  <CommandBedSetAsGuestLabel>FÃ¼r GÃ¤ste</CommandBedSetAsGuestLabel>
+  <CommandBedSetAsGuestDesc>Dieses Bett ist fÃ¼r GÃ¤ste.</CommandBedSetAsGuestDesc>
   
   <!-- Rescue -->
-  <RescuedInitial>Der {0} mit Namen NAME den du gerettet hast, ist sehr dankbar für seine Rettung und würde gerne hierbleiben.\n\nSeine Eigenschaften sind: {1}.</RescuedInitial>
+  <RescuedInitial>Der {0} mit Namen NAME den du gerettet hast, ist sehr dankbar fÃ¼r seine Rettung und wÃ¼rde gerne hierbleiben.\n\nSeine Eigenschaften sind: {1}.</RescuedInitial>
   <RescuedInitial_Accept>Akzeptiere Ihn</RescuedInitial_Accept>
   <RescuedInitial_Reject>Seine Forderung ablehnen</RescuedInitial_Reject>
   
   <!-- Wanderer -->
-  <WandererInitial>NAME von den {0} wanderte in der Nähe und bemerkte, das du Hilfe gebrauchen kannst. HECAP würde sich gerne deiner Kolonie für eine Weile anschließen.\n\nHECAP ist ein {1} und seine Eigenschaften sind {2}.</WandererInitial>
+  <WandererInitial>NAME von den {0} wanderte in der NÃ¤he und bemerkte, das du Hilfe gebrauchen kannst. HECAP wÃ¼rde sich gerne deiner Kolonie fÃ¼r eine Weile anschlieÃŸen.\n\nHECAP ist ein {1} und seine Eigenschaften sind {2}.</WandererInitial>
 
 </LanguageData>
