@@ -45,6 +45,7 @@
   <!-- Tab -->
   <AreaToStay>Area</AreaToStay>
   <AreaToBuy>Shopping</AreaToBuy>
+  <AreaNoShopping>None</AreaNoShopping>
   <ConvincingLeft>Convincing required</ConvincingLeft>
   <FriendsRequirement>Enough friends to recruit: {0}/{1}</FriendsRequirement>
   <RecruitmentPenalty>Relationship damage when recruited</RecruitmentPenalty>

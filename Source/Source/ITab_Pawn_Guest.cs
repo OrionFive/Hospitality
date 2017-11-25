@@ -72,9 +72,10 @@ namespace Hospitality
                 {
                     listingStandard.Gap();
                     listingStandard.Label("AreaToStay".Translate());
-                    DoAreaRestriction(listingStandard, comp.GuestArea, SetAreaRestriction);
+                    DoAreaRestriction(listingStandard, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
                     listingStandard.Label("AreaToBuy".Translate());
-                    DoAreaRestriction(listingStandard, comp.ShoppingArea, SetAreaShopping);
+
+                    DoAreaRestriction(listingStandard, comp.ShoppingArea, SetAreaShopping, GetShoppingLabel);
 
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
 
@@ -126,7 +127,13 @@ namespace Hospitality
             }
         }
 
-        private void DoAreaRestriction(Listing_Standard listing, Area area, Action<Area> setArea)
+        private string GetShoppingLabel(Area area)
+        {
+            if (area != null) return area.Label;
+            return "AreaNoShopping".Translate();
+        }
+
+        private void DoAreaRestriction(Listing_Standard listing, Area area, Action<Area> setArea, Func<Area, string> getLabel)
         {
             var areaRect = listing.GetRect(24);
 
@@ -137,7 +144,7 @@ namespace Hospitality
             }
 
             SelPawn.playerSettings.AreaRestriction = area;
-            AreaAllowedGUI.DoAllowedAreaSelectors(areaRect, SelPawn, AllowedAreaMode.Humanlike);
+            GuestUtility.DoAllowedAreaSelectors(areaRect, SelPawn, AllowedAreaMode.Humanlike, getLabel);
             var newArea = SelPawn.playerSettings.AreaRestriction;
             SelPawn.playerSettings.AreaRestriction = null;
             Text.Anchor = TextAnchor.UpperLeft;
@@ -177,7 +184,7 @@ namespace Hospitality
 
         private void DrawSetDefaultButton(Rect rect)
         {
-            rect = new Rect(rect.xMax - setDefaultButtonSize.x - 10f, 110f, setDefaultButtonSize.x, setDefaultButtonSize.y);
+            rect = new Rect(rect.xMax - setDefaultButtonSize.x - 10f, 160f, setDefaultButtonSize.x, setDefaultButtonSize.y);
             if (Widgets.ButtonText(rect, txtMakeDefault))
             {
                 SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
@@ -188,7 +195,7 @@ namespace Hospitality
 
         private void DrawSendHomeButton(Rect rect)
         {
-            rect = new Rect(rect.xMax - sendHomeButtonSize.x - 20f - setDefaultButtonSize.x, 110f, sendHomeButtonSize.x, sendHomeButtonSize.y);
+            rect = new Rect(rect.xMax - sendHomeButtonSize.x - 20f - setDefaultButtonSize.x, 160f, sendHomeButtonSize.x, sendHomeButtonSize.y);
             if (Widgets.ButtonText(rect, txtSendAway))
             {
                 SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();

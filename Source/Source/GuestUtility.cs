@@ -7,6 +7,7 @@ using UnityEngine;
 using Verse.AI.Group;
 using Verse;
 using Verse.AI;
+using Verse.Sound;
 
 namespace Hospitality
 {
@@ -772,5 +773,67 @@ namespace Hospitality
         }
 
         public const int InteractIntervalAbsoluteMin = 360; // changed from 120
+
+
+        public static void DoAllowedAreaSelectors(Rect rect, Pawn p, AllowedAreaMode mode, Func<Area, string> getLabel)
+		{
+			if (Find.VisibleMap == null)
+			{
+				return;
+			}
+            var areas = GetAreas(mode).ToArray();
+            int num = areas.Length + 1;
+            float num2 = rect.width / num;
+			Text.WordWrap = false;
+			Text.Font = GameFont.Tiny;
+			Rect rect2 = new Rect(rect.x, rect.y, num2, rect.height);
+			DoAreaSelector(rect2, p, null, getLabel);
+			int num3 = 1;
+			foreach (Area a in areas)
+			{
+			    float num4 = num3*num2;
+			    Rect rect3 = new Rect(rect.x + num4, rect.y, num2, rect.height);
+			    DoAreaSelector(rect3, p, a, getLabel);
+			    num3++;
+			}
+            Text.WordWrap = true;
+			Text.Font = GameFont.Small;
+		}
+
+        public static IEnumerable<Area> GetAreas(AllowedAreaMode mode)
+        {
+            return Find.VisibleMap.areaManager.AllAreas.Where(a=>a.AssignableAsAllowed(mode));
+        }
+
+        // From RimWorld.AreaAllowedGUI, modified
+        private static void DoAreaSelector(Rect rect, Pawn p, Area area, Func<Area, string> getLabel)
+		{
+			rect = rect.ContractedBy(1f);
+			GUI.DrawTexture(rect, (area == null) ? BaseContent.GreyTex : area.ColorTexture);
+			Text.Anchor = TextAnchor.MiddleLeft;
+			string text = getLabel(area);
+			Rect rect2 = rect;
+			rect2.xMin += 3f;
+			rect2.yMin += 2f;
+			Widgets.Label(rect2, text);
+			if (p.playerSettings.AreaRestriction == area)
+			{
+				Widgets.DrawBox(rect, 2);
+			}
+			if (Mouse.IsOver(rect))
+			{
+				if (area != null)
+				{
+					area.MarkForDraw();
+				}
+				if (Input.GetMouseButton(0) && p.playerSettings.AreaRestriction != area)
+				{
+					p.playerSettings.AreaRestriction = area;
+					SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera(null);
+				}
+			}
+			Text.Anchor = TextAnchor.UpperLeft;
+			TooltipHandler.TipRegion(rect, text);
+		}
     }
 }
