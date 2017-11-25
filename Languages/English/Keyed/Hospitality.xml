@@ -43,9 +43,11 @@
   <VisitorsArrivedRefuse>Send away</VisitorsArrivedRefuse>
 
   <!-- Tab -->
-  <AreaToStay>Area</AreaToStay>
-  <AreaToBuy>Shopping</AreaToBuy>
+  <AreaToStay>Area of accommodation</AreaToStay>
+  <AreaToBuy>Shopping area</AreaToBuy>
   <AreaNoShopping>None</AreaNoShopping>
+  <AreaToStayTooltip>This is where guests may sleep and hang out.</AreaToStayTooltip>
+  <AreaToBuyTooltip>Guests may buy items in this zone. Has to be inside the area of accommodation.</AreaToBuyTooltip>
   <ConvincingLeft>Convincing required</ConvincingLeft>
   <FriendsRequirement>Enough friends to recruit: {0}/{1}</FriendsRequirement>
   <RecruitmentPenalty>Relationship damage when recruited</RecruitmentPenalty>

@@ -46,6 +46,8 @@
   <AreaToStay>Aufenthaltszone</AreaToStay>
   <AreaToBuy>Einkaufszone</AreaToBuy>
   <AreaNoShopping>Keine</AreaNoShopping>
+  <AreaToStayTooltip>Hier dürfen Gäste schlafen und sich aufhalten.</AreaToStayTooltip>
+  <AreaToBuyTooltip>Gegenstände in dieser Zone dürfen gekauft werden. Muss innerhalb der Aufenthaltszone sein.</AreaToBuyTooltip>
   <ConvincingLeft>Überzeugung nötig</ConvincingLeft>
   <FriendsRequirement>Genug befreundet zum rekrutieren: {0}/{1}</FriendsRequirement>
   <RecruitmentPenalty>Beziehungsschaden bei Rekrutierung</RecruitmentPenalty>

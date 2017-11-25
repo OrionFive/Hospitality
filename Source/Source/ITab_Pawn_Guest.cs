@@ -71,9 +71,10 @@ namespace Hospitality
                 if (comp != null)
                 {
                     listingStandard.Gap();
-                    listingStandard.Label("AreaToStay".Translate());
+                    LabelWithTooltip("AreaToStay".Translate(), "AreaToStayTooltip".Translate());
                     DoAreaRestriction(listingStandard, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
-                    listingStandard.Label("AreaToBuy".Translate());
+                    LabelWithTooltip("AreaToBuy".Translate(), "AreaToBuyTooltip".Translate());
+
 
                     DoAreaRestriction(listingStandard, comp.ShoppingArea, SetAreaShopping, GetShoppingLabel);
 
@@ -124,6 +125,21 @@ namespace Hospitality
                         listingStandard.Slider(lordToil.GetVisitScore(SelPawn), 0f, 1f);
                     }
                 }
+            }
+        }
+
+        private static void LabelWithTooltip(string label, string tooltip)
+        {
+            listingStandard.Label(label);
+            DoTooltip(listingStandard.GetRect(Text.CalcHeight(label, listingStandard.ColumnWidth)), tooltip);
+        }
+
+        private static void DoTooltip(Rect rect, string tooltip)
+        {
+            if (!tooltip.NullOrEmpty())
+            {
+                if (Mouse.IsOver(rect)) Widgets.DrawHighlight(rect);
+                TooltipHandler.TipRegion(rect, tooltip);
             }
         }
 
