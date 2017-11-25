@@ -43,6 +43,8 @@
   <VisitorsArrivedRefuse>Schicke sie weg</VisitorsArrivedRefuse>
 
   <!-- Tab -->
+  <AreaToStay>Aufenthaltszone</AreaToStay>
+  <AreaToBuy>Einkaufszone</AreaToBuy>
   <ConvincingLeft>Überzeugung nötig</ConvincingLeft>
   <FriendsRequirement>Genug befreundet zum rekrutieren: {0}/{1}</FriendsRequirement>
   <RecruitmentPenalty>Beziehungsschaden bei Rekrutierung</RecruitmentPenalty>

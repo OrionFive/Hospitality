@@ -393,9 +393,9 @@ namespace Hospitality
                 var compGuest = p.GetComp<CompGuest>();
                 if (compGuest != null)
                 {
-                    compGuest.mayBuy = mapComp.defaultMayBuy;
                     compGuest.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.Chat;
                     compGuest.GuestArea = mapComp.defaultAreaRestriction;
+                    compGuest.ShoppingArea = mapComp.defaultAreaShopping;
                 }
             });
 

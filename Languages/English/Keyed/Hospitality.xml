@@ -43,12 +43,13 @@
   <VisitorsArrivedRefuse>Send away</VisitorsArrivedRefuse>
 
   <!-- Tab -->
+  <AreaToStay>Area</AreaToStay>
+  <AreaToBuy>Shopping</AreaToBuy>
   <ConvincingLeft>Convincing required</ConvincingLeft>
   <FriendsRequirement>Enough friends to recruit: {0}/{1}</FriendsRequirement>
   <RecruitmentPenalty>Relationship damage when recruited</RecruitmentPenalty>
   <ImproveRelationship>Try to entertain</ImproveRelationship>
   <LeaveAlone>Leave alone</LeaveAlone>
-  <MayBuy>Allow buying items in area</MayBuy>
   <FactionGoodwill>Faction goodwill</FactionGoodwill>
   <Hospitality>Hospitality</Hospitality>
   <MakeDefault>Make Default</MakeDefault>

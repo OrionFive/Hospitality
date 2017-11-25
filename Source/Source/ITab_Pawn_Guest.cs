@@ -1,3 +1,4 @@
+using System;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -61,7 +62,6 @@ namespace Hospitality
             float friendPercentage = 100f*friends/friendsRequired;
 
             {
-                var mayBuy = SelPawn.MayBuy();
                 var tryImprove = SelPawn.ImproveRelationship();
                 var tryRecruit = SelPawn.TryRecruit();
 
@@ -71,15 +71,15 @@ namespace Hospitality
                 if (comp != null)
                 {
                     listingStandard.Gap();
-                    
-                    DoAreaRestriction(listingStandard, comp);
+                    listingStandard.Label("AreaToStay".Translate());
+                    DoAreaRestriction(listingStandard, comp.GuestArea, SetAreaRestriction);
+                    listingStandard.Label("AreaToBuy".Translate());
+                    DoAreaRestriction(listingStandard, comp.ShoppingArea, SetAreaShopping);
 
-                    CheckboxLabeled(listingStandard, "MayBuy".Translate(), ref mayBuy);
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
 
                     CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
 
-                    comp.mayBuy = mayBuy;
                     comp.chat = tryImprove;
                     comp.recruit = tryRecruit;
 
@@ -126,27 +126,38 @@ namespace Hospitality
             }
         }
 
-        private void DoAreaRestriction(Listing_Standard listingStandard, CompGuest comp)
+        private void DoAreaRestriction(Listing_Standard listing, Area area, Action<Area> setArea)
         {
-            var areaRect = listingStandard.GetRect(24);
+            var areaRect = listing.GetRect(24);
+
+            // Needed for GUI
             if (SelPawn.playerSettings == null)
             {
-                var savedArea = comp.GuestArea;
-                SelPawn.playerSettings = new Pawn_PlayerSettings(SelPawn) {AreaRestriction = savedArea};
+                SelPawn.playerSettings = new Pawn_PlayerSettings(SelPawn) {AreaRestriction = area};
             }
 
-            var oldArea = SelPawn.playerSettings.AreaRestriction = comp.GuestArea;
+            SelPawn.playerSettings.AreaRestriction = area;
             AreaAllowedGUI.DoAllowedAreaSelectors(areaRect, SelPawn, AllowedAreaMode.Humanlike);
+            var newArea = SelPawn.playerSettings.AreaRestriction;
+            SelPawn.playerSettings.AreaRestriction = null;
             Text.Anchor = TextAnchor.UpperLeft;
 
-            if (SelPawn.playerSettings.AreaRestriction != oldArea) SetAreaRestriction(SelPawn.GetLord(), SelPawn.playerSettings.AreaRestriction);
+            if (newArea != area) setArea(newArea);
         }
 
-        private static void SetAreaRestriction(Lord lord, Area areaRestriction)
+        private void SetAreaRestriction(Area area)
         {
-            foreach (var pawn in lord.ownedPawns)
+            foreach (var pawn in SelPawn.GetLord().ownedPawns)
             {
-                pawn.GetComp<CompGuest>().GuestArea = areaRestriction;
+                pawn.GetComp<CompGuest>().GuestArea = area;
+            }
+        }
+
+        private void SetAreaShopping(Area area)
+        {
+            foreach (var pawn in SelPawn.GetLord().ownedPawns)
+            {
+                pawn.GetComp<CompGuest>().ShoppingArea = area;
             }
         }
 
@@ -207,19 +218,13 @@ namespace Hospitality
 
             var mapComp = Hospitality_MapComponent.Instance(map);
 
-            if(pawn.GetComp<CompGuest>() != null)
+            if (pawn.GetComp<CompGuest>() != null)
             {
-                mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat
-                ? PrisonerInteractionModeDefOf.Chat
-                : PrisonerInteractionModeDefOf.NoInteraction;
-
-                mapComp.defaultMayBuy = pawn.GetComp<CompGuest>().mayBuy;
+                mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat ? PrisonerInteractionModeDefOf.Chat : PrisonerInteractionModeDefOf.NoInteraction;
             }
-
-            if (pawn.playerSettings != null)
-            {
-                mapComp.defaultAreaRestriction = pawn.GetComp<CompGuest>().GuestArea;
-            }
+            
+            mapComp.defaultAreaRestriction = pawn.GetGuestArea();
+            mapComp.defaultAreaShopping = pawn.GetShoppingArea();
 
             var guests = GuestUtility.GetAllGuests(map);
             foreach (var guest in guests)
@@ -229,7 +234,7 @@ namespace Hospitality
                 {
                     comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.Chat;
                     comp.GuestArea = mapComp.defaultAreaRestriction;
-                    comp.mayBuy = mapComp.defaultMayBuy;
+                    comp.ShoppingArea = mapComp.defaultAreaShopping;
                 }
             }
         }

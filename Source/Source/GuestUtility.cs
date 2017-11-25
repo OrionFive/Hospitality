@@ -43,7 +43,7 @@ namespace Hospitality
         {
             var guestComp = pawn.GetComp<CompGuest>();
             if (guestComp == null) return false;
-            return guestComp.mayBuy;
+            return guestComp.ShoppingArea != null;
         }
 
         public static bool IsGuest(this Pawn pawn)
@@ -426,7 +426,6 @@ namespace Hospitality
             guest.MapHeld.mapPawns.UpdateRegistryForPawn(guest);
 
             guest.playerSettings.medCare = MedicalCareCategory.Best;
-            guest.playerSettings.AreaRestriction = null;
 
             if (guest.caller != null) guest.caller.DoCall();
         }
@@ -600,6 +599,14 @@ namespace Hospitality
             return compGuest.GuestArea;
         }
 
+         public static Area GetShoppingArea(this Pawn p)
+        {
+            var compGuest = p.GetComp<CompGuest>();
+            if (compGuest == null) return null;
+
+            return compGuest.ShoppingArea;
+        }
+
         public static bool Bought(this Pawn pawn, Thing thing)
         {
             var comp = pawn.GetComp<CompGuest>();
@@ -645,6 +652,13 @@ namespace Hospitality
         public static bool IsInGuestZone(this Pawn p, Thing s)
         {
             var area = p.GetGuestArea();
+            if (area == null) return true;
+            return area[s.Position];
+        }
+
+        public static bool IsInShoppingZone(this Pawn p, Thing s)
+        {
+            var area = p.GetShoppingArea();
             if (area == null) return true;
             return area[s.Position];
         }

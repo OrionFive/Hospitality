@@ -13,24 +13,37 @@ namespace Hospitality
 
         public bool arrived;
         public bool sentAway;
-        public bool mayBuy;
 
         public readonly Dictionary<Pawn, int> failedCharms = new Dictionary<Pawn, int>();
 
         private Area guestArea_int;
+        private Area shoppingArea_int;
+
         private DrugPolicy drugPolicy;
 
         public Area GuestArea
         {
             get
             {
-                if (Pawn.playerSettings != null) return Pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap;
+                if (guestArea_int != null && guestArea_int.Map != Pawn.MapHeld) return null;
                 return guestArea_int;
             }
             set
             {
-                if (Pawn.playerSettings != null) Pawn.playerSettings.AreaRestriction = value;
                 guestArea_int = value;
+            }
+        }
+
+        public Area ShoppingArea
+        {
+            get
+            {
+                if (shoppingArea_int != null && shoppingArea_int.Map != Pawn.MapHeld) return null;
+                return shoppingArea_int;
+            }
+            set
+            {
+                shoppingArea_int = value;
             }
         }
 
@@ -41,11 +54,11 @@ namespace Hospitality
             base.PostExposeData();
             Scribe_Values.Look(ref rescued, "rescued");
             Scribe_Values.Look(ref arrived, "arrived");
-            Scribe_Values.Look(ref mayBuy, "mayBuy");
             Scribe_Values.Look(ref chat, "chat");
             Scribe_Values.Look(ref recruit, "recruit");
             Scribe_Collections.Look(ref boughtItems, "boughtItems", LookMode.Value);
             Scribe_References.Look(ref guestArea_int, "guestArea");
+            Scribe_References.Look(ref shoppingArea_int, "shoppingArea");
             Scribe_Deep.Look(ref drugPolicy, "drugPolicy");
             if (boughtItems == null) boughtItems = new List<int>();
         }
@@ -92,7 +105,6 @@ namespace Hospitality
 
         public void Arrive()
         {
-            Pawn.playerSettings.AreaRestriction = guestArea_int;
             arrived = true;
         }
 

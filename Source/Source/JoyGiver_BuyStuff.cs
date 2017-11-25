@@ -34,7 +34,7 @@ namespace Hospitality
         {
             var map = pawn.MapHeld;
             var things = map.listerThings.ThingsInGroup(RequestGroup).Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t)).ToList();
-            var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(pawn.IsInGuestZone);
+            var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(pawn.IsInShoppingZone);
             things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t))));
             if (things.Count == 0) return null;
             Thing thing = things.RandomElement(); //things.MaxBy(t => Likey(pawn, t));
@@ -99,7 +99,7 @@ namespace Hospitality
         public static bool IsBuyableAtAll(Pawn pawn, Thing thing)
         {
             if (!IsBuyableNow(pawn, thing)) return false;
-            if (!pawn.IsInGuestZone(thing))
+            if (!pawn.IsInShoppingZone(thing))
             {
                 //if (thing.GetRoom() == null) Log.Message(thing.Label + ": not in room");
                 //else Log.Message(thing.Label + ": in room " + thing.GetRoom().Role.LabelCap);

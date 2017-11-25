@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
-using UnityEngine;
 
 namespace Hospitality
 {
@@ -20,15 +19,15 @@ namespace Hospitality
         private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
         public PrisonerInteractionModeDef defaultInteractionMode;
         public Area defaultAreaRestriction;
-        public bool defaultMayBuy;
+        public Area defaultAreaShopping;
         private int lastEventKey;
 
         public override void ExposeData()
         {
             Scribe_Collections.Look(ref bribeCount, "bribeCount", LookMode.Value, LookMode.Value);
-            Scribe_Values.Look(ref defaultMayBuy, "defaultMayBuy", false);
             Scribe_Defs.Look(ref defaultInteractionMode, "defaultInteractionMode");
             Scribe_References.Look(ref defaultAreaRestriction, "defaultAreaRestriction");
+            Scribe_References.Look(ref defaultAreaShopping, "defaultAreaShopping");
             Scribe_Values.Look(ref lastEventKey, "lastEventKey", 0);
             Scribe_Deep.Look(ref incidentQueue, "incidentQueue");
 
