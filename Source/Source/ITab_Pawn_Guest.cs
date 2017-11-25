@@ -130,8 +130,9 @@ namespace Hospitality
 
         private static void LabelWithTooltip(string label, string tooltip)
         {
-            listingStandard.Label(label);
-            DoTooltip(listingStandard.GetRect(Text.CalcHeight(label, listingStandard.ColumnWidth)), tooltip);
+            var rect = listingStandard.GetRect(Text.CalcHeight(label, listingStandard.ColumnWidth));
+            Widgets.Label(rect, label);
+            DoTooltip(rect, tooltip);
         }
 
         private static void DoTooltip(Rect rect, string tooltip)
@@ -143,7 +144,7 @@ namespace Hospitality
             }
         }
 
-        private string GetShoppingLabel(Area area)
+        private static string GetShoppingLabel(Area area)
         {
             if (area != null) return area.Label;
             return "AreaNoShopping".Translate();
