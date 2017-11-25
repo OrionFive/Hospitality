@@ -427,6 +427,7 @@ namespace Hospitality
             guest.MapHeld.mapPawns.UpdateRegistryForPawn(guest);
 
             guest.playerSettings.medCare = MedicalCareCategory.Best;
+            guest.playerSettings.AreaRestriction = null;
 
             if (guest.caller != null) guest.caller.DoCall();
         }
