@@ -661,7 +661,7 @@ namespace Hospitality
         public static bool IsInShoppingZone(this Pawn p, Thing s)
         {
             var area = p.GetShoppingArea();
-            if (area == null) return true;
+            if (area == null) return false;
             return area[s.Position];
         }
 
