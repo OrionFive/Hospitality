@@ -8,7 +8,7 @@ namespace Hospitality
     public class JobGiver_Relax : ThinkNode_JobGiver
     {
         DefMap<JoyGiverDef, float> joyGiverChances;
-        
+
         public override float GetPriority(Pawn pawn)
         {
             if (pawn.needs == null || pawn.needs.joy == null)
@@ -22,7 +22,9 @@ namespace Hospitality
             {
                 return 6f;
             }
-            return 1-curLevel;
+            if(curLevel < 0.9f)
+                return 1-curLevel;
+            return 0f;
         }
 
         public override void ResolveReferences ()
@@ -40,17 +42,17 @@ namespace Hospitality
             if (pawn.needs == null) Log.ErrorOnce(pawn.NameStringShort + " has no needs", 3463 + pawn.thingIDNumber);
             if (pawn.needs.joy == null) Log.ErrorOnce(pawn.NameStringShort + " has no joy need", 8585 + pawn.thingIDNumber);
             if (pawn.skills == null) Log.ErrorOnce(pawn.NameStringShort + " has no skills", 22352 + pawn.thingIDNumber);
-            if (pawn.GetTimeAssignment() == null) Log.ErrorOnce(pawn.NameStringShort + " has no time assignments", 74564 + pawn.thingIDNumber);
+            if (pawn.GetTimeAssignment() == null) Log.ErrorOnce(pawn.NameStringShort + " has no time assignments", 74564 + pawn.thingIDNumber); 
+
             var allDefsListForReading = PopulateChances(pawn);
             for (int j = 0; j < joyGiverChances.Count; j++)
             {
                 JoyGiverDef giverDef;
                 if (!allDefsListForReading.TryRandomElementByWeight(d => joyGiverChances[d], out giverDef))
                 {
-                    //Log.ErrorOnce(pawn.NameStringShort + " has no random element.",45784 +pawn.thingIDNumber);
-                    return null;
+                    break;
                 }
-                var job = giverDef.Worker.TryGiveJob(pawn);
+                Job job = giverDef.Worker.TryGiveJob(pawn);
                 if (job != null)
                 {
                     return job;
@@ -67,29 +69,30 @@ namespace Hospitality
             if(allDefsListForReading==null){Log.Message("AllDefsListForReading == null");
                 return new List<JoyGiverDef>();
             }
-            int i = 0;
-            while (i < allDefsListForReading.Count)
+            JoyToleranceSet tolerances = pawn.needs.joy.tolerances;
+            foreach (JoyGiverDef joyGiverDef in allDefsListForReading)
             {
-                JoyGiverDef joyGiverDef = allDefsListForReading[i];
-                if (joyGiverDef.pctPawnsEverDo >= 1f)
+                this.joyGiverChances[joyGiverDef] = 0f;
+
+                if (joyGiverDef.Worker.MissingRequiredCapacity(pawn) == null)
                 {
-                    goto IL_6B;
+                    if (joyGiverDef.pctPawnsEverDo < 1f)
+                    {
+                        Rand.PushState(pawn.thingIDNumber ^ 63216713);
+                        if (Rand.Value >= joyGiverDef.pctPawnsEverDo)
+                        {
+                            Rand.PopState();
+                            goto IL_FB;
+                        }
+                        Rand.PopState();
+                    }
+                    float num = joyGiverDef.Worker.GetChance(pawn);
+                    float num2 = 1f - tolerances[joyGiverDef.joyKind];
+                    num *= num2*num2;
+                    this.joyGiverChances[joyGiverDef] = num;
                 }
-                Rand.PushState();
-                Rand.Seed = (pawn.thingIDNumber ^ 63216713);
-                if (Rand.Value < joyGiverDef.pctPawnsEverDo)
-                {
-                    Rand.PopState();
-                    goto IL_6B;
-                }
-                Rand.PopState();
-                IL_A5:
-                i++;
-                continue;
-                IL_6B:
-                float num = joyGiverDef.Worker.GetChance(pawn);
-                joyGiverChances[joyGiverDef] = num;
-                goto IL_A5;
+                IL_FB:
+                ;
             }
             return allDefsListForReading;
         }
