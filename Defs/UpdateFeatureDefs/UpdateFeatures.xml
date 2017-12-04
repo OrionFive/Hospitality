@@ -13,6 +13,12 @@
 		<content>- Updated to B18|- Fixed various bugs|Thank you for your patience and support!|Wanna do me a personal favor? Then please click the link above for more information.</content>
 	</HugsLib.UpdateFeatureDef>
 	
+	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+		<defName>Hospitality_0_18_4</defName>
+		<assemblyVersion>0.18.4</assemblyVersion>
+		<content>- Guests will now help with work if they feel like it|Merry christmas, I guess?|Wanna do me a personal favor? Then please click the link above for more information.</content>
+	</HugsLib.UpdateFeatureDef>
+
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
 		<defName>ModName_1_2_0</defName>
 		<assemblyVersion>1.2.0</assemblyVersion>
