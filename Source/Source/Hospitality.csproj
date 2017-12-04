@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Harmony\AddictionUtility_Patch.cs" />
     <Compile Include="Harmony\Building_Bed_Patch.cs" />
+    <Compile Include="Harmony\FactionUtility_Patch.cs" />
     <Compile Include="Harmony\JoyGiver_Ingest_Patch.cs" />
     <Compile Include="Harmony\MinifiedThing_Patch.cs" />
     <Compile Include="Harmony\ModContentPack_Patch.cs" />
