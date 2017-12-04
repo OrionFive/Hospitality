@@ -173,7 +173,7 @@ namespace Hospitality
         
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
-            return !(!guest.IsGuest() || guest.Downed || (!sleepingIsOk && !guest.Awake()) || (!IsInGuestZone(guest, guest) || guest.HasDismissiveThought()));
+            return guest.IsGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && IsInGuestZone(guest, guest) && !guest.HasDismissiveThought();
         }
 
         public static void Arrive(this Pawn pawn)
@@ -458,6 +458,7 @@ namespace Hospitality
 
         public static bool ShouldRecruit(this Pawn pawn, Pawn guest)
         {
+            if (!pawn.IsColonist) return false;
             if (!ViableGuestTarget(guest, true)) return false;
             if (!guest.TryRecruit()) return false;
             if (guest.InMentalState) return false;
@@ -473,6 +474,7 @@ namespace Hospitality
 
         public static bool ShouldImproveRelationship(this Pawn pawn, Pawn guest)
         {
+            if (!pawn.IsColonist) return false;
             if (!ViableGuestTarget(guest)) return false;
             if (!guest.ImproveRelationship()) return false;
             //if (guest.Faction.ColonyGoodwill >= 100) return false;
