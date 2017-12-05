@@ -41,8 +41,6 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(Thing t, bool value)
             {
-                Log.Message(currentToilWorker.NameStringShort+" is the current worker and tried to "+(value?"forbid ":"unforbid ")+t.ToStringSafe());
-                
                 if (value && currentToilWorker.IsGuest())
                 {
                     return false;
