@@ -1,6 +1,7 @@
 using System.Reflection;
 using Harmony;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Hospitality.Harmony
@@ -16,6 +17,10 @@ namespace Hospitality.Harmony
             public static bool Prefix(ref bool __result, Pawn pawn, WorkGiver giver)
             {
                 if (!pawn.IsGuest()) return true;
+                float score;
+                if (!pawn.GetVisitScore(out score)) return false;
+
+                if (Mathf.Min(pawn.Faction.GoodwillWith(Faction.OfPlayer), score*100) < Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*50) return false;
                 var skill = pawn.skills.AverageOfRelevantSkillsFor(giver.def.workType);
                 var canDo = !giver.ShouldSkip(pawn) && giver.MissingRequiredCapacity(pawn) == null && skill > 0;
                 if (!canDo) return false;

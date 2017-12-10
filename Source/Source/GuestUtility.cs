@@ -197,6 +197,22 @@ namespace Hospitality
             pawn.GetComp<CompGuest>().Arrive();
         }
 
+        public static bool GetVisitScore(this Pawn pawn, out float score)
+        {
+            var lord = pawn.GetLord();
+            if (lord != null)
+            {
+                var lordToil = lord.CurLordToil as LordToil_VisitPoint;
+                if (lordToil != null && pawn.Faction != null)
+                {
+                    score = lordToil.GetVisitScore(pawn);
+                    return true;
+                }
+            }
+            score = 0;
+            return false;
+        }
+
         public static void Leave(this Pawn pawn)
         {
             pawn.WearHeadgear();

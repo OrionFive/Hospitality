@@ -114,16 +114,12 @@ namespace Hospitality
                 }
 
 
-                // Will only have squadBrain while "checked in", becomes null again when guests leave
-                var squadBrain = SelPawn.GetLord();
-                if (squadBrain != null)
+                // Will only have lord while "checked in", becomes null again when guests leave
+                float score;
+                if (SelPawn.GetVisitScore(out score))
                 {
-                    var lordToil = squadBrain.CurLordToil as LordToil_VisitPoint;
-                    if (lordToil != null && SelPawn.Faction != null)
-                    {
-                        listingStandard.Label(txtHospitality + ":");
-                        listingStandard.Slider(lordToil.GetVisitScore(SelPawn), 0f, 1f);
-                    }
+                    listingStandard.Label(txtHospitality + ":");
+                    listingStandard.Slider(score, 0f, 1f);
                 }
             }
         }
