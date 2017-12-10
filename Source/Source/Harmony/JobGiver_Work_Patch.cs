@@ -21,9 +21,9 @@ namespace Hospitality.Harmony
                 if (!canDo) return false;
 
                 var passion = pawn.skills.MaxPassionOfRelevantSkillsFor(giver.def.workType);
-                var wantsTo = giver.def.emergency || (skill >= 3 && passion == Passion.Major) || skill >= 6;
+                var wantsTo = giver.def.emergency || (skill >= 6 && passion == Passion.Major) || skill >= 9;
                 if (!wantsTo) return false;
-
+                
                 __result = true;
                 return false;
             }
