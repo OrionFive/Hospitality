@@ -20,7 +20,7 @@ namespace Hospitality.Harmony
                 float score;
                 if (!pawn.GetVisitScore(out score)) return false;
 
-                if (Mathf.Min(pawn.Faction.GoodwillWith(Faction.OfPlayer), score*100) < Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*50) return false;
+                if (pawn.Faction.GoodwillWith(Faction.OfPlayer) + score*100 < Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*75) return false;
                 var skill = pawn.skills.AverageOfRelevantSkillsFor(giver.def.workType);
                 var canDo = !giver.ShouldSkip(pawn) && giver.MissingRequiredCapacity(pawn) == null && skill > 0;
                 if (!canDo) return false;
