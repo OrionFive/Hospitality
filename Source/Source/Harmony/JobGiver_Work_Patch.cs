@@ -48,13 +48,18 @@ namespace Hospitality.Harmony
         public class TryIssueJobPackage
         {
             private static FieldInfo _fieldPriorities = typeof(Pawn_WorkSettings).GetField("priorities", BindingFlags.NonPublic | BindingFlags.Instance);
+            private static ConceptDef guestWorkDef = ConceptDef.Named("GuestWork");
 
             public static bool Prefix(Pawn pawn)
             {
                 if (!Settings.disableWork && pawn.IsGuest())
                 {
                     var priorities = _fieldPriorities.GetValue(pawn.workSettings);
-                    if (priorities == null) pawn.workSettings.EnableAndInitialize();
+                    if (priorities == null)
+                    {
+                        pawn.workSettings.EnableAndInitialize();
+                        LessonAutoActivator.TeachOpportunity(guestWorkDef, pawn, OpportunityType.GoodToKnow);
+                    }
                 }
                 return true;
             }
