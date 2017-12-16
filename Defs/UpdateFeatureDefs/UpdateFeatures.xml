@@ -10,13 +10,19 @@
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
 		<defName>Hospitality_0_18_1</defName>
 		<assemblyVersion>0.18.1</assemblyVersion>
-		<content>- Updated to B18|- Fixed various bugs|Thank you for your patience and support!|Wanna do me a personal favor? Then please click the link above for more information.</content>
+		<content>- Updated to B18|- Fixed various bugs|Thank you for your patience and support!</content>
 	</HugsLib.UpdateFeatureDef>
 	
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
 		<defName>Hospitality_0_18_4</defName>
 		<assemblyVersion>0.18.4</assemblyVersion>
 		<content>- Guests will now help with work if they feel like it|Merry christmas, I guess?|Wanna do me a personal favor? Then please click the link above for more information.</content>
+	</HugsLib.UpdateFeatureDef>
+
+	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+		<defName>Hospitality_0_18_6</defName>
+		<assemblyVersion>0.18.6</assemblyVersion>
+		<content>- You can now adjust or disable various features for Hospitality in the mod settings menu, including the new feature that happy guests help you with work.</content>
 	</HugsLib.UpdateFeatureDef>
 
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
