@@ -1,32 +1,14 @@
-using System.Linq;
 using Verse;
-using Verse.AI.Group;
 
 namespace Hospitality
 {
+    // TODO: Remove in B19
     public class VisitorFlag : ThingWithComps
     {
-        // TODO: Remove in B19
-        private Lord lord;
-
-        public override void ExposeData()
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            base.ExposeData();
-            Scribe_References.Look(ref lord, "lord");
-        }
-
-        public void SetLord(Lord lord)
-        {
-            this.lord = lord;
-        }
-
-        public override string GetInspectString()
-        {
-            if (lord == null) return base.GetInspectString();
-
-            var names = GenText.ToCommaList(lord.ownedPawns.Select(p => p.NameStringShort));
+            base.SpawnSetup(map, respawningAfterLoad);
             Destroy();
-            return string.Format("Visitors from {0}:\n{1}", lord.faction, names);
         }
     }
 }
