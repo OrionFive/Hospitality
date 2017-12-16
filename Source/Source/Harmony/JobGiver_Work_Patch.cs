@@ -1,6 +1,7 @@
 using System.Reflection;
 using Harmony;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Hospitality.Harmony
@@ -15,27 +16,28 @@ namespace Hospitality.Harmony
         {
             public static bool Prefix(ref bool __result, Pawn pawn, WorkGiver giver)
             {
-                if (Settings.disableWork) return true;
                 if (!pawn.IsGuest()) return true;
+
+                var canDo = !giver.ShouldSkip(pawn) && giver.MissingRequiredCapacity(pawn) == null && IsSkilledEnough(pawn, giver.def.workType);
+                if (!canDo) return false;
+
                 float score;
                 if (!pawn.GetVisitScore(out score)) return false;
 
                 var passion = pawn.skills.MaxPassionOfRelevantSkillsFor(giver.def.workType);
                 float passionBonus = passion == Passion.Major ? 40 : passion == Passion.Minor ? 20 : 0;
 
-                var desireToHelp = pawn.Faction.GoodwillWith(Faction.OfPlayer) + passionBonus + score*100;
-                if (desireToHelp < Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*75) return false;
+                var desireToHelp = pawn.Faction.GoodwillWith(Faction.OfPlayer) + passionBonus + score*100 + (giver.def.emergency ? 75 : 0);
+                Log.Message(pawn.NameStringShort + ": help with "+giver.def.gerund+"? " + Mathf.RoundToInt(desireToHelp) + " >= " + Mathf.RoundToInt(100+Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*100));
+                if (desireToHelp < 100 + Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*100) return false;
 
-                var skill = pawn.skills.AverageOfRelevantSkillsFor(giver.def.workType);
-
-                var canDo = !giver.ShouldSkip(pawn) && giver.MissingRequiredCapacity(pawn) == null && skill > 0;
-                if (!canDo) return false;
-
-                var wantsTo = giver.def.emergency || skill >= Settings.minGuestWorkSkill.Value;
-                if (!wantsTo) return false;
-                
                 __result = true;
                 return false;
+            }
+
+            private static bool IsSkilledEnough(Pawn pawn, WorkTypeDef workTypeDef)
+            {
+                return pawn.skills.AverageOfRelevantSkillsFor(workTypeDef) >= Settings.minGuestWorkSkill.Value;
             }
         }
 
