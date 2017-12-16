@@ -6,6 +6,7 @@ namespace Hospitality
 {
     public class VisitorFlag : ThingWithComps
     {
+        // TODO: Remove in B19
         private Lord lord;
 
         public override void ExposeData()

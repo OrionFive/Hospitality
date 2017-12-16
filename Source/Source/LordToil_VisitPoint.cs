@@ -13,7 +13,6 @@ namespace Hospitality
         public IntVec3 point;
         public float radius;
         public Dictionary<int, float> visitorMoods = new Dictionary<int, float>();
-        public VisitorFlag visitorFlag;
         public List<int> soldItemIDs = new List<int>(); // items that may not be bought or gifted back
 
         public override void ExposeData()
@@ -21,7 +20,6 @@ namespace Hospitality
             Scribe_Values.Look(ref point, "point");
             Scribe_Values.Look(ref radius, "radius", 45f);
             Scribe_Collections.Look(ref visitorMoods, "visitorMoods");
-            Scribe_References.Look(ref visitorFlag, "flag");
             Scribe_Collections.Look(ref soldItemIDs, "soldItemIDs");
         }
     }
@@ -69,25 +67,11 @@ namespace Hospitality
                 pawn.Arrive();
             }
 
-            PlaceFlag(lord.ownedPawns.Any() ? lord.ownedPawns.First().PositionHeld : FlagLoc);
-        }
-
-        private void PlaceFlag(IntVec3 location)
-        {
-            var def = ThingDef.Named("VisitorFlag");
-            Data.visitorFlag = (VisitorFlag)GenSpawn.Spawn(def, location, Map);
-            //Data.visitorFlag.SetFaction(lord.faction);
-            var pawn = lord.ownedPawns.FirstOrDefault();
-            Data.visitorFlag.SetLord(lord);
-            if (pawn == null) return;
-            
-            Data.visitorFlag.SetColor(PawnNameColorUtility.PawnNameColorOf(pawn));
-
             // Lessons
-            LessonAutoActivator.TeachOpportunity(ConceptDef.Named("GuestBeds"), Data.visitorFlag, OpportunityType.Important);
+            LessonAutoActivator.TeachOpportunity(ConceptDef.Named("GuestBeds"), lord.ownedPawns.FirstOrDefault(), OpportunityType.Important);
             if (PlayerHasSkilledNegotiator)
             {
-                LessonAutoActivator.TeachOpportunity(ConceptDef.Named("RecruitGuest"), Data.visitorFlag, OpportunityType.GoodToKnow);
+                LessonAutoActivator.TeachOpportunity(ConceptDef.Named("RecruitGuest"), lord.ownedPawns.FirstOrDefault(), OpportunityType.GoodToKnow);
             }
         }
 
@@ -102,13 +86,6 @@ namespace Hospitality
             }
         }
 
-        private void RemoveFlag()
-        {
-            if (Data.visitorFlag != null)
-                Data.visitorFlag.Destroy();
-            Data.visitorFlag = null;
-        }
-
         public override void Cleanup()
         {
             Leave();
@@ -119,8 +96,6 @@ namespace Hospitality
         private void Leave()
         {
             var pawns = lord.ownedPawns.ToArray(); // Copy, because recruiting changes lord
-
-            RemoveFlag();
 
             bool sentAway = false;
             foreach (var pawn in pawns)
