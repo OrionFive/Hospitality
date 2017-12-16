@@ -18,7 +18,7 @@ namespace Hospitality
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref point, "point", default(IntVec3));
+            Scribe_Values.Look(ref point, "point");
             Scribe_Values.Look(ref radius, "radius", 45f);
             Scribe_Collections.Look(ref visitorMoods, "visitorMoods");
             Scribe_References.Look(ref visitorFlag, "flag");
@@ -258,7 +258,7 @@ namespace Hospitality
 
         private void LeaveVerySatisfied(Pawn pawn, float score)
         {
-            if (pawn.inventory.innerContainer.Count == 0) return;
+            if (pawn.inventory.innerContainer.Count == 0 || Settings.disableGifts) return;
 
             var dropped = GetLoot(pawn, (score + 10)*1.5f);
             if (dropped.Count == 0) return;
@@ -272,7 +272,7 @@ namespace Hospitality
 
         private void LeaveSatisfied(Pawn pawn, float score)
         {
-            if (pawn.inventory.innerContainer.Count == 0) return;
+            if (pawn.inventory.innerContainer.Count == 0 || Settings.disableGifts) return;
 
             var desiredValue = (score + 10)*2;
             var things = pawn.inventory.innerContainer.Where(i => WillDrop(pawn, i) && i.MarketValue < desiredValue).ToArray();

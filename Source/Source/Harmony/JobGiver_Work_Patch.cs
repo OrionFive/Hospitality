@@ -1,7 +1,6 @@
 using System.Reflection;
 using Harmony;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace Hospitality.Harmony
@@ -16,17 +15,23 @@ namespace Hospitality.Harmony
         {
             public static bool Prefix(ref bool __result, Pawn pawn, WorkGiver giver)
             {
+                if (Settings.disableWork) return true;
                 if (!pawn.IsGuest()) return true;
                 float score;
                 if (!pawn.GetVisitScore(out score)) return false;
 
-                if (pawn.Faction.GoodwillWith(Faction.OfPlayer) + score*100 < Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*75) return false;
+                var passion = pawn.skills.MaxPassionOfRelevantSkillsFor(giver.def.workType);
+                float passionBonus = passion == Passion.Major ? 40 : passion == Passion.Minor ? 20 : 0;
+
+                var desireToHelp = pawn.Faction.GoodwillWith(Faction.OfPlayer) + passionBonus + score*100;
+                if (desireToHelp < Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*75) return false;
+
                 var skill = pawn.skills.AverageOfRelevantSkillsFor(giver.def.workType);
+
                 var canDo = !giver.ShouldSkip(pawn) && giver.MissingRequiredCapacity(pawn) == null && skill > 0;
                 if (!canDo) return false;
 
-                var passion = pawn.skills.MaxPassionOfRelevantSkillsFor(giver.def.workType);
-                var wantsTo = giver.def.emergency || (skill >= 6 && passion == Passion.Major) || skill >= 9;
+                var wantsTo = giver.def.emergency || skill >= Settings.minGuestWorkSkill.Value;
                 if (!wantsTo) return false;
                 
                 __result = true;
@@ -44,7 +49,7 @@ namespace Hospitality.Harmony
 
             public static bool Prefix(Pawn pawn)
             {
-                if (pawn.IsGuest())
+                if (!Settings.disableWork && pawn.IsGuest())
                 {
                     var priorities = _fieldPriorities.GetValue(pawn.workSettings);
                     if (priorities == null) pawn.workSettings.EnableAndInitialize();

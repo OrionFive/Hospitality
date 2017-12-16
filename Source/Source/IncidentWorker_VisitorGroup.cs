@@ -86,6 +86,7 @@ namespace Hospitality
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             if (!TryResolveParms(parms)) return false;
+
             Map map = parms.target as Map;
 
             // Is map not available anymore?
@@ -119,24 +120,28 @@ namespace Hospitality
                 return true;
             }
 
-
-            string reasons;
-            // We check here instead of CanFireNow, so we can reschedule the visit.
-            // Any reasons not to come?
-            if (CheckCanCome(map, parms.faction, out reasons))
+            if (Settings.disableGuests)
             {
-                // No, spawn
-                return SpawnGroup(parms, map);
+                GuestUtility.PlanNewVisit(map, Rand.Range(5f, 25f), parms.faction);
             }
-            // Yes, ask the player for permission
-            var spawnDirection = GetSpawnDirection(map, parms.spawnCenter);
-            ShowAskMayComeDialog(parms.faction, map, reasons, spawnDirection,
-                // Permission, spawn
-                () => SpawnGroup(parms, map),
-                // No permission, come again later
-                () => {
-                    GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
-                });
+            else
+            {
+                string reasons;
+                // We check here instead of CanFireNow, so we can reschedule the visit.
+                // Any reasons not to come?
+                if (CheckCanCome(map, parms.faction, out reasons))
+                {
+                    // No, spawn
+                    return SpawnGroup(parms, map);
+                }
+                // Yes, ask the player for permission
+                var spawnDirection = GetSpawnDirection(map, parms.spawnCenter);
+                ShowAskMayComeDialog(parms.faction, map, reasons, spawnDirection,
+                    // Permission, spawn
+                    () => SpawnGroup(parms, map),
+                    // No permission, come again later
+                    () => { GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction); });
+            }
             return true;
         }
 
@@ -204,6 +209,15 @@ namespace Hospitality
             return true;
         }
 
+        protected new List<Pawn> SpawnPawns(IncidentParms parms)
+        {
+            Map map = (Map)parms.target;
+            var list = PawnGroupMakerUtility.GeneratePawns(PawnGroupKindDef, IncidentParmsUtility.GetDefaultPawnGroupMakerParms(parms), false)
+                .Take(Settings.maxGuestGroupSize) // Added
+                .ToList();
+            foreach (Pawn newThing in list)
+                GenSpawn.Spawn(newThing, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map);
+            return list;
         }
 
         private static void CheckVisitorsValid(List<Pawn> visitors)
