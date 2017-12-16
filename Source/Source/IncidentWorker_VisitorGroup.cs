@@ -186,17 +186,24 @@ namespace Hospitality
                 visitor.GetComp<CompGuest>().sentAway = false;
             }
 
-            var spot = GetSpot(visitors, map);
+            var spot = GetSpot(map, visitors.First().GetGuestArea());
 
-            if (spot.IsValid)
+            if (!spot.IsValid)
             {
-                GiveItems(visitors);
-
-                CreateLord(parms.faction, spot, visitors, map);
-
-                return true;
+                Log.ErrorOnce("Visitors failed to find a valid travel target.", 827358325);
+                foreach (var visitor in visitors)
+                {
+                    visitor.DestroyOrPassToWorld();
+                }
+                return false;
             }
-            return false;
+            
+            GiveItems(visitors);
+
+            CreateLord(parms.faction, spot, visitors, map);
+            return true;
+        }
+
         }
 
         private static void CheckVisitorsValid(List<Pawn> visitors)
@@ -211,9 +218,9 @@ namespace Hospitality
             }
         }
 
-        private static IntVec3 GetSpot(List<Pawn> visitors, Map map)
+        private static IntVec3 GetSpot(Map map, Area guestArea)
         {
-            var area = visitors.First().GetGuestArea();
+            var area = guestArea;
 
             if (area == null) return DropCellFinder.TradeDropSpot(map);
 
@@ -400,9 +407,10 @@ namespace Hospitality
             });
 
             bool gotTrader = false;
+            int traderIndex = 0;
             if (Rand.Value < 0.75f)
             {
-                gotTrader = TryConvertOnePawnToSmallTrader(pawns, faction, map);
+                gotTrader = TryConvertOnePawnToSmallTrader(pawns, faction, map, out traderIndex);
             }
             string label;
             string description;
@@ -434,13 +442,15 @@ namespace Hospitality
                     leaderDesc
 				});
             }
-            Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, pawns[0]);
+            var lookTarget = gotTrader ? pawns[traderIndex] : pawns[0];
+            Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, lookTarget);
         }
 
-        private static bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction, Map map)
+        private static bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction, Map map, out int traderIndex)
         {
             if (faction.def.visitorTraderKinds.NullOrEmpty())
             {
+                traderIndex = 0;
                 return false;
             }
             Pawn pawn = pawns.RandomElement();
@@ -490,6 +500,7 @@ namespace Hospitality
                     }
                 }
             }
+            traderIndex = pawns.IndexOf(pawn);
             return true;
         }
     }
