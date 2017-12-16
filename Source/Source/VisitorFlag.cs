@@ -25,6 +25,7 @@ namespace Hospitality
             if (lord == null) return base.GetInspectString();
 
             var names = GenText.ToCommaList(lord.ownedPawns.Select(p => p.NameStringShort));
+            Destroy();
             return string.Format("Visitors from {0}:\n{1}", lord.faction, names);
         }
     }
