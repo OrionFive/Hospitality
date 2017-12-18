@@ -10,14 +10,12 @@ namespace Hospitality
 {
     internal class LordToilData_VisitPoint : LordToilData
     {
-        public IntVec3 point;
         public float radius;
         public Dictionary<int, float> visitorMoods = new Dictionary<int, float>();
         public List<int> soldItemIDs = new List<int>(); // items that may not be bought or gifted back
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref point, "point");
             Scribe_Values.Look(ref radius, "radius", 45f);
             Scribe_Collections.Look(ref visitorMoods, "visitorMoods");
             Scribe_Collections.Look(ref soldItemIDs, "soldItemIDs");
@@ -26,15 +24,11 @@ namespace Hospitality
 
     internal class LordToil_VisitPoint : LordToil
     {
-        public override IntVec3 FlagLoc
-        {
-            get { return Data.point; }
-        }
         public LordToilData_VisitPoint Data { get { return (LordToilData_VisitPoint) data; } }
 
-        public LordToil_VisitPoint(IntVec3 point)
+        public LordToil_VisitPoint()
         {
-            data = new LordToilData_VisitPoint {point = point};
+            data = new LordToilData_VisitPoint();
         }
 
         public override void Init()
@@ -278,7 +272,7 @@ namespace Hospitality
             {
                 GuestUtility.AddNeedJoy(pawn);
                 GuestUtility.AddNeedComfort(pawn);
-                pawn.mindState.duty = new PawnDuty(GuestUtility.relaxDef, FlagLoc, Data.radius);
+                pawn.mindState.duty = new PawnDuty(GuestUtility.relaxDef, pawn.Position, Data.radius);
             }
         }
 
