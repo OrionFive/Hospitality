@@ -290,7 +290,7 @@ namespace Hospitality
                                                 Find.Maps.ForEach(m => m.reservationManager.ReleaseAllForTarget(b)); // TODO: Put this somewhere smarter
                                                 return (!b.IsForbidden(pawn) && !b.IsBurning());
                                             };
-            var bed = (Building_GuestBed)GenClosest.ClosestThingReachable(pawn.GetLord().CurLordToil.FlagLoc, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(pawn), 500f, bedValidator);
+            var bed = (Building_GuestBed)GenClosest.ClosestThingReachable(pawn.Position, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(pawn), 500f, bedValidator);
             return bed;
         }
 
