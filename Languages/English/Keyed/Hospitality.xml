@@ -57,7 +57,7 @@
   <Hospitality>Hospitality</Hospitality>
   <MakeDefault>Make Default</MakeDefault>
   <SendAway>Send Away</SendAway>
-  <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?</SendAwayQuestion>
+  <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?\nIf they haven't arrived at your base yet, this will have no effect on relations.</SendAwayQuestion>
   <NotEnoughFriends>NAME does not like enough of your colonists (opinion > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>NAME can now be recruited.</CanNowBeRecruited>
   <IsATrader>NAME is part of a trading caravan and not a guest.</IsATrader>
