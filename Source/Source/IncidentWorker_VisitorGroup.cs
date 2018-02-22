@@ -128,7 +128,7 @@ namespace Hospitality
                 return true;
             }
 
-            if (Settings.disableGuests)
+            if (Settings.disableGuests || map.mapPawns.ColonistCount == 0)
             {
                 GuestUtility.PlanNewVisit(map, Rand.Range(5f, 25f), parms.faction);
             }
