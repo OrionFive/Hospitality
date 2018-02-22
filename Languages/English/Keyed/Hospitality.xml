@@ -78,7 +78,7 @@
   <RescuedInitial_Reject>Reject HIS request</RescuedInitial_Reject>
   
   <!-- Wanderer -->
-  <WandererInitial>NAME from {0} was wandering nearby and noticed you could use some help. HECAP would like to join your colony for a while.\n\nHECAP is a {1} and HIS traits are {2}.</WandererInitial>
+  <WandererInitial>NAME from {0} was wandering nearby and noticed you could use some help. HECAP would like to join your colony.\n\nHECAP is a {1} and HIS traits are {2}.</WandererInitial>
 
   <!-- Options -->
   <DisableLimits>Disable option limits</DisableLimits>
