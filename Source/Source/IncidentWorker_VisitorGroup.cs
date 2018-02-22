@@ -40,7 +40,7 @@ namespace Hospitality
         private static bool CheckCanCome(Map map, Faction faction, out string reasons)
         {
             var fallout = map.GameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout);
-            var hostileFactions = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed).Select(p => p.Faction).Where(p =>
+            var hostileFactions = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed && !IsFogged(p)).Select(p => p.Faction).Where(p =>
                                                                    p.HostileTo(Faction.OfPlayer) || p.HostileTo(faction)).ToArray();
             var winter = map.GameConditionManager.ConditionIsActive(GameConditionDefOf.VolcanicWinter);
             var temp = faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) && faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp);
@@ -64,6 +64,11 @@ namespace Hospitality
             reasons = reasonList.Distinct().Aggregate((a, b) => a+"\n"+b);
             return false; // Do ask
     
+        }
+
+        private static bool IsFogged(Pawn pawn)
+        {
+            return pawn.MapHeld.fogGrid.IsFogged(pawn.PositionHeld);
         }
 
         private static void ShowAskMayComeDialog(Faction faction, Map map, string reasons, Direction8Way spawnDirection, Action allow, Action refuse)
