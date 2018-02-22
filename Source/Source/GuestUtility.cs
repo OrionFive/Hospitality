@@ -60,14 +60,14 @@ namespace Hospitality
                 if (pawn.RaceProps == null || !pawn.RaceProps.Humanlike) return false;
                 if (pawn.guest == null) return false;
                 if (pawn.IsPrisonerOfColony || pawn.Faction == Faction.OfPlayer) return false;
-                if (pawn.HostileTo(Faction.OfPlayer)) return false;
                 if (!pawn.IsInVisitState()) return false;
+                if (pawn.HostileTo(Faction.OfPlayer)) return false;
                 //Log.Message(pawn.NameStringShort+": "+(pawn.mindState.duty!=null?pawn.mindState.duty.def.defName : "null"));
                 return true;
             }
             catch(Exception e)
             {
-                Log.Warning(e.Message);
+                Log.Warning(pawn.NameStringShort + ": \n" + e.Message);
                 //Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
                 //Log.Message("Ticks: "+Find.TickManager.TicksGame);
                 return false;
