@@ -56,21 +56,29 @@ namespace Hospitality
 
         public Settings(ModSettingsPack settings)
         {
-            bool limits = !disableLimits.Value;
-
             disableGuests = settings.GetHandle("disableGuests", "DisableVisitors".Translate(), "DisableVisitorsDesc".Translate(), false);
             disableWork = settings.GetHandle("disableWork", "DisableGuestsHelping".Translate(), "DisableGuestsHelpingDesc".Translate(), false);
             disableGifts = settings.GetHandle("disableGifts", "DisableGifts".Translate(), "DisableGiftsDesc".Translate(), false);
-            minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, limits ? AtLeast(6) : AtLeast(0));
-            maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), 16, limits ? AtLeast(8) : AtLeast(1));
+            minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, WorkSkillLimits());
+            maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), 16, GroupSizeLimits());
             disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
         }
 
-        private static SettingHandle.ValueIsValid AtLeast(int amount)
+        private static SettingHandle.ValueIsValid WorkSkillLimits()
+        {
+            return AtLeast(() => disableLimits == null || disableLimits.Value ? 0 : 6);
+        }
+
+        private static SettingHandle.ValueIsValid GroupSizeLimits()
+        {
+            return AtLeast(() => disableLimits == null || disableLimits.Value ? 1 : 8);
+        }
+
+        private static SettingHandle.ValueIsValid AtLeast(Func<int> amount)
         {
             return delegate(string value) {
                 int actual;
-                return int.TryParse(value, out actual) && actual >= amount;
+                return int.TryParse(value, out actual) && actual >= amount();
             };
         }
     }
