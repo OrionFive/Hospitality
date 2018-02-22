@@ -44,15 +44,18 @@ namespace Hospitality
                                                                    p.HostileTo(Faction.OfPlayer) || p.HostileTo(faction)).ToArray();
             var winter = map.GameConditionManager.ConditionIsActive(GameConditionDefOf.VolcanicWinter);
             var temp = faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) && faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp);
+            var beds = map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Any();
 
             reasons = null;
 
-            if (temp && !fallout && !winter && !hostileFactions.Any()) return true; // All clear, don't ask
+            if (temp && !fallout && !winter && !hostileFactions.Any() && beds) return true; // All clear, don't ask
 
             var reasonList = new List<string>();
+            if (!beds) reasonList.Add("- " + "VisitorsArrivedReasonNoBeds".Translate());
             if (fallout) reasonList.Add("- " + GameConditionDefOf.ToxicFallout.LabelCap);
             if (winter) reasonList.Add("- " + GameConditionDefOf.VolcanicWinter.LabelCap);
             if (!temp) reasonList.Add("- " + "Temperature".Translate());
+
             foreach (var f in hostileFactions)
             {
                 reasonList.Add("- " + f.def.pawnsPlural.CapitalizeFirst());
