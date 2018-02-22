@@ -80,4 +80,16 @@
   <!-- Wanderer -->
   <WandererInitial>NAME from {0} was wandering nearby and noticed you could use some help. HECAP would like to join your colony for a while.\n\nHECAP is a {1} and HIS traits are {2}.</WandererInitial>
 
+  <!-- Options -->
+  <DisableVisitors>Disable visitors</DisableVisitors>
+  <DisableVisitorsDesc>You actually hate visitors and wonder why you even have this mod.</DisableVisitorsDesc>
+  <DisableGuestsHelping>Disable guests helping</DisableGuestsHelping>
+  <DisableGuestsHelpingDesc>When checked, guests will not perform any work in your colony.</DisableGuestsHelpingDesc>
+  <DisableGifts>Disable guests leaving gifts</DisableGifts>
+  <DisableGiftsDesc>When checked, guests will never leave items behind when satisfied.</DisableGiftsDesc>
+  <MinGuestWorkSkill>Minimum skill for work</MinGuestWorkSkill>
+  <MinGuestWorkSkillDesc>The minimum skill a guest needs to have to perform a task when helping out.</MinGuestWorkSkillDesc>
+  <MaxGuestGroupSize>Maximum guest group size</MaxGuestGroupSize>
+  <MaxGuestGroupSizeDesc>The maximum size a group of guests can be.</MaxGuestGroupSizeDesc>
+  
 </LanguageData>

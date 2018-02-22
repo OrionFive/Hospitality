@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using HugsLib;
 using HugsLib.Settings;
+using Verse;
 
 namespace Hospitality
 {
@@ -54,11 +55,11 @@ namespace Hospitality
         
         public Settings(ModSettingsPack settings)
         {
-            disableGuests = settings.GetHandle("disableGuests", "Disable visitors", "You actually hate visitors and wonder why you even have this mod.", false);
-            disableWork = settings.GetHandle("disableWork", "Disable guests helping", "When checked, guests will not perform any work in your colony.", false);
-            disableGifts = settings.GetHandle("disableGifts", "Disable guests leaving gifts", "When checked, guests will never leave items behind when satisfied.", false);
-            minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "Minimum skill for work", "The minimum skill a guest needs to have to perform a task when helping out.", 7, AtLeast(6));
-            maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "Maximum guest group size", "The maximum size a group of guests can be.", 16, AtLeast(8));
+            disableGuests = settings.GetHandle("disableGuests", "DisableVisitors".Translate(), "DisableVisitorsDesc".Translate(), false);
+            disableWork = settings.GetHandle("disableWork", "DisableGuestsHelping".Translate(), "DisableGuestsHelpingDesc".Translate(), false);
+            disableGifts = settings.GetHandle("disableGifts", "DisableGifts".Translate(), "DisableGiftsDesc".Translate(), false);
+            minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, AtLeast(6));
+            maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), 16, AtLeast(8));
         }
 
         private static SettingHandle.ValueIsValid AtLeast(int amount)
