@@ -87,7 +87,7 @@
   <DisableVisitorsDesc>You actually hate visitors and wonder why you even have this mod.</DisableVisitorsDesc>
   <DisableGuestsHelping>Disable guests helping</DisableGuestsHelping>
   <DisableGuestsHelpingDesc>When checked, guests will not perform any work in your colony.</DisableGuestsHelpingDesc>
-  <DisableArtAndCraft>Disable guests helping with art and craft bills</DisableArtAndCraft>
+  <DisableArtAndCraft>Disable guests helping with art and crafting</DisableArtAndCraft>
   <DisableArtAndCraftDesc>When checked, guests will not perform any artistic or crafting tasks.</DisableArtAndCraftDesc>
   <DisableGifts>Disable guests leaving gifts</DisableGifts>
   <DisableGiftsDesc>When checked, guests will never leave items behind when satisfied.</DisableGiftsDesc>

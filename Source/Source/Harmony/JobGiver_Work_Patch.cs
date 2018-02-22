@@ -45,6 +45,7 @@ namespace Hospitality.Harmony
 
             private static bool IsSkilledEnough(Pawn pawn, WorkTypeDef workTypeDef)
             {
+                if (workTypeDef.relevantSkills.Count == 0) return true;
                 return pawn.skills.AverageOfRelevantSkillsFor(workTypeDef) >= Settings.minGuestWorkSkill.Value;
             }
         }
