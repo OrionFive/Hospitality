@@ -63,8 +63,8 @@ namespace Hospitality
             graphArrive.transitions.Add(t6);
             Transition t2 = new Transition(toilVisit, toilTakeWounded);
             t2.triggers.Add(new Trigger_WoundedGuestPresent());
-            t2.preActions.Add(new TransitionAction_Message("MessageVisitorsTakingWounded".Translate(new object[] {faction.def.pawnsPlural.CapitalizeFirst(), faction.Name})));
-            graphArrive.transitions.Add(t2);
+            //t2.preActions.Add(new TransitionAction_Message("MessageVisitorsTakingWounded".Translate(new object[] {faction.def.pawnsPlural.CapitalizeFirst(), faction.Name})));
+            graphExit.transitions.Add(t2); // Moved to exit from arrive
             Transition t3 = new Transition(toilVisit, toilLeaveMap);
             t3.triggers.Add(new Trigger_BecameColonyEnemy());
             t3.preActions.Add(new TransitionAction_WakeAll());
