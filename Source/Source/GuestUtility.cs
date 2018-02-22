@@ -862,5 +862,14 @@ namespace Hospitality
         {
             return therapyJobDef != null && p.CurJob != null && p.CurJob.def == therapyJobDef;
         }
+
+        public static bool GuestsShouldStayLonger(Lord lord)
+        {
+            var map = lord.Map;
+            var aggroPawns = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && !p.Downed && p.MentalState != null && p.InAggroMentalState).ToArray();
+            //var temp = faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) && faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp);
+
+            return aggroPawns.Length > 0;
+        }
     }
 }
