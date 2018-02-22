@@ -1,7 +1,6 @@
 using System.Reflection;
 using Harmony;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace Hospitality.Harmony
@@ -21,6 +20,9 @@ namespace Hospitality.Harmony
                 var canDo = !giver.ShouldSkip(pawn) && giver.MissingRequiredCapacity(pawn) == null && IsSkilledEnough(pawn, giver.def.workType);
                 if (!canDo) return false;
 
+                if (IsArtOrCraft(giver.def.workTags) && Settings.disableArtAndCraft.Value) return false;
+
+
                 float score;
                 if (!pawn.GetVisitScore(out score)) return false;
 
@@ -33,6 +35,12 @@ namespace Hospitality.Harmony
 
                 __result = true;
                 return false;
+            }
+
+            private static bool IsArtOrCraft(WorkTags workTags)
+            {
+                return (workTags & WorkTags.Crafting) != WorkTags.None
+                    || (workTags & WorkTags.Artistic) != WorkTags.None;
             }
 
             private static bool IsSkilledEnough(Pawn pawn, WorkTypeDef workTypeDef)

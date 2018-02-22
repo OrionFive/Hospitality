@@ -53,11 +53,13 @@ namespace Hospitality
         public static SettingHandle<bool> disableWork;
         public static SettingHandle<bool> disableGifts;
         public static SettingHandle<bool> disableLimits;
+        public static SettingHandle<bool> disableArtAndCraft;
 
         public Settings(ModSettingsPack settings)
         {
             disableGuests = settings.GetHandle("disableGuests", "DisableVisitors".Translate(), "DisableVisitorsDesc".Translate(), false);
             disableWork = settings.GetHandle("disableWork", "DisableGuestsHelping".Translate(), "DisableGuestsHelpingDesc".Translate(), false);
+            disableArtAndCraft = settings.GetHandle("disableArtAndCraft", "DisableArtAndCraft".Translate(), "DisableArtAndCraftDesc".Translate(), true);
             disableGifts = settings.GetHandle("disableGifts", "DisableGifts".Translate(), "DisableGiftsDesc".Translate(), false);
             minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, WorkSkillLimits());
             maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), 16, GroupSizeLimits());
