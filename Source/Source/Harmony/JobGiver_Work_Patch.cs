@@ -13,6 +13,7 @@ namespace Hospitality.Harmony
         [HarmonyPatch(typeof(JobGiver_Work), "PawnCanUseWorkGiver")]
         public class PawnCanUseWorkGiver
         {
+            [HarmonyPrefix]
             public static bool Prefix(ref bool __result, Pawn pawn, WorkGiver giver)
             {
                 if (!pawn.IsGuest()) return true;
@@ -20,7 +21,7 @@ namespace Hospitality.Harmony
                 var canDo = !giver.ShouldSkip(pawn) && giver.MissingRequiredCapacity(pawn) == null && IsSkilledEnough(pawn, giver.def.workType);
                 if (!canDo) return false;
 
-                if (IsArtOrCraft(giver.def.workTags) && Settings.disableArtAndCraft.Value) return false;
+                if (Settings.disableArtAndCraft.Value && IsArtOrCraft(giver.def.workType.workTags)) return false;
 
 
                 float score;
@@ -39,8 +40,12 @@ namespace Hospitality.Harmony
 
             private static bool IsArtOrCraft(WorkTags workTags)
             {
-                return (workTags & WorkTags.Crafting) != WorkTags.None
-                    || (workTags & WorkTags.Artistic) != WorkTags.None;
+                var tags = workTags.GetAllSelectedItems<WorkTags>();
+                foreach (var tag in tags)
+                {
+                    if (tag == WorkTags.Crafting || tag == WorkTags.Artistic) return true;
+                }
+                return false;
             }
 
             private static bool IsSkilledEnough(Pawn pawn, WorkTypeDef workTypeDef)
