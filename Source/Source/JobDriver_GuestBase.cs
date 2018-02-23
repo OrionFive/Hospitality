@@ -23,6 +23,7 @@ namespace Hospitality
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
             this.FailOnDowned(TargetIndex.A);
             this.FailOnNotCasualInterruptible(TargetIndex.A);
+            //this.FailOnJobNotSuspendable(TargetIndex.A);
 
             var gotoGuest = GotoGuest(pawn, Talkee); // Jump target
             yield return gotoGuest;
@@ -38,6 +39,28 @@ namespace Hospitality
                 yield return toil;
             }
             yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.A);
+        }
+
+        private void FailOnJobNotSuspendable(TargetIndex index)
+        {
+            AddEndCondition(delegate
+            {
+                var actor = GetActor();
+                if (actor != null) {
+                    Thing thing = actor.jobs.curJob.GetTarget(index).Thing;
+                    if (!JobIsSuspendable((Pawn) thing))
+                    {
+                        return JobCondition.Incompletable;
+                    }
+                }
+                return JobCondition.Ongoing;
+            });
+        }
+
+        private static bool JobIsSuspendable(Pawn pawn)
+        {
+            Job curJob = pawn.CurJob;
+            return curJob == null || curJob.def.suspendable;
         }
 
         protected abstract InteractionDef InteractionDef { get; }
@@ -76,6 +99,9 @@ namespace Hospitality
 
         protected static bool IsBusy(Pawn p)
         {
+            // Non-suspendable job? We're busy!
+            if (p.CurJob != null && !p.CurJob.def.suspendable) return true;
+
             return p.interactions.InteractedTooRecentlyToInteract() || GuestUtility.IsInTherapy(p);
         }
 
