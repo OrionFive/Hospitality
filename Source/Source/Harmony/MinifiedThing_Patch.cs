@@ -10,6 +10,7 @@ namespace Hospitality.Harmony
         [HarmonyPatch(typeof(MinifiedThing), "DrawAt")]
         public class DrawAt
         {
+            [HarmonyPrefix]
             public static bool Prefix(MinifiedThing __instance)
             {
                 if (!(__instance.InnerThing is Building_Bed)) return true;

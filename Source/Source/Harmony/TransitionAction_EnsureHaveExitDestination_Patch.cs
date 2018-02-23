@@ -12,6 +12,7 @@ namespace Hospitality.Harmony
         [HarmonyPatch(typeof(TransitionAction_EnsureHaveExitDestination), "DoAction")]
         public class DoAction
         {
+            [HarmonyPrefix]
             public static bool Prefix(Transition trans)
             {
                 var lordToilTravel = (LordToil_Travel) trans.target;

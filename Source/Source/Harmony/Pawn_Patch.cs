@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Harmony;
+using RimWorld;
 using Verse;
 using Verse.AI.Group;
 
@@ -78,6 +80,24 @@ namespace Hospitality.Harmony
                     }
                 }
                 if (flag) __instance.ClearAllReservations();
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// When a guest recruits a prisoner, make sure he's recruited to the player's faction.
+        /// </summary>
+        [HarmonyPatch(typeof(Pawn), "SetFaction")]
+        public class SetFaction
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(ref Faction newFaction, Pawn recruiter)
+            {
+                if (recruiter != null && recruiter.Faction != Faction.OfPlayer && recruiter.HostFaction == Faction.OfPlayer)
+                {
+                    Log.Message(String.Format("Guest {0} recruits prisoner to player faction (instead of {1}).", recruiter.NameStringShort, newFaction));
+                    newFaction = Faction.OfPlayer;
+                }
                 return true;
             }
         }
