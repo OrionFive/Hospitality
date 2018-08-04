@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -11,8 +10,6 @@ namespace Hospitality
 {
     public class Building_GuestBed : Building_Bed
     {
-        //public new Pawn owner;
-
         private static readonly Color guestFieldColor = new Color(170/255f, 79/255f, 255/255f);
 
         private static readonly Color sheetColorForGuests = new Color(89/255f, 55/255f, 121/255f);
@@ -51,14 +48,14 @@ namespace Hospitality
 
         public override Color DrawColorTwo { get { return sheetColorForGuests; } }
 
-        public override void DeSpawn()
+        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             foreach (var owner in owners.ToArray())
             {
                 owner.ownership.UnclaimBed();
             }
             var room = Position.GetRoom(Map);
-            base.DeSpawn();
+            base.DeSpawn(mode);
             if (room != null)
             {
                 room.Notify_RoomShapeOrContainedBedsChanged();

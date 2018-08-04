@@ -4,7 +4,7 @@
 		<modNameReadable>Hospitality</modNameReadable>
 		<modIdentifier>Hospitality</modIdentifier>
 		<!--linkUrl>https://ludeon.com/forums/index.php?topic=11444.0</linkUrl-->
-		<linkUrl>https://docs.google.com/forms/d/e/1FAIpQLSf79uP0zHHl8K7251KS2P1gGRZgqM8SS5fNlqEghTUSxMJeuA/viewform?usp=sf_link#start=invite</linkUrl>
+		<linkUrl>https://extra-nice.net/skirmish-beta-testing/</linkUrl>
 	</HugsLib.UpdateFeatureDef>
 	
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">

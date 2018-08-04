@@ -95,7 +95,7 @@ namespace Hospitality.Harmony
             {
                 if (recruiter != null && recruiter.Faction != Faction.OfPlayer && recruiter.HostFaction == Faction.OfPlayer)
                 {
-                    Log.Message(String.Format("Guest {0} recruits prisoner to player faction (instead of {1}).", recruiter.NameStringShort, newFaction));
+                    Log.Message(String.Format("Guest {0} recruits prisoner to player faction (instead of {1}).", recruiter.Name.ToStringShort, newFaction));
                     newFaction = Faction.OfPlayer;
                 }
                 return true;

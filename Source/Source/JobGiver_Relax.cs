@@ -13,7 +13,7 @@ namespace Hospitality
         {
             if (pawn.needs == null || pawn.needs.joy == null)
             {
-                Log.Message(pawn.NameStringShort + " needs no joy...");
+                Log.Message(pawn.Name.ToStringShort + " needs no joy...");
                 return 0f;
             }
             float curLevel = pawn.needs.joy.CurLevel;
@@ -39,10 +39,10 @@ namespace Hospitality
                 //Log.ErrorOnce(pawn.NameStringShort+ " already has a job: "+pawn.CurJob, 4325+pawn.thingIDNumber);
                 return pawn.CurJob;
             }
-            if (pawn.needs == null) Log.ErrorOnce(pawn.NameStringShort + " has no needs", 3463 + pawn.thingIDNumber);
-            if (pawn.needs.joy == null) Log.ErrorOnce(pawn.NameStringShort + " has no joy need", 8585 + pawn.thingIDNumber);
-            if (pawn.skills == null) Log.ErrorOnce(pawn.NameStringShort + " has no skills", 22352 + pawn.thingIDNumber);
-            if (pawn.GetTimeAssignment() == null) Log.ErrorOnce(pawn.NameStringShort + " has no time assignments", 74564 + pawn.thingIDNumber); 
+            if (pawn.needs == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no needs", 3463 + pawn.thingIDNumber);
+            if (pawn.needs.joy == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no joy need", 8585 + pawn.thingIDNumber);
+            if (pawn.skills == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no skills", 22352 + pawn.thingIDNumber);
+            if (pawn.GetTimeAssignment() == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no time assignments", 74564 + pawn.thingIDNumber); 
 
             var allDefsListForReading = PopulateChances(pawn);
             for (int j = 0; j < joyGiverChances.Count; j++)
@@ -59,7 +59,7 @@ namespace Hospitality
                 }
                 joyGiverChances[giverDef] = 0f;
             }
-            Log.ErrorOnce(pawn.NameStringShort + " did not get a relax job.", 45745 + pawn.thingIDNumber);
+            Log.ErrorOnce(pawn.Name.ToStringShort + " did not get a relax job.", 45745 + pawn.thingIDNumber);
             return null;
         }
 

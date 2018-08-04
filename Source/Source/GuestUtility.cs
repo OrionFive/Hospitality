@@ -7,7 +7,6 @@ using UnityEngine;
 using Verse.AI.Group;
 using Verse;
 using Verse.AI;
-using Verse.Sound;
 
 namespace Hospitality
 {
@@ -67,7 +66,7 @@ namespace Hospitality
             }
             catch(Exception e)
             {
-                Log.Warning(pawn.NameStringShort + ": \n" + e.Message);
+                Log.Warning(pawn.Name.ToStringShort + ": \n" + e.Message);
                 //Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
                 //Log.Message("Ticks: "+Find.TickManager.TicksGame);
                 return false;
@@ -100,9 +99,9 @@ namespace Hospitality
             }
         }
 
-        public static float RecruitPenalty(this Pawn guest)
+        public static int RecruitPenalty(this Pawn guest)
         {
-            return guest.GetStatValue(statRecruitRelationshipDamage);
+            return Mathf.RoundToInt(guest.GetStatValue(statRecruitRelationshipDamage));
         }
 
         public static int GetFriendsInColony(this Pawn guest)
@@ -117,7 +116,7 @@ namespace Hospitality
             {
                 yield return pawn;
             }
-            var nearbyColonists = PawnsFinder.AllMapsCaravansAndTravelingTransportPods_FreeColonists.Where(p => IsNearby(mapHeld, p));
+            var nearbyColonists = PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_FreeColonists.Where(p => IsNearby(mapHeld, p));
             foreach (var pawn in nearbyColonists)
             {
                 yield return pawn;
@@ -141,7 +140,7 @@ namespace Hospitality
 
         public static int GetMinRecruitOpinion(this Pawn guest)
         {
-            var difficulty = guest.RecruitDifficulty(Faction.OfPlayer, true);
+            var difficulty = guest.RecruitDifficulty(Faction.OfPlayer);
             var diffSqr = difficulty*difficulty*difficulty*difficulty;
             const int min = 0;
             const int max = 30;
@@ -375,25 +374,25 @@ namespace Hospitality
         {
             PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("RecruitGuest"), KnowledgeAmount.Total);
 
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest);
 
             if (guest.Faction != Faction.OfPlayer)
             {
                 if (guest.Faction != null)
                 {
-                    guest.Faction.AffectGoodwillWith(Faction.OfPlayer, -guest.RecruitPenalty());
+                    guest.Faction.TryAffectGoodwillWith(Faction.OfPlayer, -guest.RecruitPenalty(), false, true, null, guest);
                     if (guest.RecruitPenalty() >= 1)
                     {
                         //Log.Message("txtRecruitFactionAnger");
                         string message;
                         if (guest.Faction.leader != null)
                         {
-                            message = String.Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.NameStringShort, (-guest.RecruitPenalty()).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = string.Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-guest.RecruitPenalty(), ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent);
                         }
                         else
                         {
-                            message = String.Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.NameStringShort, (-guest.RecruitPenalty()).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = string.Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-guest.RecruitPenalty(), ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.NegativeEvent);
                         }
                     }
@@ -403,12 +402,12 @@ namespace Hospitality
                         string message;
                         if (guest.Faction.leader != null)
                         {
-                            message = String.Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.NameStringShort, (-guest.RecruitPenalty()).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = string.Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-guest.RecruitPenalty(), ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefPlease, message, LetterDefOf.PositiveEvent);
                         }
                         else
                         {
-                            message = String.Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.NameStringShort, (-guest.RecruitPenalty()).ToStringByStyle(ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = string.Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-guest.RecruitPenalty(), ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionPlease, message, LetterDefOf.PositiveEvent);
                         }
                     }
@@ -554,7 +553,7 @@ namespace Hospitality
         {
             if (pawn.story.traits == null) throw new Exception(pawn.Name + "'s traits are null!");
             
-            string textAsk = "RescuedInitial".Translate(pawn.GetTitle().ToLower(), GenText.ToCommaList(pawn.story.traits.allTraits.Select(t=>t.Label)));
+            string textAsk = "RescuedInitial".Translate(pawn.story.Title, pawn.story.traits.allTraits.Select(t=>t.Label).ToCommaList());
             textAsk = textAsk.AdjustedFor(pawn);
             PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref textAsk, pawn);
             DiaNode nodeAsk = new DiaNode(textAsk);
@@ -581,34 +580,11 @@ namespace Hospitality
             Find.WindowStack.Add(new Dialog_NodeTree(nodeAsk, true));
         }
 
-        public static string GetTitle(this Pawn pawn)
-        {
-            var title = pawn.story.adulthood != null ? pawn.story.adulthood.Title : pawn.story.childhood != null ? pawn.story.childhood.Title : pawn.KindLabel;
-            return title;
-        }
-
         private static void OptionAdopt(Pawn pawn)
         {
             pawn.Adopt();
             CameraJumper.TryJump(pawn);
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, pawn), LetterDefOf.PositiveEvent, pawn);
-        }
-
-        public static void BreakupRelations(Pawn pawn)
-        {
-            var relations = pawn.relations.DirectRelations.Where(r => !r.otherPawn.Dead && r.otherPawn.Faction != null && r.otherPawn.Faction.IsPlayer && LovePartnerRelationUtility.LovePartnerRelationExists(pawn, r.otherPawn)).ToArray();
-            var breakup = new InteractionWorker_Breakup();
-            foreach (var relation in relations)
-            {
-                breakup.Interacted(relation.otherPawn, pawn, null);
-            }
-            Faction hostileFaction;
-            if (
-                Find.FactionManager.AllFactions.Where(f => f.def.humanlikeFaction && f.HostileTo(Faction.OfPlayer))
-                    .TryRandomElement(out hostileFaction))
-            {
-                pawn.SetFaction(hostileFaction);
-            }
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, pawn), LetterDefOf.PositiveEvent, pawn);
         }
 
         public static Area GetGuestArea(this Pawn p)
@@ -640,7 +616,7 @@ namespace Hospitality
         {
             if (DebugSettings.instantRecruit) return true;
 
-            float chance = 1 - pawn.RecruitDifficulty(Faction.OfPlayer, false)*0.75f; // was 0.75f
+            float chance = 1 - pawn.RecruitDifficulty(Faction.OfPlayer)*0.75f; // was 0.75f
             if (IsEnvironmentHostile(pawn)) chance += 0.25f;
             chance = Mathf.Clamp(chance, 0.005f, 1f);
 
@@ -746,7 +722,7 @@ namespace Hospitality
                 if (amount >= 3)
                 {
                     Messages.Message(
-                        "RecruitAngerMultiple".Translate(recruiter.NameStringShort, guest.NameStringShort, amount),
+                        "RecruitAngerMultiple".Translate(recruiter.Name.ToStringShort, guest.Name.ToStringShort, amount),
                         guest, MessageTypeDefOf.NegativeEvent);
                 }
 

@@ -93,7 +93,7 @@ namespace Hospitality.Harmony
                 diaNode.options.Add(diaOption);
                 string text2 = "RefugeeChasedRejected".Translate(new object[]
                 {
-                    refugee.NameStringShort
+                    refugee.Name.ToStringShort
                 });
                 DiaNode diaNode2 = new DiaNode(text2);
                 DiaOption diaOption2 = new DiaOption("OK".Translate());

@@ -59,7 +59,7 @@ namespace Hospitality
                     if (Rand.Value > pleaseChance)
                     {
                         //Log.Message("txtRecruitAngerOther");
-                        Messages.Message(string.Format(txtRecruitAngerOther, recruiter.NameStringShort, guest.NameStringShort, pleaseChance.ToStringPercent(), ally.NameStringShort), MessageTypeDefOf.NegativeEvent);
+                        Messages.Message(string.Format(txtRecruitAngerOther, recruiter.Name.ToStringShort, guest.Name.ToStringShort, pleaseChance.ToStringPercent(), ally.Name.ToStringShort), MessageTypeDefOf.NegativeEvent);
 						//ally.Faction.AffectGoodwillWith(Faction.OfColony, -1f + 0.045f * recruiter.skills.GetSkill(SkillDefOf.Social).level); //Skill based influence -0.1 ... -1
                         GuestUtility.GainSocialThought(recruiter, ally, ThoughtDef.Named("GuestAngered"));
 

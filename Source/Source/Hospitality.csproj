@@ -89,7 +89,7 @@
     <Compile Include="Harmony\ThoughtWorker_Patch.cs" />
     <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
     <Compile Include="Harmony\IncidentWorker_RefugeeChased_Patch.cs" />
-    <Compile Include="Harmony\IncidentWorker_WandererJoin_Patch.cs" />
+    <None Include="Harmony\IncidentWorker_WandererJoin_Patch.cs.bak" />
     <Compile Include="Harmony\TransitionAction_EnsureHaveExitDestination_Patch.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
     <Compile Include="CompGuest.cs" />
@@ -114,7 +114,6 @@
     <Compile Include="Trigger_SentAway.cs" />
     <Compile Include="Trigger_TicksPassedAndOkayToLeave.cs" />
     <Compile Include="Trigger_UrgentlyCold.cs" />
-    <Compile Include="VisitorFlag.cs" />
     <Compile Include="Building_GuestBed.cs" />
     <Compile Include="GuestUtility.cs" />
     <Compile Include="IncidentWorker_VisitorGroup.cs" />

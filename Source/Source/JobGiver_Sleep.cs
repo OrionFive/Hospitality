@@ -10,7 +10,7 @@ namespace Hospitality
         {
             if (pawn.needs == null || pawn.needs.rest == null)
             {
-                Log.Message(pawn.NameStringShort + " needs no rest...");
+                Log.Message(pawn.Name.ToStringShort + " needs no rest...");
                 return 0f;
             }
             float curLevel = pawn.needs.rest.CurLevel;
@@ -42,19 +42,19 @@ namespace Hospitality
             }
             if (pawn.needs == null || pawn.needs.rest == null)
             {
-                if (pawn.needs == null) Log.ErrorOnce(pawn.NameStringShort + " has no needs", 453636 + pawn.thingIDNumber);
-                if (pawn.needs.rest == null) Log.ErrorOnce(pawn.NameStringShort + " has no rest need", 357474 + pawn.thingIDNumber);
+                if (pawn.needs == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no needs", 453636 + pawn.thingIDNumber);
+                if (pawn.needs.rest == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no rest need", 357474 + pawn.thingIDNumber);
                 return ThinkResult.NoJob;
             }
             if (pawn.mindState == null)
             {
-                Log.ErrorOnce(pawn.NameStringShort + " has no mindstate", 23892 + pawn.thingIDNumber);
+                Log.ErrorOnce(pawn.Name.ToStringShort + " has no mindstate", 23892 + pawn.thingIDNumber);
                 pawn.mindState = new Pawn_MindState(pawn);
             }
 
             if (Find.TickManager.TicksGame - pawn.mindState.lastDisturbanceTick < 400)
             {
-                Log.Message(pawn.NameStringShort + " can't sleep - got disturbed");
+                Log.Message(pawn.Name.ToStringShort + " can't sleep - got disturbed");
                 return ThinkResult.NoJob;
             }
             Building_GuestBed bed = pawn.FindBedFor();
