@@ -549,44 +549,6 @@ namespace Hospitality
             pawn.mindState.mentalStateHandler.TryStartMentalState(mentalState);
         }
 
-        public static void ShowRescuedPawnDialog(Pawn pawn)
-        {
-            if (pawn.story.traits == null) throw new Exception(pawn.Name + "'s traits are null!");
-            
-            string textAsk = "RescuedInitial".Translate(pawn.story.Title, pawn.story.traits.allTraits.Select(t=>t.Label).ToCommaList());
-            textAsk = textAsk.AdjustedFor(pawn);
-            PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref textAsk, pawn);
-            DiaNode nodeAsk = new DiaNode(textAsk);
-            var textAccept = "RescuedInitial_Accept".Translate();
-            textAccept = textAccept.AdjustedFor(pawn);
-
-            DiaOption optionAccept = new DiaOption(textAccept)
-            {
-                action = () => OptionAdopt(pawn), 
-                resolveTree = true
-            };
-            nodeAsk.options.Add(optionAccept);
-
-            var textReject = "RescuedInitial_Reject".Translate();
-            textReject = textReject.AdjustedFor(pawn);
-
-            DiaOption optionReject = new DiaOption(textReject)
-            {
-                action = null, 
-                resolveTree = true
-            };
-
-            nodeAsk.options.Add(optionReject);
-            Find.WindowStack.Add(new Dialog_NodeTree(nodeAsk, true));
-        }
-
-        private static void OptionAdopt(Pawn pawn)
-        {
-            pawn.Adopt();
-            CameraJumper.TryJump(pawn);
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, pawn), LetterDefOf.PositiveEvent, pawn);
-        }
-
         public static Area GetGuestArea(this Pawn p)
         {
             var compGuest = p.GetComp<CompGuest>();
@@ -610,27 +572,6 @@ namespace Hospitality
 
             //Log.Message(pawn.NameStringShort+": bought "+thing.Label + "? " + (comp.boughtItems.Contains(thing.thingIDNumber) ? "Yes" : "No"));
             return comp.boughtItems.Contains(thing.thingIDNumber);
-        }
-
-        public static bool WillRescueJoin(Pawn pawn)
-        {
-            if (DebugSettings.instantRecruit) return true;
-
-            float chance = 1 - pawn.RecruitDifficulty(Faction.OfPlayer)*0.75f; // was 0.75f
-            if (IsEnvironmentHostile(pawn)) chance += 0.25f;
-            chance = Mathf.Clamp(chance, 0.005f, 1f);
-
-            Rand.PushState();
-            Rand.Seed = pawn.HashOffset();
-            float value = Rand.Value;
-            Rand.PopState();
-
-            return value <= chance;
-        }
-
-        private static bool IsEnvironmentHostile(Pawn pawn)
-        {
-            return !pawn.SafeTemperatureRange().Includes(pawn.Map.mapTemperature.OutdoorTemp) || pawn.Map.gameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout);
         }
 
         public static void PlanNewVisit(IIncidentTarget map, float afterDays, Faction faction = null)
