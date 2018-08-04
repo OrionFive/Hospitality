@@ -65,6 +65,7 @@
     <Compile Include="Harmony\Building_Bed_Patch.cs" />
     <Compile Include="Harmony\FactionUtility_Patch.cs" />
     <Compile Include="Harmony\JobDriver_Patch.cs" />
+    <Compile Include="Harmony\JobDriver_Wear_Patch.cs" />
     <Compile Include="Harmony\JobGiver_Work_Patch.cs" />
     <Compile Include="Harmony\JoyGiver_Ingest_Patch.cs" />
     <Compile Include="Harmony\MinifiedThing_Patch.cs" />
@@ -86,7 +87,7 @@
     <Compile Include="Harmony\SocialCardUtility_Patch.cs" />
     <Compile Include="Harmony\ThoughtWorker_Patch.cs" />
     <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
-    <Compile Include="Harmony\IncidentWorker_RefugeeChased_Patch.cs" />
+    <None Include="Harmony\IncidentWorker_RefugeeChased_Patch.cs.bak" />
     <None Include="Harmony\IncidentWorker_WandererJoin_Patch.cs.bak" />
     <Compile Include="Harmony\TransitionAction_EnsureHaveExitDestination_Patch.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
