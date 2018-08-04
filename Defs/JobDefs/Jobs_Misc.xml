@@ -20,7 +20,7 @@
 		<joyMaxParticipants>1</joyMaxParticipants>
 		<joyDuration>8000</joyDuration>
 		<joyGainRate>1</joyGainRate>
-		<joyKind>Study</joyKind>
+		<joyKind>Shopping</joyKind>
   </JobDef>
 
   <JobDef>
@@ -30,7 +30,7 @@
     <joyDuration>3000</joyDuration>
     <joyMaxParticipants>1</joyMaxParticipants>
     <joyGainRate>1</joyGainRate>
-    <joyKind>Study</joyKind>
+    <joyKind>Shopping</joyKind>
   </JobDef>
 
 </Defs>
