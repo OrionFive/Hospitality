@@ -6,7 +6,7 @@
   <RecruitAngerOther>{3} noticed {0} try to recruit {1} and got offended ({2} chance).</RecruitAngerOther>
   <RecruitFactionAnger>{0} of {1} is upset with you for recruiting {2} ({3}).</RecruitFactionAnger>
   <RecruitFactionAngerLeaderless>The members of {0} are upset with you for recruiting {1} ({2}).</RecruitFactionAngerLeaderless>
-  <RecruitFactionPlease>{0} of {1} is glad that you took {2} off his hands ({3}).</RecruitFactionPlease>
+  <RecruitFactionPlease>{0} of {1} is glad that you took {2} off !!!!his hands ({3}).</RecruitFactionPlease>
   <RecruitFactionPleaseLeaderless>The members of {0} are glad that you took {1} off their hands ({2}).</RecruitFactionPleaseLeaderless>
   <MessageGuestRecruitSuccess>{0} happily decided to join your colony!</MessageGuestRecruitSuccess>
   <LetterLabelRecruitFactionChiefAnger>Chief angered</LetterLabelRecruitFactionChiefAnger>
@@ -59,9 +59,9 @@
   <MakeDefault>Make Default</MakeDefault>
   <SendAway>Send Away</SendAway>
   <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?\nIf you send them away immediately after appearing, this will have no effect on relations.</SendAwayQuestion>
-  <NotEnoughFriends>NAME does not like enough of your colonists (opinion > {0}).</NotEnoughFriends>
-  <CanNowBeRecruited>NAME can now be recruited.</CanNowBeRecruited>
-  <IsATrader>NAME is part of a trading caravan and not a guest.</IsATrader>
+  <NotEnoughFriends>[PAWN_nameDef] does not like enough of your colonists (opinion > {0}).</NotEnoughFriends>
+  <CanNowBeRecruited>[PAWN_nameDef] can now be recruited.</CanNowBeRecruited>
+  <IsATrader>[PAWN_nameDef] is part of a trading caravan and not a guest.</IsATrader>
 
   <!-- Infos -->
   <StatsReport_FinalAdjustment>Adjustment</StatsReport_FinalAdjustment>
@@ -72,14 +72,6 @@
   <CommandBedSetAsGuestLabel>For guests</CommandBedSetAsGuestLabel>
   <CommandBedSetAsGuestDesc>Whether this bed is for guests.</CommandBedSetAsGuestDesc>
   
-  <!-- Rescue -->
-  <RescuedInitial>The {0} named NAME that you rescued is very grateful for HIS rescue and would like to stay at your colony.\n\nHIS traits are: {1}.</RescuedInitial>
-  <RescuedInitial_Accept>Accept HIM</RescuedInitial_Accept>
-  <RescuedInitial_Reject>Reject HIS request</RescuedInitial_Reject>
-  
-  <!-- Wanderer -->
-  <WandererInitial>NAME from {0} was wandering nearby and noticed you could use some help. HECAP would like to join your colony.\n\nHECAP is a {1} and HIS traits are {2}.</WandererInitial>
-
   <!-- Options -->
   <DisableLimits>Disable option limits</DisableLimits>
   <DisableLimitsDesc>When this option is turned on, you can tweak the settings further than recommended for a fair game.</DisableLimitsDesc>
