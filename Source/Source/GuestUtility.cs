@@ -3,10 +3,12 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse.AI.Group;
 using Verse;
 using Verse.AI;
+using Verse.Sound;
 
 namespace Hospitality
 {
@@ -374,7 +376,7 @@ namespace Hospitality
         {
             PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("RecruitGuest"), KnowledgeAmount.Total);
 
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
 
             if (guest.Faction != Faction.OfPlayer)
             {
@@ -388,12 +390,12 @@ namespace Hospitality
                         if (guest.Faction.leader != null)
                         {
                             message = string.Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-guest.RecruitPenalty(), ToStringStyle.Integer, ToStringNumberSense.Offset));
-                            Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent);
+                            Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                         else
                         {
                             message = string.Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-guest.RecruitPenalty(), ToStringStyle.Integer, ToStringNumberSense.Offset));
-                            Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.NegativeEvent);
+                            Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                     }
                     else if (guest.RecruitPenalty() <= -1)
@@ -403,12 +405,12 @@ namespace Hospitality
                         if (guest.Faction.leader != null)
                         {
                             message = string.Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-guest.RecruitPenalty(), ToStringStyle.Integer, ToStringNumberSense.Offset));
-                            Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefPlease, message, LetterDefOf.PositiveEvent);
+                            Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefPlease, message, LetterDefOf.PositiveEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                         else
                         {
                             message = string.Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-guest.RecruitPenalty(), ToStringStyle.Integer, ToStringNumberSense.Offset));
-                            Find.LetterStack.ReceiveLetter(labelRecruitFactionPlease, message, LetterDefOf.PositiveEvent);
+                            Find.LetterStack.ReceiveLetter(labelRecruitFactionPlease, message, LetterDefOf.PositiveEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                     }
                 }
@@ -579,7 +581,7 @@ namespace Hospitality
             var realMap = map as Map;
             if (realMap == null) return;
 
-            var incidentParms = StorytellerUtility.DefaultParmsNow(Find.Storyteller.def, IncidentCategory.AllyArrival, realMap);
+            var incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.FactionArrival, realMap);
 
             if(faction != null) incidentParms.faction = faction;
             var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
@@ -611,8 +613,7 @@ namespace Hospitality
         public static int FriendsRequired(Map mapHeld)
         {
             var required = GetPawnsFromBase(mapHeld).Count() /3.75f;
-            if (required < 1) return 1;
-            else return Mathf.RoundToInt(required);
+            return required < 1 ? 1 : Mathf.RoundToInt(required);
         }
 
         public static Pawn EndorseColonists(Pawn recruiter, Pawn guest)
@@ -637,7 +638,7 @@ namespace Hospitality
         {
             // TODO: pawn.records.Increment(RecordDefOf.GuestsCharmAttempts);
             recruiter.skills.Learn(SkillDefOf.Social, 35f);
-            float pleaseChance = recruiter.GetStatValue(StatDefOf.DiplomacyPower);
+            float pleaseChance = recruiter.GetStatValue(StatDefOf.NegotiationAbility);
             pleaseChance = AdjustPleaseChance(pleaseChance, recruiter, guest);
             pleaseChance = Mathf.Clamp01(pleaseChance);
 
@@ -711,13 +712,13 @@ namespace Hospitality
         public const int InteractIntervalAbsoluteMin = 360; // changed from 120
 
 
-        public static void DoAllowedAreaSelectors(Rect rect, Pawn p, AllowedAreaMode mode, Func<Area, string> getLabel)
+        public static void DoAllowedAreaSelectors(Rect rect, Pawn p, Func<Area, string> getLabel)
 		{
-			if (Find.VisibleMap == null)
+			if (Find.CurrentMap == null)
 			{
 				return;
 			}
-            var areas = GetAreas(mode).ToArray();
+            var areas = GetAreas().ToArray();
             int num = areas.Length + 1;
             float num2 = rect.width / num;
 			Text.WordWrap = false;
@@ -736,16 +737,16 @@ namespace Hospitality
 			Text.Font = GameFont.Small;
 		}
 
-        public static IEnumerable<Area> GetAreas(AllowedAreaMode mode)
+        public static IEnumerable<Area> GetAreas()
         {
-            return Find.VisibleMap.areaManager.AllAreas.Where(a=>a.AssignableAsAllowed(mode));
+            return Find.CurrentMap.areaManager.AllAreas.Where(a=>a.AssignableAsAllowed());
         }
 
         // From RimWorld.AreaAllowedGUI, modified
         private static void DoAreaSelector(Rect rect, Pawn p, Area area, Func<Area, string> getLabel)
 		{
 			rect = rect.ContractedBy(1f);
-			GUI.DrawTexture(rect, (area == null) ? BaseContent.GreyTex : area.ColorTexture);
+			GUI.DrawTexture(rect, area == null ? BaseContent.GreyTex : area.ColorTexture);
 			Text.Anchor = TextAnchor.MiddleLeft;
 			string text = getLabel(area);
 			Rect rect2 = rect;
@@ -765,7 +766,7 @@ namespace Hospitality
 				if (Input.GetMouseButton(0) && p.playerSettings.AreaRestriction != area)
 				{
 					p.playerSettings.AreaRestriction = area;
-					SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera(null);
+					SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
 				}
 			}
 			Text.Anchor = TextAnchor.UpperLeft;

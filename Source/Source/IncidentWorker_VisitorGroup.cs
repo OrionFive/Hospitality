@@ -14,6 +14,12 @@ namespace Hospitality
     {
         private static ThingDef[] _items;
 
+        // Taken from core
+        private static readonly SimpleCurve pointsCurve = new SimpleCurve
+        {
+            new CurvePoint(45f, 0f), new CurvePoint(50f, 1f), new CurvePoint(100f, 1f), new CurvePoint(200f, 0.25f), new CurvePoint(300f, 0.1f), new CurvePoint(500f, 0f)
+        };
+
         public static float MaxPleaseAmount(float current)
         {
             // if current standing is 100, 10 can be gained
@@ -122,7 +128,7 @@ namespace Hospitality
                 Log.ErrorOnce("Trying to spawn visitors, but they are of Faction.OfPlayer.", 3464363);
                 return true;
             }
-            if (parms.faction.RelationWith(Faction.OfPlayer).hostile)
+            if (parms.faction.RelationWith(Faction.OfPlayer).kind == FactionRelationKind.Hostile)
             {
                 Log.ErrorOnce("Trying to spawn visitors, but they are hostile to the player (now).", 4736345);
                 return true;
@@ -217,10 +223,18 @@ namespace Hospitality
             return true;
         }
 
+        protected override void ResolveParmsPoints(IncidentParms parms)
+        {
+            if (parms.points < 0f)
+            {
+                parms.points = Rand.ByCurve(pointsCurve);
+            }
+        }
+
         protected new List<Pawn> SpawnPawns(IncidentParms parms)
         {
             Map map = (Map)parms.target;
-            var list = PawnGroupMakerUtility.GeneratePawns(PawnGroupKindDef, IncidentParmsUtility.GetDefaultPawnGroupMakerParms(parms), false)
+            var list = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false)
                 .Take(Settings.maxGuestGroupSize) // Added
                 .ToList();
             foreach (Pawn newThing in list)
@@ -354,7 +368,7 @@ namespace Hospitality
             CompQuality compQuality = item.TryGetComp<CompQuality>();
             if (compQuality != null)
             {
-                compQuality.SetQuality(QualityUtility.RandomGeneratedGearQuality(visitor.kindDef), ArtGenerationContext.Outsider);
+                compQuality.SetQuality(QualityUtility.GenerateQualityTraderItem(), ArtGenerationContext.Outsider);
             }
             if (item.def.Minifiable)
             {
@@ -385,8 +399,8 @@ namespace Hospitality
             {
                 Predicate<ThingDef> qualifies =
                     d =>
-                        d.category == ThingCategory.Item && d.EverStoreable && d.alwaysHaulable
-                        && d.thingClass != typeof(MinifiedThing) && d.tradeability != Tradeability.Never
+                        d.category == ThingCategory.Item && d.EverStorable(true) && d.alwaysHaulable
+                        && d.thingClass != typeof(MinifiedThing) && d.tradeability != Tradeability.None
                         && d.GetCompProperties<CompProperties_Hatcher>() == null;
                 _items = DefDatabase<ThingDef>.AllDefs.Where(d => qualifies(d)).ToArray();
                 //highestValue = _items.Max(i => i.BaseMarketValue);
@@ -405,7 +419,7 @@ namespace Hospitality
 
         private static float TechLevelDiff(TechLevel def, TechLevel target)
         {
-            return (float) TechLevel.Transcendent - Mathf.Abs((float) target - (float) def);
+            return (float) TechLevel.Ultra - Mathf.Abs((float) target - (float) def);
         }
 
         private static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map)
@@ -422,7 +436,7 @@ namespace Hospitality
                 var compGuest = p.GetComp<CompGuest>();
                 if (compGuest != null)
                 {
-                    compGuest.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.Chat;
+                    compGuest.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.ReduceResistance;
                     compGuest.GuestArea = mapComp.defaultAreaRestriction;
                     compGuest.ShoppingArea = mapComp.defaultAreaShopping;
                 }
@@ -439,7 +453,7 @@ namespace Hospitality
             Pawn pawn = pawns.Find(x => faction.leader == x);
             if (pawns.Count == 1)
             {
-                string traderDesc = (!gotTrader) ? string.Empty : "SingleVisitorArrivesTraderInfo".Translate();
+                string traderDesc = !gotTrader ? string.Empty : "SingleVisitorArrivesTraderInfo".Translate();
                 string leaderDesc = (pawn == null) ? string.Empty : "SingleVisitorArrivesLeaderInfo".Translate();
                 label = "LetterLabelSingleVisitorArrives".Translate();
                 description = "SingleVisitorArrives".Translate(new object[]
@@ -464,8 +478,14 @@ namespace Hospitality
                     leaderDesc
 				});
             }
+            // NEW
+            PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref label, ref description, "LetterRelatedPawnsNeutralGroup".Translate(new object[]
+					{
+						Faction.OfPlayer.def.pawnsPlural
+					}), true, true);
+            //Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.NeutralEvent, pawns[0], faction, null);
             var lookTarget = gotTrader ? pawns[traderIndex] : pawns[0];
-            Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, lookTarget);
+            Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, lookTarget, faction);
         }
 
         private static bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction, Map map, out int traderIndex)
@@ -485,12 +505,12 @@ namespace Hospitality
 
             pawn.TryGiveBackpack();
 
-            var parms = default(ItemCollectionGeneratorParams);
+            var parms = default(ThingSetMakerParams);
             parms.traderDef = traderKindDef;
             parms.tile = map.Tile;
             parms.traderFaction = faction;
 
-            foreach (Thing current in ItemCollectionGeneratorDefOf.TraderStock.Worker.Generate(parms))
+            foreach (Thing current in ThingSetMakerDefOf.TraderStock.root.Generate(parms))
             {
                 Pawn slave = current as Pawn;
                 if (slave != null)

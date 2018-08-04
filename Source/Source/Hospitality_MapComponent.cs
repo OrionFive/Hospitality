@@ -28,7 +28,7 @@ namespace Hospitality
             Scribe_Defs.Look(ref defaultInteractionMode, "defaultInteractionMode");
             Scribe_References.Look(ref defaultAreaRestriction, "defaultAreaRestriction");
             Scribe_References.Look(ref defaultAreaShopping, "defaultAreaShopping");
-            Scribe_Values.Look(ref lastEventKey, "lastEventKey", 0);
+            Scribe_Values.Look(ref lastEventKey, "lastEventKey");
             Scribe_Deep.Look(ref incidentQueue, "incidentQueue");
 
             if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;

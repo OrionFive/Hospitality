@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -44,7 +45,7 @@ namespace Hospitality
             if (pawn.skills == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no skills", 22352 + pawn.thingIDNumber);
             if (pawn.GetTimeAssignment() == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no time assignments", 74564 + pawn.thingIDNumber); 
 
-            var allDefsListForReading = PopulateChances(pawn);
+            var allDefsListForReading = PopulateChances(pawn); // Moved to own function
             for (int j = 0; j < joyGiverChances.Count; j++)
             {
                 JoyGiverDef giverDef;
@@ -65,31 +66,41 @@ namespace Hospitality
 
         private List<JoyGiverDef> PopulateChances(Pawn pawn)
         {
+            // From Core
             List<JoyGiverDef> allDefsListForReading = DefDatabase<JoyGiverDef>.AllDefsListForReading;
-            if(allDefsListForReading==null){Log.Message("AllDefsListForReading == null");
+           
+            // ADDED
+            if(allDefsListForReading==null){
+                Log.Message("AllDefsListForReading == null");
                 return new List<JoyGiverDef>();
-            }
+            } // ^^^
             JoyToleranceSet tolerances = pawn.needs.joy.tolerances;
             foreach (JoyGiverDef joyGiverDef in allDefsListForReading)
             {
                 this.joyGiverChances[joyGiverDef] = 0f;
 
-                if (joyGiverDef.Worker.MissingRequiredCapacity(pawn) == null)
+                //if (this.JoyGiverAllowed(joyGiverDef)) REMOVED
                 {
-                    if (joyGiverDef.pctPawnsEverDo < 1f)
+                    if (!pawn.needs.joy.tolerances.BoredOf(joyGiverDef.joyKind))
                     {
-                        Rand.PushState(pawn.thingIDNumber ^ 63216713);
-                        if (Rand.Value >= joyGiverDef.pctPawnsEverDo)
+                        if (joyGiverDef.Worker.MissingRequiredCapacity(pawn) == null)
                         {
-                            Rand.PopState();
-                            goto IL_FB;
+                            if (joyGiverDef.pctPawnsEverDo < 1f)
+                            {
+                                Rand.PushState(pawn.thingIDNumber ^ 63216713);
+                                if (Rand.Value >= joyGiverDef.pctPawnsEverDo)
+                                {
+                                    Rand.PopState();
+                                    goto IL_FB;
+                                }
+                                Rand.PopState();
+                            }
+                            float tolerance = tolerances[joyGiverDef.joyKind];
+                            float factor = Mathf.Pow(1f - tolerance, 5f);
+                            factor = Mathf.Max(0.001f, factor);
+                            this.joyGiverChances[joyGiverDef] = joyGiverDef.Worker.GetChance(pawn)*factor;
                         }
-                        Rand.PopState();
                     }
-                    float num = joyGiverDef.Worker.GetChance(pawn);
-                    float num2 = 1f - tolerances[joyGiverDef.joyKind];
-                    num *= num2*num2;
-                    this.joyGiverChances[joyGiverDef] = num;
                 }
                 IL_FB:
                 ;

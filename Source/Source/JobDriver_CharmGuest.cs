@@ -52,7 +52,7 @@ namespace Hospitality
                 {
                     if (ally.needs.mood.thoughts.memories.Memories.Any(t=>t.def.defName=="GuestAngered")) continue;
 
-                    float pleaseChance = recruiter.GetStatValue(StatDefOf.DiplomacyPower);
+                    float pleaseChance = recruiter.GetStatValue(StatDefOf.NegotiationAbility);
                     pleaseChance = GuestUtility.AdjustPleaseChance(pleaseChance, recruiter, ally);
                     pleaseChance = Mathf.Clamp01(pleaseChance);
 

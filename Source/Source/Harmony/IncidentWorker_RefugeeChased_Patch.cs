@@ -79,11 +79,11 @@ namespace Hospitality.Harmony
                     GenSpawn.Spawn(refugee, spawnSpot, map);
                     refugee.SetFaction(Faction.OfPlayer, null);
                     CameraJumper.TryJump(refugee);
-                    IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(Find.Storyteller.def, IncidentCategory.ThreatBig, map);
+                    IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, map);
                     incidentParms.forced = true;
                     incidentParms.faction = enemyFac;
                     incidentParms.raidStrategy = RaidStrategyDefOf.ImmediateAttack;
-                    incidentParms.raidArrivalMode = PawnsArriveMode.EdgeWalkIn;
+                    incidentParms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeWalkIn;
                     incidentParms.spawnCenter = spawnSpot;
                     incidentParms.points *= RaidPointsFactor;
                     QueuedIncident qi = new QueuedIncident(new FiringIncident(IncidentDefOf.RaidEnemy, null, incidentParms), Find.TickManager.TicksGame + RaidDelay.RandomInRange);

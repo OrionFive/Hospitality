@@ -157,7 +157,7 @@ namespace Hospitality
             }
 
             SelPawn.playerSettings.AreaRestriction = area;
-            GuestUtility.DoAllowedAreaSelectors(areaRect, SelPawn, AllowedAreaMode.Humanlike, getLabel);
+            GuestUtility.DoAllowedAreaSelectors(areaRect, SelPawn, getLabel);
             var newArea = SelPawn.playerSettings.AreaRestriction;
             SelPawn.playerSettings.AreaRestriction = null;
             Text.Anchor = TextAnchor.UpperLeft;
@@ -200,7 +200,7 @@ namespace Hospitality
             rect = new Rect(rect.xMax - setDefaultButtonSize.x - 10f, 160f, setDefaultButtonSize.x, setDefaultButtonSize.y);
             if (Widgets.ButtonText(rect, txtMakeDefault))
             {
-                SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
+                SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
 
                 SetAllDefaults(SelPawn);
             }
@@ -211,7 +211,7 @@ namespace Hospitality
             rect = new Rect(rect.xMax - sendHomeButtonSize.x - 20f - setDefaultButtonSize.x, 160f, sendHomeButtonSize.x, sendHomeButtonSize.y);
             if (Widgets.ButtonText(rect, txtSendAway))
             {
-                SoundDefOf.DesignateDragStandardChanged.PlayOneShotOnCamera();
+                SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
 
                 SendHomeDialog(SelPawn.GetLord());
             }
@@ -240,7 +240,7 @@ namespace Hospitality
 
             if (pawn.GetComp<CompGuest>() != null)
             {
-                mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat ? PrisonerInteractionModeDefOf.Chat : PrisonerInteractionModeDefOf.NoInteraction;
+                mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat ? PrisonerInteractionModeDefOf.ReduceResistance : PrisonerInteractionModeDefOf.NoInteraction;
             }
             
             mapComp.defaultAreaRestriction = pawn.GetGuestArea();
@@ -252,29 +252,10 @@ namespace Hospitality
                 var comp = guest.GetComp<CompGuest>();
                 if (comp != null)
                 {
-                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.Chat;
+                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.ReduceResistance;
                     comp.GuestArea = mapComp.defaultAreaRestriction;
                     comp.ShoppingArea = mapComp.defaultAreaShopping;
                 }
-            }
-        }
-
-        private void SetDefaults(PrisonerInteractionModeDef mode)
-        {
-            Map map = SelPawn.MapHeld;
-            if (map == null) return;
-
-            var oldMode = Hospitality_MapComponent.Instance(map).defaultInteractionMode;
-            if (oldMode == mode) return;
-
-            Hospitality_MapComponent.Instance(map).defaultInteractionMode = mode;
-
-            var guests = GuestUtility.GetAllGuests(map);
-            foreach (var guest in guests)
-            {
-                var comp = guest.GetComp<CompGuest>();
-                if (comp == null) continue;
-                comp.chat = mode == PrisonerInteractionModeDefOf.Chat;
             }
         }
     }
