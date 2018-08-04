@@ -19,7 +19,7 @@ namespace Hospitality
         //Properties
         protected Thing Item { get { return job.targetA.Thing; } }
 
-        public override bool TryMakePreToilReservations()
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             return pawn.Reserve(job.targetA.Thing, job);
         }

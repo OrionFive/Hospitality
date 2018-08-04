@@ -31,7 +31,7 @@ namespace Hospitality
         {
             base.ExposeData();
             Scribe_References.Look(ref faction, "faction");
-            Scribe_Values.Look(ref chillSpot, "chillSpot", default(IntVec3));
+            Scribe_Values.Look(ref chillSpot, "chillSpot");
             Scribe_Values.Look(ref checkEventId, "checkEventId", -1);
             Scribe_Values.Look(ref stayDuration, "stayDuration", GenDate.TicksPerDay);
         }
@@ -66,12 +66,12 @@ namespace Hospitality
             //t2.preActions.Add(new TransitionAction_Message("MessageVisitorsTakingWounded".Translate(new object[] {faction.def.pawnsPlural.CapitalizeFirst(), faction.Name})));
             graphExit.transitions.Add(t2); // Moved to exit from arrive
             Transition t3 = new Transition(toilVisit, toilLeaveMap);
-            t3.triggers.Add(new Trigger_BecameColonyEnemy());
+            t3.triggers.Add(new Trigger_BecamePlayerEnemy());
             t3.preActions.Add(new TransitionAction_WakeAll());
             t3.preActions.Add(new TransitionAction_SetDefendLocalGroup());
             graphArrive.transitions.Add(t3);
             Transition t4 = new Transition(toilArrive, toilExit);
-            t4.triggers.Add(new Trigger_BecameColonyEnemy());
+            t4.triggers.Add(new Trigger_BecamePlayerEnemy());
             //t4.triggers.Add(new Trigger_VisitorsPleasedMax(MaxPleaseAmount(faction.ColonyGoodwill))); // CHANGED
             t4.triggers.Add(new Trigger_VisitorsAngeredMax(IncidentWorker_VisitorGroup.MaxAngerAmount(faction.PlayerGoodwill))); // CHANGED
             t4.preActions.Add(new TransitionAction_WakeAll());

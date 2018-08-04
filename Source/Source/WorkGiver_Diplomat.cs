@@ -14,7 +14,7 @@ namespace Hospitality
             return pawn.ShouldImproveRelationship(guest);
         }
 
-        public override bool ShouldSkip(Pawn pawn)
+        public override bool ShouldSkip(Pawn pawn, bool forced)
         {
             return pawn.story.WorkTagIsDisabled(def.workType.workTags);
         }

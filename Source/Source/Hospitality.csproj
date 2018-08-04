@@ -70,8 +70,7 @@
     <Compile Include="Harmony\MinifiedThing_Patch.cs" />
     <Compile Include="Harmony\ModContentPack_Patch.cs" />
     <Compile Include="GenericUtility.cs" />
-    <Compile Include="Harmony\DrugPolicy_Patch.cs" />
-    <Compile Include="Harmony\FactionDialogMaker_Patch.cs" />
+    <None Include="Harmony\DrugPolicy_Patch.cs.bak" />
     <Compile Include="Harmony\ForbidUtility_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Gear_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Guest_Patch.cs" />

@@ -63,9 +63,8 @@ namespace Hospitality
                 guestBedDef.thingClass = typeof(Building_GuestBed);
                 guestBedDef.shortHash = 0;
                 guestBedDef.minifiedDef = null;
-                guestBedDef.tradeability = Tradeability.Never;
+                guestBedDef.tradeability = Tradeability.None;
                 guestBedDef.scatterableOnMapGen = false;
-                guestBedDef.canBeSpawningInventory = false;
 
                 typeof(ShortHashGiver).GetMethod("GiveShortHash", BindingFlags.NonPublic|BindingFlags.Static).Invoke(null, new object[] {guestBedDef, typeof(ThingDef)});
                 DefDatabase<ThingDef>.Add(guestBedDef);

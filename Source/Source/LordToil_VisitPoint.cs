@@ -121,7 +121,7 @@ namespace Hospitality
             float offset = targetGoodwill - currentGoodwill;
             int goodwillChange = Mathf.RoundToInt(Mathf.Clamp(offset, -goodwillChangeMax, goodwillChangeMax));
             
-            faction.AffectGoodwillWith(Faction.OfPlayer, goodwillChange);
+            faction.TryAffectGoodwillWith(Faction.OfPlayer, goodwillChange, false);
 
             
 

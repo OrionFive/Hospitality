@@ -113,7 +113,7 @@ namespace Hospitality
             {
                 return false;
             }
-            if (thing.def.tradeability == Tradeability.Never)
+            if (thing.def.tradeability == Tradeability.None)
             {
                 return false;
             }
