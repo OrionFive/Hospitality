@@ -61,7 +61,7 @@ namespace Hospitality.Harmony
             {
                 // Added option to reject wanderer
 
-                string textAsk = "WandererInitial".Translate(pawn.Faction.Name, pawn.GetTitle().ToLower(), GenText.ToCommaList(pawn.story.traits.allTraits.Select(t => t.Label)));
+                string textAsk = "WandererInitial".Translate(pawn.Faction.Name, pawn.story.Title, pawn.story.traits.allTraits.Select(t => t.Label).ToCommaList());
                 textAsk = textAsk.AdjustedFor(pawn);
                 PawnRelationUtility.TryAppendRelationsWithColonistsInfo(ref textAsk, pawn);
                 DiaNode nodeAsk = new DiaNode(textAsk);
@@ -91,11 +91,32 @@ namespace Hospitality.Harmony
                 textReject = textReject.AdjustedFor(pawn);
 
                 DiaOption optionReject = new DiaOption(textReject);
-                optionReject.action = () => { GuestUtility.BreakupRelations(pawn); };
+                optionReject.action = () => { BreakupRelations(pawn); };
                 optionReject.resolveTree = true;
 
                 nodeAsk.options.Add(optionReject);
                 Find.WindowStack.Add(new Dialog_NodeTree(nodeAsk, true));
+            }
+
+            private static void BreakupRelations(Pawn pawn)
+            {
+                var relations = pawn.relations.DirectRelations.Where(r => !r.otherPawn.Dead && r.otherPawn.Faction != null && r.otherPawn.Faction.IsPlayer && LovePartnerRelationUtility.LovePartnerRelationExists(pawn, r.otherPawn)).ToArray();
+                var breakup = new InteractionWorker_Breakup();
+                foreach (var relation in relations)
+                {
+                    string text;
+                    string label;
+                    LetterDef letterDef;
+                    breakup.Interacted(relation.otherPawn, pawn, null, out text, out label, out letterDef);
+                    // We actually don't care about the letter... this is a silent breakup.
+                }
+                Faction hostileFaction;
+                if (
+                    Find.FactionManager.AllFactions.Where(f => f.def.humanlikeFaction && f.HostileTo(Faction.OfPlayer))
+                        .TryRandomElement(out hostileFaction))
+                {
+                    pawn.SetFaction(hostileFaction);
+                }
             }
         }
     }
