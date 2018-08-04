@@ -31,6 +31,9 @@ namespace Hospitality
         private static readonly StatDef statRecruitRelationshipDamage = StatDef.Named("RecruitRelationshipDamage");
         private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
 
+        private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve
+        { new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30) };
+
         public static bool IsRelaxing(this Pawn pawn)
         {
             return pawn.mindState.duty != null && pawn.mindState.duty.def == relaxDef;
@@ -143,10 +146,14 @@ namespace Hospitality
         public static int GetMinRecruitOpinion(this Pawn guest)
         {
             var difficulty = guest.RecruitDifficulty(Faction.OfPlayer);
-            var diffSqr = difficulty*difficulty*difficulty*difficulty;
-            const int min = 0;
-            const int max = 30;
-            return Mathf.CeilToInt(Mathf.Lerp(min, max, diffSqr));
+
+            var adjusted = AdjustDifficulty(difficulty);
+            return Mathf.RoundToInt(adjusted);
+        }
+
+        private static float AdjustDifficulty(float difficulty)
+        {
+            return RecruitChanceOpinionCurve.Evaluate(difficulty);
         }
 
         public static bool ImproveRelationship(this Pawn guest)
