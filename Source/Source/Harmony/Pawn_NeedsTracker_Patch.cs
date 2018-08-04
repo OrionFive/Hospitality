@@ -14,7 +14,7 @@ namespace Hospitality.Harmony
         {
             private static readonly NeedDef defComfort = DefDatabase<NeedDef>.GetNamed("Comfort");
             private static readonly NeedDef defBeauty = DefDatabase<NeedDef>.GetNamed("Beauty");
-            private static readonly NeedDef defSpace = DefDatabase<NeedDef>.GetNamed("Space");
+            private static readonly NeedDef defSpace = DefDatabase<NeedDef>.GetNamed("RoomSize");
 
             [HarmonyPrefix]
             public static bool Prefix(Pawn_NeedsTracker __instance, ref bool __result, NeedDef nd)
