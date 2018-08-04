@@ -60,13 +60,21 @@ namespace Hospitality.Harmony
                 }
                 #endregion
 
-                if (!faction.HostileTo(fromPOV.Faction))
+                switch (faction.RelationKindWith(fromPOV.Faction))
                 {
-                    __result = "Neutral".Translate() + ", " + faction.Name;
-                    return false;
+                    case FactionRelationKind.Hostile:
+                        __result = "Hostile".Translate() + ", " + faction.Name;
+                        return false;
+                    case FactionRelationKind.Neutral:
+                        __result = "Neutral".Translate() + ", " + faction.Name;
+                        return false;
+                    case FactionRelationKind.Ally:
+                        __result = "Ally".Translate() + ", " + faction.Name;
+                        return false;
+                    default:
+                        __result = "";
+                        return false;
                 }
-                __result = "Hostile".Translate() + ", " + faction.Name;
-                return false;
             }
         }
     }

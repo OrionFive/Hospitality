@@ -5,7 +5,6 @@ namespace Hospitality.Harmony
 {
     public static class ITab_Pawn_Guest_Patch
     {
-        // This is so unknown drug policies get added automatically
         [HarmonyPatch(typeof(RimWorld.ITab_Pawn_Guest))]
         [HarmonyPatch("IsVisible", PropertyMethod.Getter)]
         public static class IsVisible

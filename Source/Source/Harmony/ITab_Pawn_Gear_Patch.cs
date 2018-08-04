@@ -5,10 +5,9 @@ using Verse;
 
 namespace Hospitality.Harmony
 {
-    [Obsolete("This class is probably obsolete, since the issue has been fixed in CE.")]
     public static class ITab_Pawn_Gear_Patch
     {
-        // This is so the player can't force visitors to drop items. The button remains, though, until fixed by Ludeon.
+        // This is so the player can't force visitors to drop items. The button remains, though, until fixed by Ludeon. Thus, never?
         [HarmonyPatch(typeof(ITab_Pawn_Gear), "InterfaceDrop")]
         public class InterfaceDrop
         {
