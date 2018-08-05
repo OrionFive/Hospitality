@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -43,7 +44,7 @@ namespace Hospitality
             {
                 return null;
             }
-            if (Likey(pawn, thing) <= 0.4f)
+            if (Likey(pawn, thing) <= 0.5f)
             {
                 //Log.Message(thing.Label + ": not interesting for " + pawn.NameStringShort);
                 IntVec3 standTarget;
@@ -62,11 +63,32 @@ namespace Hospitality
 
         private static float Likey(Pawn pawn, Thing thing)
         {
+            if (thing == null) return 0;
+
             // Health of object
             var hpFactor = thing.def.useHitPoints?((float)thing.HitPoints/thing.MaxHitPoints):1;
             
+            // Apparel
+            var appFactor = thing is Apparel ? 1+ApparelScoreGain(pawn, (Apparel) thing) : 0.8f; // Not apparel, less likey
+            //Log.Message(thing.Label + " - apparel score: " + appFactor);
+
+            // Weapon
+            if (thing.def.IsRangedWeapon)
+            {
+                if (pawn.story.traits.HasTrait(TraitDefOf.Brawler)) return 0;
+                if (pawn.apparel.WornApparel.OfType<ShieldBelt>().Any()) return 0;
+            }
+            if (thing.def.IsWeapon)
+            {
+                appFactor = 1; // Weapon is also good!
+                if (pawn.RaceProps.Humanlike && pawn.story.WorkTagIsDisabled(WorkTags.Violent)) return 0;
+                if (!pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)) return 0;
+            }
+            // Shieldbelt
+            if (thing is ShieldBelt && pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsRangedWeapon) return 0;
+
             // Quality of object
-            var qFactor = 1f;
+            var qFactor = 0.8f;
             QualityCategory cat;
             if (thing.TryGetQuality(out cat))
             {
@@ -77,7 +99,7 @@ namespace Hospitality
                 //Log.Message(thing.Label+" - quality: "+cat+" = "+ qFactor);
             }
             // Tech level of object
-            var tFactor = 1f;
+            var tFactor = 0.8f;
             if (thing.def.techLevel != TechLevel.Undefined)
             {
                 tFactor = (float) thing.def.techLevel;
@@ -86,9 +108,32 @@ namespace Hospitality
                 tFactor += 1;
                 //Log.Message(thing.Label + " - techlevel: " + thing.def.techLevel + " = " + tFactor);
             }
-            var rFactor = Rand.Range(0.7f, 2f);
-            //Log.Message(thing.Label+" - score: "+hpFactor*qFactor*tFactor);
-            return Mathf.Max(0, hpFactor*hpFactor*qFactor*tFactor*rFactor); // 0 = don't buy
+            var rFactor = Rand.RangeSeeded(0.5f, 2f, pawn.thingIDNumber*60509 + thing.thingIDNumber*33151);
+            //Log.Message(thing.Label + " - score: " + hpFactor*hpFactor*qFactor*tFactor*appFactor);
+            return Mathf.Max(0, hpFactor*hpFactor*qFactor*tFactor*appFactor*rFactor); // 0 = don't buy
+        }
+
+        // Copied so outfits can be commented
+        public static float ApparelScoreGain(Pawn pawn, Apparel ap)
+        {
+            if (ap is ShieldBelt && pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsWeaponUsingProjectiles)
+                return -1000f;
+            float num = JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
+            List<Apparel> wornApparel = pawn.apparel.WornApparel;
+            bool flag = false;
+            for (int index = 0; index < wornApparel.Count; ++index)
+            {
+                if (!ApparelUtility.CanWearTogether(wornApparel[index].def, ap.def, pawn.RaceProps.body))
+                {
+                    //if (!pawn.outfits.forcedHandler.AllowedToAutomaticallyDrop(wornApparel[index]))
+                    //    return -1000f;
+                    num -= JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, wornApparel[index]);
+                    flag = true;
+                }
+            }
+            if (!flag)
+                num *= 10f;
+            return num;
         }
 
         protected virtual bool Qualifies(Thing thing)

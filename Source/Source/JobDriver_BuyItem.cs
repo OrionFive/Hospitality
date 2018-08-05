@@ -6,6 +6,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
+using Verse.Sound;
 
 namespace Hospitality
 {
@@ -84,7 +85,35 @@ namespace Hospitality
 
             var map = toil.actor.MapHeld;
             var inventoryItemsBefore = inventory.ToArray();
-            var tookItems = inventory.TryAdd(Item.SplitOff(count), count);
+            var thing = Item.SplitOff(count);
+            int tookItems;
+            if (thing.def.IsApparel && thing is Apparel)
+            {
+                toil.actor.apparel.Wear((Apparel)thing);
+                tookItems = thing.stackCount;
+            }
+            else if (thing.def.IsWeapon && thing is ThingWithComps && thing.def.IsWithinCategory(ThingCategoryDefOf.Weapons))
+            {
+                var thingWithComps = (ThingWithComps)thing;
+                var primary = pawn.equipment.Primary;
+                if (thing.def.equipmentType == EquipmentType.Primary && primary != null)
+                    if (!pawn.equipment.TryTransferEquipmentToContainer(primary, pawn.inventory.innerContainer))
+                    {
+                        Log.Message(pawn.Name.ToStringShort + " failed to take " + primary + " to his inventory.");
+                    }
+                
+                pawn.equipment.AddEquipment(thingWithComps);
+                pawn.equipment.Notify_EquipmentAdded(thingWithComps);
+				if (thingWithComps.def.soundInteract != null)
+				{
+					thingWithComps.def.soundInteract.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
+				}
+                tookItems = thing.stackCount;
+            }
+            else
+            {
+                tookItems = inventory.TryAdd(thing, count);
+            }
 
             var comp = toil.actor.GetComp<CompGuest>();
             if (tookItems > 0 && comp != null)
@@ -100,6 +129,15 @@ namespace Hospitality
 
                     // Handle trade stuff
                     Trade(toil, item, map);
+                }
+            }
+            else
+            {
+                // Failed to equip or take
+                Thing resultingThing;
+                if (!GenDrop.TryDropSpawn(thing, toil.actor.Position, map, ThingPlaceMode.Near, out resultingThing))
+                {
+                    Log.Warning(toil.actor.Name.ToStringShort + " failed to buy and failed to drop " + thing.Label);
                 }
             }
         }
