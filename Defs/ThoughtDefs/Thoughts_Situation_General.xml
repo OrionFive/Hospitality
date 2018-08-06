@@ -44,7 +44,7 @@
       </li>
       <li>
         <label>not enough guest beds</label>
-        <description>There should be more beds in our room.</description>
+        <description>There should be more beds for guests.</description>
         <baseMoodEffect>-7</baseMoodEffect>
       </li>
       <li>
