@@ -439,10 +439,22 @@ namespace Hospitality
             if (guest.jobs.jobQueue != null) guest.jobs.jobQueue = new JobQueue();
             guest.jobs.EndCurrentJob(JobCondition.InterruptForced);
 
-            guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
-
             // Reset timetable to default
             guest.timetable = new Pawn_TimetableTracker(guest);
+
+            var lord = guest.GetLord();
+            if (lord != null && lord.ownedPawns.Count > 1)
+            {
+                Log.Message(lord.ownedPawns.Select(p => p.LabelShort).ToCommaList() + " under same lord.");
+
+                for (int i = guest.inventory.innerContainer.Count - 1; i >= 0; i--)
+                {
+                    var item = guest.inventory.innerContainer[i];
+                    var randomOther = lord.ownedPawns.Where(p => p != guest).RandomElement();
+                    guest.inventory.innerContainer.TryTransferToContainer(item, randomOther.inventory.innerContainer);
+                }
+            }
+            guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
 
 
             guest.SetFaction(Faction.OfPlayer);
