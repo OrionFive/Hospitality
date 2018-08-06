@@ -445,8 +445,6 @@ namespace Hospitality
             var lord = guest.GetLord();
             if (lord != null && lord.ownedPawns.Count > 1)
             {
-                Log.Message(lord.ownedPawns.Select(p => p.LabelShort).ToCommaList() + " under same lord.");
-
                 for (int i = guest.inventory.innerContainer.Count - 1; i >= 0; i--)
                 {
                     var item = guest.inventory.innerContainer[i];
