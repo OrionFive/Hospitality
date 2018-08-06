@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
@@ -101,6 +103,15 @@ namespace Hospitality
             {
                 pawn.pather.StopDead();
                 pawn.ClearMind();
+            }
+        }
+
+        public override void Notify_PawnLost(Pawn pawn, PawnLostCondition condition)
+        {
+            Log.Message("lord owns "+lord.ownedPawns.Select(p=>p.LabelShort).ToCommaList());
+            if (!lord.ownedPawns.Any())
+            {
+                GuestUtility.OnLostEntireGroup(lord);
             }
         }
     }

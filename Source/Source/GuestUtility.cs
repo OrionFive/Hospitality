@@ -27,6 +27,8 @@ namespace Hospitality
         private static readonly string txtRecruitFactionPlease = "RecruitFactionPlease".Translate();
         private static readonly string txtRecruitFactionAngerLeaderless = "RecruitFactionAngerLeaderless".Translate();
         private static readonly string txtRecruitFactionPleaseLeaderless = "RecruitFactionPleaseLeaderless".Translate();
+        private static readonly string txtLostGroupFactionAnger = "LostGroupFactionAnger".Translate();
+        private static readonly string txtLostGroupFactionAngerLeaderless = "LostGroupFactionAngerLeaderless".Translate();
 
         private static readonly StatDef statRecruitRelationshipDamage = StatDef.Named("RecruitRelationshipDamage");
         private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
@@ -805,6 +807,27 @@ namespace Hospitality
             //var temp = faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) && faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp);
 
             return aggroPawns.Length > 0;
+        }
+
+        public static void OnLostEntireGroup(Lord lord)
+        {
+            const int penalty = -20;
+            Log.Message("Lost group");
+            if (lord != null && lord.faction != null)
+            {
+                Log.Message("Had lord and faction");
+                lord.faction.TryAffectGoodwillWith(Faction.OfPlayer, penalty, false);
+                if (lord.faction.leader == null)
+                {
+                    var message = string.Format(txtLostGroupFactionAngerLeaderless, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                    Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, lord.faction);
+                }
+                else
+                {
+                    var message = string.Format(txtLostGroupFactionAnger, lord.faction.leader.Name, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                    Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, lord.faction);
+                }
+            }
         }
     }
 }
