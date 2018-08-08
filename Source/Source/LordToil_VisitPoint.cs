@@ -116,7 +116,7 @@ namespace Hospitality
         public static void DisplayLeaveMessage(float score, Faction faction, int visitorCount, Map currentMap, bool sentAway)
         {
             int targetGoodwill = Mathf.RoundToInt(Mathf.Lerp(-100, 100, score));
-            float goodwillChangeMax = Mathf.Lerp(20, 40, Mathf.InverseLerp(1, 8, visitorCount));
+            float goodwillChangeMax = Mathf.Lerp(3, 24, Mathf.InverseLerp(1, 8, visitorCount));
             float currentGoodwill = faction.GoodwillWith(Faction.OfPlayer);
             float offset = targetGoodwill - currentGoodwill;
             int goodwillChange = Mathf.RoundToInt(Mathf.Clamp(offset, -goodwillChangeMax, goodwillChangeMax));
