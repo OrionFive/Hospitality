@@ -1,8 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
 <LanguageData>
+	
+	<Sentence_CharmAttemptAccepted.rulePack.rulesStrings>
+        <li>sent->[RECIPIENT_nameDef] applaudi [RECIPIENT_possessive] les mains avec enthousiasme.</li>
+        <li>sent->[RECIPIENT_nameDef] sourit.</li>
+        <li>sent->[RECIPIENT_nameDef] hoche la tête.</li>
+        <li>sent->[RECIPIENT_nameDef] est impatient d'entendre plus.</li>
+        <li>sent->[RECIPIENT_nameDef] à l'air excité.</li>
+        <li>sent->[RECIPIENT_nameDef] à l'air flatté.</li>
+        <li>sent->[RECIPIENT_nameDef] regarde [INITIATOR_nameDef] avec étonnement.</li>
+	</Sentence_CharmAttemptAccepted.rulePack.rulesStrings>
 
-  <Sentence_CharmAttemptAccepted.rulePack.rulesStrings.0>sent->[recipient_nameShortDef] est excité par la proposition de [initiator_nameShortDef].</Sentence_CharmAttemptAccepted.rulePack.rulesStrings.0>
-  <Sentence_CharmAttemptRejected.rulePack.rulesStrings.0>sent->[recipient_nameShortDef] n'apprécie pas la tentative de [initiator_nameShortDef].</Sentence_CharmAttemptRejected.rulePack.rulesStrings.0>
-
-
+	<Sentence_CharmAttemptRejected.rulePack.rulesStrings>
+        <li>sent->[RECIPIENT_nameDef] se fâche.</li>
+        <li>sent->[RECIPIENT_nameDef] secoue de manière désapprobatrice [RECIPIENT_possessive].</li>
+        <li>sent->[RECIPIENT_nameDef] s'en fout.</li>
+        <li>sent->[RECIPIENT_nameDef] en avait déjà assez.</li>
+        <li>sent->[RECIPIENT_nameDef] regarde autour de lui dans l'ennui.</li>
+        <li>sent->[RECIPIENT_nameDef] dit qu'il va partir bientôt.</li>
+        <li>sent->[RECIPIENT_nameDef] roulé [RECIPIENT_possessive] ses yeux.</li>
+	</Sentence_CharmAttemptRejected.rulePack.rulesStrings>
+	
 </LanguageData>
