@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Harmony\AddictionUtility_Patch.cs" />
     <Compile Include="Harmony\Building_Bed_Patch.cs" />
+    <Compile Include="Harmony\ExpectationsUtility_Patch.cs" />
     <Compile Include="Harmony\FactionUtility_Patch.cs" />
     <Compile Include="Harmony\JobDriver_Patch.cs" />
     <Compile Include="Harmony\Pawn_ApparelTracker_Patch.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="Harmony\MinifiedThing_Patch.cs" />
     <Compile Include="Harmony\ModContentPack_Patch.cs" />
     <Compile Include="GenericUtility.cs" />
-    <None Include="Harmony\DrugPolicy_Patch.cs.bak" />
     <Compile Include="Harmony\ForbidUtility_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Gear_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Guest_Patch.cs" />
@@ -87,8 +87,6 @@
     <Compile Include="Harmony\SocialCardUtility_Patch.cs" />
     <Compile Include="Harmony\ThoughtWorker_Patch.cs" />
     <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
-    <None Include="Harmony\IncidentWorker_RefugeeChased_Patch.cs.bak" />
-    <None Include="Harmony\IncidentWorker_WandererJoin_Patch.cs.bak" />
     <Compile Include="Harmony\TransitionAction_EnsureHaveExitDestination_Patch.cs" />
     <Compile Include="Harmony\TransitionAction_SetDefendLocalGroup_Patch.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
@@ -110,7 +108,6 @@
     <Compile Include="ThinkNode_ConditionalWantsToHelp.cs" />
     <Compile Include="ThinkNode_InGuestArea.cs" />
     <Compile Include="ThoughtWorker_Beds.cs" />
-    <Compile Include="ThoughtWorker_Expectations.cs" />
     <Compile Include="Trigger_SentAway.cs" />
     <Compile Include="Trigger_TicksPassedAndOkayToLeave.cs" />
     <Compile Include="Trigger_UrgentlyCold.cs" />
