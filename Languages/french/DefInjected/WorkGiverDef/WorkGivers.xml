@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
 <LanguageData>
+	
+	<Recruiter.label>recruter des visiteurs et des prisonniers</Recruiter.label>
+	<Recruiter.verb>recruter</Recruiter.verb>
+	<Recruiter.gerund>recrutement</Recruiter.gerund>
 
-  <Recruiter.label>recrute des visiteurs et des prisonniers</Recruiter.label>
-  <Recruiter.verb>recruter</Recruiter.verb>
-  <Recruiter.gerund>recrute</Recruiter.gerund>
-
-  <Diplomat.label>distrait les invités</Diplomat.label>
-  <Diplomat.verb>distraire</Diplomat.verb>
-  <Diplomat.gerund>distrait</Diplomat.gerund>
-
+	<Diplomat.label>engager les visiteurs</Diplomat.label>
+	<Diplomat.verb>engager</Diplomat.verb>
+	<Diplomat.gerund>engagement</Diplomat.gerund>
 
 </LanguageData>

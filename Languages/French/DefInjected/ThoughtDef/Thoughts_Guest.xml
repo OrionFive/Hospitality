@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+	<rep>
+		<path>GuestAngered.stages[0].label</path>
+		<trans>en colère en voyant le recrutement</trans>
+	</rep>
+	<rep>
+		<path>GuestAngered.stages[0].labelSocial</path>
+		<trans>m'a mis en colère en recrutant</trans>
+	</rep>
+	<rep>
+		<path>GuestAngered.stages[0].description</path>
+		<trans>Ces gars-là essaient de voler nos membres!</trans>
+	</rep>
+
+	<rep>
+		<path>GuestOffendedRelationship.stages[0].label</path>
+		<trans>insulté par un colon</trans>
+	</rep>
+	<rep>
+		<path>GuestOffendedRelationship.stages[0].labelSocial</path>
+		<trans>m'insulte</trans>
+	</rep>
+	<rep>
+		<path>GuestOffendedRelationship.stages[0].description</path>
+		<trans>Ces gars sont des perdants !</trans>
+	</rep>
+
+	<rep>
+		<path>GuestPleasedRelationship.stages[0].label</path>
+		<trans>charmé par un colon !</trans>
+	</rep>
+	<rep>
+		<path>GuestPleasedRelationship.stages[0].labelSocial</path>
+		<trans>me charme</trans>
+	</rep>
+	<rep>
+		<path>GuestPleasedRelationship.stages[0].description</path>
+		<trans>Des gens si sympas!</trans>
+	</rep>
+
+	<rep>
+		<path>GuestDismissiveAttitude.stages[0].label</path>
+		<trans>fatigué de parler</trans>
+	</rep>
+	<rep>
+		<path>GuestDismissiveAttitude.stages[0].description</path>
+		<trans>J'ai fini de parler pour le moment. Laisse-moi tranquille.</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[0].label</path>
+		<trans>pas de lits pour visiteurs</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[0].description</path>
+		<trans>Ils n'ont même pas de lits ici.</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[1].label</path>
+		<trans>Pas assez de lits pour visiteurs</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[1].description</path>
+		<trans>Il devrait y avoir plus de lits pour les visiteurs.</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[2].label</path>
+		<trans>assez de lits</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[2].description</path>
+		<trans>Il y a suffisamment de lits pour visiteurs pour nous tous.</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[3].label</path>
+		<trans>beaucoup de lits</trans>
+	</rep>
+	<rep>
+		<path>GuestBedCount.stages[3].description</path>
+		<trans>Wow, tellement de lits !</trans>
+	</rep>
+
+</LanguageData>
