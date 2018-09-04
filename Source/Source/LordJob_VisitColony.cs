@@ -109,7 +109,7 @@ namespace Hospitality
         {
             if (condition == PawnLostCondition.ExitedMap) return;
 
-            Log.Message("lord owns "+lord.ownedPawns.Select(p=>p.LabelShort).ToCommaList());
+            //Log.Message("lord owns "+lord.ownedPawns.Select(p=>p.LabelShort).ToCommaList());
             if (!lord.ownedPawns.Any())
             {
                 GuestUtility.OnLostEntireGroup(lord);

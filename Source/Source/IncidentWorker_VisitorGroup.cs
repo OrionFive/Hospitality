@@ -214,6 +214,7 @@ namespace Hospitality
                 {
                     visitor.DestroyOrPassToWorld();
                 }
+                GuestUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
                 return false;
             }
             

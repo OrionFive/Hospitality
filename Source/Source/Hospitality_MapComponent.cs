@@ -60,11 +60,14 @@ namespace Hospitality
         {
             // Add some visits
             float days = Rand.Range(8f, 15f);
-            foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f != Faction.OfPlayer && f.PlayerGoodwill > 0).OrderByDescending(f => f.PlayerGoodwill))
+            int amount = Rand.Range(2, 5);
+            foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f != Faction.OfPlayer && !f.HostileTo(Faction.OfPlayer)).OrderByDescending(f => f.PlayerGoodwill))
             {
+                amount--;
                 Log.Message(faction.GetCallLabel() + " are coming after " + days + " days.");
                 GuestUtility.PlanNewVisit(map, days, faction);
                 days += Rand.Range(10f, 15f);
+                if (amount <= 0) break;
             }
         }
 

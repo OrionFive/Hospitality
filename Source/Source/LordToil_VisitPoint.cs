@@ -52,10 +52,10 @@ namespace Hospitality
                 else Data.visitorMoods.Add(pawn.thingIDNumber, pawn.needs.mood.CurInstantLevel);
                 //Log.Message("Added "+pawn.NameStringShort+": "+pawn.needs.mood.CurLevel);
 
-                var newColony = -0.1f; // Mathf.Lerp(-0.15f, -0.05f, GenDate.MonthsPassed/20f); // bonus for new colony
+                var tweak = 0; // -0.1f;
                 var regularity = Mathf.Lerp(-0.5f, 0.25f, Mathf.InverseLerp(-100, 100, lord.faction.PlayerGoodwill));
                     // negative factions have lower expectations
-                float expectations = newColony + regularity;
+                float expectations = tweak + regularity;
                 Data.visitorMoods[pawn.thingIDNumber] += expectations;
 
                 pawn.Arrive();

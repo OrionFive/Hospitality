@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+	<rep>
+		<path>GuestBeds.label</path>
+		<trans>Lit de Visiteurs</trans>
+	</rep>
+	<rep>
+		<path>GuestBeds.helpText</path>
+		<trans>Les visiteurs préfèrent dormir dans des lits.\n\nVous pouvez convertir des lits en utilisants le bouton "Pour les visiteurs"</trans>
+	</rep>
+
+	<rep>
+		<path>RecruitGuest.label</path>
+		<trans>Recruter des visiteurs</trans>
+	</rep>
+	<rep>
+		<path>RecruitGuest.helpText</path>
+		<trans>Vous pouvez recruter des visiteurs\n\nrecruter un visiteur va détériorer vos relations avec la faction du visiteur. Assurez vous d'avoir un colon avec une bonne compétence en Social avec le job "Négociation"</trans>
+	</rep>
+
+	<rep>
+		<path>GuestWork.label</path>
+		<trans>Aide des visiteurs</trans>
+	</rep>
+	<rep>
+		<path>GuestWork.helpText</path>
+		<trans>Les invités heureux aideront la colonie s'ils sont assez qualifiés. Vous pouvez désactiver ceci ou augmenter la compétence minimum requise pour travailler dans les options de mod.</trans>
+	</rep>
+
+	<rep>
+		<path>Hospitality.label</path>
+		<trans>Hospitalité</trans>
+	</rep>
+	<rep>
+		<path>Hospitality.helpText</path>
+		<trans>Quand un groupe de visiteurs arrive, ils utiliseront vos installations, dormiront dans des lits de visiteurs et achèteront des objets dans les zones autorisées. \n\nSi ils ont apprécié leur visite, cela augmentera votre réputation auprès de leur faction.</trans>
+	</rep>
+
+</LanguageData>
