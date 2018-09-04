@@ -812,10 +812,10 @@ namespace Hospitality
         public static void OnLostEntireGroup(Lord lord)
         {
             const int penalty = -20;
-            Log.Message("Lost group");
+            //Log.Message("Lost group");
             if (lord != null && lord.faction != null)
             {
-                Log.Message("Had lord and faction");
+                //Log.Message("Had lord and faction");
                 lord.faction.TryAffectGoodwillWith(Faction.OfPlayer, penalty, false);
                 if (lord.faction.leader == null)
                 {
