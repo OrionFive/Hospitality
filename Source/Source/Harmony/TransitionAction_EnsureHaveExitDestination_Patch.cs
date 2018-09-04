@@ -5,7 +5,7 @@ using Verse.AI.Group;
 namespace Hospitality.Harmony
 {
     /// <summary>
-    /// To prevent errors when this function is called and there are no ownedPawns left
+    /// To prevent errors when this function is called and there are no ownedPawns left or no destination is set
     /// </summary>
     public class TransitionAction_EnsureHaveExitDestination_Patch
     {
