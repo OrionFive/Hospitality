@@ -59,14 +59,14 @@ namespace Hospitality
         private void FillIncidentQueue()
         {
             // Add some visits
-            float days = Rand.Range(8f, 15f);
-            int amount = Rand.Range(2, 5);
+            float days = Rand.Range(10f, 16f); // initial delay
+            int amount = Rand.Range(1, 4);
             foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f != Faction.OfPlayer && !f.HostileTo(Faction.OfPlayer)).OrderByDescending(f => f.PlayerGoodwill))
             {
                 amount--;
                 Log.Message(faction.GetCallLabel() + " are coming after " + days + " days.");
                 GuestUtility.PlanNewVisit(map, days, faction);
-                days += Rand.Range(10f, 15f);
+                days += Rand.Range(15f, 25f);
                 if (amount <= 0) break;
             }
         }

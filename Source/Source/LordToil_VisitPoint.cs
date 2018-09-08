@@ -130,11 +130,11 @@ namespace Hospitality
             if (visitorCount == 0) return; // No message if noone is left (it says -100, which isn't true)
 
             string messageReturn = " ";
-            if (days < 5)
+            if (days < 7)
                 messageReturn += "VisitorsReturnSoon".Translate();
-            else if (days < 11)
+            else if (days < 14)
                 messageReturn += "VisitorsReturnWhile".Translate();
-            else if (days < 30)
+            else if (days < 40)
                 messageReturn += "VisitorsReturnNotSoon".Translate();
             else
                 messageReturn += "VisitorsReturnNot".Translate();
@@ -159,9 +159,9 @@ namespace Hospitality
             if (faction.defeated) return 100;
             if (targetGoodwill < -50) return 100;
             else if (targetGoodwill > 0)
-                days = Mathf.Lerp(Rand.Range(5f, 7f), Rand.Range(0f, 2f), targetGoodwill/100f);
+                days = Mathf.Lerp(Rand.Range(6f, 12f), Rand.Range(3f, 6f), targetGoodwill/100f);
             else
-                days = Mathf.Lerp(Rand.Range(7f, 12f), Rand.Range(25f, 30f), targetGoodwill/-100f);
+                days = Mathf.Lerp(Rand.Range(12f, 24f), Rand.Range(25f, 30f), targetGoodwill/-100f);
 
             if (sentAway) days += 5;
 
@@ -173,12 +173,12 @@ namespace Hospitality
                 Faction newFaction;
                 if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && !f.HostileTo(Faction.OfPlayer)).TryRandomElement(out newFaction))
                 {
-                    TryCreateVisit(currentMap, days*2, newFaction);
+                    TryCreateVisit(randomVisitMap, days*2, newFaction);
                 }
             }
 
             //Log.Message(faction.def.LabelCap + " will visit again in " + days + " days (+" + GenericUtility.GetTravelDays(faction, randomVisitMap)*2 + " days for travel).");
-            TryCreateVisit(randomVisitMap, days * 2, faction, 2);
+            TryCreateVisit(randomVisitMap, days, faction, 2);
             return days;
         }
 
