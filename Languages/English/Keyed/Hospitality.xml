@@ -43,6 +43,7 @@
   <VisitorsArrivedDesc>They are afraid to enter your territory for the following reasons:\n{1}\n\nIf you send them away they will stay in the area and come back later.</VisitorsArrivedDesc>
   <VisitorsArrivedAccept>Ensure safety</VisitorsArrivedAccept>
   <VisitorsArrivedRefuse>Send away</VisitorsArrivedRefuse>
+  <VisitorsArrivedRefuseUntilBeds>Refuse visitors until I have guest beds</VisitorsArrivedRefuseUntilBeds>
   <VisitorsArrivedReasonNoBeds>No guest beds</VisitorsArrivedReasonNoBeds>
 
   <!-- Tab -->

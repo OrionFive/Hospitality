@@ -16,11 +16,16 @@ namespace Hospitality
         }
 
         private IncidentQueue incidentQueue = new IncidentQueue();
-        private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
         public PrisonerInteractionModeDef defaultInteractionMode;
         public Area defaultAreaRestriction;
         public Area defaultAreaShopping;
+        public bool refuseGuestsUntilWeHaveBeds;
+        private int nextQueueInspection;
+
+        [Obsolete]
         private int lastEventKey;
+        [Obsolete]
+        private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
 
         public override void ExposeData()
         {
@@ -30,6 +35,8 @@ namespace Hospitality
             Scribe_References.Look(ref defaultAreaShopping, "defaultAreaShopping");
             Scribe_Values.Look(ref lastEventKey, "lastEventKey");
             Scribe_Deep.Look(ref incidentQueue, "incidentQueue");
+            Scribe_Values.Look(ref refuseGuestsUntilWeHaveBeds, "refuseGuestsUntilWeHaveBeds");
+            Scribe_Values.Look(ref nextQueueInspection, "nextQueueInspection");
 
             if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
         }
@@ -52,22 +59,13 @@ namespace Hospitality
             base.MapComponentTick();
 
             if (incidentQueue == null) incidentQueue = new IncidentQueue();
-            if(incidentQueue.Count == 0) FillIncidentQueue();
+            if(incidentQueue.Count <= 1) GenericUtility.FillIncidentQueue(map);
             incidentQueue.IncidentQueueTick();
-        }
 
-        private void FillIncidentQueue()
-        {
-            // Add some visits
-            float days = Rand.Range(10f, 16f); // initial delay
-            int amount = Rand.Range(1, 4);
-            foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f != Faction.OfPlayer && !f.HostileTo(Faction.OfPlayer)).OrderByDescending(f => f.PlayerGoodwill))
+            if (GenTicks.TicksGame > nextQueueInspection)
             {
-                amount--;
-                Log.Message(faction.GetCallLabel() + " are coming after " + days + " days.");
-                GuestUtility.PlanNewVisit(map, days, faction);
-                days += Rand.Range(15f, 25f);
-                if (amount <= 0) break;
+                nextQueueInspection = GenTicks.TicksGame + GenDate.TicksPerDay;
+                GenericUtility.CheckTooManyIncidentsAtOnce(incidentQueue);
             }
         }
 
@@ -78,6 +76,7 @@ namespace Hospitality
             //Log.Message("Queued Hospitality incident after " + afterDays + " days. Queue has now " + incidentQueue.Count + " items.");
         }
 
+        [Obsolete]
         public int GetBribeCount(Faction faction)
         {
             if (faction == null) throw new NullReferenceException("Faction not set.");
@@ -87,6 +86,7 @@ namespace Hospitality
             return 0;
         }
 
+        [Obsolete]
         public void Bribe(Faction faction)
         {
             if (faction == null) throw new NullReferenceException("Faction not set.");

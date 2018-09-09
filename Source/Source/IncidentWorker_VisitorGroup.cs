@@ -92,6 +92,17 @@ namespace Hospitality
             diaOption2.resolveTree = true;
             diaNode.options.Add(diaOption2);
 
+            if (!map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Any())
+            {
+                DiaOption diaOption3 = new DiaOption("VisitorsArrivedRefuseUntilBeds".Translate());
+                diaOption3.action = () => {
+                    GuestUtility.RefuseGuestsUntilWeHaveBeds(map);
+                    refuse();
+                };
+                diaOption3.resolveTree = true;
+                diaNode.options.Add(diaOption3);
+            }
+
             var location = ((MapParent) map.ParentHolder).Label;
             string title = "VisitorsArrivedTitle".Translate(location, spawnDirection.LabelShort());
             Find.WindowStack.Add(new Dialog_NodeTree(diaNode, true, true, title));
@@ -140,6 +151,13 @@ namespace Hospitality
             }
             else
             {
+                // Did the player refuse guests until beds are made and there are no beds yet?
+                if (!GuestUtility.BedCheck(map))
+                {
+                    GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
+                    return true;
+                }
+
                 string reasons;
                 // We check here instead of CanFireNow, so we can reschedule the visit.
                 // Any reasons not to come?
@@ -148,6 +166,7 @@ namespace Hospitality
                     // No, spawn
                     return SpawnGroup(parms, map);
                 }
+
                 // Yes, ask the player for permission
                 var spawnDirection = GetSpawnDirection(map, parms.spawnCenter);
                 ShowAskMayComeDialog(parms.faction, map, reasons, spawnDirection,

@@ -73,5 +73,71 @@ namespace Hospitality
         {
             return Find.WorldReachability.CanReach(tileA, tileB);
         }
+
+        internal static void CheckTooManyIncidentsAtOnce(IncidentQueue incidentQueue)
+        {
+            const int maxIncidents = 6;
+            const int rangeOfDays = 3;
+
+            if (incidentQueue.Count < maxIncidents) return;
+            int index = 0;
+            foreach (QueuedIncident incident in incidentQueue)
+            {
+                index++;
+                if (index == maxIncidents)
+                {
+                    if (incident.FireTick - GenTicks.TicksGame < GenDate.TicksPerDay*rangeOfDays)
+                    {
+                        Log.Message(String.Format("More than {0} visitor groups planned within the next {1} days. Cancelling half.", maxIncidents - 1, rangeOfDays));
+                        RemoveSomeIncidents(incidentQueue);
+                    }
+                }
+            }
+        }
+
+        private static void RemoveSomeIncidents(IncidentQueue incidentQueue)
+        {
+            const int rangeOfDays = 3;
+            IncidentQueue backupQueue = new IncidentQueue();
+
+            bool skip = true;
+            int amount = incidentQueue.Count;
+            
+            // Copy and thin 
+            foreach (QueuedIncident incident in incidentQueue)
+            {
+                // After range of days copy everything
+                if (incident.FireTick - GenTicks.TicksGame >= GenDate.TicksPerDay*rangeOfDays) backupQueue.Add(incident);
+                else
+                {
+                    // Before, copy every second incident
+                    if (!skip) backupQueue.Add(incident);
+                    skip = !skip;
+                }
+            }
+            // Add them back
+            incidentQueue.Clear();
+            foreach (QueuedIncident incident in backupQueue)
+            {
+                incidentQueue.Add(incident);
+            }
+
+            Log.Message(String.Format("Reduced {0} visits to {1}, by cancelling every 2nd within the next {2} days.", amount, incidentQueue.Count, rangeOfDays));
+        }
+
+        internal static void FillIncidentQueue(Map map)
+        {
+            // Add some visits
+            float days = Rand.Range(10f, 16f); // initial delay
+            int amount = Rand.Range(1, 4);
+            foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f != Faction.OfPlayer && !f.HostileTo(Faction.OfPlayer)).OrderByDescending(f => f.PlayerGoodwill))
+            {
+                amount--;
+                Log.Message(faction.GetCallLabel() + " are coming after " + days + " days.");
+                GuestUtility.PlanNewVisit(map, days, faction);
+                days += Rand.Range(15f, 25f);
+                if (amount <= 0) break;
+            }
+        }
     }
 }

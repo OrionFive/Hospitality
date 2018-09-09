@@ -829,5 +829,27 @@ namespace Hospitality
                 }
             }
         }
+
+        public static void RefuseGuestsUntilWeHaveBeds(Map map)
+        {
+            if (map == null) return;
+
+            var mapComp = Hospitality_MapComponent.Instance(map);
+            mapComp.refuseGuestsUntilWeHaveBeds = true;
+            LessonAutoActivator.TeachOpportunity(ConceptDef.Named("GuestBeds"), null, OpportunityType.Important);
+        }
+
+        public static bool BedCheck(Map map)
+        {
+            if (map == null) return false;
+            var mapComp = Hospitality_MapComponent.Instance(map);
+
+            if (!mapComp.refuseGuestsUntilWeHaveBeds) return true;
+            if (!map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Any()) return false;
+
+            // We have beds now!
+            mapComp.refuseGuestsUntilWeHaveBeds = false;
+            return true;
+        }
     }
 }
