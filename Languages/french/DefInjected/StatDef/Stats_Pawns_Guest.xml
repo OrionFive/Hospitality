@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
 <LanguageData>
-
-  <RecruitRelationshipDamage.label>Dégat de relation causé par le recrutement</RecruitRelationshipDamage.label>
-  <RecruitRelationshipDamage.description>The damage done to the relationship with the faction of this person when successfully recruiting.</RecruitRelationshipDamage.description>
+	
+	<RecruitRelationshipDamage.label>Dégradation de la relation dûe au recrutement</RecruitRelationshipDamage.label>
+	<RecruitRelationshipDamage.description>Les dommages causés à la relation avec la faction de cette personne lors du recrutement réussi.</RecruitRelationshipDamage.description>
 
 </LanguageData>
