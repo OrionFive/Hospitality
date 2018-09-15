@@ -15,7 +15,6 @@ namespace Hospitality
     internal static class GuestUtility
     {
         public static DutyDef relaxDef = DefDatabase<DutyDef>.GetNamed("Relax");
-        public static DutyDef travelDef = DutyDefOf.TravelOrLeave;
 
         private static readonly string labelRecruitSuccess = "LetterLabelMessageRecruitSuccess".Translate(); // from core
         private static readonly string labelRecruitFactionAnger = "LetterLabelRecruitFactionAnger".Translate();
@@ -43,7 +42,7 @@ namespace Hospitality
 
         public static bool IsTraveling(this Pawn pawn)
         {
-            return pawn.mindState.duty != null && pawn.mindState.duty.def == travelDef;
+            return pawn.mindState.duty != null && pawn.mindState.duty.def == DutyDefOf.TravelOrLeave;
         }
 
         public static bool MayBuy(this Pawn pawn)
