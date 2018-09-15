@@ -1,11 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--suppress ALL -->
 <LanguageData>
-	
-	<Diplomat.labelShort>렵상</Diplomat.labelShort>
-	<Diplomat.pawnLabel>외교관</Diplomat.pawnLabel>
-	<Diplomat.gerundLabel>협상중</Diplomat.gerundLabel>
-	<Diplomat.description>외교관들은 방문객을 접대하고 새로운 식민지원들을 모집한다.</Diplomat.description>
-	<Diplomat.verb>다루기</Diplomat.verb>
-
+  <Diplomat.label>교섭</Diplomat.label>
+  <Diplomat.description>협상가들은 방문객들을 접대하고 새로운 정착민을 모집합니다.</Diplomat.description>
+  <Diplomat.labelShort>교섭</Diplomat.labelShort>
+  <Diplomat.pawnLabel>협상가</Diplomat.pawnLabel>
+  <Diplomat.gerundLabel>교섭</Diplomat.gerundLabel>
+  <Diplomat.verb>다루기</Diplomat.verb>
 </LanguageData>

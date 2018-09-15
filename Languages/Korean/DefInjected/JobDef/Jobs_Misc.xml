@@ -1,10 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--suppress ALL -->
 <LanguageData>
-	
-	<CharmGuest.reportString>TargetA 를 식민지에 남도록 설득하기</CharmGuest.reportString>
-	<GuestImproveRelationship.reportString>TargetA의 세력과의 관계를 개선시키려 시도하기</GuestImproveRelationship.reportString>
-	<BuyItem.reportString>TargetA를 확인하기.</BuyItem.reportString>
-	<BrowseItems.reportString>TargetA를 확인하기.</BrowseItems.reportString>
-
+  <CharmGuest.reportString>TargetA을(를) 설득 중</CharmGuest.reportString>
+  <GuestImproveRelationship.reportString>TargetA의 세력과의 관계를 개선 중</GuestImproveRelationship.reportString>
+  <BuyItem.reportString>TargetA를 사는 중</BuyItem.reportString>
+  <BrowseItems.reportString>물건 확인 중</BrowseItems.reportString>
 </LanguageData>
