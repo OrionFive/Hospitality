@@ -594,18 +594,6 @@ namespace Hospitality
             return comp.boughtItems.Contains(thing.thingIDNumber);
         }
 
-        public static void PlanNewVisit(IIncidentTarget map, float afterDays, Faction faction = null)
-        {
-            var realMap = map as Map;
-            if (realMap == null) return;
-
-            var incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.FactionArrival, realMap);
-
-            if(faction != null) incidentParms.faction = faction;
-            var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
-            Hospitality_MapComponent.Instance(realMap).QueueIncident(incident, afterDays);
-        }
-
         public static bool IsInGuestZone(this Pawn p, Thing s)
         {
             var area = p.GetGuestArea();

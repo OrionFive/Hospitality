@@ -130,14 +130,37 @@ namespace Hospitality
             // Add some visits
             float days = Rand.Range(10f, 16f); // initial delay
             int amount = Rand.Range(1, 4);
-            foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f != Faction.OfPlayer && !f.HostileTo(Faction.OfPlayer)).OrderByDescending(f => f.PlayerGoodwill))
+            foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f != Faction.OfPlayer && !f.HostileTo(Faction.OfPlayer)).OrderBy(f => GetTravelDays(f, map)))
             {
                 amount--;
                 Log.Message(faction.GetCallLabel() + " are coming after " + days + " days.");
-                GuestUtility.PlanNewVisit(map, days, faction);
+                PlanNewVisit(map, days, faction);
                 days += Rand.Range(15f, 25f);
                 if (amount <= 0) break;
             }
+        }
+
+        public static void PlanNewVisit(IIncidentTarget map, float afterDays, Faction faction = null)
+        {
+            var realMap = map as Map;
+            if (realMap == null) return;
+
+            var incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.FactionArrival, realMap);
+
+            if(faction != null) incidentParms.faction = faction;
+            var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
+            Hospitality_MapComponent.Instance(realMap).QueueIncident(incident, afterDays);
+        }
+
+        public static void TryCreateVisit(Map map, float days, Faction faction, float travelFactor = 1)
+        {
+            var travelDays = GetTravelDays(faction, map);
+
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (travelDays == NoBasesLeft) return;
+
+            travelDays = days + travelDays * travelFactor;
+            PlanNewVisit(map, travelDays, faction);
         }
     }
 }

@@ -76,6 +76,21 @@ namespace Hospitality
             //Log.Message("Queued Hospitality incident after " + afterDays + " days. Queue has now " + incidentQueue.Count + " items.");
         }
 
+        public QueuedIncident GetNextVisit(Faction faction)
+        {
+            QueuedIncident nearest = null;
+
+            // Find earliest
+            foreach (QueuedIncident incident in incidentQueue)
+            {
+                if (incident.FiringIncident.parms.faction == faction)
+                {
+                    if (nearest == null || incident.FireTick < nearest.FireTick) nearest = incident;
+                }
+            }
+            return nearest;
+        }
+
         [Obsolete]
         public int GetBribeCount(Faction faction)
         {

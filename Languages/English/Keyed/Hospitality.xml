@@ -46,6 +46,13 @@
   <VisitorsArrivedRefuseUntilBeds>Refuse visitors until I have guest beds</VisitorsArrivedRefuseUntilBeds>
   <VisitorsArrivedReasonNoBeds>No guest beds</VisitorsArrivedReasonNoBeds>
 
+  <!-- Communication -->
+  <InviteGuests>Invite for a visit</InviteGuests>
+  <GuestsCantBeHostile>can't be hostile</GuestsCantBeHostile>
+  <GuestsDontWantToCome>currently not interested in visiting you</GuestsDontWantToCome>
+  <GuestsAlreadyComing>are already on their way and will arrive in {0}</GuestsAlreadyComing>
+  <GuestsOnTheirWay>They are sending a delegation. Expect them to arrive in {0}.</GuestsOnTheirWay>
+  
   <!-- Tab -->
   <AreaToStay>Area of accommodation</AreaToStay>
   <AreaToBuy>Shopping area</AreaToBuy>
@@ -70,7 +77,7 @@
   <StatsReport_FinalAdjustment>Adjustment</StatsReport_FinalAdjustment>
   
   <!-- Bed -->
-  <ForGuestUse>For Guest Use</ForGuestUse>
+  <ForGuestUse>For guest use</ForGuestUse>
   <GuestBedFormat>guest {0}</GuestBedFormat>
   <CommandBedSetAsGuestLabel>For guests</CommandBedSetAsGuestLabel>
   <CommandBedSetAsGuestDesc>Whether this bed is for guests.</CommandBedSetAsGuestDesc>

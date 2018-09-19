@@ -147,14 +147,14 @@ namespace Hospitality
 
             if (Settings.disableGuests || map.mapPawns.ColonistCount == 0)
             {
-                GuestUtility.PlanNewVisit(map, Rand.Range(5f, 25f), parms.faction);
+                GenericUtility.PlanNewVisit(map, Rand.Range(5f, 25f), parms.faction);
             }
             else
             {
                 // Did the player refuse guests until beds are made and there are no beds yet?
                 if (!GuestUtility.BedCheck(map))
                 {
-                    GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
+                    GenericUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
                     return true;
                 }
 
@@ -173,7 +173,7 @@ namespace Hospitality
                     // Permission, spawn
                     () => SpawnGroup(parms, map),
                     // No permission, come again later
-                    () => { GuestUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction); });
+                    () => { GenericUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction); });
             }
             return true;
         }
@@ -208,7 +208,7 @@ namespace Hospitality
             catch (Exception e)
             {
                 Log.ErrorOnce("Something failed when spawning visitors: " + e.Message + "\n" + e.StackTrace, 464365853);
-                GuestUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
+                GenericUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
                 return true; // be gone, event
             }
             if (visitors == null || visitors.Count == 0) return false;
@@ -233,7 +233,7 @@ namespace Hospitality
                 {
                     visitor.DestroyOrPassToWorld();
                 }
-                GuestUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
+                GenericUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
                 return false;
             }
             

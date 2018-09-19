@@ -167,29 +167,19 @@ namespace Hospitality
 
             Map randomVisitMap = Rand.Value < 0.1f ? Find.Maps.Where(m => m.IsPlayerHome).RandomElement() : currentMap;
 
-            if (Rand.Value < targetGoodwill/100f && Rand.Value < 0.2f)
+            if (Rand.Value < targetGoodwill / 100f && Rand.Value < 0.2f)
             {
-                // Send another friendly faction as well
+                // Send another friendly faction as well (start walking now)
                 Faction newFaction;
                 if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && !f.HostileTo(Faction.OfPlayer)).TryRandomElement(out newFaction))
                 {
-                    TryCreateVisit(randomVisitMap, days*2, newFaction);
+                    GenericUtility.TryCreateVisit(randomVisitMap, 0, newFaction);
                 }
             }
 
             //Log.Message(faction.def.LabelCap + " will visit again in " + days + " days (+" + GenericUtility.GetTravelDays(faction, randomVisitMap)*2 + " days for travel).");
-            TryCreateVisit(randomVisitMap, days, faction, 2);
+            GenericUtility.TryCreateVisit(randomVisitMap, days, faction, 2);
             return days;
-        }
-
-        private static void TryCreateVisit(Map map, float days, Faction faction, float travelFactor = 1)
-        {
-            var travelDays = GenericUtility.GetTravelDays(faction, map);
-
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            if (travelDays == GenericUtility.NoBasesLeft) return;
-
-            GuestUtility.PlanNewVisit(map, days + travelDays * travelFactor, faction);
         }
 
         public float GetVisitScore(Pawn pawn)
