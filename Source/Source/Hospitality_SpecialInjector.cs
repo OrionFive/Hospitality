@@ -17,7 +17,9 @@ namespace Hospitality
 
             InjectComp(typeof(CompProperties_Guest), def => def.race != null && def.race.Humanlike);
 
-            var bedDefs = DefDatabase<ThingDef>.AllDefsListForReading.Where(def => def.thingClass == typeof(Building_Bed) && def.building.bed_humanlike).ToArray();
+            Type bed = typeof(Building_Bed);
+            var bedDefs = DefDatabase<ThingDef>.AllDefsListForReading
+                .Where(def => bed.IsAssignableFrom(def.thingClass) && def.building.bed_humanlike).ToArray();
 
             var facilities = GetFacilitiesFor(bedDefs).ToArray();
             CreateGuestBedDefs(bedDefs, facilities);
