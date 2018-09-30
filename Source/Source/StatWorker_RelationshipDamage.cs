@@ -9,7 +9,7 @@ namespace Hospitality
         public override float GetValueUnfinalized(StatRequest req, bool applyPostProcess = true)
         {
             var factor = req.HasThing && req.Thing is Pawn ? PriceUtility.PawnQualityPriceFactor((Pawn) req.Thing) : 0;
-            return factor*stat.defaultBaseValue-stat.defaultBaseValue/6;
+            return factor*stat.defaultBaseValue-stat.defaultBaseValue/5;
         }
 
         public override string GetExplanationUnfinalized(StatRequest req, ToStringNumberSense numberSense)
@@ -24,7 +24,7 @@ namespace Hospitality
             var pawn = req.Thing as Pawn;
             stringBuilder.AppendLine();
             stringBuilder.AppendLine(string.Format("{0}: x{1} {2}",
-                "StatsReport_CharacterQuality".Translate(), PriceUtility.PawnQualityPriceFactor(pawn).ToStringPercent(), -stat.defaultBaseValue/6));
+                "StatsReport_CharacterQuality".Translate(), PriceUtility.PawnQualityPriceFactor(pawn).ToStringPercent(), -stat.defaultBaseValue/5));
             return stringBuilder.ToString();
         }
     }
