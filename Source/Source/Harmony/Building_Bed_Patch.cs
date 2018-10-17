@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     public class Building_Bed_Patch
     {
         [HarmonyPatch(typeof(Building_Bed))]
-        [HarmonyPatch("ForPrisoners", PropertyMethod.Setter)]
+        [HarmonyPatch("ForPrisoners", MethodType.Setter)]
         public class ForPrisoners
         {
             [HarmonyPostfix]
@@ -35,10 +35,6 @@ namespace Hospitality.Harmony
 
             private static IEnumerable<Gizmo> Process(Building_Bed __instance, IEnumerable<Gizmo> __result)
             {
-                foreach (var gizmo in __result)
-                {
-                    yield return gizmo;
-                }
                 if (!__instance.ForPrisoners && !__instance.Medical && __instance.def.building.bed_humanlike)
                 {
                     yield return
@@ -51,6 +47,10 @@ namespace Hospitality.Harmony
                             toggleAction = () => Building_GuestBed.Swap(__instance),
                             hotKey = KeyBindingDefOf.Misc4
                         };
+                }
+                foreach (var gizmo in __result)
+                {
+                    yield return gizmo;
                 }
             }
         }

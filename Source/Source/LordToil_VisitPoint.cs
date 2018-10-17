@@ -24,7 +24,7 @@ namespace Hospitality
 
     internal class LordToil_VisitPoint : LordToil
     {
-        public LordToilData_VisitPoint Data { get { return (LordToilData_VisitPoint) data; } }
+        public LordToilData_VisitPoint Data => (LordToilData_VisitPoint) data;
 
         public LordToil_VisitPoint()
         {
@@ -48,7 +48,7 @@ namespace Hospitality
             //Log.Message("Init State_VisitPoint "+brain.ownedPawns.Count + " - "+brain.faction.name);
             foreach (var pawn in lord.ownedPawns)
             {
-                if (pawn.needs == null || pawn.needs.mood == null) Data.visitorMoods.Add(pawn.thingIDNumber, 0.5f);
+                if (pawn.needs?.mood == null) Data.visitorMoods.Add(pawn.thingIDNumber, 0.5f);
                 else Data.visitorMoods.Add(pawn.thingIDNumber, pawn.needs.mood.CurInstantLevel);
                 //Log.Message("Added "+pawn.NameStringShort+": "+pawn.needs.mood.CurLevel);
 
@@ -127,7 +127,7 @@ namespace Hospitality
 
             var days = PlanRevisit(faction, targetGoodwill, currentMap, sentAway);
 
-            if (visitorCount == 0) return; // No message if noone is left (it says -100, which isn't true)
+            if (visitorCount == 0) return; // No message if no one is left (it says -100, which isn't true)
 
             string messageReturn = " ";
             if (days < 7)
@@ -170,8 +170,7 @@ namespace Hospitality
             if (Rand.Value < targetGoodwill / 100f && Rand.Value < 0.2f)
             {
                 // Send another friendly faction as well (start walking now)
-                Faction newFaction;
-                if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && !f.HostileTo(Faction.OfPlayer)).TryRandomElement(out newFaction))
+                if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && !f.HostileTo(Faction.OfPlayer)).TryRandomElement(out var newFaction))
                 {
                     GenericUtility.TryCreateVisit(randomVisitMap, 0, newFaction);
                 }
@@ -184,7 +183,7 @@ namespace Hospitality
 
         public float GetVisitScore(Pawn pawn)
         {
-            if (pawn.needs == null || pawn.needs.mood == null) return 0;
+            if (pawn.needs?.mood == null) return 0;
             var increase = pawn.needs.mood.CurLevel - Data.visitorMoods[pawn.thingIDNumber];
             var score = Mathf.Lerp(increase * 2.75f, pawn.needs.mood.CurLevel * 1.35f, 0.5f);
             //Log.Message(pawn.NameStringShort + " increase: " + (increase * 2.75f) + " mood: " + (pawn.needs.mood.CurLevel * 1.35f) + " score: " + score);
@@ -209,8 +208,7 @@ namespace Hospitality
                 }
 
                 // Handle trade stuff
-                var twc = item as ThingWithComps;
-                if (twc != null && map.mapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerBuys, map.mapPawns.FreeColonistsSpawned.RandomElement(), pawn);
+                if (item is ThingWithComps twc && map.mapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerBuys, map.mapPawns.FreeColonistsSpawned.RandomElement(), pawn);
             }
             return dropped;
         }
@@ -221,7 +219,7 @@ namespace Hospitality
 
             var dropped = GetLoot(pawn, (score + 10)*1.5f);
             if (dropped.Count == 0) return;
-            var itemNames = GenText.ToCommaList(dropped.Select(GetItemName));
+            var itemNames = dropped.Select(GetItemName).ToCommaList(true);
             
             var text = "VisitorVerySatisfied".Translate(pawn.Name.ToStringShort, pawn.Possessive(), pawn.ProSubjCap(), itemNames);
             Messages.Message(text, dropped.First(), MessageTypeDefOf.PositiveEvent);
@@ -253,7 +251,7 @@ namespace Hospitality
 
         private static string GetItemName(Thing item)
         {
-            return Find.ActiveLanguageWorker.PostProcessed(Find.ActiveLanguageWorker.WithIndefiniteArticle(item.Label));
+            return Find.ActiveLanguageWorker.WithIndefiniteArticlePostProcessed(item.Label);
         }
 
         public override void UpdateAllDuties()
