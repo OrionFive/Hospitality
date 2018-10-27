@@ -7,7 +7,7 @@
   <RecruitFactionAnger>{0} of {1} is upset with you for recruiting {2} ({3}).</RecruitFactionAnger>
   <RecruitFactionAngerLeaderless>The members of {0} never heard back of their delegation ({2}).</RecruitFactionAngerLeaderless>
   <LostGroupFactionAnger>{0} of {1} never heard back of this delegation ({2}).</LostGroupFactionAnger>
-  <LostGroupFactionAngerLeaderless>The members of {0} are upset with you for recruiting {({1}).</LostGroupFactionAngerLeaderless>
+  <LostGroupFactionAngerLeaderless>The members of {0} are upset with you for recruiting ({1}).</LostGroupFactionAngerLeaderless>
   <RecruitFactionPlease>{0} of {1} is glad that you took {2} off !!!!his hands ({3}).</RecruitFactionPlease>
   <RecruitFactionPleaseLeaderless>The members of {0} are glad that you took {1} off their hands ({2}).</RecruitFactionPleaseLeaderless>
   <MessageGuestRecruitSuccess>{0} happily decided to join your colony!</MessageGuestRecruitSuccess>
