@@ -468,41 +468,26 @@ namespace Hospitality
             {
                 gotTrader = TryConvertOnePawnToSmallTrader(pawns, faction, map, out traderIndex);
             }
+            Pawn pawn = pawns.Find((Pawn x) => faction.leader == x);
             string label;
             string description;
-            Pawn pawn = pawns.Find(x => faction.leader == x);
             if (pawns.Count == 1)
             {
-                string traderDesc = !gotTrader ? string.Empty : "SingleVisitorArrivesTraderInfo".Translate();
-                string leaderDesc = (pawn == null) ? string.Empty : "SingleVisitorArrivesLeaderInfo".Translate();
+                string value = (!gotTrader) ? string.Empty : ("\n\n" + "SingleVisitorArrivesTraderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN"));
+                string value2 = (pawn == null) ? string.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN"));
                 label = "LetterLabelSingleVisitorArrives".Translate();
-                description = "SingleVisitorArrives".Translate(new object[]
-				{
-					pawns[0].story.Title,
-					faction.Name,
-					pawns[0].Name,
-					traderDesc,
-                    leaderDesc
-				});
-                description = description.AdjustedFor(pawns[0]);
+                description = "SingleVisitorArrives".Translate(pawns[0].story.Title, faction.Name, pawns[0].Name.ToStringFull, value, value2, pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN");
             }
             else
             {
-                string traderDesc = (!gotTrader) ? string.Empty : "GroupVisitorsArriveTraderInfo".Translate();
- 				string leaderDesc = (pawn == null) ? string.Empty : "GroupVisitorsArriveLeaderInfo".Translate(new object[] {pawn.LabelShort});
+                string value3 = (!gotTrader) ? string.Empty : ("\n\n" + "GroupVisitorsArriveTraderInfo".Translate());
+                string value4 = (pawn == null) ? string.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(pawn.LabelShort, pawn));
                 label = "LetterLabelGroupVisitorsArrive".Translate();
-                description = "GroupVisitorsArrive".Translate(new object[]
-				{
-					faction.Name,
-					traderDesc,
-                    leaderDesc
-				});
+                description = "GroupVisitorsArrive".Translate(faction.Name, value3, value4);
             }
+
+            PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref label, ref description, "LetterRelatedPawnsNeutralGroup".Translate(Faction.OfPlayer.def.pawnsPlural), true, true);
             // NEW
-            PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref label, ref description, "LetterRelatedPawnsNeutralGroup".Translate(new object[]
-					{
-						Faction.OfPlayer.def.pawnsPlural
-					}), true, true);
             //Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.NeutralEvent, pawns[0], faction, null);
             var lookTarget = gotTrader ? pawns[traderIndex] : pawns[0];
             Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, lookTarget, faction);
