@@ -6,7 +6,7 @@ namespace Hospitality.Harmony
     public static class ITab_Pawn_Guest_Patch
     {
         [HarmonyPatch(typeof(RimWorld.ITab_Pawn_Guest))]
-        [HarmonyPatch("IsVisible", PropertyMethod.Getter)]
+        [HarmonyPatch("IsVisible", MethodType.Getter)]
         public static class IsVisible
         {
             // Added so guests will not show vanilla guest tab
