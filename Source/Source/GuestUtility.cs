@@ -798,7 +798,7 @@ namespace Hospitality
 
         public static void OnLostEntireGroup(Lord lord)
         {
-            const int penalty = -20;
+            const int penalty = -10;
             //Log.Message("Lost group");
             if (lord != null && lord.faction != null)
             {
