@@ -147,7 +147,9 @@ namespace Hospitality
 
             var incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.FactionArrival, realMap);
 
-            if(faction != null) incidentParms.faction = faction;
+            if (faction == null) return;
+
+            incidentParms.faction = faction;
             var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
             Hospitality_MapComponent.Instance(realMap).QueueIncident(incident, afterDays);
         }
