@@ -25,7 +25,7 @@ namespace Hospitality
             this.stayDuration = stayDuration;
         }
 
-        public override bool NeverInRestraints { get { return true; } }
+        public override bool NeverInRestraints => true;
 
         public override void ExposeData()
         {
@@ -70,7 +70,7 @@ namespace Hospitality
             t6.preActions.Add(new TransitionAction_Custom(() => StopPawns(lord.ownedPawns)));
             graphArrive.transitions.Add(t6);
             // Take wounded guest when leaving (doesn't work)
-            Transition t2 = new Transition(toilVisit, toilTakeWounded);
+            Transition t2 = new Transition(toilArrive, toilTakeWounded);
             t2.triggers.Add(new Trigger_WoundedGuestPresent());
             t2.preActions.Add(new TransitionAction_Message("MessageVisitorsTakingWounded".Translate(faction.def.pawnsPlural.CapitalizeFirst(), faction.Name)));
             graphExit.transitions.Add(t2); // Moved to exit from arrive
