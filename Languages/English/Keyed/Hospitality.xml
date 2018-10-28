@@ -82,7 +82,7 @@
   <CommandBedSetAsGuestLabel>For guests</CommandBedSetAsGuestLabel>
   <CommandBedSetAsGuestDesc>Whether this bed is for guests.</CommandBedSetAsGuestDesc>
   
-  <!-- Options -->
+  <!-- Settings -->
   <DisableLimits>Disable option limits</DisableLimits>
   <DisableLimitsDesc>When this option is turned on, you can tweak the settings further than recommended for a fair game.</DisableLimitsDesc>
   <DisableVisitors>Disable visitors</DisableVisitors>
@@ -91,6 +91,8 @@
   <DisableGuestsHelpingDesc>When checked, guests will not perform any work in your colony.</DisableGuestsHelpingDesc>
   <DisableArtAndCraft>Disable guests helping with art and crafting</DisableArtAndCraft>
   <DisableArtAndCraftDesc>When checked, guests will not perform any artistic or crafting tasks.</DisableArtAndCraftDesc>
+  <DisableOperations>Disable guests helping with operations</DisableOperations>
+  <DisableOperationsDesc>When checked, guests will not perform any medical operations.</DisableOperationsDesc>
   <DisableGifts>Disable guests leaving gifts</DisableGifts>
   <DisableGiftsDesc>When checked, guests will never leave items behind when satisfied.</DisableGiftsDesc>
   <MinGuestWorkSkill>Minimum skill for work</MinGuestWorkSkill>

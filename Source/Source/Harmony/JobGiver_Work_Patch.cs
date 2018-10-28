@@ -20,9 +20,9 @@ namespace Hospitality.Harmony
 
                 var canDo = !giver.ShouldSkip(pawn) && giver.MissingRequiredCapacity(pawn) == null && IsSkilledEnough(pawn, giver.def.workType);
                 if (!canDo) return false;
-
+                
                 if (Settings.disableArtAndCraft.Value && IsArtOrCraft(giver.def.workType.workTags)) return false;
-
+                if (Settings.disableOperations.Value && IsOperation(giver)) return false;
 
                 float score;
                 if (!pawn.GetVisitScore(out score)) return false;
@@ -46,6 +46,11 @@ namespace Hospitality.Harmony
                     if (tag == WorkTags.Crafting || tag == WorkTags.Artistic) return true;
                 }
                 return false;
+            }
+
+            private static bool IsOperation(WorkGiver workGiver)
+            {
+                return workGiver.def.workType == WorkTypeDefOf.Doctor && (workGiver.def.billGiversAllHumanlikes || workGiver.def.billGiversAllAnimals);
             }
 
             private static bool IsSkilledEnough(Pawn pawn, WorkTypeDef workTypeDef)
