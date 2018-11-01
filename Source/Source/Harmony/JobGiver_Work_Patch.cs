@@ -50,7 +50,7 @@ namespace Hospitality.Harmony
 
             private static bool IsOperation(WorkGiver workGiver)
             {
-                return workGiver.def.workType == WorkTypeDefOf.Doctor && (workGiver.def.billGiversAllHumanlikes || workGiver.def.billGiversAllAnimals);
+                return workGiver is WorkGiver_DoBill && (workGiver.def.billGiversAllHumanlikes || workGiver.def.billGiversAllAnimals);
             }
 
             private static bool IsSkilledEnough(Pawn pawn, WorkTypeDef workTypeDef)
