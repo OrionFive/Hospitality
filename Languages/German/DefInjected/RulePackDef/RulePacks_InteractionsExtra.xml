@@ -3,7 +3,7 @@
 <LanguageData>
 	
 	<Sentence_CharmAttemptAccepted.rulePack.rulesStrings>
-        <li>sent->[RECIPIENT_nameDef] klatschte [RECIPIENT_possessive] aufgeregt in die Hände.</li>
+        <li>sent->[RECIPIENT_nameDef] klatschte aufgeregt in die Hände.</li>
         <li>sent->[RECIPIENT_nameDef] lächelte.</li>
         <li>sent->[RECIPIENT_nameDef] nickte zustimmend.</li>
         <li>sent->[RECIPIENT_nameDef] war gespannt auf mehr.</li>
@@ -14,7 +14,7 @@
 
 	<Sentence_CharmAttemptRejected.rulePack.rulesStrings>
         <li>sent->[RECIPIENT_nameDef] wurde ärgerlich.</li>
-        <li>sent->[RECIPIENT_nameDef] missbilligend schüttelte [RECIPIENT_possessive] den Kopf.</li>
+        <li>sent->Missbilligend schüttelte [RECIPIENT_nameDef] den Kopf.</li>
         <li>sent->[RECIPIENT_nameDef] könnte sich nicht weniger interessieren.</li>
         <li>sent->[RECIPIENT_nameDef] hatte schon genug davon.</li>
         <li>sent->[RECIPIENT_nameDef] schaute sich gelangweilt im Raum um.</li>
