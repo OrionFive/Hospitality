@@ -18,7 +18,7 @@
     <EndorsedByRecruiter.stages.endorsed_by_recruiter.description>Diese Person wurde mir empfohlen.</EndorsedByRecruiter.stages.endorsed_by_recruiter.description>
 
     <GuestDismissiveAttitude.stages.tired_of_talking.label>hat genug geredet</GuestDismissiveAttitude.stages.tired_of_talking.label>
-    <GuestDismissiveAttitude.stages.tired_of_talking.description>Ich bin erst einmal genug geredet. Lass mich bitte allein.</GuestDismissiveAttitude.stages.tired_of_talking.description>
+    <GuestDismissiveAttitude.stages.tired_of_talking.description>Ich habe erst einmal genug geredet. Lass mich bitte allein.</GuestDismissiveAttitude.stages.tired_of_talking.description>
     <GuestBedCount.stages.no_guest_beds.label>Keine Gästebetten</GuestBedCount.stages.no_guest_beds.label>
     <GuestBedCount.stages.no_guest_beds.description>Die haben hier nichtmal Betten.</GuestBedCount.stages.no_guest_beds.description>
     <GuestBedCount.stages.not_enough_guest_beds.label>nicht genug Gästebetten</GuestBedCount.stages.not_enough_guest_beds.label>
