@@ -8,9 +8,9 @@
 	</HugsLib.UpdateFeatureDef>
 	
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-		<defName>Hospitality_1_0_2</defName>
-		<assemblyVersion>1.0.2</assemblyVersion>
-		<content>- Updated to "1.0"|- New option to block visitors until beds are built|- Guests can now be invited via Comms Console|- Guest colors now match their factions|I'm working on an exciting (non-Rimworld) personal project. Wanna check it out and give me a hand with testing? Then please click the link above for more information.</content>
+		<defName>Hospitality_1_0_3</defName>
+		<assemblyVersion>1.0.3</assemblyVersion>
+		<content>- Updated to "1.0"|- New option to block visitors until beds are built|- Guests can now be invited via Comms Console|- Guest colors now match their factions|I'm working on an exciting (non-Rimworld) personal project. Wanna check it out or give me a hand with testing? Then please click the link above for more information.</content>
 	</HugsLib.UpdateFeatureDef>
 
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">

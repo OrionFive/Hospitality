@@ -15,8 +15,8 @@ namespace Hospitality
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref dest, "dest", default(IntVec3));
-            Scribe_Values.Look(ref destAssigned, "destAssigned", false);
+            Scribe_Values.Look(ref dest, "dest");
+            Scribe_Values.Look(ref destAssigned, "destAssigned");
             Scribe_Values.Look(ref percentRequired, "percentRequired", 1);
             Scribe_Values.Look(ref distance, "distance", 10);
         }
@@ -24,8 +24,8 @@ namespace Hospitality
 
     public class LordToil_CustomTravel : LordToil
     {
-        private LordToilData_CustomTravel Data { get { return data as LordToilData_CustomTravel; } }
-        public override IntVec3 FlagLoc { get { return Data.dest; } }
+        private LordToilData_CustomTravel Data => data as LordToilData_CustomTravel;
+        public override IntVec3 FlagLoc => Data.dest;
 
         public LordToil_CustomTravel() {}
 
