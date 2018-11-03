@@ -1,31 +1,16 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-	<rep>
-		<path>GuestBeds.label</path>
-		<trans>Gästebett</trans>
-	</rep>
-	<rep>
-		<path>GuestBeds.helpText</path>
-		<trans>Besucher wollen lieber in Betten schlafen.\n\nDu kannst Betten zu Gäste betten machen, wenn du den "Für Gäste" Knopf drückst.</trans>
-	</rep>
+    <GuestBeds.label>Gästebett</GuestBeds.label>
+    <GuestBeds.helpText>Besucher wollen lieber in Betten schlafen.\n\nDu kannst Betten zu Gäste betten machen, wenn du den "Für Gäste" Knopf drückst.</GuestBeds.helpText>
 
-	<rep>
-		<path>RecruitGuest.label</path>
-		<trans>Gäste rekrutieren</trans>
-	</rep>
-	<rep>
-		<path>RecruitGuest.helpText</path>
-		<trans>Du kannst Gäste rekrutieren.\n\nEinen Gast zu rekrutieren, kostet dich Wohlwollen bei der Fraktion zu der dieser gehört. Stelle sicher, dass du einen Kolonisten mit guten sozialen Fähigkeiten zur Verhandlung verwendest.</trans>
-	</rep>
+    <RecruitGuest.label>Gäste rekrutieren</RecruitGuest.label>
+    <RecruitGuest.helpText>Du kannst Gäste rekrutieren.\n\nEinen Gast zu rekrutieren, kostet dich Wohlwollen bei der Fraktion zu der dieser gehört. Stelle sicher, dass du einen Kolonisten mit guten sozialen Fähigkeiten zur Verhandlung verwendest.</RecruitGuest.helpText>
 
-	<rep>
-		<path>Hospitality.label</path>
-		<trans>Gastfreundschaft</trans>
-	</rep>
-	<rep>
-		<path>Hospitality.helpText</path>
-		<trans>Wenn eine Gruppe von Besuchern ankommt, werden deine Ihre Entspannungseinrichtungen nutzen, in Gästebetten schlafen und Gegenstände in ihrem erlaubten Bereich kaufen.\n\nWenn sie ihren Besuch genossen haben, wird dies deinen Ruf mit ihrer Fraktion erhöhen.</trans>
-	</rep>
+    <GuestWork.label>Gäste helfen aus</GuestWork.label>
+    <GuestWork.helpText>Zufriedene Gäste helfen bei der Arbeit in ihrem Bereich, wenn sie gut genug sind. Du kannst dies deaktivieren oder den erforderlichen Skill in den Mod-Optionen erhöhen.</GuestWork.helpText>
+
+    <Hospitality.label>Gastfreundschaft</Hospitality.label>
+    <Hospitality.helpText>Wenn eine Gruppe von Besuchern ankommt, werden deine Ihre Entspannungseinrichtungen nutzen, in Gästebetten schlafen und Gegenstände in ihrem erlaubten Bereich kaufen.\n\nWenn sie ihren Besuch genossen haben, wird dies deinen Ruf mit ihrer Fraktion erhöhen.</Hospitality.helpText>
 
 </LanguageData>

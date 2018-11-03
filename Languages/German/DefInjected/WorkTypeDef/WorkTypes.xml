@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--suppress ALL -->
 <LanguageData>
 	
 	<Diplomat.labelShort>Verhandeln</Diplomat.labelShort>
 	<Diplomat.pawnLabel>Diplomat</Diplomat.pawnLabel>
-	<Diplomat.gerundLabel>Verhandeln</Diplomat.gerundLabel>
+	<Diplomat.gerundLabel>verhandeln</Diplomat.gerundLabel>
 	<Diplomat.description>Diplomaten unterhalten Gäste und rekrutieren neue Kolonisten.</Diplomat.description>
-	<Diplomat.verb>Unterhalte</Diplomat.verb>
+	<Diplomat.verb>unterhalte</Diplomat.verb>
 
 </LanguageData>
