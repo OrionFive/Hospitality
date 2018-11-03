@@ -5,6 +5,6 @@
 	<CharmGuest.reportString>Versuche TargetA zum Bleiben in der Kolonie zu überzeugen.</CharmGuest.reportString>
 	<GuestImproveRelationship.reportString>Versuche die Beziehung zu TargetA's Fraktion zu verbessern.</GuestImproveRelationship.reportString>
 	<BuyItem.reportString>Begutachte TargetA.</BuyItem.reportString>
-	<BrowseItems.reportString>Durchsuche Waren.</BrowseItems.reportString>
+	<BrowseItems.reportString>Schaue die Waren an.</BrowseItems.reportString>
 
 </LanguageData>
