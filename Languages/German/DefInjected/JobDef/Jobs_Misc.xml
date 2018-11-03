@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--suppress ALL -->
 <LanguageData>
 	
-	<CharmGuest.reportString>Versuche TargetA zu rekrutieren.</CharmGuest.reportString>
+	<CharmGuest.reportString>Versuche TargetA zum Bleiben in der Kolonie zu überzeugen.</CharmGuest.reportString>
 	<GuestImproveRelationship.reportString>Versuche die Beziehung zu TargetA's Fraktion zu verbessern.</GuestImproveRelationship.reportString>
 	<BuyItem.reportString>Begutachte TargetA.</BuyItem.reportString>
-	<BrowseItems.reportString>Begutachte TargetA.</BrowseItems.reportString>
+	<BrowseItems.reportString>Schaue die Waren an.</BrowseItems.reportString>
 
 </LanguageData>

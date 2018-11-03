@@ -1,84 +1,31 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-	<rep>
-		<path>GuestAngered.stages[0].label</path>
-		<trans>verärgert wegen Rekrutierung</trans>
-	</rep>
-	<rep>
-		<path>GuestAngered.stages[0].labelSocial</path>
-		<trans>verärgerte mich durch Rekrutierung</trans>
-	</rep>
-	<rep>
-		<path>GuestAngered.stages[0].description</path>
-		<trans>Diese Leute versuchen unsere Mitglieder zu stehlen!</trans>
-	</rep>
+    <GuestAngered.stages.angered_by_seeing_recruitment.label>verärgert wegen Rekrutierung</GuestAngered.stages.angered_by_seeing_recruitment.label>
+    <GuestAngered.stages.angered_by_seeing_recruitment.labelSocial>verärgerte mich durch Rekrutierung</GuestAngered.stages.angered_by_seeing_recruitment.labelSocial>
+    <GuestAngered.stages.angered_by_seeing_recruitment.description>Diese Leute versuchen unsere Mitglieder zu stehlen!</GuestAngered.stages.angered_by_seeing_recruitment.description>
 
-	<rep>
-		<path>GuestOffendedRelationship.stages[0].label</path>
-		<trans>von Kolonisten beleidigt</trans>
-	</rep>
-	<rep>
-		<path>GuestOffendedRelationship.stages[0].labelSocial</path>
-		<trans>beleidigte mich</trans>
-	</rep>
-	<rep>
-		<path>GuestOffendedRelationship.stages[0].description</path>
-		<trans>Diese Leute sind solche Verliere!</trans>
-	</rep>
+    <GuestOffendedRelationship.stages.insulted_by_colonist.label>von Kolonisten beleidigt</GuestOffendedRelationship.stages.insulted_by_colonist.label>
+    <GuestOffendedRelationship.stages.insulted_by_colonist.labelSocial>beleidigte mich</GuestOffendedRelationship.stages.insulted_by_colonist.labelSocial>
+    <GuestOffendedRelationship.stages.insulted_by_colonist.description>Diese Leute sind solche Verlierer!</GuestOffendedRelationship.stages.insulted_by_colonist.description>
 
-	<rep>
-		<path>GuestPleasedRelationship.stages[0].label</path>
-		<trans>Bezaubert von den Kolonisten</trans>
-	</rep>
-	<rep>
-		<path>GuestPleasedRelationship.stages[0].labelSocial</path>
-		<trans>hat mich beeindruckt</trans>
-	</rep>
-	<rep>
-		<path>GuestPleasedRelationship.stages[0].description</path>
-		<trans>Solch freundliche Leute!</trans>
-	</rep>
+    <GuestPleasedRelationship.stages.charmed_by_colonist.label>fasziniert vom Kolonisten</GuestPleasedRelationship.stages.charmed_by_colonist.label>
+    <GuestPleasedRelationship.stages.charmed_by_colonist.labelSocial>beeindruckte mich</GuestPleasedRelationship.stages.charmed_by_colonist.labelSocial>
+    <GuestPleasedRelationship.stages.charmed_by_colonist.description>Solch freundlichen Leute!</GuestPleasedRelationship.stages.charmed_by_colonist.description>
 
-	<rep>
-		<path>GuestDismissiveAttitude.stages[0].label</path>
-		<trans>hat genug geredet</trans>
-	</rep>
-	<rep>
-		<path>GuestDismissiveAttitude.stages[0].description</path>
-		<trans>Ich bin erstmal fertig mit Reden. Lass mich allein.</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[0].label</path>
-		<trans>Keine Gästebetten</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[0].description</path>
-		<trans>Die haben hier nichtmal Betten.</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[1].label</path>
-		<trans>Nicht genug Gästebetten</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[1].description</path>
-		<trans>Die sollten mehr Betten haben.</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[2].label</path>
-		<trans>Genug Betten</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[2].description</path>
-		<trans>Es hat genung Betten für uns alle.</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[3].label</path>
-		<trans>Mehr als genug Betten</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[3].description</path>
-		<trans>Wow, so viele Betten!</trans>
-	</rep>
+    <EndorsedByRecruiter.stages.endorsed_by_recruiter.label>befürwortet vom Anwerber</EndorsedByRecruiter.stages.endorsed_by_recruiter.label>
+    <EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>wurde mir empfohlen</EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>
+    <EndorsedByRecruiter.stages.endorsed_by_recruiter.description>Diese Person wurde mir empfohlen.</EndorsedByRecruiter.stages.endorsed_by_recruiter.description>
+
+    <GuestDismissiveAttitude.stages.tired_of_talking.label>hat genug geredet</GuestDismissiveAttitude.stages.tired_of_talking.label>
+    <GuestDismissiveAttitude.stages.tired_of_talking.description>Ich habe erst einmal genug geredet. Lass mich bitte allein.</GuestDismissiveAttitude.stages.tired_of_talking.description>
+    <GuestBedCount.stages.no_guest_beds.label>Keine Gästebetten</GuestBedCount.stages.no_guest_beds.label>
+    <GuestBedCount.stages.no_guest_beds.description>Die haben hier nichtmal Betten.</GuestBedCount.stages.no_guest_beds.description>
+    <GuestBedCount.stages.not_enough_guest_beds.label>nicht genug Gästebetten</GuestBedCount.stages.not_enough_guest_beds.label>
+    <GuestBedCount.stages.not_enough_guest_beds.description>Die sollten mehr Betten haben.</GuestBedCount.stages.not_enough_guest_beds.description>
+    <GuestBedCount.stages.enough_beds.label>genug Betten</GuestBedCount.stages.enough_beds.label>
+    <GuestBedCount.stages.enough_beds.description>Hier sind genug Gästebetten für uns alle.</GuestBedCount.stages.enough_beds.description>
+    <GuestBedCount.stages.lots_of_beds.label>Mehr als genug Betten</GuestBedCount.stages.lots_of_beds.label>
+    <GuestBedCount.stages.lots_of_beds.description>Wow, so viele Betten!</GuestBedCount.stages.lots_of_beds.description>
 
 </LanguageData>

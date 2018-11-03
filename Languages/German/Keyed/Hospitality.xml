@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
   <!-- Recruiting -->
   <RecruitAngerMultiple>{0} verärgerte {1} {2}x nacheinander.</RecruitAngerMultiple>
   <RecruitAngerOther>{3} sah {0} beim Rekrutieren von {1} und ist beleidigt ({2} Chance).</RecruitAngerOther>
   <RecruitFactionAnger>{0} von {1} ist verärgert über den Rekrutierungsversuch {2} ({3}).</RecruitFactionAnger>
-  <RecruitFactionAngerLeaderless>Die Mitglieder von {0} sind verärgert über deinen Rekrutierungsversuch {1} ({2}).</RecruitFactionAngerLeaderless>
+  <RecruitFactionAngerLeaderless>Die Mitglieder von {0} sind verärgert über deinen Rekrutierungsversuch ({2}).</RecruitFactionAngerLeaderless>
+  <LostGroupFactionAnger>{0} von {1} hat nie wieder etwas von dieser Delegation gehört ({2}).</LostGroupFactionAnger>
+  <LostGroupFactionAngerLeaderless>Die Mitglieder von {0} sind verärgert über deinen Rekrutierungsversuch ({1}).</LostGroupFactionAngerLeaderless>
   <RecruitFactionPlease>{0} von {1} ist froh, dass du {2} ihm abgenommen hast ({3}).</RecruitFactionPlease>
   <RecruitFactionPleaseLeaderless>Die Mitglieder von {0} sind froh das du ihnen {1} abgenommen hast ({2}).</RecruitFactionPleaseLeaderless>
   <MessageGuestRecruitSuccess>{0} ist glücklich deiner Kolonie beizutreten!</MessageGuestRecruitSuccess>
@@ -22,11 +24,11 @@
   <ImproveFactionAnger>{0} verschlechterte die Beziehungen mit {1} von {2} ({3} Chance).</ImproveFactionAnger>
   
   <!-- Incident Results -->
-  <VisitorsLeavingGreat>Sie sind absolut begeistert von eurer Gastfreundschaft! (Resultat: {1})</VisitorsLeavingGreat>
-  <VisitorsLeavingGood>Sie haben ihren Aufenthalt sehr genossen! (Resultat: {1})</VisitorsLeavingGood>
-  <VisitorsLeavingNormal>Ihr Aufenthalt war OK! (Resultat: {1})</VisitorsLeavingNormal>
-  <VisitorsLeavingBad>Sie hatten mehr erwartet. (Resultat: {1})</VisitorsLeavingBad>
-  <VisitorsLeavingAwful>Sie waren schrecklich enttäuscht von ihrem Aufenthalt. (Resultat: {1})</VisitorsLeavingAwful>
+  <VisitorsLeavingGreat>Sie sind absolut begeistert von eurer Gastfreundschaft! (Wertung: {1})</VisitorsLeavingGreat>
+  <VisitorsLeavingGood>Sie haben ihren Aufenthalt sehr genossen! (Wertung: {1})</VisitorsLeavingGood>
+  <VisitorsLeavingNormal>Ihr Aufenthalt war OK! (Wertung: {1})</VisitorsLeavingNormal>
+  <VisitorsLeavingBad>Sie hatten mehr erwartet. (Wertung: {1})</VisitorsLeavingBad>
+  <VisitorsLeavingAwful>Sie waren schrecklich enttäuscht von ihrem Aufenthalt. (Wertung: {1})</VisitorsLeavingAwful>
   <VisitorSatisfied>{0} genoß {1} Aufenthalt. {2} hinterließ dir {3}.</VisitorSatisfied>
   <VisitorVerySatisfied>{0} hat {1} Aufenthalt absolut genoßen. {2} hinterließ dir {3}.</VisitorVerySatisfied>
   <MessageVisitorsLeavingCold>Die Besucher von {0} verlassen dich wieder, da es zu kalt ist.</MessageVisitorsLeavingCold>
@@ -35,13 +37,22 @@
   <VisitorsReturnSoon>Sie werden in ein paar Tagen wiederkommen.</VisitorsReturnSoon>
   <VisitorsReturnWhile>Sie werden nach einer Weile wiederkommen.</VisitorsReturnWhile>
   <VisitorsReturnNotSoon>Sie werden nicht so bald zurückkommen.</VisitorsReturnNotSoon>
-  <VisitorsReturnNot>Sie haben genug von dir.</VisitorsReturnNot>
+  <VisitorsReturnNot>Sie haben genug von dir und werden diesen Ort in Zukunft meiden.</VisitorsReturnNot>
 
   <VisitorsArrivedTitle>Besucher sind in {0} angekommen (von {1})</VisitorsArrivedTitle>
   <VisitorsArrivedDesc>Sie haben Angst, aus folgenden Gründen in dein Gebiet einzureisen:\n{1}\n\nWenn du sie wegschickst, bleiben sie in der Gegend und kommen später zurück.</VisitorsArrivedDesc>
   <VisitorsArrivedAccept>Gewähre Sicherheit</VisitorsArrivedAccept>
   <VisitorsArrivedRefuse>Schicke sie weg</VisitorsArrivedRefuse>
+  <VisitorsArrivedRefuseUntilBeds>Besucher abweisen, bis ich Gästebetten habe</VisitorsArrivedRefuseUntilBeds>
+  <VisitorsArrivedReasonNoBeds>Keine Gästebetten</VisitorsArrivedReasonNoBeds>
 
+  <!-- Communication -->
+  <InviteGuests>Einladung für einen Besuch</InviteGuests>
+  <GuestsCantBeHostile>kann nicht feindselig sein</GuestsCantBeHostile>
+  <GuestsDontWantToCome>derzeit nicht an einem Besuch interessiert</GuestsDontWantToCome>
+  <GuestsAlreadyComing>sind schon unterwegs und werden in {0} ankommen.</GuestsAlreadyComing>
+  <GuestsOnTheirWay>Sie schicken eine Delegation. Erwarte, dass sie in {0} ankommen.</GuestsOnTheirWay>
+  
   <!-- Tab -->
   <AreaToStay>Aufenthaltszone</AreaToStay>
   <AreaToBuy>Einkaufszone</AreaToBuy>
@@ -49,19 +60,18 @@
   <AreaToStayTooltip>Hier dürfen Gäste schlafen und sich aufhalten.</AreaToStayTooltip>
   <AreaToBuyTooltip>Gegenstände in dieser Zone dürfen gekauft werden. Muss innerhalb der Aufenthaltszone sein.</AreaToBuyTooltip>
   <ConvincingLeft>Überzeugung nötig</ConvincingLeft>
-  <FriendsRequirement>Genug befreundet zum rekrutieren: {0}/{1}</FriendsRequirement>
+  <FriendsRequirement>Genug befreundet zum Rekrutieren: {0}/{1}</FriendsRequirement>
   <RecruitmentPenalty>Beziehungsschaden bei Rekrutierung</RecruitmentPenalty>
   <ImproveRelationship>Versuche Sie zu unterhalten</ImproveRelationship>
   <LeaveAlone>Lasse Sie allein</LeaveAlone>
-  <MayBuy>Erlaube ihnen Dinge hier zu kaufen</MayBuy>
-  <FactionGoodwill>Fraktions Wohlwollen</FactionGoodwill>
+  <FactionGoodwill>Wohlwollen der Fraktion</FactionGoodwill>
   <Hospitality>Gastfreundschaft</Hospitality>
   <MakeDefault>Allen Gästen zuweisen</MakeDefault>
   <SendAway>Wegschicken</SendAway>
-  <SendAwayQuestion>Bist du sicher die Besucher von {0} wegzuschicken?</SendAwayQuestion>
-  <NotEnoughFriends>NAME mag nicht genügend deiner Kolonisten (Meinung > {0}).</NotEnoughFriends>
-  <CanNowBeRecruited>NAME kann rekrutiert werden.</CanNowBeRecruited>
-  <IsATrader>NAME ist Teil einer Karavane und kein Gast.</IsATrader>
+  <SendAwayQuestion>Bist du sicher die Besucher von {0} wegzuschicken?\nWenn du sie sofort nach dem Erscheinen wegschickst, hat dies keine Auswirkungen auf die Beziehungen.</SendAwayQuestion>
+  <NotEnoughFriends>[PAWN_nameDef] mag nicht genügend deiner Kolonisten (Meinung > {0}).</NotEnoughFriends>
+  <CanNowBeRecruited>[PAWN_nameDef] kann nun rekrutiert werden.</CanNowBeRecruited>
+  <IsATrader>[PAWN_nameDef] ist Teil einer Karavane und kein Gast.</IsATrader>
 
   <!-- Infos -->
   <StatsReport_FinalAdjustment>Einstellung</StatsReport_FinalAdjustment>
@@ -72,12 +82,22 @@
   <CommandBedSetAsGuestLabel>Für Gäste</CommandBedSetAsGuestLabel>
   <CommandBedSetAsGuestDesc>Dieses Bett ist für Gäste.</CommandBedSetAsGuestDesc>
   
-  <!-- Rescue -->
-  <RescuedInitial>Der {0} mit Namen NAME den du gerettet hast, ist sehr dankbar für seine Rettung und würde gerne hierbleiben.\n\nSeine Eigenschaften sind: {1}.</RescuedInitial>
-  <RescuedInitial_Accept>Akzeptiere HIM</RescuedInitial_Accept>
-  <RescuedInitial_Reject>Forderung ablehnen</RescuedInitial_Reject>
+  <!-- Settings -->
+  <DisableLimits>Deaktiviere Optionslimits</DisableLimits>
+  <DisableLimitsDesc>Wenn diese Option aktiviert ist, können die Einstellungen für ein faires Spiel weiter anpassen werden</DisableLimitsDesc>
+  <DisableVisitors>Besucher deaktivieren</DisableVisitors>
+  <DisableVisitorsDesc>Du hasst Besucher und wunderst dich, warum du diesen Mod überhaupt installiert hast.</DisableVisitorsDesc>
+  <DisableGuestsHelping>Deaktiviert Gäste die Helfen</DisableGuestsHelping>
+  <DisableGuestsHelpingDesc>Wenn diese Option aktiviert ist, führen Gäste keine Arbeit in Ihrer Kolonie aus.</DisableGuestsHelpingDesc>
+  <DisableArtAndCraft>Deaktiviert Gäste die bei Kunst und Handwerk helfen</DisableArtAndCraft>
+  <DisableArtAndCraftDesc>Wenn diese Option aktiviert ist, werden Gäste keine künstlerischen oder handwerklichen Aufgaben ausführen.</DisableArtAndCraftDesc>
+  <DisableOperations>Deaktiviert Gäste die bei Operationen helfen</DisableOperations>
+  <DisableOperationsDesc>Wenn diese Option aktiviert ist, führen die Gäste keine medizinischen Operationen durch.</DisableOperationsDesc>
+  <DisableGifts>Deaktiviert, dass Gäste Geschenke hinterlassen</DisableGifts>
+  <DisableGiftsDesc>Wenn diese Option aktiviert ist, werden Gäste keine Gegenstände zurücklassen, wenn sie zufrieden sind.</DisableGiftsDesc>
+  <MinGuestWorkSkill>Mindestkenntnisse für die Arbeit</MinGuestWorkSkill>
+  <MinGuestWorkSkillDesc>Die minimale Fähigkeit, die ein Gast erfüllen muss, wenn er aushilft. (Empfohlen: 7)</MinGuestWorkSkillDesc>
+  <MaxGuestGroupSize>Maximale Gästegruppengröße</MaxGuestGroupSize>
+  <MaxGuestGroupSizeDesc>Die maximale Größe einer Gruppe von Gästen. (Empfohlen: 16)</MaxGuestGroupSizeDesc>
   
-  <!-- Wanderer -->
-  <WandererInitial>NAME von den {0} war in der Gegend und bemerkte, dass du Hilfe gebrauchen kannst. HECAP würde sich gerne deiner Kolonie für eine Weile anschließen.\n\nHECAP ist ein {1} und seine Eigenschaften sind {2}.</WandererInitial>
-
 </LanguageData>
