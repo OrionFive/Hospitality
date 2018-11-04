@@ -5,6 +5,7 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using Verse.AI.Group;
 
 namespace Hospitality
@@ -224,7 +225,7 @@ namespace Hospitality
                 visitor.GetComp<CompGuest>().sentAway = false;
             }
 
-            var spot = GetSpot(map, visitors.First().GetGuestArea());
+            var spot = GetSpot(map, visitors.First().GetGuestArea(), visitors.First().Position);
 
             if (!spot.IsValid)
             {
@@ -274,17 +275,27 @@ namespace Hospitality
             }
         }
 
-        private static IntVec3 GetSpot(Map map, Area guestArea)
+        private static IntVec3 GetSpot(Map map, Area guestArea, IntVec3 startPos)
         {
-            var area = guestArea;
+            List<IntVec3> cells = new List<IntVec3>();
+            cells.AddRange(guestArea != null ? guestArea.ActiveCells.InRandomOrder() : Hospitality_MapComponent.Instance(map).defaultAreaRestriction.ActiveCells);
 
-            if (area == null) return DropCellFinder.TradeDropSpot(map);
+            var tradeDropSpot = DropCellFinder.TradeDropSpot(map);
+            cells.Add(tradeDropSpot);
+            if (DropCellFinder.TryFindDropSpotNear(tradeDropSpot, map, out var near, false, false)) cells.Add(near);
+            cells.Add(DropCellFinder.RandomDropSpot(map));
 
-            var cells = area.ActiveCells.Where(c => c.Walkable(map) && c.Roofed(map));
-
-            if (!cells.Any()) return DropCellFinder.TradeDropSpot(map);
-            
-            return cells.RandomElement();
+            // Prefer roofed
+            foreach (var cell in cells)
+            {
+                if (cell.IsValid && cell.Roofed(map) && map.reachability.CanReach(startPos, cell, PathEndMode.OnCell, TraverseMode.PassDoors)) return cell;
+            }
+            // Otherwise not roofed
+            foreach (var cell in cells)
+            {
+                if (cell.IsValid && map.reachability.CanReach(startPos, cell, PathEndMode.OnCell, TraverseMode.PassDoors)) return cell;
+            }
+            return IntVec3.Invalid;
         }
 
         private static void GiveItems(IEnumerable<Pawn> visitors)
