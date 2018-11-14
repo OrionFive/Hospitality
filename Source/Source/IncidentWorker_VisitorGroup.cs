@@ -277,13 +277,13 @@ namespace Hospitality
 
         private static IntVec3 GetSpot(Map map, Area guestArea, IntVec3 startPos)
         {
-            List<IntVec3> cells = new List<IntVec3>();
-            cells.AddRange(guestArea != null ? guestArea.ActiveCells.InRandomOrder() : Hospitality_MapComponent.Instance(map).defaultAreaRestriction.ActiveCells);
+            if(map == null) throw new NullReferenceException("map is null!");
+            if(map.reachability == null) throw new NullReferenceException("map.reachability is null!");
 
-            var tradeDropSpot = DropCellFinder.TradeDropSpot(map);
-            cells.Add(tradeDropSpot);
-            if (DropCellFinder.TryFindDropSpotNear(tradeDropSpot, map, out var near, false, false)) cells.Add(near);
-            cells.Add(DropCellFinder.RandomDropSpot(map));
+            List<IntVec3> cells = new List<IntVec3>();
+            GetSpotAddGuestArea(map, guestArea, cells);
+
+            GetSpotAddDropSpots(map, cells);
 
             // Prefer roofed
             foreach (var cell in cells)
@@ -296,6 +296,25 @@ namespace Hospitality
                 if (cell.IsValid && map.reachability.CanReach(startPos, cell, PathEndMode.OnCell, TraverseMode.PassDoors)) return cell;
             }
             return IntVec3.Invalid;
+        }
+
+        private static void GetSpotAddDropSpots(Map map, List<IntVec3> cells)
+        {
+            var tradeDropSpot = DropCellFinder.TradeDropSpot(map);
+            cells.Add(tradeDropSpot);
+
+            if (tradeDropSpot.IsValid && DropCellFinder.TryFindDropSpotNear(tradeDropSpot, map, out var near, false, false)) cells.Add(near);
+            cells.Add(DropCellFinder.RandomDropSpot(map));
+        }
+
+        private static void GetSpotAddGuestArea(Map map, Area guestArea, List<IntVec3> cells)
+        {
+            if(map.areaManager == null) throw new NullReferenceException("map.areaManager is null!");
+
+            if (guestArea == null || !guestArea.ActiveCells.Any()) guestArea = Hospitality_MapComponent.Instance(map).defaultAreaRestriction;
+            if (guestArea == null || !guestArea.ActiveCells.Any()) guestArea = map.areaManager.Home;
+
+            cells.AddRange(guestArea.ActiveCells);
         }
 
         private static void GiveItems(IEnumerable<Pawn> visitors)
