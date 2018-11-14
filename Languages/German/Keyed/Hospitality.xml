@@ -78,7 +78,7 @@
   
   <!-- Bed -->
   <ForGuestUse>Zur Benutzung durch Gäste</ForGuestUse>
-  <GuestBedFormat>Gast {0}</GuestBedFormat>
+  <GuestBedFormat>Gäste-{0}</GuestBedFormat>
   <CommandBedSetAsGuestLabel>Für Gäste</CommandBedSetAsGuestLabel>
   <CommandBedSetAsGuestDesc>Dieses Bett ist für Gäste.</CommandBedSetAsGuestDesc>
   
