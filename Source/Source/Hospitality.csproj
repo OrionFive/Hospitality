@@ -66,6 +66,7 @@
     <Compile Include="Harmony\ExpectationsUtility_Patch.cs" />
     <Compile Include="Harmony\FactionDialogMaker_Patch.cs" />
     <Compile Include="Harmony\FactionUtility_Patch.cs" />
+    <Compile Include="Harmony\GatheringsUtility_Patch.cs" />
     <Compile Include="Harmony\JobDriver_Patch.cs" />
     <Compile Include="Harmony\PawnNameColorUtility_Patch.cs" />
     <Compile Include="Harmony\Pawn_ApparelTracker_Patch.cs" />

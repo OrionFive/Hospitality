@@ -16,7 +16,7 @@ namespace Hospitality.Harmony
         [HarmonyPatch(typeof(Pawn_ApparelTracker), "TryDrop")]
         public class TryDrop
         {
-            // Targetting specific overload with ref!
+            // Targeting specific overload with ref!
             [UsedImplicitly]
             static MethodBase TargetMethod()
             {
