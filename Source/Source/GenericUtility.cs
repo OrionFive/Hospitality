@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace Hospitality
@@ -10,6 +11,8 @@ namespace Hospitality
     internal static class GenericUtility
     {
         internal const int NoBasesLeft = -1;
+
+        private static Dictionary<Faction, int> travelDaysCache = new Dictionary<Faction, int>();
 
         public static bool IsMeal(this Thing thing)
         {
@@ -57,21 +60,22 @@ namespace Hospitality
 
         public static float GetTravelDays(Faction faction, Map map)
         {
-            var bases = Find.WorldObjects.SettlementBases.Where(b=>b.Faction==faction && CanReach(b.Tile, map.Tile)).ToArray();
-            if (bases.Length == 0)
-            {
-                return NoBasesLeft;
-            }
-            float tilesFromBase = bases.Min(b=>Find.WorldGrid.ApproxDistanceInTiles(map.Tile, b.Tile));
-            const float daysPerTile = 0.5f;
-            var days = tilesFromBase * daysPerTile;
-            //Log.Message("It takes the " + faction.def.pawnsPlural + " " + days + " days to travel to the player and back.");
-            return days;
-        }
+            if (travelDaysCache.TryGetValue(faction, out var minTicks)) return minTicks / (float)GenDate.TicksPerDay;
 
-        private static bool CanReach(int tileA, int tileB)
-        {
-            return Find.WorldReachability.CanReach(tileA, tileB);
+            minTicks = int.MaxValue;
+            foreach (var settlement in Find.WorldObjects.SettlementBases)
+            {
+                if (settlement.Faction != faction) continue;
+                int travelTicks = CaravanArrivalTimeEstimator.EstimatedTicksToArrive(map.Tile, settlement.Tile, null);
+                if (travelTicks <= 0) continue;
+                if (travelTicks < minTicks) minTicks = travelTicks;
+            }
+            if (minTicks == int.MaxValue) return NoBasesLeft;
+
+            travelDaysCache.Add(faction, minTicks);
+
+            //Log.Message("It takes the " + faction.def.pawnsPlural + " " + days + " days to travel to the player.");
+            return minTicks / (float)GenDate.TicksPerDay;
         }
 
         internal static void CheckTooManyIncidentsAtOnce(IncidentQueue incidentQueue)
@@ -122,7 +126,7 @@ namespace Hospitality
                 incidentQueue.Add(incident);
             }
 
-            Log.Message(String.Format("Reduced {0} visits to {1}, by cancelling every 2nd within the next {2} days.", amount, incidentQueue.Count, rangeOfDays));
+            Log.Message($"Reduced {amount} visits to {incidentQueue.Count}, by cancelling every 2nd within the next {rangeOfDays} days.");
         }
 
         internal static void FillIncidentQueue(Map map)
