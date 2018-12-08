@@ -26,6 +26,7 @@ namespace Hospitality
         public override void DefsLoaded()
         {
             settings = new Settings(Settings);
+            DefsUtility.CheckForInvalidDefs();
         }
 
         public override void Tick(int currentTick)
