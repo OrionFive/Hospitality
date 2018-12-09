@@ -1,15 +1,6 @@
 # Hospitality
 Orion's RimWorld mod "Hospitality".
 
-Have you been wondering what the point of visiting factions is? Look no further, this mod is the answer. 
-
-- Convince visitors to join your faction! 
-- Increase faction relationships! 
-- Treat visitors well by providing them with rooms, guest beds and joy activities! 
-- Sell junk by placing it in their rooms! 
-- Rescued characters can decide to join you! 
-- Joining wanderers or refugees are firstly selected from related / well-known characters!
-
 All original artwork included is Copyright © 2015 Orion, and distributed under the Creative Commons License Attribution-ShareAlike 4.0 International, or CC-BY-SA 4.0I.
 
 The full license text can be found here:
