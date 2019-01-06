@@ -72,6 +72,8 @@
   <NotEnoughFriends>[PAWN_nameDef] does not like enough of your colonists (opinion > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>[PAWN_nameDef] can now be recruited.</CanNowBeRecruited>
   <IsATrader>[PAWN_nameDef] is part of a trading caravan and not a guest.</IsATrader>
+  <ImproveTooltip>Your diplomats will try to temporarily improve the guest's mood and their personal relationship. Good diplomats are more effective at this. Bad diplomats can anger the guest.</ImproveTooltip>
+  <TryRecruitTooltip>Your diplomats will try to befriend the guest with your other colonists. Good diplomats are more effective at this. Bad diplomats can anger the guest. When the guest has enough friends, he will join your colony.</TryRecruitTooltip>
 
   <!-- Infos -->
   <StatsReport_FinalAdjustment>Adjustment</StatsReport_FinalAdjustment>

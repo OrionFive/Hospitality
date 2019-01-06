@@ -622,22 +622,20 @@ namespace Hospitality
             return required < 1 ? 1 : Mathf.RoundToInt(required);
         }
 
-        public static Pawn EndorseColonists(Pawn recruiter, Pawn guest)
+        public static void EndorseColonists(Pawn recruiter, Pawn guest)
         {
-            if (guest.relations == null) return null;
-            if (recruiter.relations == null) return null;
+            if (guest.relations == null) return;
+            if (recruiter.relations == null) return;
 
-            Pawn target;
             var pawns = guest.MapHeld.mapPawns.FreeColonistsSpawned.Where(c=> c != recruiter && recruiter.relations.OpinionOf(c) > 0).ToArray();
-            if (pawns.Length == 0) return null;
+            if (pawns.Length == 0) return;
 
-            if (pawns.TryRandomElement(out target))
+            if (pawns.TryRandomElement(out var target))
             {
                 GainSocialThought(target, guest, ThoughtDef.Named("EndorsedByRecruiter"));
 
                 //Log.Message(recruiter.NameStringShort + " endorsed " + target + " to " + guest.Name);
             }
-            return target;
         }
 
         public static void TryPleaseGuest(Pawn recruiter, Pawn guest, bool focusOnRecruiting, List<RulePackDef> extraSentencePacks)
@@ -684,14 +682,13 @@ namespace Hospitality
             }
             else
             {
-                
                 failedCharms.Remove(recruiter);
 
                 var statValue = recruiter.GetStatValue(statRecruitEffectivity);
                 var floor = Mathf.FloorToInt(statValue);
                 int multiplier = floor + (Rand.Value < statValue - floor ? 1 : 0);
 
-                // Multiplier is for what the focus is one
+                // Multiplier is for what the focus is on
                 for (int i = 0; i < multiplier; i++)
                 {
                     if(focusOnRecruiting)

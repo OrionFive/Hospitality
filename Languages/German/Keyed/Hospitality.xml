@@ -72,7 +72,9 @@
   <NotEnoughFriends>[PAWN_nameDef] mag nicht genügend deiner Kolonisten (Meinung > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>[PAWN_nameDef] kann nun rekrutiert werden.</CanNowBeRecruited>
   <IsATrader>[PAWN_nameDef] ist Teil einer Karavane und kein Gast.</IsATrader>
-
+  <ImproveTooltip>Deine Diplomaten werden versuchen, die Stimmung des Gastes und ihre Beziehung mit dem Gast zu verbessern. Gute Diplomaten sind effektiver. Schlechte Diplomaten können den Gast verärgern.</ImproveTooltip>
+  <TryRecruitTooltip>Deine Diplomaten werden versuchen, den Gast mit deinen anderen Kolonisten zu befreunden. Gute Diplomaten sind effektiver. Schlechte Diplomaten können den Gast verärgern. Wenn der Gast genügend Freunde hat, wird er sich deiner Kolonie anschließen.</TryRecruitTooltip>
+  
   <!-- Infos -->
   <StatsReport_FinalAdjustment>Einstellung</StatsReport_FinalAdjustment>
   

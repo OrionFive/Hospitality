@@ -78,9 +78,9 @@ namespace Hospitality
 
                     DoAreaRestriction(listingStandard, comp.ShoppingArea, SetAreaShopping, GetShoppingLabel);
 
-                    CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove);
+                    CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, false, "ImproveTooltip".Translate());
 
-                    CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit);
+                    CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit, false, "TryRecruitTooltip".Translate());
 
                     comp.chat = tryImprove;
                     comp.recruit = tryRecruit;
