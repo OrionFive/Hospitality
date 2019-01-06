@@ -68,7 +68,10 @@
   <Hospitality>Hospitality</Hospitality>
   <MakeDefault>Make Default</MakeDefault>
   <SendAway>Send Away</SendAway>
+  <ForceRecruit>Force Recruit</ForceRecruit>
   <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?\nIf you send them away immediately after appearing, this will have no effect on relations.</SendAwayQuestion>
+  <ForceRecruitQuestion>You can recruit {PAWN_nameDef} immediately.\nBecause {PAWN_pronoun} doesn't have enough friends yet to join you on {PAWN_possessive} own accord, this costs you an additional {0} points of relationship with {PAWN_possessive} faction. {1}\n\nAre you sure you don't want to wait?</ForceRecruitQuestion>
+  <ForceRecruitWarning>\n\nThis will cause them to become hostile immediately.</ForceRecruitWarning>
   <NotEnoughFriends>[PAWN_nameDef] does not like enough of your colonists (opinion > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>[PAWN_nameDef] can now be recruited.</CanNowBeRecruited>
   <IsATrader>[PAWN_nameDef] is part of a trading caravan and not a guest.</IsATrader>

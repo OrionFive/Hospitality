@@ -14,12 +14,13 @@ namespace Hospitality
         private static readonly string txtFactionGoodwill = "FactionGoodwill".Translate();
         private static readonly string txtHospitality = "Hospitality".Translate();
         private static readonly string txtMakeDefault = "MakeDefault".Translate();
+        private static readonly string txtForceRecruit = "ForceRecruit".Translate();
         private static readonly string txtSendAway = "SendAway".Translate();
         private static readonly string txtSendAwayQuestion = "SendAwayQuestion".Translate();
 
-        protected readonly Vector2 setDefaultButtonSize = new Vector2(120f, 30f);
-        protected readonly Vector2 sendHomeButtonSize = new Vector2(120f, 30f);
+        protected static readonly Vector2 buttonSize = new Vector2(120f, 30f);
         private static Listing_Standard listingStandard = new Listing_Standard();
+        private static int penaltyPer10PercentMissing = 15;
 
         public ITab_Pawn_Guest()
         {
@@ -28,7 +29,7 @@ namespace Hospitality
             size = new Vector2(500f, 450f);
         }
 
-        public override bool IsVisible { get { return SelPawn.IsGuest() || SelPawn.IsTrader(); } }
+        public override bool IsVisible => SelPawn.IsGuest() || SelPawn.IsTrader();
 
         protected override void FillTab()
         {
@@ -87,8 +88,9 @@ namespace Hospitality
 
                     listingStandard.Gap(50);
 
-                    DrawSetDefaultButton(rect);
-                    DrawSendHomeButton(rect);
+                    DrawButton(() => ForceRecruitDialog(SelPawn), txtForceRecruit, new Vector2(rect.xMin, 160));
+                    DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, new Vector2(rect.xMax - buttonSize.x - 10, 160));
+                    DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, new Vector2(rect.xMax - buttonSize.x - 20f - buttonSize.x, 160));
                 }
 
                 if (SelPawn.Faction != null)
@@ -98,7 +100,7 @@ namespace Hospitality
                 }
                 listingStandard.Gap();
 
-                listingStandard.Label(string.Format("{0}:", "FriendsRequirement".Translate(friends, friendsRequired)));
+                listingStandard.Label($"{"FriendsRequirement".Translate(friends, friendsRequired)}:");
 
                 listingStandard.Slider(Mathf.Clamp(friendPercentage, 0, 100), 0, 100);
                 if (friendPercentage <= 99)
@@ -115,8 +117,7 @@ namespace Hospitality
 
 
                 // Will only have lord while "checked in", becomes null again when guests leave
-                float score;
-                if (SelPawn.GetVisitScore(out score))
+                if (SelPawn.GetVisitScore(out var score))
                 {
                     listingStandard.Label(txtHospitality + ":");
                     listingStandard.Slider(score, 0f, 1f);
@@ -194,27 +195,30 @@ namespace Hospitality
             listing.Gap(listing.verticalSpacing);
         }
 
-
-        private void DrawSetDefaultButton(Rect rect)
+        private static void DrawButton(Action action, string text, Vector2 pos)
         {
-            rect = new Rect(rect.xMax - setDefaultButtonSize.x - 10f, 160f, setDefaultButtonSize.x, setDefaultButtonSize.y);
-            if (Widgets.ButtonText(rect, txtMakeDefault))
+            var rect = new Rect(pos.x, pos.y, buttonSize.x, buttonSize.y);
+            if (Widgets.ButtonText(rect, text))
             {
                 SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
 
-                SetAllDefaults(SelPawn);
+                action();
             }
         }
 
-        private void DrawSendHomeButton(Rect rect)
+        private static void ForceRecruitDialog(Pawn pawn)
         {
-            rect = new Rect(rect.xMax - sendHomeButtonSize.x - 20f - setDefaultButtonSize.x, 160f, sendHomeButtonSize.x, sendHomeButtonSize.y);
-            if (Widgets.ButtonText(rect, txtSendAway))
-            {
-                SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
+            var friends = pawn.GetFriendsInColony();
+            var friendsRequired = GuestUtility.FriendsRequired(pawn.MapHeld) + pawn.GetEnemiesInColony();
+            float missingPercentage = 10-10f*friends/friendsRequired;
+            var extraPenalty = Mathf.RoundToInt(missingPercentage * penaltyPer10PercentMissing);
 
-                SendHomeDialog(SelPawn.GetLord());
-            }
+            int finalGoodwill = Mathf.Clamp(pawn.Faction.PlayerGoodwill - pawn.RecruitPenalty() - extraPenalty, -100, 100);
+
+            string warning = finalGoodwill <= DiplomacyTuning.BecomeHostileThreshold ? "ForceRecruitWarning".Translate() : string.Empty;
+
+            var text = "ForceRecruitQuestion".Translate(extraPenalty, warning, pawn);
+            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => ForceRecruit(pawn, extraPenalty)));
         }
 
         private static void SendHomeDialog(Lord lord)
