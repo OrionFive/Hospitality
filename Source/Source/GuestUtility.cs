@@ -464,7 +464,7 @@ namespace Hospitality
             guest.playerSettings.medCare = MedicalCareCategory.Best;
             guest.playerSettings.AreaRestriction = null;
 
-            if (guest.caller != null) guest.caller.DoCall();
+            guest.caller?.DoCall();
         }
 
         public static float AdjustPleaseChance(float pleaseChance, Pawn recruiter, Pawn target)
@@ -482,9 +482,8 @@ namespace Hospitality
             float impact = initiator.GetStatValue(StatDefOf.SocialImpact);
             var thoughtMemory = (Thought_Memory) ThoughtMaker.MakeThought(thoughtDef);
             thoughtMemory.moodPowerFactor = impact;
-            
-            var thoughtSocialMemory = thoughtMemory as Thought_MemorySocial;
-            if (thoughtSocialMemory != null)
+
+            if (thoughtMemory is Thought_MemorySocial thoughtSocialMemory)
             {
                 thoughtSocialMemory.opinionOffset *= impact;
             }
