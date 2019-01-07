@@ -46,7 +46,7 @@ namespace Hospitality
             }
         }
 
-        private Pawn Pawn { get { return (Pawn) parent; } }
+        private Pawn Pawn => (Pawn) parent;
 
         public override void PostExposeData()
         {

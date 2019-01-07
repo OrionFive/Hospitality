@@ -88,9 +88,10 @@ namespace Hospitality
 
                     listingStandard.Gap(50);
 
-                    DrawButton(() => ForceRecruitDialog(SelPawn), txtForceRecruit, new Vector2(rect.xMin, 160));
-                    DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, new Vector2(rect.xMax - buttonSize.x - 10, 160));
-                    DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, new Vector2(rect.xMax - buttonSize.x - 20f - buttonSize.x, 160));
+                    var mayForceRecruit = !SelPawn.InMentalState && comp.arrived;
+                    DrawButton(() => ForceRecruitDialog(SelPawn), txtForceRecruit, new Vector2(rect.xMin, 160), mayForceRecruit);
+                    DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, new Vector2(rect.xMax - buttonSize.x - 10, 160), true);
+                    DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, new Vector2(rect.xMax - buttonSize.x - 20f - buttonSize.x, 160), true);
                 }
 
                 if (SelPawn.Faction != null)
@@ -195,10 +196,10 @@ namespace Hospitality
             listing.Gap(listing.verticalSpacing);
         }
 
-        private static void DrawButton(Action action, string text, Vector2 pos)
+        private static void DrawButton(Action action, string text, Vector2 pos, bool allowed)
         {
             var rect = new Rect(pos.x, pos.y, buttonSize.x, buttonSize.y);
-            if (Widgets.ButtonText(rect, text))
+            if (Widgets.ButtonText(rect, text, true, false, allowed))
             {
                 SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
 
@@ -213,12 +214,18 @@ namespace Hospitality
             float missingPercentage = 10-10f*friends/friendsRequired;
             var extraPenalty = Mathf.RoundToInt(missingPercentage * penaltyPer10PercentMissing);
 
-            int finalGoodwill = Mathf.Clamp(pawn.Faction.PlayerGoodwill - pawn.RecruitPenalty() - extraPenalty, -100, 100);
+            int recruitPenalty = pawn.RecruitPenalty();
+            int finalGoodwill = Mathf.Clamp(pawn.Faction.PlayerGoodwill - recruitPenalty - extraPenalty, -100, 100);
 
             string warning = finalGoodwill <= DiplomacyTuning.BecomeHostileThreshold ? "ForceRecruitWarning".Translate() : string.Empty;
 
             var text = "ForceRecruitQuestion".Translate(extraPenalty, warning, pawn);
-            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => ForceRecruit(pawn, extraPenalty)));
+            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => ForceRecruit(pawn, extraPenalty + recruitPenalty)));
+        }
+
+        private static void ForceRecruit(Pawn pawn, int penalty)
+        {
+            GuestUtility.ForceRecruit(pawn, penalty);
         }
 
         private static void SendHomeDialog(Lord lord)
