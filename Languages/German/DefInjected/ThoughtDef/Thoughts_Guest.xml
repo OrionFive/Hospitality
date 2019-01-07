@@ -5,6 +5,9 @@
     <GuestAngered.stages.angered_by_seeing_recruitment.labelSocial>verärgerte mich durch Rekrutierung</GuestAngered.stages.angered_by_seeing_recruitment.labelSocial>
     <GuestAngered.stages.angered_by_seeing_recruitment.description>Diese Leute versuchen unsere Mitglieder zu stehlen!</GuestAngered.stages.angered_by_seeing_recruitment.description>
 
+	<GuestRecruitmentForced.stages.involuntarily_recruited.label>Rekrutierung erzwungen</GuestRecruitmentForced.stages.involuntarily_recruited.label>
+	<GuestRecruitmentForced.stages.involuntarily_recruited.description>Ich weiß nicht ob ich hier wirkich sein sollte.</GuestRecruitmentForced.stages.involuntarily_recruited.description>
+	
     <GuestOffendedRelationship.stages.insulted_by_colonist.label>von Kolonisten beleidigt</GuestOffendedRelationship.stages.insulted_by_colonist.label>
     <GuestOffendedRelationship.stages.insulted_by_colonist.labelSocial>beleidigte mich</GuestOffendedRelationship.stages.insulted_by_colonist.labelSocial>
     <GuestOffendedRelationship.stages.insulted_by_colonist.description>Diese Leute sind solche Verlierer!</GuestOffendedRelationship.stages.insulted_by_colonist.description>
@@ -19,6 +22,7 @@
 
     <GuestDismissiveAttitude.stages.tired_of_talking.label>hat genug geredet</GuestDismissiveAttitude.stages.tired_of_talking.label>
     <GuestDismissiveAttitude.stages.tired_of_talking.description>Ich habe erst einmal genug geredet. Lass mich bitte allein.</GuestDismissiveAttitude.stages.tired_of_talking.description>
+	
     <GuestBedCount.stages.no_guest_beds.label>Keine Gästebetten</GuestBedCount.stages.no_guest_beds.label>
     <GuestBedCount.stages.no_guest_beds.description>Die haben hier nichtmal Betten.</GuestBedCount.stages.no_guest_beds.description>
     <GuestBedCount.stages.not_enough_guest_beds.label>nicht genug Gästebetten</GuestBedCount.stages.not_enough_guest_beds.label>

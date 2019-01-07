@@ -90,8 +90,10 @@ namespace Hospitality
         private void Leave()
         {
             var pawns = lord.ownedPawns.ToArray(); // Copy, because recruiting changes lord
+            bool unhappy = lord.faction.RelationWith(Faction.OfPlayer).kind == FactionRelationKind.Hostile;
 
             bool sentAway = false;
+
             foreach (var pawn in pawns)
             {
                 {
@@ -100,6 +102,7 @@ namespace Hospitality
                     {
                         sentAway = true;
                     }
+                    if(!unhappy)
                     {
                         if (score > 0.99f) LeaveVerySatisfied(pawn, score);
                         else if (score > 0.65f) LeaveSatisfied(pawn, score);
@@ -108,26 +111,32 @@ namespace Hospitality
                 pawn.Leave();
             }
 
-            var avgScore = lord.ownedPawns.Count > 0 ? lord.ownedPawns.Average(pawn => GetVisitScore(pawn)) : 0;
-            
-            DisplayLeaveMessage(avgScore, lord.faction, lord.ownedPawns.Count, lord.Map, sentAway);
+            if (lord.ownedPawns.Count > 0 && !unhappy)
+            {
+                var avgScore = lord.ownedPawns.Average(pawn => GetVisitScore(pawn));
+
+                DisplayLeaveMessage(avgScore, lord.faction, lord.ownedPawns.Count, lord.Map, sentAway);
+            }
+            else
+            {
+                DisplayLostMessage(lord.faction, lord.Map);
+            }
+        }
+
+        private static void DisplayLostMessage(Faction faction, Map currentMap)
+        {
+            // Not affecting goodwill, no revisit, no message
+            // There is a goodwill penalty somewhere else
+
+            // Don't come again soon
+            PlanRevisit(faction, -100, currentMap, true);
         }
 
         public static void DisplayLeaveMessage(float score, Faction faction, int visitorCount, Map currentMap, bool sentAway)
         {
-            int targetGoodwill = Mathf.RoundToInt(Mathf.Lerp(-100, 100, score));
-            float goodwillChangeMax = Mathf.Lerp(3, 24, Mathf.InverseLerp(1, 8, visitorCount));
-            float currentGoodwill = faction.GoodwillWith(Faction.OfPlayer);
-            float offset = targetGoodwill - currentGoodwill;
-            int goodwillChange = Mathf.RoundToInt(Mathf.Clamp(offset, -goodwillChangeMax, goodwillChangeMax));
-            
-            faction.TryAffectGoodwillWith(Faction.OfPlayer, goodwillChange, false);
-
-            
+            var targetGoodwill = AffectGoodwill(score, faction, visitorCount);
 
             var days = PlanRevisit(faction, targetGoodwill, currentMap, sentAway);
-
-            if (visitorCount == 0) return; // No message if no one is left (it says -100, which isn't true)
 
             string messageReturn = " ";
             if (days < 7)
@@ -153,16 +162,28 @@ namespace Hospitality
                 Messages.Message("VisitorsLeavingNormal".Translate(faction.Name, targetGoodwill) + messageReturn, MessageTypeDefOf.NeutralEvent);
         }
 
+        private static int AffectGoodwill(float score, Faction faction, int visitorCount)
+        {
+            int targetGoodwill = Mathf.RoundToInt(Mathf.Lerp(-100, 100, score));
+            float goodwillChangeMax = Mathf.Lerp(3, 24, Mathf.InverseLerp(1, 8, visitorCount));
+            float currentGoodwill = faction.GoodwillWith(Faction.OfPlayer);
+            float offset = targetGoodwill - currentGoodwill;
+            int goodwillChange = Mathf.RoundToInt(Mathf.Clamp(offset, -goodwillChangeMax, goodwillChangeMax));
+
+            faction.TryAffectGoodwillWith(Faction.OfPlayer, goodwillChange, false);
+            return targetGoodwill;
+        }
+
         private static float PlanRevisit(Faction faction, float targetGoodwill, Map currentMap, bool sentAway)
         {
             float days;
             if (faction.defeated) return 100;
-            if (targetGoodwill < -50) return 100;
             else if (targetGoodwill > 0)
                 days = Mathf.Lerp(Rand.Range(6f, 12f), Rand.Range(3f, 6f), targetGoodwill/100f);
             else
                 days = Mathf.Lerp(Rand.Range(12f, 24f), Rand.Range(25f, 30f), targetGoodwill/-100f);
 
+            if (targetGoodwill < -25) days += (-targetGoodwill - 25);
             if (sentAway) days += 5;
 
             Map randomVisitMap = Rand.Value < 0.1f ? Find.Maps.Where(m => m.IsPlayerHome).RandomElement() : currentMap;

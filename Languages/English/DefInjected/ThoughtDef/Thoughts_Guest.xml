@@ -23,16 +23,13 @@
 	<GuestDismissiveAttitude.stages.tired_of_talking.label>tired of talking</GuestDismissiveAttitude.stages.tired_of_talking.label>
 	<GuestDismissiveAttitude.stages.tired_of_talking.description>I'm done talking for now. Leave me alone.</GuestDismissiveAttitude.stages.tired_of_talking.description>
 	
-	<GuestBedCount.stages.no_guest_beds.label>no guest beds<GuestBedCount.stages.no_guest_bed.label>
-	<GuestBedCount.stages.no_guest_beds.description>They don't even have beds here.<GuestBedCount.stages.no_guest_bed.description>
-	
-	<GuestBedCount.stages.not_enough_guest_beds.label>not enough guest beds<GuestBedCount.stages.not_enough_guest_beds.label>
-	<GuestBedCount.stages.not_enough_guest_beds.description>There should be more beds for guests.<GuestBedCount.stages.not_enough_guest_beds.description>
-	
-	<GuestBedCount.stages.enough_beds.label>enough beds<GuestBedCount.stages.enough_beds.label>
-	<GuestBedCount.stages.enough_beds.description>There are enough guest beds for all of us.<GuestBedCount.stages.enough_beds.description>
-	
-	<GuestBedCount.stages.lots_of_beds_label>lots of beds<GuestBedCount.stages.lots_of_beds_label.label>
-	<GuestBedCount.stages.lots_of_beds_label.description>Wow, so many beds!<GuestBedCount.stages.lots_of_beds_label.description>
+	<GuestBedCount.stages.no_guest_beds.label>no guest beds</GuestBedCount.stages.no_guest_beds.label>
+	<GuestBedCount.stages.no_guest_beds.description>They don't even have beds here.</GuestBedCount.stages.no_guest_beds.description>
+	<GuestBedCount.stages.not_enough_guest_beds.label>not enough guest beds</GuestBedCount.stages.not_enough_guest_beds.label>
+	<GuestBedCount.stages.not_enough_guest_beds.description>There should be more beds for guests.</GuestBedCount.stages.not_enough_guest_beds.description>
+	<GuestBedCount.stages.enough_beds.label>enough beds</GuestBedCount.stages.enough_beds.label>
+	<GuestBedCount.stages.enough_beds.description>There are enough guest beds for all of us.</GuestBedCount.stages.enough_beds.description>
+	<GuestBedCount.stages.lots_of_beds.label>lots of beds</GuestBedCount.stages.lots_of_beds.label>
+	<GuestBedCount.stages.lots_of_beds.description>Wow, so many beds!</GuestBedCount.stages.lots_of_beds.description>
 	
 </LanguageData>

@@ -1,6 +1,5 @@
 using RimWorld;
 using System;
-using HugsLib.Utils;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
@@ -17,6 +16,9 @@ namespace Hospitality
         private static readonly string txtForceRecruit = "ForceRecruit".Translate();
         private static readonly string txtSendAway = "SendAway".Translate();
         private static readonly string txtSendAwayQuestion = "SendAwayQuestion".Translate();
+        private static readonly string txtMakeDefaultTooltip = "MakeDefaultTooltip".Translate();
+        private static readonly string txtForceRecruitTooltip = "ForceRecruitTooltip".Translate();
+        private static readonly string txtSendAwayTooltip = "SendAwayTooltip".Translate();
 
         protected static readonly Vector2 buttonSize = new Vector2(120f, 30f);
         private static Listing_Standard listingStandard = new Listing_Standard();
@@ -89,11 +91,11 @@ namespace Hospitality
 
                     var mayForceRecruit = !SelPawn.InMentalState && comp.arrived;
 
-                    DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, new Vector2(rect.xMax - buttonSize.x - 10, 160));
-                    DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, new Vector2(rect.xMin - 10, 160));
+                    DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, new Vector2(rect.xMax - buttonSize.x - 10, 160), txtMakeDefaultTooltip);
+                    DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, new Vector2(rect.xMin - 10, 160), txtSendAwayTooltip);
                     if (mayForceRecruit)
                     {
-                        DrawButton(() => ForceRecruitDialog(SelPawn), txtForceRecruit, new Vector2(rect.xMin - 10 + 10 + buttonSize.x, 160));
+                        DrawButton(() => ForceRecruitDialog(SelPawn), txtForceRecruit, new Vector2(rect.xMin - 10 + 10 + buttonSize.x, 160), txtForceRecruitTooltip);
                     }
                 }
 
@@ -199,9 +201,13 @@ namespace Hospitality
             listing.Gap(listing.verticalSpacing);
         }
 
-        private static void DrawButton(Action action, string text, Vector2 pos)
+        private static void DrawButton(Action action, string text, Vector2 pos, string tooltip =  null)
         {
             var rect = new Rect(pos.x, pos.y, buttonSize.x, buttonSize.y);
+            if (!tooltip.NullOrEmpty())
+            {
+                TooltipHandler.TipRegion(rect, tooltip);
+            }
             if (Widgets.ButtonText(rect, text))
             {
                 SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
