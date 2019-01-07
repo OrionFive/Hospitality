@@ -125,15 +125,16 @@ namespace Hospitality
 
         private static IEnumerable<Pawn> GetPawnsFromBase(Map mapHeld)
         {
-            foreach (var pawn in mapHeld.mapPawns.FreeColonists)
-            {
-                yield return pawn;
-            }
-            var nearbyColonists = PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_FreeColonists.Where(p => IsNearby(mapHeld, p));
-            foreach (var pawn in nearbyColonists)
-            {
-                yield return pawn;
-            }
+            if (mapHeld == null) yield break;
+
+            foreach (var pawn in mapHeld.mapPawns.FreeColonists) yield return pawn;
+
+            foreach (var pawn in GetNearbyColonists(mapHeld)) yield return pawn;
+        }
+
+        private static IEnumerable<Pawn> GetNearbyColonists(Map mapHeld)
+        {
+            return PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_FreeColonists.Where(p => IsNearby(mapHeld, p));
         }
 
         private static bool IsNearby(Map mapHeld, Pawn p)
