@@ -18,6 +18,19 @@
     </stages>
   </ThoughtDef>
   
+  <ThoughtDef>
+    <defName>GuestRecruitmentForced</defName>
+    <durationDays>15</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>involuntarily recruited</label>
+        <description>I'm not sure if I should be here.</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  
     <ThoughtDef>
     <defName>GuestOffendedRelationship</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
@@ -77,7 +90,7 @@
     <stages>
       <li>
         <label>tired of talking</label>
-        <description>I'm done talking for now.</description>
+        <description>I'm done talking for now. Leave me alone.</description>
       </li>
     </stages>
   </ThoughtDef>

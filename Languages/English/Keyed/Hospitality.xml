@@ -61,16 +61,16 @@
   <AreaToBuyTooltip>Guests may buy items in this zone. Has to be inside the area of accommodation.</AreaToBuyTooltip>
   <ConvincingLeft>Convincing required</ConvincingLeft>
   <FriendsRequirement>Enough friends to recruit: {0}/{1}</FriendsRequirement>
-  <RecruitmentPenalty>Relationship damage when recruited</RecruitmentPenalty>
+  <RecruitmentPenalty>Relationship damage when recruited: {0} ({1} forced)</RecruitmentPenalty>
   <ImproveRelationship>Try to entertain</ImproveRelationship>
   <LeaveAlone>Leave alone</LeaveAlone>
   <FactionGoodwill>Faction goodwill</FactionGoodwill>
   <Hospitality>Hospitality</Hospitality>
   <MakeDefault>Make Default</MakeDefault>
   <SendAway>Send Away</SendAway>
-  <ForceRecruit>Force Recruit</ForceRecruit>
   <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?\nIf you send them away immediately after appearing, this will have no effect on relations.</SendAwayQuestion>
-  <ForceRecruitQuestion>You can recruit {PAWN_nameDef} immediately.\nBecause {PAWN_pronoun} doesn't have enough friends yet to join you on {PAWN_possessive} own accord, this costs you an additional {0} points of relationship with {PAWN_possessive} faction. {1}\n\nAre you sure you don't want to wait?</ForceRecruitQuestion>
+  <ForceRecruit>Force Recruit</ForceRecruit>
+  <ForceRecruitQuestion>You can recruit {PAWN_nameDef} immediately.\n\nBecause {PAWN_pronoun} doesn't have enough friends yet to join you on {PAWN_possessive} own accord, this costs you {0} points of relationship with {PAWN_possessive} faction. {1}\n\n\nAre you sure you don't want to wait?</ForceRecruitQuestion>
   <ForceRecruitWarning>\n\nThis will cause them to become hostile immediately.</ForceRecruitWarning>
   <NotEnoughFriends>[PAWN_nameDef] does not like enough of your colonists (opinion > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>[PAWN_nameDef] can now be recruited.</CanNowBeRecruited>
@@ -79,7 +79,7 @@
   <TryRecruitTooltip>Your diplomats will try to befriend the guest with your other colonists. Good diplomats are more effective at this. Bad diplomats can anger the guest. When the guest has enough friends, he will join your colony.</TryRecruitTooltip>
 
   <!-- Infos -->
-  <StatsReport_FinalAdjustment>Adjustment</StatsReport_FinalAdjustment>
+  <StatsReport_MissingFriends>Missing friends</StatsReport_MissingFriends>
   
   <!-- Bed -->
   <ForGuestUse>For guest use</ForGuestUse>

@@ -65,7 +65,7 @@ namespace Hospitality
 
                         //if (Rand.Value < GuestUtility.GetDismissiveChance(ally))
                         {
-                            GuestUtility.GainSocialThought(recruiter, ally, ThoughtDef.Named("GuestDismissiveAttitude"));
+                            GuestUtility.GainThought(ally, ThoughtDef.Named("GuestDismissiveAttitude"));
                         }
                     }
                 }

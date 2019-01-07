@@ -68,9 +68,9 @@
   <Hospitality>Gastfreundschaft</Hospitality>
   <MakeDefault>Allen Gästen zuweisen</MakeDefault>
   <SendAway>Wegschicken</SendAway>
-  <ForceRecruit>Rekrutierung erzwingen</ForceRecruit>
   <SendAwayQuestion>Bist du sicher die Besucher von {0} wegzuschicken?\nWenn du sie sofort nach dem Erscheinen wegschickst, hat dies keine Auswirkungen auf die Beziehungen.</SendAwayQuestion>
-  <ForceRecruitQuestion>Du kannst {PAWN_nameDef} sofort rekruitieren.\nDa {PAWN_pronoun} jedoch noch nicht genügend Freunde hat um sich dir freiwillig anzuschließen, kostet dies {0} weitere Beziehungspunte mit {PAWN_possessive}er Fraktion.{1}\n\nBist du sicher, dass du nicht noch warten möchtest?</ForceRecruitQuestion>
+  <ForceRecruit>Rekrutierung erzwingen</ForceRecruit>
+  <ForceRecruitQuestion>Du kannst {PAWN_nameDef} sofort rekruitieren.\n\nDa {PAWN_pronoun} jedoch noch nicht genügend Freunde hat um sich dir freiwillig anzuschließen, kostet dies {0} Beziehungspunte mit {PAWN_possessive}er Fraktion.{1}\n\n\nBist du sicher, dass du nicht noch warten möchtest?</ForceRecruitQuestion>
   <ForceRecruitWarning>\n\nSie werden dann sofort feindselig.</ForceRecruitWarning>
   <NotEnoughFriends>[PAWN_nameDef] mag nicht genügend deiner Kolonisten (Meinung > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>[PAWN_nameDef] kann nun rekrutiert werden.</CanNowBeRecruited>
@@ -79,7 +79,7 @@
   <TryRecruitTooltip>Deine Diplomaten werden versuchen, den Gast mit deinen anderen Kolonisten zu befreunden. Gute Diplomaten sind effektiver. Schlechte Diplomaten können den Gast verärgern. Wenn der Gast genügend Freunde hat, wird er sich deiner Kolonie anschließen.</TryRecruitTooltip>
   
   <!-- Infos -->
-  <StatsReport_FinalAdjustment>Einstellung</StatsReport_FinalAdjustment>
+  <StatsReport_MissingFriends>Fehlende Freunde</StatsReport_MissingFriends>
   
   <!-- Bed -->
   <ForGuestUse>Zur Benutzung durch Gäste</ForGuestUse>

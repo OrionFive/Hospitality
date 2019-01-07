@@ -30,6 +30,7 @@ namespace Hospitality
         private static readonly string txtLostGroupFactionAngerLeaderless = "LostGroupFactionAngerLeaderless".Translate();
 
         private static readonly StatDef statRecruitRelationshipDamage = StatDef.Named("RecruitRelationshipDamage");
+        private static readonly StatDef statForcedRecruitRelationshipDamage = StatDef.Named("ForcedRecruitRelationshipDamage");
         private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
 
         private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve
@@ -108,6 +109,11 @@ namespace Hospitality
         public static int RecruitPenalty(this Pawn guest)
         {
             return Mathf.RoundToInt(guest.GetStatValue(statRecruitRelationshipDamage));
+        }
+
+        public static int ForcedRecruitPenalty(this Pawn guest)
+        {
+            return Mathf.RoundToInt(guest.GetStatValue(statForcedRecruitRelationshipDamage));
         }
 
         public static int GetFriendsInColony(this Pawn guest)
@@ -391,12 +397,13 @@ namespace Hospitality
 
         public static void ForceRecruit(Pawn guest, int recruitPenalty)
         {
+            GainThought(guest, ThoughtDef.Named("GuestRecruitmentForced"));
             RecruitingSuccess(guest, recruitPenalty);
         }
 
         private static void RecruitingSuccess(Pawn guest, int recruitPenalty)
         {
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
 
             if (guest.Faction != Faction.OfPlayer)
             {
@@ -409,12 +416,12 @@ namespace Hospitality
                         string message;
                         if (guest.Faction.leader != null)
                         {
-                            message = string.Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = String.Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                         else
                         {
-                            message = string.Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = String.Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                     }
@@ -424,12 +431,12 @@ namespace Hospitality
                         string message;
                         if (guest.Faction.leader != null)
                         {
-                            message = string.Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = String.Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefPlease, message, LetterDefOf.PositiveEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                         else
                         {
-                            message = string.Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = String.Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionPlease, message, LetterDefOf.PositiveEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                     }
@@ -500,6 +507,14 @@ namespace Hospitality
                 thoughtSocialMemory.opinionOffset *= impact;
             }
             target.needs.mood.thoughts.memories.TryGainMemory(thoughtMemory, initiator);
+        }
+
+        public static void GainThought(Pawn target, ThoughtDef thoughtDef)
+        {
+            if (!ThoughtUtility.CanGetThought(target, thoughtDef)) return;
+
+            var thoughtMemory = (Thought_Memory) ThoughtMaker.MakeThought(thoughtDef);
+            target.needs.mood.thoughts.memories.TryGainMemory(thoughtMemory);
         }
 
         public static bool ShouldRecruit(this Pawn pawn, Pawn guest)
@@ -720,7 +735,7 @@ namespace Hospitality
                 string multiplierText = multiplier > 1 ? " x" + multiplier : String.Empty;
                 MoteMaker.ThrowText((recruiter.DrawPos + guest.DrawPos) / 2f, recruiter.Map, "TextMote_CharmSuccess".Translate() + multiplierText, 8f);
             }
-            GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestDismissiveAttitude"));
+            GainThought(guest, ThoughtDef.Named("GuestDismissiveAttitude"));
         }
 
         public const int InteractIntervalAbsoluteMin = 360; // changed from 120
@@ -814,12 +829,12 @@ namespace Hospitality
                 lord.faction.TryAffectGoodwillWith(Faction.OfPlayer, penalty, false);
                 if (lord.faction.leader == null)
                 {
-                    var message = string.Format(txtLostGroupFactionAngerLeaderless, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                    var message = String.Format(txtLostGroupFactionAngerLeaderless, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                     Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, lord.faction);
                 }
                 else
                 {
-                    var message = string.Format(txtLostGroupFactionAnger, lord.faction.leader.Name, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                    var message = String.Format(txtLostGroupFactionAnger, lord.faction.leader.Name, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                     Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, lord.faction);
                 }
             }

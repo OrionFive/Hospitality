@@ -9,7 +9,7 @@ namespace Hospitality
         public override float GetValueUnfinalized(StatRequest req, bool applyPostProcess = true)
         {
             var pawn = req.Thing as Pawn;
-            if (pawn == null || pawn.story == null) return 0;
+            if (pawn?.story == null) return 0;
             return stat.defaultBaseValue + pawn.skills.GetSkill(SkillDefOf.Social).Level/8f;
         }
 
@@ -22,13 +22,13 @@ namespace Hospitality
             float statValueAbstract = stat.defaultBaseValue;
             stringBuilder.AppendLine("    " + stat.ValueToString(statValueAbstract, numberSense));
 
-            var pawn = req.Thing as Pawn;
+            var pawn = (Pawn) req.Thing;
             
             stringBuilder.AppendLine();
             stringBuilder.AppendLine("StatsReport_Skills".Translate());
 
             int level = pawn.skills.GetSkill(SkillDefOf.Social).Level;
-            stringBuilder.AppendLine(string.Format("    {0} ({1}): +{2}", SkillDefOf.Social.LabelCap, level, (level / 8f).ToStringDecimalIfSmall()));
+            stringBuilder.AppendLine($"    {SkillDefOf.Social.LabelCap} ({level}): +{(level / 8f).ToStringDecimalIfSmall()}");
 
             return stringBuilder.ToString();
         }
