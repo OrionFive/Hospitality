@@ -50,8 +50,7 @@ namespace Hospitality
         public static bool MayBuy(this Pawn pawn)
         {
             var guestComp = pawn.GetComp<CompGuest>();
-            if (guestComp == null) return false;
-            return guestComp.ShoppingArea != null;
+            return guestComp?.ShoppingArea != null;
         }
 
         public static bool IsGuest(this Pawn pawn)
@@ -224,14 +223,10 @@ namespace Hospitality
         public static bool GetVisitScore(this Pawn pawn, out float score)
         {
             var lord = pawn.GetLord();
-            if (lord != null)
+            if (lord?.CurLordToil is LordToil_VisitPoint lordToil && pawn.Faction != null)
             {
-                var lordToil = lord.CurLordToil as LordToil_VisitPoint;
-                if (lordToil != null && pawn.Faction != null)
-                {
-                    score = lordToil.GetVisitScore(pawn);
-                    return true;
-                }
+                score = lordToil.GetVisitScore(pawn);
+                return true;
             }
             score = 0;
             return false;
@@ -258,18 +253,16 @@ namespace Hospitality
         private static bool IsInVisitState(this Pawn guest)
         {
             var lord = guest.GetLord();
-            if (lord == null) return false;
 
-            var job = lord.LordJob;
+            var job = lord?.LordJob;
             return  job is LordJob_VisitColony;
         }
 
         private static bool IsInTraderState(this Pawn guest)
         {
             var lord = guest.GetLord();
-            if (lord == null) return false;
 
-            var job = lord.LordJob;
+            var job = lord?.LordJob;
             return  job is LordJob_TradeWithColony;
         }
 
@@ -305,16 +298,18 @@ namespace Hospitality
 
         public static Building_GuestBed FindBedFor(this Pawn pawn)
         {
-            Predicate<Thing> bedValidator = delegate(Thing t) {
-                                                if (!(t is Building_GuestBed)) return false;
-                                                if (!pawn.CanReserveAndReach(t, PathEndMode.OnCell, Danger.Some)) return false;
-                                                var b = (Building_GuestBed) t;
-                                                if (b.CurOccupant != null) return false;
-                                                if (b.ForPrisoners) return false;
-                                                Find.Maps.ForEach(m => m.reservationManager.ReleaseAllForTarget(b)); // TODO: Put this somewhere smarter
-                                                return (!b.IsForbidden(pawn) && !b.IsBurning());
-                                            };
-            var bed = (Building_GuestBed)GenClosest.ClosestThingReachable(pawn.Position, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(pawn), 500f, bedValidator);
+            bool BedValidator(Thing t)
+            {
+                if (!(t is Building_GuestBed)) return false;
+                if (!pawn.CanReserveAndReach(t, PathEndMode.OnCell, Danger.Some)) return false;
+                var b = (Building_GuestBed) t;
+                if (b.CurOccupant != null) return false;
+                if (b.ForPrisoners) return false;
+                Find.Maps.ForEach(m => m.reservationManager.ReleaseAllForTarget(b)); // TODO: Put this somewhere smarter
+                return (!b.IsForbidden(pawn) && !b.IsBurning());
+            }
+
+            var bed = (Building_GuestBed)GenClosest.ClosestThingReachable(pawn.Position, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(pawn), 500f, BedValidator);
             return bed;
         }
 
@@ -324,9 +319,8 @@ namespace Hospitality
             foreach (var apparel in headgear)
             {
                 if (pawn.GetInventorySpaceFor(apparel) < 1) continue;
-                
-                Apparel droppedApp;
-                if (pawn.apparel.TryDrop(apparel, out droppedApp))
+
+                if (pawn.apparel.TryDrop(apparel, out var droppedApp))
                 {
                     bool success = pawn.inventory.innerContainer.TryAddOrTransfer(droppedApp.SplitOff(1));
                     if(!success) pawn.apparel.Wear(droppedApp);
@@ -421,12 +415,12 @@ namespace Hospitality
                         string message;
                         if (guest.Faction.leader != null)
                         {
-                            message = String.Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = string.Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                         else
                         {
-                            message = String.Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = string.Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                     }
@@ -436,12 +430,12 @@ namespace Hospitality
                         string message;
                         if (guest.Faction.leader != null)
                         {
-                            message = String.Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = string.Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefPlease, message, LetterDefOf.PositiveEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                         else
                         {
-                            message = String.Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = string.Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionPlease, message, LetterDefOf.PositiveEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                     }
@@ -603,17 +597,15 @@ namespace Hospitality
         public static Area GetGuestArea(this Pawn p)
         {
             var compGuest = p.GetComp<CompGuest>();
-            if (compGuest == null) return null;
 
-            return compGuest.GuestArea;
+            return compGuest?.GuestArea;
         }
 
          public static Area GetShoppingArea(this Pawn p)
         {
             var compGuest = p.GetComp<CompGuest>();
-            if (compGuest == null) return null;
 
-            return compGuest.ShoppingArea;
+            return compGuest?.ShoppingArea;
         }
 
         public static bool Bought(this Pawn pawn, Thing thing)
@@ -685,8 +677,7 @@ namespace Hospitality
                 int multiplier = isAbrasive ? 2 : 1;
                 string multiplierText = multiplier > 1 ? " x" + multiplier : String.Empty;
 
-                int amount;
-                if (failedCharms.TryGetValue(recruiter, out amount))
+                if (failedCharms.TryGetValue(recruiter, out var amount))
                 {
                     amount++;
                     failedCharms[recruiter] = amount;
@@ -793,11 +784,8 @@ namespace Hospitality
 			}
 			if (Mouse.IsOver(rect))
 			{
-				if (area != null)
-				{
-					area.MarkForDraw();
-				}
-				if (Input.GetMouseButton(0) && p.playerSettings.AreaRestriction != area)
+			    area?.MarkForDraw();
+			    if (Input.GetMouseButton(0) && p.playerSettings.AreaRestriction != area)
 				{
 					p.playerSettings.AreaRestriction = area;
 					SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();

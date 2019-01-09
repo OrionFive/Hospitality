@@ -9,12 +9,17 @@ namespace Hospitality
         public override ThinkResult TryIssueJobPackage(Pawn pawn, JobIssueParams jobParams)
         {
             ThinkResult result = base.TryIssueJobPackage(pawn, jobParams);
+
             if (result.IsValid)
             {
-                if(IsForbidden(result)) return ThinkResult.NoJob;
+                if (IsForbidden(result)) return ThinkResult.NoJob;
 
-                if (!IsOutsideArea(result.Job, pawn.GetGuestArea())) return result;
+                // Area is now checked in Reachability_Patch
+                //if (IsOutsideArea(result.Job, pawn.GetGuestArea())) return ThinkResult.NoJob;
+
+                return result;
             }
+
             return ThinkResult.NoJob;
         }
 

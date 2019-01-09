@@ -86,6 +86,7 @@
     <Compile Include="Harmony\Pawn_NeedsTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_Patch.cs" />
     <Compile Include="Harmony\Pawn_WorkSettings_Patch.cs" />
+    <Compile Include="Harmony\Reachability_Patch.cs" />
     <Compile Include="Harmony\ReservationManager_Patch.cs" />
     <Compile Include="Harmony\RestUtility_Patch.cs" />
     <Compile Include="Harmony\SocialCardUtility_Patch.cs" />
