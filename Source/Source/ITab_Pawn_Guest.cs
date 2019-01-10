@@ -235,9 +235,22 @@ namespace Hospitality
 
         private static void SendHome(Lord lord)
         {
+            if (lord == null)
+            {
+                Log.Warning("lord == null");
+                return;
+            }
+
             foreach (var pawn in lord.ownedPawns)
             {
-                pawn.GetComp<CompGuest>().sentAway = true;
+                var compGuest = pawn.GetComp<CompGuest>();
+                if (compGuest == null)
+                {
+                    Log.Warning(pawn.LabelShortCap + " has no compGuest.");
+                    continue;
+                }
+
+                compGuest.sentAway = true;
             }
         }
 

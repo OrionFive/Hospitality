@@ -21,6 +21,7 @@ namespace Hospitality.Harmony {
                 if (!traverseParams.pawn.IsArrived()) return;
 
                 var area = traverseParams.pawn.GetGuestArea();
+                if (area == null) return;
                 if (!dest.IsValid || !area[dest.Cell]) __result = false;
 
                 //Log.Message($"Guest {traverseParams.pawn.LabelShort} tried to traverse to {dest.Cell}. This was {(__result ? "allowed" : "not allowed")}");
