@@ -25,6 +25,7 @@ namespace Hospitality
         {
             var friends = pawn.GetFriendsInColony();
             var friendsRequired = GuestUtility.FriendsRequired(pawn.MapHeld) + pawn.GetEnemiesInColony();
+            if (friendsRequired <= 0 || friends >= friendsRequired) return 0;
             return 1 - 1f * friends / friendsRequired;
         }
 
