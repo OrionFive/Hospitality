@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <PawnColumnDef>
+    <defName>Faction</defName>
+    <workerClass>Hospitality.MainTab.PawnColumnWorker_Faction</workerClass>
+    <sortable>true</sortable>
+    <label>faction</label>
+  </PawnColumnDef>
+
+  <PawnColumnDef>
+    <defName>Entertain</defName>
+    <workerClass>Hospitality.MainTab.PawnColumnWorker_Entertain</workerClass>
+    <sortable>true</sortable>
+    <headerIcon>UI/Icons/Animal/Tame</headerIcon>
+    <headerTip>Entertain</headerTip>
+    <paintable>true</paintable>
+  </PawnColumnDef>
+
+  <PawnColumnDef>
+    <defName>Recruit</defName>
+    <workerClass>Hospitality.MainTab.PawnColumnWorker_Recruit</workerClass>
+    <sortable>true</sortable>
+    <headerIcon>UI/Icons/Animal/Slaughter</headerIcon>
+    <headerTip>Recruit</headerTip>
+    <paintable>true</paintable>
+  </PawnColumnDef>
+  
+  <PawnColumnDef>
+    <defName>AccommodationArea</defName>
+    <label>area of accommodation</label>
+    <workerClass>Hospitality.MainTab.PawnColumnWorker_AccommodationArea</workerClass>
+    <sortable>true</sortable>
+  </PawnColumnDef>
+
+  <PawnColumnDef>
+    <defName>ShoppingArea</defName>
+    <label>shopping area</label>
+    <workerClass>Hospitality.MainTab.PawnColumnWorker_ShoppingArea</workerClass>
+    <sortable>true</sortable>
+  </PawnColumnDef>
+
+  <PawnColumnDef>
+    <defName>FriendsForRecruiting</defName>
+    <workerClass>Hospitality.MainTab.PawnColumnWorker_FriendsForRecruiting</workerClass>
+    <headerIcon>Things/Mote/SpeechSymbols/Diplomacy</headerIcon>
+    <width>45</width>
+	<sortable>true</sortable>
+  </PawnColumnDef>
+
+  <PawnColumnDef>
+    <defName>Hospitality</defName>
+    <workerClass>Hospitality.MainTab.PawnColumnWorker_Hospitality</workerClass>
+    <headerIcon>UI/Commands/AsGuest</headerIcon>
+    <width>45</width>
+	<sortable>true</sortable>
+  </PawnColumnDef>
+
+</Defs>

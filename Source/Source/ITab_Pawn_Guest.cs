@@ -89,7 +89,7 @@ namespace Hospitality
 
                     listingStandard.Gap(50);
 
-                    var mayForceRecruit = !SelPawn.InMentalState && comp.arrived;
+                    var mayForceRecruit = !SelPawn.InMentalState && comp.arrived && friends < friendsRequired;
 
                     DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, new Vector2(rect.xMax - buttonSize.x - 10, 160), txtMakeDefaultTooltip);
                     DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, new Vector2(rect.xMin - 10, 160), txtSendAwayTooltip);

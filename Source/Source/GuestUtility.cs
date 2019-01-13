@@ -167,15 +167,13 @@ namespace Hospitality
         public static bool ImproveRelationship(this Pawn guest)
         {
             var guestComp = guest.GetComp<CompGuest>();
-            if (guestComp == null) return false;
-            return guestComp.chat;
+            return guestComp != null && guestComp.chat;
         }
 
         public static bool TryRecruit(this Pawn guest)
         {
             var guestComp = guest.GetComp<CompGuest>();
-            if (guestComp == null) return false;
-            return guestComp.recruit;
+            return guestComp != null && guestComp.recruit;
         }
 
         public static bool CanTalkTo(this Pawn talker, Pawn talkee)
