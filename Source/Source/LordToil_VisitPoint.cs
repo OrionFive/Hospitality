@@ -95,9 +95,11 @@ namespace Hospitality
 
             foreach (var pawn in pawns)
             {
+                var compGuest = pawn.GetComp<CompGuest>();
+                if(compGuest != null)
                 {
                     var score = GetVisitScore(pawn);
-                    if (pawn.GetComp<CompGuest>().sentAway)
+                    if (compGuest.sentAway)
                     {
                         sentAway = true;
                     }
