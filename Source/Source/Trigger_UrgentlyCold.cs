@@ -10,14 +10,14 @@ namespace Hospitality
         {
             if (signal.type == TriggerSignalType.Tick)
             {
-                return lord != null && lord.ownedPawns.Any(TooCold);
+                return lord?.ownedPawns.Any(TooCold) == true;
             }
             return false;
         }
 
         private static bool TooCold(Pawn pawn)
         {
-            if (pawn == null || pawn.health == null || pawn.health.hediffSet == null) return false;
+            if (pawn?.health?.hediffSet == null) return false;
             var hypoHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Hypothermia);
             if (hypoHediff == null) return false;
             return hypoHediff.CurStageIndex > 1;

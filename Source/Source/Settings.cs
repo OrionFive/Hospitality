@@ -28,12 +28,12 @@ namespace Hospitality {
 
         private static SettingHandle.ValueIsValid WorkSkillLimits()
         {
-            return AtLeast(() => disableLimits == null || disableLimits.Value ? 0 : 6);
+            return AtLeast(() => disableLimits?.Value != false ? 0 : 6);
         }
 
         private static SettingHandle.ValueIsValid GroupSizeLimits()
         {
-            return AtLeast(() => disableLimits == null || disableLimits.Value ? 1 : 8);
+            return AtLeast(() => disableLimits?.Value != false ? 1 : 8);
         }
 
         private static SettingHandle.ValueIsValid AtLeast(Func<int> amount)

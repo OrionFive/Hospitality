@@ -60,7 +60,7 @@ namespace Hospitality
         private static bool JobIsSuspendable(Pawn pawn)
         {
             Job curJob = pawn.CurJob;
-            return curJob == null || curJob.def.suspendable;
+            return curJob?.def.suspendable != false;
         }
 
         protected abstract InteractionDef InteractionDef { get; }
@@ -100,7 +100,7 @@ namespace Hospitality
         protected static bool IsBusy(Pawn p)
         {
             // Non-suspendable job? We're busy!
-            if (p.CurJob != null && !p.CurJob.def.suspendable) return true;
+            if (p.CurJob?.def.suspendable == false) return true;
 
             return p.interactions.InteractedTooRecentlyToInteract() || GuestUtility.IsInTherapy(p);
         }

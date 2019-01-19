@@ -28,7 +28,7 @@ namespace Hospitality.Harmony
                 // Added
                 var pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
 
-                if (pawn != null && pawn.IsGuest()) prisoner = false;
+                if (pawn?.IsGuest() == true) prisoner = false;
             }
         }
     }

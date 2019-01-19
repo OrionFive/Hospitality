@@ -8,7 +8,7 @@ namespace Hospitality
     {
         public override float GetPriority(Pawn pawn)
         {
-            if (pawn.needs == null || pawn.needs.rest == null)
+            if (pawn.needs?.rest == null)
             {
                 Log.Message(pawn.Name.ToStringShort + " needs no rest...");
                 return 0f;
@@ -40,7 +40,7 @@ namespace Hospitality
                 //Log.Message(pawn.NameStringShort + " already has a job: " + pawn.CurJob);
                 return new ThinkResult(pawn.CurJob, this);
             }
-            if (pawn.needs == null || pawn.needs.rest == null)
+            if (pawn.needs?.rest == null)
             {
                 if (pawn.needs == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no needs", 453636 + pawn.thingIDNumber);
                 if (pawn.needs.rest == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no rest need", 357474 + pawn.thingIDNumber);

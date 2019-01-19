@@ -26,7 +26,7 @@ namespace Hospitality.Harmony
                     var properties = t.def.GetCompProperties<CompProperties_Drug>();
 
                     // It can cause overdose >> don't do it
-                    if (properties != null && properties.CanCauseOverdose)
+                    if (properties?.CanCauseOverdose == true)
                     {
                         __result = false;
                     }

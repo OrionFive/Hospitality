@@ -11,7 +11,7 @@ namespace Hospitality
             letterDef = null;
             letterLabel = null;
             letterText = null;
-            if (recruiter == null || guest == null || guest.guest == null) return;
+            if (recruiter == null || guest?.guest == null) return;
 
             GuestUtility.TryPleaseGuest(recruiter, guest, false, extraSentencePacks);
         }

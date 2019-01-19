@@ -12,7 +12,7 @@ namespace Hospitality.MainTab
 
         protected override IEnumerable<Pawn> LabelSortFunction(IEnumerable<Pawn> input)
         {
-            return input.OrderBy(p => p.Name == null || p.Name.Numerical).ThenBy(p => (p.Name as NameSingle)?.Number ?? 0).ThenBy(p => p.def.label);
+            return input.OrderBy(p => p.Name?.Numerical != false).ThenBy(p => (p.Name as NameSingle)?.Number ?? 0).ThenBy(p => p.def.label);
         }
 
         protected override IEnumerable<Pawn> PrimarySortFunction(IEnumerable<Pawn> input)

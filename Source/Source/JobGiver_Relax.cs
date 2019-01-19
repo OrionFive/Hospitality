@@ -12,7 +12,7 @@ namespace Hospitality
 
         public override float GetPriority(Pawn pawn)
         {
-            if (pawn.needs == null || pawn.needs.joy == null)
+            if (pawn.needs?.joy == null)
             {
                 Log.Message(pawn.Name.ToStringShort + " needs no joy...");
                 return 0f;

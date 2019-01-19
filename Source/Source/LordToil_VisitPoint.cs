@@ -75,8 +75,7 @@ namespace Hospitality
             {
                 if (Map.mapPawns.FreeColonistsSpawnedCount == 0) return false;
                 return Map.mapPawns.FreeColonistsSpawned.Any(
-                    p => p != null && !p.Dead
-                        && p.skills.AverageOfRelevantSkillsFor(DefDatabase<WorkTypeDef>.GetNamed("Warden")) >= 9);
+                    p => p?.Dead == false && p.skills.AverageOfRelevantSkillsFor(DefDatabase<WorkTypeDef>.GetNamed("Warden")) >= 9);
             }
         }
 
