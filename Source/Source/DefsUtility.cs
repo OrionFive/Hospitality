@@ -38,8 +38,9 @@ namespace Hospitality
 
         private static void LogMisconfiguration(Def def, string message)
         {
-            var commaList = LoadedModManager.RunningModsListForReading.Where(m => m.AllDefs.Contains(def)).Select(m => m.Name).ToCommaList(true);
-            Log.ErrorOnce($"{message} This is a misconfiguration in {commaList}.", def.shortHash + 83747646);
+            //var commaList = LoadedModManager.RunningModsListForReading.Where(m => m.AllDefs.Contains(def)).Select(m => m.Name).ToCommaList(true);
+            var modName = def.modContentPack == null ? "unknown mod" : def.modContentPack.Name;
+            Log.ErrorOnce($"{message} This is a misconfiguration in {modName}.", def.shortHash + 83747646);
         }
     }
 }
