@@ -54,7 +54,7 @@
   <GuestsAlreadyComing>are already on their way and will arrive in {0}</GuestsAlreadyComing>
   <GuestsOnTheirWay>They are sending a delegation. Expect them to arrive in {0}.</GuestsOnTheirWay>
   
-  <!-- Tab -->
+  <!-- Pawn Tab -->
   <AreaToStay>Area of accommodation</AreaToStay>
   <AreaToBuy>Shopping area</AreaToBuy>
   <AreaNoShopping>No shopping</AreaNoShopping>
@@ -82,6 +82,9 @@
   <ForceRecruitTooltip>Instead of waiting for your diplomats to convince this guest, you can also force them to stay. The relationship damage with this faction will be much higher, though.</ForceRecruitTooltip>
   <SendAwayTooltip>Ask the group of this guest to go home again.</SendAwayTooltip>
 
+  <!-- Main Tab -->
+  
+  
   <!-- Infos -->
   <StatsReport_MissingFriends>Missing friends</StatsReport_MissingFriends>
   
@@ -108,5 +111,7 @@
   <MinGuestWorkSkillDesc>The minimum skill a guest needs to have to perform a task when helping out. (recommended: 7)</MinGuestWorkSkillDesc>
   <MaxGuestGroupSize>Maximum guest group size</MaxGuestGroupSize>
   <MaxGuestGroupSizeDesc>The maximum size a group of guests can be. (recommended: 16)</MaxGuestGroupSizeDesc>
+  <DisableGuestsTab>Disable guests tab</DisableGuestsTab>
+  <DisableGuestsTabDesc>Hide the guests tab from the main tab bar.</DisableGuestsTabDesc>
   
 </LanguageData>

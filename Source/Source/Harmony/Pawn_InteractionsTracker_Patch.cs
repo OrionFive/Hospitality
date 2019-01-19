@@ -70,8 +70,7 @@ namespace Hospitality.Harmony
 
             private static bool IsInteractable(Pawn pawn) // Added
             {
-                return pawn != null && !pawn.Downed && pawn.RaceProps.Humanlike && pawn.relations != null
-                       && pawn.story != null && pawn.story.traits != null;
+                return pawn?.Downed == false && pawn.RaceProps.Humanlike && pawn.relations != null && pawn.story?.traits != null;
             }
 
             private static bool CanInteractNowWith(Pawn pawn, Pawn recipient) 

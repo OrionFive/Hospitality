@@ -54,7 +54,7 @@ namespace Hospitality
         public override void LordToilTick()
         {
             if (Find.TickManager.TicksGame%205 != 0) return;
-            int count = lord.ownedPawns.Count(pawn => pawn != null && pawn.Position.InHorDistOf(Data.dest, Data.distance) && pawn.CanReach(Data.dest, PathEndMode.OnCell, Danger.Some));
+            int count = lord.ownedPawns.Count(pawn => pawn?.Position.InHorDistOf(Data.dest, Data.distance) == true && pawn.CanReach(Data.dest, PathEndMode.OnCell, Danger.Some));
             float percent = 1f*count/lord.ownedPawns.Count(pawn => pawn != null);
             if (Data == null) return;
             if (percent < Data.percentRequired) return;

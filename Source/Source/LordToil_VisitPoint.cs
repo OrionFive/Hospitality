@@ -75,8 +75,7 @@ namespace Hospitality
             {
                 if (Map.mapPawns.FreeColonistsSpawnedCount == 0) return false;
                 return Map.mapPawns.FreeColonistsSpawned.Any(
-                    p => p != null && !p.Dead
-                        && p.skills.AverageOfRelevantSkillsFor(DefDatabase<WorkTypeDef>.GetNamed("Warden")) >= 9);
+                    p => p?.Dead == false && p.skills.AverageOfRelevantSkillsFor(DefDatabase<WorkTypeDef>.GetNamed("Warden")) >= 9);
             }
         }
 
@@ -96,9 +95,11 @@ namespace Hospitality
 
             foreach (var pawn in pawns)
             {
+                var compGuest = pawn.GetComp<CompGuest>();
+                if(compGuest != null)
                 {
                     var score = GetVisitScore(pawn);
-                    if (pawn.GetComp<CompGuest>().sentAway)
+                    if (compGuest.sentAway)
                     {
                         sentAway = true;
                     }

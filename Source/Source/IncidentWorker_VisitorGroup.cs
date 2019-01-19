@@ -311,8 +311,8 @@ namespace Hospitality
         {
             if(map.areaManager == null) throw new NullReferenceException("map.areaManager is null!");
 
-            if (guestArea == null || !guestArea.ActiveCells.Any()) guestArea = Hospitality_MapComponent.Instance(map).defaultAreaRestriction;
-            if (guestArea == null || !guestArea.ActiveCells.Any()) guestArea = map.areaManager.Home;
+            if (guestArea?.ActiveCells.Any() != true) guestArea = Hospitality_MapComponent.Instance(map).defaultAreaRestriction;
+            if (guestArea?.ActiveCells.Any() != true) guestArea = map.areaManager.Home;
 
             cells.AddRange(guestArea.ActiveCells);
         }

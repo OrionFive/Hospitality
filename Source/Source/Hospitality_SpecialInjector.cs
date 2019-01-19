@@ -13,9 +13,9 @@ namespace Hospitality
     {
         public void Inject()
         {
-            InjectTab(typeof(ITab_Pawn_Guest), def => def.race != null && def.race.Humanlike);
+            InjectTab(typeof(ITab_Pawn_Guest), def => def.race?.Humanlike == true);
 
-            InjectComp(typeof(CompProperties_Guest), def => def.race != null && def.race.Humanlike);
+            InjectComp(typeof(CompProperties_Guest), def => def.race?.Humanlike == true);
 
             Type bed = typeof(Building_Bed);
             var bedDefs = DefDatabase<ThingDef>.AllDefsListForReading

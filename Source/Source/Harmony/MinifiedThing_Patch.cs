@@ -14,9 +14,7 @@ namespace Hospitality.Harmony
             public static bool Prefix(MinifiedThing __instance)
             {
                 if (!(__instance.InnerThing is Building_Bed)) return true;
-                if (__instance.InnerThing == null 
-                 || __instance.InnerThing.def == null 
-                 || !__instance.InnerThing.def.Minifiable)
+                if (__instance.InnerThing?.def?.Minifiable != true)
                 {
                     // Destroy next tick
                     ModBaseHospitality.RegisterTickAction(DestroySafely(__instance));
@@ -30,7 +28,7 @@ namespace Hospitality.Harmony
                 return () => {
                     try
                     {
-                        if (__instance != null && __instance.InnerThing != null && __instance.InnerThing.def != null)
+                        if (__instance?.InnerThing?.def != null)
                         {
                             Log.Message("Removing invalid minified thing of type "+__instance.InnerThing.def.LabelCap+".");
                         }

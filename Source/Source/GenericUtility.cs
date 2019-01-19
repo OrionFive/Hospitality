@@ -16,7 +16,7 @@ namespace Hospitality
 
         public static bool IsMeal(this Thing thing)
         {
-            return thing.def.ingestible != null && thing.def.ingestible.IsMeal;
+            return thing.def.ingestible?.IsMeal == true;
         }
 
         public static Pawn GetAnyRelatedWorldPawn(Func<Pawn, bool> selector, int minImportance)

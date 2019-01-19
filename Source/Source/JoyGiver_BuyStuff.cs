@@ -85,7 +85,7 @@ namespace Hospitality
                 if (!pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)) return 0;
             }
             // Shieldbelt
-            if (thing is ShieldBelt && pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsRangedWeapon) return 0;
+            if (thing is ShieldBelt && pawn.equipment.Primary?.def.IsRangedWeapon == true) return 0;
 
             // Quality of object
             var qFactor = 0.8f;
@@ -116,7 +116,7 @@ namespace Hospitality
         // Copied so outfits can be commented
         public static float ApparelScoreGain(Pawn pawn, Apparel ap)
         {
-            if (ap is ShieldBelt && pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsWeaponUsingProjectiles)
+            if (ap is ShieldBelt && pawn.equipment.Primary?.def.IsWeaponUsingProjectiles == true)
                 return -1000f;
             float num = JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
             List<Apparel> wornApparel = pawn.apparel.WornApparel;

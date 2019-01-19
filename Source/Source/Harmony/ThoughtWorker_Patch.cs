@@ -18,7 +18,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool CurrentStateInternal(ref ThoughtState __result, Pawn p)
             {
-                if (p == null || p.ownership == null || p.ownership.OwnedBed == null)
+                if (p?.ownership?.OwnedBed == null)
                 {
                     __result = ThoughtState.Inactive;
                     return false;
@@ -35,7 +35,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool CurrentStateInternal(ref ThoughtState __result, Pawn p)
             {
-                if (p == null || p.ownership == null || p.ownership.OwnedBed == null)
+                if (p?.ownership?.OwnedBed == null)
                 {
                     __result = ThoughtState.Inactive;
                     return false;

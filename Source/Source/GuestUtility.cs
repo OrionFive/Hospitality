@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Verse.AI.Group;
 using Verse;
 using Verse.AI;
@@ -63,7 +64,7 @@ namespace Hospitality
                 if (pawn.thingIDNumber == 0) return false; // Yeah, this can happen O.O
                 if (pawn.Name == null) return false;
                 if (pawn.Dead) return false;
-                if (pawn.RaceProps == null || !pawn.RaceProps.Humanlike) return false;
+                if (pawn.RaceProps?.Humanlike != true) return false;
                 if (pawn.guest == null) return false;
                 if (pawn.IsPrisonerOfColony || pawn.Faction == Faction.OfPlayer) return false;
                 if (!pawn.IsInVisitState()) return false;
@@ -90,7 +91,7 @@ namespace Hospitality
                 if (pawn.thingIDNumber == 0) return false; // Yeah, this can happen O.O
                 if (pawn.Name == null) return false;
                 if (pawn.Dead) return false;
-                if (pawn.RaceProps == null || !pawn.RaceProps.Humanlike) return false;
+                if (pawn.RaceProps?.Humanlike != true) return false;
                 if (pawn.guest == null) return false;
                 if (pawn.IsPrisonerOfColony || pawn.Faction == Faction.OfPlayer) return false;
                 if (pawn.HostileTo(Faction.OfPlayer)) return false;
@@ -167,15 +168,13 @@ namespace Hospitality
         public static bool ImproveRelationship(this Pawn guest)
         {
             var guestComp = guest.GetComp<CompGuest>();
-            if (guestComp == null) return false;
-            return guestComp.chat;
+            return guestComp?.chat == true;
         }
 
         public static bool TryRecruit(this Pawn guest)
         {
             var guestComp = guest.GetComp<CompGuest>();
-            if (guestComp == null) return false;
-            return guestComp.recruit;
+            return guestComp?.recruit == true;
         }
 
         public static bool CanTalkTo(this Pawn talker, Pawn talkee)
@@ -204,10 +203,10 @@ namespace Hospitality
             pawn.PocketHeadgear();
 
             // Save trader info
-            bool trader = pawn.mindState.wantsToTradeWithColony;
-            TraderKindDef traderKindDef = trader?pawn.trader.traderKind:null;
+            bool trader = pawn.mindState?.wantsToTradeWithColony == true;
+            TraderKindDef traderKindDef = trader ? pawn.trader.traderKind : null;
 
-            pawn.guest.SetGuestStatus(Faction.OfPlayer);
+            pawn.guest?.SetGuestStatus(Faction.OfPlayer);
 
             // Restore trader info
             if (trader)
@@ -217,7 +216,7 @@ namespace Hospitality
                 pawn.trader.traderKind = traderKindDef;
             }
 
-            pawn.GetComp<CompGuest>().Arrive();
+            pawn.GetComp<CompGuest>()?.Arrive();
         }
 
         public static bool GetVisitScore(this Pawn pawn, out float score)
@@ -238,9 +237,9 @@ namespace Hospitality
 
             pawn.needs.AddOrRemoveNeedsAsAppropriate();
 
-            pawn.guest.SetGuestStatus(null);
+            pawn.guest?.SetGuestStatus(null);
 
-            pawn.GetComp<CompGuest>().Leave();
+            pawn.GetComp<CompGuest>()?.Leave();
 
             //var reservationManager = pawn.MapHeld.reservationManager;
             //var allReservedThings = reservationManager.AllReservedThings().ToArray();
@@ -315,6 +314,8 @@ namespace Hospitality
 
         public static void PocketHeadgear(this Pawn pawn)
         {
+            if (pawn?.apparel?.WornApparel == null || pawn.inventory?.innerContainer == null) return;
+
             var headgear = pawn.apparel.WornApparel.Where(CoversHead).ToArray();
             foreach (var apparel in headgear)
             {
@@ -338,6 +339,8 @@ namespace Hospitality
 
         public static void WearHeadgear(this Pawn pawn)
         {
+            if (pawn?.apparel?.WornApparel == null || pawn.inventory?.innerContainer == null) return;
+
             var container = pawn.inventory.innerContainer;
             var headgear = container.OfType<Apparel>().Where(CoversHead).InRandomOrder().ToArray();
             foreach (var apparel in headgear)
@@ -462,7 +465,7 @@ namespace Hospitality
             guest.timetable = new Pawn_TimetableTracker(guest);
 
             var lord = guest.GetLord();
-            if (lord != null && lord.ownedPawns.Count > 1)
+            if (lord?.ownedPawns.Count > 1)
             {
                 for (int i = guest.inventory.innerContainer.Count - 1; i >= 0; i--)
                 {
@@ -586,7 +589,7 @@ namespace Hospitality
         {
             if (!pawn.Spawned || pawn.Dead || pawn.Downed || pawn.InMentalState) return;
 
-            pawn.guest.SetGuestStatus(null);
+            pawn.guest?.SetGuestStatus(null);
             bool canFlee = pawn.Map.reachability.CanReachMapEdge(pawn.PositionHeld, TraverseParms.For(TraverseMode.NoPassClosedDoors));
             
             var mentalState = canFlee ? MentalStateDefOf.PanicFlee : MentalStateDefOf.ManhunterPermanent;

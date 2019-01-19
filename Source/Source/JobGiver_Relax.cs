@@ -12,9 +12,16 @@ namespace Hospitality
 
         public override float GetPriority(Pawn pawn)
         {
-            if (pawn.needs == null || pawn.needs.joy == null)
+            if (pawn == null)
             {
-                Log.Message(pawn.Name.ToStringShort + " needs no joy...");
+                Log.ErrorOnce("pawn == null", 745743);
+                return 0f;
+            }
+
+            if (pawn.needs?.joy == null)
+            {
+                // Apparently there are guests without joy...
+                //Log.Message(pawn.LabelShort + " needs no joy...");
                 return 0f;
             }
             float curLevel = pawn.needs.joy.CurLevel;
@@ -35,33 +42,47 @@ namespace Hospitality
 
         protected override Job TryGiveJob(Pawn pawn)
         {
+            if (pawn == null)
+            {
+                Log.ErrorOnce("pawn == null", 987272);
+                return null;
+            }
             if (pawn.CurJob != null)
             {
                 //Log.ErrorOnce(pawn.NameStringShort+ " already has a job: "+pawn.CurJob, 4325+pawn.thingIDNumber);
                 return pawn.CurJob;
             }
-            if (pawn.needs == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no needs", 3463 + pawn.thingIDNumber);
-            if (pawn.needs.joy == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no joy need", 8585 + pawn.thingIDNumber);
-            if (pawn.skills == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no skills", 22352 + pawn.thingIDNumber);
-            if (pawn.GetTimeAssignment() == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no time assignments", 74564 + pawn.thingIDNumber); 
+            if (pawn.needs == null) Log.ErrorOnce(pawn.LabelShort + " has no needs", 3463 + pawn.thingIDNumber);
+            if (pawn.needs.joy == null) Log.ErrorOnce(pawn.LabelShort + " has no joy need", 8585 + pawn.thingIDNumber);
+            if (pawn.skills == null) Log.ErrorOnce(pawn.LabelShort + " has no skills", 22352 + pawn.thingIDNumber);
+            if (pawn.GetTimeAssignment() == null) Log.ErrorOnce(pawn.LabelShort + " has no time assignments", 74564 + pawn.thingIDNumber); 
 
             var allDefsListForReading = PopulateChances(pawn); // Moved to own function
+            if (GetJob(pawn, allDefsListForReading, out var job)) return job;
+            Log.ErrorOnce(pawn.LabelShort + " did not get a relax job.", 45745 + pawn.thingIDNumber);
+            return null;
+        }
+
+        private bool GetJob(Pawn pawn, List<JoyGiverDef> allDefsListForReading, out Job job)
+        {
             for (int j = 0; j < joyGiverChances.Count; j++)
             {
-                JoyGiverDef giverDef;
-                if (!allDefsListForReading.TryRandomElementByWeight(d => joyGiverChances[d], out giverDef))
+                if (!allDefsListForReading.TryRandomElementByWeight(d => joyGiverChances[d], out var giverDef))
                 {
                     break;
                 }
-                Job job = giverDef.Worker.TryGiveJob(pawn);
+
+                job = giverDef?.Worker?.TryGiveJob(pawn);
                 if (job != null)
                 {
-                    return job;
+                    return true;
                 }
+
                 joyGiverChances[giverDef] = 0f;
             }
-            Log.ErrorOnce(pawn.Name.ToStringShort + " did not get a relax job.", 45745 + pawn.thingIDNumber);
-            return null;
+
+            job = null;
+            return false;
         }
 
         private List<JoyGiverDef> PopulateChances(Pawn pawn)

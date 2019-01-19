@@ -13,7 +13,7 @@ namespace Hospitality.Harmony
             [HarmonyPostfix]
             public static void Postfix(Pawn negotiator, Faction faction, ref DiaNode __result)
             {
-                if (negotiator.Map != null && negotiator.Map.IsPlayerHome)
+                if (negotiator.Map?.IsPlayerHome == true)
                 {
                     __result.options.Insert(0, InviteGuestsOption(negotiator.Map, faction, negotiator));
                 }

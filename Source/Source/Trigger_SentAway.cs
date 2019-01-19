@@ -9,18 +9,16 @@ namespace Hospitality
         {
             if (signal.type == TriggerSignalType.Tick)
             {
-                return lord != null && lord.ownedPawns.Any(SentAway);
+                return lord?.ownedPawns.Any(SentAway) == true;
             }
             return false;
         }
 
         private static bool SentAway(Pawn pawn)
         {
-            if (pawn == null || pawn.health == null || pawn.health.hediffSet == null) return false;
+            if (pawn?.health?.hediffSet == null) return false;
             var comp = pawn.GetComp<CompGuest>();
-            if (comp == null) return false;
-
-            return comp.sentAway;
+            return comp?.sentAway == true;
         }
     }
 }
