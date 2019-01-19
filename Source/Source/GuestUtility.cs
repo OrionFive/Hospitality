@@ -313,6 +313,8 @@ namespace Hospitality
 
         public static void PocketHeadgear(this Pawn pawn)
         {
+            if (pawn?.apparel?.WornApparel == null || pawn.inventory?.innerContainer == null) return;
+
             var headgear = pawn.apparel.WornApparel.Where(CoversHead).ToArray();
             foreach (var apparel in headgear)
             {
@@ -336,6 +338,8 @@ namespace Hospitality
 
         public static void WearHeadgear(this Pawn pawn)
         {
+            if (pawn?.apparel?.WornApparel == null || pawn.inventory?.innerContainer == null) return;
+
             var container = pawn.inventory.innerContainer;
             var headgear = container.OfType<Apparel>().Where(CoversHead).InRandomOrder().ToArray();
             foreach (var apparel in headgear)
