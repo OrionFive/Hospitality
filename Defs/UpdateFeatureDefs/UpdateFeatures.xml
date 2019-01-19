@@ -7,9 +7,9 @@
 	</HugsLib.UpdateFeatureDef>
 	
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-		<defName>Hospitality_1_0_7</defName>
-		<assemblyVersion>1.0.7</assemblyVersion>
-		<content>- New option to force recruit guests at a higher cost|- More tooltips|I'm working on an exciting (non-Rimworld) personal project. Wanna check it out or give me a hand? Then please click the link above for more information.</content>
+		<defName>Hospitality_1_0_12</defName>
+		<assemblyVersion>1.0.12</assemblyVersion>
+		<content>- There's now a tab for listing guests! (can be disabled)|- Traders with animals should work now|I'm working on an exciting (non-Rimworld) personal project. Wanna check it out or give me a hand? Then please click the link above for more information.</content>
 	</HugsLib.UpdateFeatureDef>
 
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">

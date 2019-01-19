@@ -121,7 +121,6 @@
     <Compile Include="MainTab\PawnColumnWorker_ShoppingArea.cs" />
     <Compile Include="MainTab\PawnTable_Guests.cs" />
     <Compile Include="ModBaseHospitality.cs" />
-    <Compile Include="ModConfigMenu.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="StatWorker_ForcedRelationshipDamage.cs" />
     <Compile Include="ThinkNode_ConditionalWantsToHelp.cs" />

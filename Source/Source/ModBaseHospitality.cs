@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using HugsLib;
+using RimWorld;
+using Verse;
 
 namespace Hospitality
 {
@@ -41,6 +43,21 @@ namespace Hospitality
         public static void RegisterTickAction(Action action)
         {
             TickActions.Add(action);
+        }
+
+        public override void SettingsChanged()
+        {
+            ToggleTabIfNeeded();
+        }
+
+        public override void WorldLoaded()
+        {
+            ToggleTabIfNeeded();
+        }
+
+        private void ToggleTabIfNeeded()
+        {
+            DefDatabase<MainButtonDef>.GetNamed("Guests").buttonVisible = !Hospitality.Settings.disableGuestsTab;
         }
     }
 }

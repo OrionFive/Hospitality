@@ -54,7 +54,7 @@
   <GuestsAlreadyComing>sind schon unterwegs und werden in {0} ankommen.</GuestsAlreadyComing>
   <GuestsOnTheirWay>Sie schicken eine Delegation. Erwarte, dass sie in {0} ankommen.</GuestsOnTheirWay>
   
-  <!-- Tab -->
+  <!-- Pawn Tab -->
   <AreaToStay>Aufenthaltszone</AreaToStay>
   <AreaToBuy>Einkaufszone</AreaToBuy>
   <AreaNoShopping>Kein Einkauf</AreaNoShopping>
@@ -82,6 +82,9 @@
   <ForceRecruitTooltip>Statt darauf zu warten, dass deine Diplomaten diesen Gast überzeugen, kannst du auch erzwingen, dass er bleibt. Der Beziehungsschaden mit dieser Fraktion ist dann allerdings viel höher.</ForceRecruitTooltip>
   <SendAwayTooltip>Ask the group of this guest to go home again.</SendAwayTooltip>
   
+  <!-- Main Tab -->
+  
+
   <!-- Infos -->
   <StatsReport_MissingFriends>Fehlende Freunde</StatsReport_MissingFriends>
   
@@ -108,5 +111,7 @@
   <MinGuestWorkSkillDesc>Die minimale Fähigkeit, die ein Gast erfüllen muss, wenn er aushilft. (Empfohlen: 7)</MinGuestWorkSkillDesc>
   <MaxGuestGroupSize>Maximale Gästegruppengröße</MaxGuestGroupSize>
   <MaxGuestGroupSizeDesc>Die maximale Größe einer Gruppe von Gästen. (Empfohlen: 16)</MaxGuestGroupSizeDesc>
+  <DisableGuestsTab>Gäste Tab deaktivieren</DisableGuestsTab>
+  <DisableGuestsTabDesc>Versteckt den Gäste Tab in der Tab Leiste.</DisableGuestsTabDesc>
   
 </LanguageData>
