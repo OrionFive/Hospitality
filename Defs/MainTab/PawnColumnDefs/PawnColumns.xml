@@ -12,7 +12,7 @@
     <defName>Entertain</defName>
     <workerClass>Hospitality.MainTab.PawnColumnWorker_Entertain</workerClass>
     <sortable>true</sortable>
-    <headerIcon>UI/Icons/Animal/Tame</headerIcon>
+    <headerIcon>UI/Tab/Entertain</headerIcon>
     <headerTip>Entertain</headerTip>
     <paintable>true</paintable>
   </PawnColumnDef>
@@ -21,7 +21,7 @@
     <defName>Recruit</defName>
     <workerClass>Hospitality.MainTab.PawnColumnWorker_Recruit</workerClass>
     <sortable>true</sortable>
-    <headerIcon>UI/Icons/Animal/Slaughter</headerIcon>
+    <headerIcon>UI/Tab/Recruit</headerIcon>
     <headerTip>Recruit</headerTip>
     <paintable>true</paintable>
   </PawnColumnDef>
@@ -43,7 +43,7 @@
   <PawnColumnDef>
     <defName>FriendsForRecruiting</defName>
     <workerClass>Hospitality.MainTab.PawnColumnWorker_FriendsForRecruiting</workerClass>
-    <headerIcon>Things/Mote/SpeechSymbols/Diplomacy</headerIcon>
+    <headerIcon>UI/Tab/Friends</headerIcon>
     <width>45</width>
 	<sortable>true</sortable>
   </PawnColumnDef>
@@ -51,7 +51,7 @@
   <PawnColumnDef>
     <defName>Hospitality</defName>
     <workerClass>Hospitality.MainTab.PawnColumnWorker_Hospitality</workerClass>
-    <headerIcon>UI/Commands/AsGuest</headerIcon>
+    <headerIcon>UI/Tab/Hospitality</headerIcon>
     <width>45</width>
 	<sortable>true</sortable>
   </PawnColumnDef>
