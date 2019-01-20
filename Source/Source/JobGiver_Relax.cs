@@ -60,6 +60,7 @@ namespace Hospitality
             var allDefsListForReading = PopulateChances(pawn); // Moved to own function
             if (GetJob(pawn, allDefsListForReading, out var job)) return job;
             Log.ErrorOnce(pawn.LabelShort + " did not get a relax job.", 45745 + pawn.thingIDNumber);
+            CheckArea(pawn);
             return null;
         }
 
@@ -83,6 +84,22 @@ namespace Hospitality
 
             job = null;
             return false;
+        }
+
+        private static void CheckArea(Pawn pawn)
+        {
+            var area = pawn.GetGuestArea();
+            if (area == null)
+            {
+                Log.ErrorOnce(pawn.LabelShort + " has a null area!", 932463 + pawn.thingIDNumber);
+                return;
+            }
+
+            if(area.TrueCount == 0)
+            {
+                Log.ErrorOnce(pawn.LabelShort + " has an area that is empty!", 43737 + pawn.thingIDNumber);
+                return;
+            }
         }
 
         private List<JoyGiverDef> PopulateChances(Pawn pawn)
