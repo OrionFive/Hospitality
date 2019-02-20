@@ -15,7 +15,7 @@ namespace Hospitality
         //Constants
         public const int MinShoppingDuration = 75;
         public const int MaxShoppingDuration = 300;
-        public const float PriceFactor = 0.85f;
+        public static float PriceFactor = 0.85f;
 
         //Properties
         protected Thing Item { get { return job.targetA.Thing; } }
