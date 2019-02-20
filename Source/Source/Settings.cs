@@ -26,6 +26,37 @@ namespace Hospitality {
             maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), 16, GroupSizeLimits());
             disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
             disableGuestsTab = settings.GetHandle("disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false);
+            
+            string hiddenConfigFile = Path.Combine(GenFilePaths.ConfigFolderPath, "Hospitality.cfg");
+            if (File.Exists(hiddenConfigFile))
+            {
+                try {
+                    var reader = File.OpenText(hiddenConfigFile);
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (line.StartsWith("#")) continue;
+                        string[] keyVal = line.Split('=');
+                        if (keyVal.Length != 2) continue;
+                        string key = keyVal[0].Trim();
+                        string val = keyVal[1].Trim();
+
+                        switch (key)
+                        {
+                            case "PriceFactor":
+                                Log.Message("[Hospitality] Setting PriceFactor to " + val);
+                                JobDriver_BuyItem.PriceFactor = float.Parse(val);
+                                break;
+
+                            default:
+                                Log.Message("[Hospitality] Unrecognized setting: " + key);
+                                break;
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.Error("[Hospitality] Exception loading Hospitality.cfg: " + e.Message);
+                }
+            }
         }
 
         private static SettingHandle.ValueIsValid WorkSkillLimits()
