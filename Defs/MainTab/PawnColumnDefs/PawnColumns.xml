@@ -56,4 +56,10 @@
 	<sortable>true</sortable>
   </PawnColumnDef>
 
+  <PawnColumnDef>
+    <defName>More</defName>
+    <workerClass>Hospitality.MainTab.PawnColumnWorker_ButtonMore</workerClass>
+    <width>70</width>
+  </PawnColumnDef>
+
 </Defs>

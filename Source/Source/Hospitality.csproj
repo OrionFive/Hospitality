@@ -113,6 +113,7 @@
     <Compile Include="MainTab\MainTabWindow_Hospitality.cs" />
     <Compile Include="MainTab\PawnColumnWorker_AccommodationArea.cs" />
     <Compile Include="MainTab\PawnColumnWorker_AreaBase.cs" />
+    <Compile Include="MainTab\PawnColumnWorker_ButtonMore.cs" />
     <Compile Include="MainTab\PawnColumnWorker_Entertain.cs" />
     <Compile Include="MainTab\PawnColumnWorker_Faction.cs" />
     <Compile Include="MainTab\PawnColumnWorker_FriendsForRecruiting.cs" />
