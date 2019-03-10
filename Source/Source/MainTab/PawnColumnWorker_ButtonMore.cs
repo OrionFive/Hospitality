@@ -1,6 +1,4 @@
-using System;
 using RimWorld;
-using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 

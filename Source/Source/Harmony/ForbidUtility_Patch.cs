@@ -48,5 +48,25 @@ namespace Hospitality.Harmony
                 return true;
             }
         }
+
+        /// <summary>
+        /// Area check for guests trying to access things outside their zone.
+        /// </summary>
+        [HarmonyPatch(typeof(ForbidUtility), "InAllowedArea")]
+        public class InAllowedArea
+        {
+            [HarmonyPostfix]
+            public static void Postfix(IntVec3 c, Pawn forPawn, ref bool __result)
+            {
+                if (!__result) return; // Not ok anyway, moving on
+                if (!forPawn.IsGuest()) return;
+                if (!forPawn.IsArrived()) return;
+
+                var area = forPawn.GetGuestArea();
+                if (area == null) return;
+                if (!c.IsValid || !area[c]) __result = false;
+            }
+        }
+
     }
 }
