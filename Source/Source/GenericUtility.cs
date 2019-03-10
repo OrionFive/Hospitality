@@ -62,7 +62,7 @@ namespace Hospitality
         {
             if (travelDaysCache.TryGetValue(faction, out var minTicks)) return minTicks / (float)GenDate.TicksPerDay;
 
-            minTicks = int.MaxValue;
+            minTicks = Int32.MaxValue;
             foreach (var settlement in Find.WorldObjects.SettlementBases)
             {
                 if (settlement.Faction != faction) continue;
@@ -70,7 +70,7 @@ namespace Hospitality
                 if (travelTicks <= 0) continue;
                 if (travelTicks < minTicks) minTicks = travelTicks;
             }
-            if (minTicks == int.MaxValue) return NoBasesLeft;
+            if (minTicks == Int32.MaxValue) return NoBasesLeft;
 
             travelDaysCache.Add(faction, minTicks);
 
@@ -167,6 +167,29 @@ namespace Hospitality
 
             travelDays = days + travelDays * travelFactor;
             PlanNewVisit(map, travelDays, faction);
+        }
+
+        public static void DoAreaRestriction(Pawn pawn, Rect rect, Area area, Action<Area> setArea, Func<Area, string> getLabel)
+        {
+            // Needed for GUI
+            if (pawn.playerSettings == null)
+            {
+                pawn.playerSettings = new Pawn_PlayerSettings(pawn) {AreaRestriction = area};
+            }
+
+            pawn.playerSettings.AreaRestriction = area;
+            GuestUtility.DoAllowedAreaSelectors(rect, pawn, getLabel);
+            var newArea = pawn.playerSettings.AreaRestriction;
+            pawn.playerSettings.AreaRestriction = null;
+            Text.Anchor = TextAnchor.UpperLeft;
+
+            if (newArea != area) setArea(newArea);
+        }
+
+        public static string GetShoppingLabel(Area area)
+        {
+            if (area != null) return area.Label;
+            return "AreaNoShopping".Translate();
         }
     }
 }

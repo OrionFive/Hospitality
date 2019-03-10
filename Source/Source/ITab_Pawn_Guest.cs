@@ -74,11 +74,11 @@ namespace Hospitality
                 {
                     listingStandard.Gap();
                     LabelWithTooltip("AreaToStay".Translate(), "AreaToStayTooltip".Translate());
-                    DoAreaRestriction(listingStandard, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
+                    GenericUtility.DoAreaRestriction(SelPawn, listingStandard.GetRect(24), comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
                     LabelWithTooltip("AreaToBuy".Translate(), "AreaToBuyTooltip".Translate());
 
 
-                    DoAreaRestriction(listingStandard, comp.ShoppingArea, SetAreaShopping, GetShoppingLabel);
+                    GenericUtility.DoAreaRestriction(SelPawn, listingStandard.GetRect(24), comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel);
 
                     CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, false, "ImproveTooltip".Translate());
 
@@ -145,31 +145,6 @@ namespace Hospitality
                 if (Mouse.IsOver(rect)) Widgets.DrawHighlight(rect);
                 TooltipHandler.TipRegion(rect, tooltip);
             }
-        }
-
-        private static string GetShoppingLabel(Area area)
-        {
-            if (area != null) return area.Label;
-            return "AreaNoShopping".Translate();
-        }
-
-        private void DoAreaRestriction(Listing_Standard listing, Area area, Action<Area> setArea, Func<Area, string> getLabel)
-        {
-            var areaRect = listing.GetRect(24);
-
-            // Needed for GUI
-            if (SelPawn.playerSettings == null)
-            {
-                SelPawn.playerSettings = new Pawn_PlayerSettings(SelPawn) {AreaRestriction = area};
-            }
-
-            SelPawn.playerSettings.AreaRestriction = area;
-            GuestUtility.DoAllowedAreaSelectors(areaRect, SelPawn, getLabel);
-            var newArea = SelPawn.playerSettings.AreaRestriction;
-            SelPawn.playerSettings.AreaRestriction = null;
-            Text.Anchor = TextAnchor.UpperLeft;
-
-            if (newArea != area) setArea(newArea);
         }
 
         private void SetAreaRestriction(Area area)

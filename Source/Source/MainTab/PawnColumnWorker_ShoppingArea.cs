@@ -26,5 +26,14 @@ namespace Hospitality.MainTab
             //    Find.WindowStack.Add(new Dialog_ManageAreas(Find.CurrentMap));
             //}
         }
+
+        public override void DoCell(Rect rect, Pawn pawn, PawnTable table)
+        {
+            // Changed check
+            if (!pawn.IsGuest()) return;
+
+            AreaGUI.DoAllowedAreaSelectors(rect, pawn, GetArea, SetArea);
+            GenericUtility.DoAreaRestriction(pawn, rect, GetArea(pawn), area=>SetArea(pawn, area), GenericUtility.GetShoppingLabel);
+        }
     }
 }
