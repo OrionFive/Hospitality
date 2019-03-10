@@ -32,7 +32,6 @@ namespace Hospitality.MainTab
             // Changed check
             if (!pawn.IsGuest()) return;
 
-            AreaGUI.DoAllowedAreaSelectors(rect, pawn, GetArea, SetArea);
             GenericUtility.DoAreaRestriction(pawn, rect, GetArea(pawn), area=>SetArea(pawn, area), GenericUtility.GetShoppingLabel);
         }
     }

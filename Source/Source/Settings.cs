@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using HugsLib.Settings;
 using Verse;
 
@@ -71,10 +72,7 @@ namespace Hospitality {
 
         private static SettingHandle.ValueIsValid AtLeast(Func<int> amount)
         {
-            return delegate(string value) {
-                int actual;
-                return int.TryParse(value, out actual) && actual >= amount();
-            };
+            return value => int.TryParse(value, out var actual) && actual >= amount();
         }
     }
 }
