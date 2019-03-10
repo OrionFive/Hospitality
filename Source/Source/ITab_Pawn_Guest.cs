@@ -73,16 +73,22 @@ namespace Hospitality
                 if (comp != null)
                 {
                     listingStandard.Gap();
-                    LabelWithTooltip("AreaToStay".Translate(), "AreaToStayTooltip".Translate());
-                    GenericUtility.DoAreaRestriction(SelPawn, listingStandard.GetRect(24), comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
-                    LabelWithTooltip("AreaToBuy".Translate(), "AreaToBuyTooltip".Translate());
+                    string labelStay = "AreaToStay".Translate();
+                    string labelBuy = "AreaToBuy".Translate();
+                    var rectStayLabel = listingStandard.GetRect(Text.CalcHeight(labelStay, listingStandard.ColumnWidth));
+                    var rectBuyLabel = listingStandard.GetRect(Text.CalcHeight(labelBuy, listingStandard.ColumnWidth));
+                    var rectStay = listingStandard.GetRect(24);
+                    var rectBuy = listingStandard.GetRect(24);
 
+                    LabelWithTooltip(labelStay, "AreaToStayTooltip".Translate(), rectStayLabel);
+                    GenericUtility.DoAreaRestriction(SelPawn, rectStay, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
+                    LabelWithTooltip(labelBuy, "AreaToBuyTooltip".Translate(), rectBuyLabel);
+                    GenericUtility.DoAreaRestriction(SelPawn, rectBuy, comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel);
 
-                    GenericUtility.DoAreaRestriction(SelPawn, listingStandard.GetRect(24), comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel);
-
-                    CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, false, "ImproveTooltip".Translate());
-
-                    CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit, false, "TryRecruitTooltip".Translate());
+                    var rectImproveRelationship = listingStandard.GetRect(Text.LineHeight);
+                    CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, "ImproveTooltip".Translate());
+                    var rectRecruit = listingStandard.GetRect(Text.LineHeight);
+                    CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit, rectRecruit, false, "TryRecruitTooltip".Translate());
 
                     comp.chat = tryImprove;
                     comp.recruit = tryRecruit;
@@ -91,11 +97,24 @@ namespace Hospitality
 
                     var mayForceRecruit = !SelPawn.InMentalState && comp.arrived && friends < friendsRequired;
 
-                    DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, new Vector2(rect.xMax - buttonSize.x - 10, 160), txtMakeDefaultTooltip);
-                    DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, new Vector2(rect.xMin - 10, 160), txtSendAwayTooltip);
+                    var rectSetDefault = new Rect(rect.xMax - buttonSize.x - 10,160, buttonSize.x, buttonSize.y);
+                    var rectSendHome = new Rect(rect.xMin - 10, 160, buttonSize.x, buttonSize.y);
+                    DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, rectSetDefault, txtMakeDefaultTooltip);
+                    DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
                     if (mayForceRecruit)
                     {
-                        DrawButton(() => ForceRecruitDialog(SelPawn), txtForceRecruit, new Vector2(rect.xMin - 10 + 10 + buttonSize.x, 160), txtForceRecruitTooltip);
+                        var rectForceRecruit = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
+                        DrawButton(() => ForceRecruitDialog(SelPawn), txtForceRecruit, rectForceRecruit, txtForceRecruitTooltip);
+                    }
+
+                    // Highlight defaults
+                    if (Mouse.IsOver(rectSetDefault))
+                    {
+                        Widgets.DrawHighlight(rectStay);
+                        Widgets.DrawHighlight(rectStayLabel);
+                        Widgets.DrawHighlight(rectBuy);
+                        Widgets.DrawHighlight(rectBuyLabel);
+                        Widgets.DrawHighlight(rectImproveRelationship);
                     }
                 }
 
@@ -131,9 +150,8 @@ namespace Hospitality
             }
         }
 
-        private static void LabelWithTooltip(string label, string tooltip)
+        private static void LabelWithTooltip(string label, string tooltip, Rect rect)
         {
-            var rect = listingStandard.GetRect(Text.CalcHeight(label, listingStandard.ColumnWidth));
             Widgets.Label(rect, label);
             DoTooltip(rect, tooltip);
         }
@@ -163,9 +181,8 @@ namespace Hospitality
             }
         }
 
-        public void CheckboxLabeled(Listing_Standard listing, string label, ref bool checkOn, bool disabled = false, string tooltip = null)
+        public void CheckboxLabeled(Listing_Standard listing, string label, ref bool checkOn, Rect rect, bool disabled = false, string tooltip = null)
         {
-            Rect rect = listing.GetRect(Text.LineHeight);
             if (!tooltip.NullOrEmpty())
             {
                 if (Mouse.IsOver(rect))
@@ -176,9 +193,8 @@ namespace Hospitality
             listing.Gap(listing.verticalSpacing);
         }
 
-        private static void DrawButton(Action action, string text, Vector2 pos, string tooltip =  null)
+        private static void DrawButton(Action action, string text, Rect rect, string tooltip =  null)
         {
-            var rect = new Rect(pos.x, pos.y, buttonSize.x, buttonSize.y);
             if (!tooltip.NullOrEmpty())
             {
                 TooltipHandler.TipRegion(rect, tooltip);
