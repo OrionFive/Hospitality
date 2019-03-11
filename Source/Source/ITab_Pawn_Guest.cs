@@ -76,8 +76,8 @@ namespace Hospitality
                     string labelStay = "AreaToStay".Translate();
                     string labelBuy = "AreaToBuy".Translate();
                     var rectStayLabel = listingStandard.GetRect(Text.CalcHeight(labelStay, listingStandard.ColumnWidth));
-                    var rectBuyLabel = listingStandard.GetRect(Text.CalcHeight(labelBuy, listingStandard.ColumnWidth));
                     var rectStay = listingStandard.GetRect(24);
+                    var rectBuyLabel = listingStandard.GetRect(Text.CalcHeight(labelBuy, listingStandard.ColumnWidth));
                     var rectBuy = listingStandard.GetRect(24);
 
                     LabelWithTooltip(labelStay, "AreaToStayTooltip".Translate(), rectStayLabel);
