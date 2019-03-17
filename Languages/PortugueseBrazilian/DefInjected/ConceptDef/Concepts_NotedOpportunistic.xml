@@ -3,7 +3,7 @@
 
   <!-- Concepts taught through the learning readout, when opportunities arise -->
 
-  <GuestBeds.label>Cama de hóspedess</GuestBeds.label>
+  <GuestBeds.label>Cama de hóspedes</GuestBeds.label>
   <GuestBeds.helpText>Os visitantes preferem dormir em camas.\n\nVocê pode converter camas em camas de hóspedes usando o botão "Para convidados".</GuestBeds.helpText>
 
   <RecruitGuest.label>Recrutando convidados</RecruitGuest.label>
