@@ -120,7 +120,13 @@ namespace Hospitality
         public static int GetFriendsInColony(this Pawn guest)
         {
             float requiredOpinion = GetMinRecruitOpinion(guest);
-            return GetPawnsFromBase(guest.MapHeld).Count(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion);
+            return GetPawnsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => GetRelationValue(pawn, guest));
+        }
+
+        private static int GetRelationValue(Pawn pawn, Pawn guest)
+        {
+            if (guest.relations.DirectRelations.Any(rel => rel.otherPawn == pawn)) return 2;
+            return 1;
         }
 
         private static IEnumerable<Pawn> GetPawnsFromBase(Map mapHeld)
@@ -149,7 +155,7 @@ namespace Hospitality
         public static int GetEnemiesInColony(this Pawn guest)
         {
             const int maxOpinion = -20;
-            return GetPawnsFromBase(guest.MapHeld).Count(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= maxOpinion);
+            return GetPawnsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= maxOpinion).Sum(p => GetRelationValue(p, guest));
         }
 
         public static int GetMinRecruitOpinion(this Pawn guest)
