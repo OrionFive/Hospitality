@@ -16,9 +16,26 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Replacement(ref bool __result, Pawn pawn, bool cellTarget)
             {
-                __result = !pawn.InMentalState && AddedFactionCheck(pawn)
-                       && (!cellTarget || !ThinkNode_ConditionalShouldFollowMaster.ShouldFollowMaster(pawn));
+                // I have split up the original check to make some sense of it. Still doesn't make any sense.
+                __result = 
+                    CrazyRimWorldCheck(pawn) && !pawn.InMentalState && (!cellTarget || !ThinkNode_ConditionalShouldFollowMaster.ShouldFollowMaster(pawn));
                 return false;
+            }
+
+            private static bool CrazyRimWorldCheck(Pawn pawn)
+            {
+                // Guests need this in PlayerHome
+                return (pawn.HostFaction == null || pawn.HostFaction == Faction.OfPlayer && pawn.Spawned /*&& !pawn.Map.IsPlayerHome*/ && NotInPrison(pawn) && NotFleeingPrisoner(pawn));
+            }
+
+            private static bool NotFleeingPrisoner(Pawn pawn)
+            {
+                return !pawn.IsPrisoner || pawn.guest.PrisonerIsSecure;
+            }
+
+            private static bool NotInPrison(Pawn pawn)
+            {
+                return pawn.GetRoom() == null || !pawn.GetRoom().isPrisonCell;
             }
 
             private static bool AddedFactionCheck(Pawn pawn)
