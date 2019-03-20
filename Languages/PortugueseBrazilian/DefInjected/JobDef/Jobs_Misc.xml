@@ -2,7 +2,7 @@
 <LanguageData>
 
   <CharmGuest.reportString>Tentando recrutar TargetA.</CharmGuest.reportString>
-  <GuestImproveRelationship.reportString>Tentando melhorar o relacionamento com TargetA's faction.</GuestImproveRelationship.reportString>
+  <GuestImproveRelationship.reportString>Tentando melhorar o relacionamento com a facção do TargetA.</GuestImproveRelationship.reportString>
   <BuyItem.reportString>Conferindo TargetA.</BuyItem.reportString>
   <BrowseItems.reportString>Troca de mercadorias.</BrowseItems.reportString>
 
