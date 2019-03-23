@@ -154,8 +154,7 @@ namespace Hospitality
 
         public static int GetEnemiesInColony(this Pawn guest)
         {
-            const int maxOpinion = -20;
-            return GetPawnsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= maxOpinion).Sum(p => GetRelationValue(p, guest));
+            return GetPawnsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy).Sum(p => GetRelationValue(p, guest));
         }
 
         public static int GetMinRecruitOpinion(this Pawn guest)
@@ -744,7 +743,7 @@ namespace Hospitality
         }
 
         public const int InteractIntervalAbsoluteMin = 360; // changed from 120
-
+        public const int MaxOpinionForEnemy = -20;
 
         public static void DoAllowedAreaSelectors(Rect rect, Pawn p, Func<Area, string> getLabel)
 		{

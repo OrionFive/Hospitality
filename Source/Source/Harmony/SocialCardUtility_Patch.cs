@@ -1,14 +1,65 @@
+using System.Reflection;
 using Harmony;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Hospitality.Harmony
 {
-    /// <summary>
-    /// Show "Colony" in social tab for player pawns
-    /// </summary>
     public class SocialCardUtility_Patch
     {
+        /// <summary>
+        /// Highlight pawns that are guests' friends
+        /// </summary>
+        [HarmonyPatch(typeof(SocialCardUtility), "DrawPawnRow")]
+        public class DrawPawnRow
+        {
+            private static MethodInfo _getRowHeight;
+            private static readonly Color HighlightColorFriend = new Color(0.0f, 0.5f, 0.0f, 1f);
+            private static readonly Color HighlightColorFriendRelated = new Color(0.0f, 0.75f, 0.0f, 1f);
+            private static readonly Color HighlightColorEnemy = new Color(0.5f, 0.0f, 0.0f, 1f);
+            private static readonly Color HighlightColorEnemyRelated = new Color(0.75f, 0.0f, 0.0f, 1f);
+
+            [HarmonyPrefix]
+            public static bool Prefix(float y, float width,  object entry, Pawn selPawnForSocialInfo)
+            {
+                if (selPawnForSocialInfo.IsGuest())
+                {
+                    var guest = selPawnForSocialInfo;
+                    //SocialCardUtility.CachedSocialTabEntry
+                    if (_getRowHeight == null) _getRowHeight = AccessTools.Method(typeof(SocialCardUtility), "GetRowHeight");
+                    float rowHeight = (float) _getRowHeight.Invoke(null, new object[] {entry, width, selPawnForSocialInfo});
+                    Rect rect = new Rect(0f, y, width, rowHeight);
+                    Pawn otherPawn = Traverse.Create(entry).Field<Pawn>("otherPawn").Value;
+                    float requiredOpinion = guest.GetMinRecruitOpinion();
+
+                    float opinion = guest.relations.OpinionOf(otherPawn);
+                    var related = guest.relations.DirectRelations.Any(rel => rel.otherPawn == otherPawn);
+
+                    float percent;
+                    if (opinion > 0)
+                    {
+                        percent = opinion / requiredOpinion;
+                        GUI.color = related ? HighlightColorFriendRelated : HighlightColorFriend;
+                    }
+                    else
+                    {
+                        percent = opinion / GuestUtility.MaxOpinionForEnemy;
+                        GUI.color = related ? HighlightColorEnemyRelated : HighlightColorEnemy;
+                    }
+                    rect.width *= percent;
+
+                    GUI.DrawTexture(rect, TexUI.HighlightTex);
+                }
+
+                return true;
+            }
+
+        }
+
+        /// <summary>
+        /// Show "Colony" in social tab for player pawns
+        /// </summary>
         [HarmonyPatch(typeof(SocialCardUtility), "GetPawnSituationLabel")]
         public class GetPawnSituationLabel
         {
