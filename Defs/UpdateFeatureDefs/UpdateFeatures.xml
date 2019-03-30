@@ -7,9 +7,9 @@
 	</HugsLib.UpdateFeatureDef>
 	
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-		<defName>Hospitality_1_0_12</defName>
-		<assemblyVersion>1.0.12</assemblyVersion>
-		<content>- There's now a tab for listing guests! (can be disabled)|- Traders with animals should work now|I'm working on an exciting (non-Rimworld) personal project. Wanna check it out or give me a hand? Then please click the link above for more information.</content>
+		<defName>Hospitality_1_0_14</defName>
+		<assemblyVersion>1.0.14</assemblyVersion>
+		<content>- Guests' colony friends are now highlighted green in the social tab|- Special relationships (e.g. relatives) now count double!|- New opt-in setting to get notified when guests buy things|- Known visitors will return much more often now!||I'm working on an exciting (non-Rimworld) personal project. It would be awesome if you'd play it and give me feedback! Click the link above for more information.</content>
 	</HugsLib.UpdateFeatureDef>
 
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
