@@ -129,7 +129,7 @@ namespace Hospitality
                     // Notification
                     if (Settings.enableBuyNotification)
                     {
-                        Messages.Message("GuestBoughtItem".Translate(toil.actor.Faction.Name, price, new NamedArgument(toil.actor, "PAWN"), new NamedArgument(item, "ITEM")), toil.actor, MessageTypeDefOf.NeutralEvent);
+                        Messages.Message("GuestBoughtItem".Translate(toil.actor.Faction.Name, price, new NamedArgument(toil.actor, "PAWN"), new NamedArgument(item, "ITEM")), toil.actor, MessageTypeDefOf.SilentInput);
                     }
 
                     // Handle trade stuff
