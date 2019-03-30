@@ -124,8 +124,13 @@ namespace Hospitality
                 var newItems = toil.actor.inventory.innerContainer.Except(inventoryItemsBefore).ToArray();
                 foreach (var item in newItems)
                 {
-                    //Log.Message(pawn.NameStringShort + " bought " + item.Label);
                     comp.boughtItems.Add(item.thingIDNumber);
+
+                    // Notification
+                    if (Settings.enableBuyNotification)
+                    {
+                        Messages.Message("GuestBoughtItem".Translate(toil.actor.Faction.Name, price, new NamedArgument(toil.actor, "PAWN"), new NamedArgument(item, "ITEM")), toil.actor, MessageTypeDefOf.NeutralEvent);
+                    }
 
                     // Handle trade stuff
                     Trade(toil, item, map);

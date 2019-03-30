@@ -46,6 +46,8 @@
   <VisitorsArrivedRefuse>Send away</VisitorsArrivedRefuse>
   <VisitorsArrivedRefuseUntilBeds>Refuse visitors until I have guest beds</VisitorsArrivedRefuseUntilBeds>
   <VisitorsArrivedReasonNoBeds>No guest beds</VisitorsArrivedReasonNoBeds>
+  
+  <GuestBoughtItem>A member of {0} has bought {ITEM_label} for {1} silver.</GuestBoughtItem>
 
   <!-- Communication -->
   <InviteGuests>Invite for a visit</InviteGuests>
@@ -113,5 +115,7 @@
   <MaxGuestGroupSizeDesc>The maximum size a group of guests can be. (recommended: 16)</MaxGuestGroupSizeDesc>
   <DisableGuestsTab>Disable guests tab</DisableGuestsTab>
   <DisableGuestsTabDesc>Hide the guests tab from the main tab bar.</DisableGuestsTabDesc>
+  <EnableBuyNotification>Enable purchase notification</EnableBuyNotification>
+  <EnableBuyNotificationDesc>Receive a message when a guest buys something. Can be reviewed in the message history.</EnableBuyNotificationDesc>
   
 </LanguageData>

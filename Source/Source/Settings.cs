@@ -15,6 +15,7 @@ namespace Hospitality {
         public static SettingHandle<bool> disableArtAndCraft;
         public static SettingHandle<bool> disableOperations;
         public static SettingHandle<bool> disableGuestsTab;
+        public static SettingHandle<bool> enableBuyNotification;
 
         public Settings(ModSettingsPack settings)
         {
@@ -27,6 +28,7 @@ namespace Hospitality {
             maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), 16, GroupSizeLimits());
             disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
             disableGuestsTab = settings.GetHandle("disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false);
+            enableBuyNotification = settings.GetHandle("enableBuyNotification", "EnableBuyNotification".Translate(), "EnableBuyNotificationDesc".Translate(), false);
             
             string hiddenConfigFile = Path.Combine(GenFilePaths.ConfigFolderPath, "Hospitality.cfg");
             if (File.Exists(hiddenConfigFile))
