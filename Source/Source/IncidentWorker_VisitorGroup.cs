@@ -159,10 +159,9 @@ namespace Hospitality
                     return true;
                 }
 
-                string reasons;
                 // We check here instead of CanFireNow, so we can reschedule the visit.
                 // Any reasons not to come?
-                if (CheckCanCome(map, parms.faction, out reasons))
+                if (CheckCanCome(map, parms.faction, out var reasons))
                 {
                     // No, spawn
                     return SpawnGroup(parms, map);
@@ -244,6 +243,25 @@ namespace Hospitality
             return true;
         }
 
+        private static List<Pawn> GetKnownPawns(IncidentParms parms)
+        {
+            Log.Message($"Checking {Find.WorldPawns.AllPawnsAlive.Count()} world pawns...");
+            return Find.WorldPawns.AllPawnsAlive.Where(pawn => ValidGuest(pawn, parms.faction)).ToList();
+        }
+
+        private static bool ValidGuest(Pawn pawn, Faction faction)
+        {
+            var validGuest = !pawn.Discarded && !pawn.Dead && !pawn.Spawned && !pawn.Downed && pawn.Faction == faction;
+            if (pawn.Faction == faction && validGuest)
+            {
+                Log.Message($"{pawn.LabelShort}");
+            }
+            // Leader only comes when relations are good
+            if (faction.leader == pawn && faction.PlayerGoodwill < 80) return false;
+
+            return validGuest;
+        }
+
         protected override void ResolveParmsPoints(IncidentParms parms)
         {
             if (parms.points < 0f)
@@ -255,12 +273,31 @@ namespace Hospitality
         protected new List<Pawn> SpawnPawns(IncidentParms parms)
         {
             Map map = (Map)parms.target;
-            var list = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false)
-                .Take(Settings.maxGuestGroupSize) // Added
-                .ToList();
-            foreach (Pawn newThing in list)
-                GenSpawn.Spawn(newThing, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map);
-            return list;
+            var options = GetKnownPawns(parms);
+            if (options.Count < 10)
+            {
+                // Create some new people
+                var newPawns = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false);
+                Log.Message($"Created {newPawns.Count()} new pawns.");
+                options.AddRange(newPawns);
+            }
+
+            options.Shuffle();
+
+            // From year 1-6, increase for 0 to 6 as the optimal amount
+            float optimalAmount = 1+Mathf.Clamp(GenDate.YearsPassedFloat, 0f, 5f);
+
+            Log.Message($"Optimal amount of guests = {optimalAmount}, max = {optimalAmount * 16f/6}");
+
+            var random = Rand.GaussianAsymmetric(optimalAmount, 1.5f, 16f/6);
+            var amount = Mathf.Clamp(Mathf.CeilToInt(random), 1, Settings.maxGuestGroupSize);
+            var selection = options.Take(amount).ToList();
+            foreach (var pawn in selection)
+            {
+                if (pawn.IsWorldPawn()) Find.WorldPawns.RemovePawn(pawn);
+                GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map);
+            }
+            return selection;
         }
 
         private static void CheckVisitorsValid(List<Pawn> visitors)
