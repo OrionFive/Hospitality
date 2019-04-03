@@ -304,11 +304,26 @@ namespace Hospitality
         {
             if (visitors.Any(v => v.TryGetComp<CompGuest>() == null))
             {
+                var faction = visitors[0].Faction;
                 foreach (var visitor in visitors)
                 {
+                    if (visitor.TryGetComp<CompGuest>() == null)
+                    {
+                        try
+                        {
+                            var humanlike = (visitor.def.race.Humanlike ? "humanlike" : "not humanlike");
+                            Log.Error($"Spawned visitor without GuestComp: {visitor.def.defName} - {humanlike} - {visitor.kindDef.defName}");
+                        }
+                        catch
+                        {
+                            Log.Error($"Failed to get more information about {visitor.Label}.");
+                        }
+                    }
+
                     visitor.Destroy();
                 }
-                throw new Exception("Spawned visitors without GuestComp.");
+
+                Log.Error($"Group of faction '{faction.def.defName}' destroyed.");
             }
         }
 
