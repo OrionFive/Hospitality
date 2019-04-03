@@ -18,7 +18,7 @@ namespace Hospitality
         public static float PriceFactor = 0.85f;
 
         //Properties
-        protected Thing Item { get { return job.targetA.Thing; } }
+        protected Thing Item => job.targetA.Thing;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -86,29 +86,32 @@ namespace Hospitality
             var map = toil.actor.MapHeld;
             var inventoryItemsBefore = inventory.ToArray();
             var thing = Item.SplitOff(count);
-            int tookItems;
-            if (thing.def.IsApparel && thing is Apparel)
+
+            // Notification
+            if (Settings.enableBuyNotification)
             {
-                toil.actor.apparel.Wear((Apparel)thing);
-                tookItems = thing.stackCount;
+                Messages.Message("GuestBoughtItem".Translate(toil.actor.Faction.Name, price, new NamedArgument(toil.actor, "PAWN"), new NamedArgument(thing, "ITEM")), toil.actor, MessageTypeDefOf.SilentInput);
             }
-            else if (thing.def.IsWeapon && thing is ThingWithComps && thing.def.IsWithinCategory(ThingCategoryDefOf.Weapons))
+
+            int tookItems;
+            if (thing.def.IsApparel && thing is Apparel apparel)
             {
-                var thingWithComps = (ThingWithComps)thing;
+                toil.actor.apparel.Wear(apparel);
+                tookItems = apparel.stackCount;
+            }
+            else if (thing.def.IsWeapon && thing is ThingWithComps equipment && equipment.def.IsWithinCategory(ThingCategoryDefOf.Weapons))
+            {
                 var primary = pawn.equipment.Primary;
-                if (thing.def.equipmentType == EquipmentType.Primary && primary != null)
+                if (equipment.def.equipmentType == EquipmentType.Primary && primary != null)
                     if (!pawn.equipment.TryTransferEquipmentToContainer(primary, pawn.inventory.innerContainer))
                     {
                         Log.Message(pawn.Name.ToStringShort + " failed to take " + primary + " to his inventory.");
                     }
                 
-                pawn.equipment.AddEquipment(thingWithComps);
-                pawn.equipment.Notify_EquipmentAdded(thingWithComps);
-				if (thingWithComps.def.soundInteract != null)
-				{
-					thingWithComps.def.soundInteract.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
-				}
-                tookItems = thing.stackCount;
+                pawn.equipment.AddEquipment(equipment);
+                pawn.equipment.Notify_EquipmentAdded(equipment);
+                equipment.def.soundInteract?.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
+                tookItems = equipment.stackCount;
             }
             else
             {
@@ -126,12 +129,6 @@ namespace Hospitality
                 {
                     comp.boughtItems.Add(item.thingIDNumber);
 
-                    // Notification
-                    if (Settings.enableBuyNotification)
-                    {
-                        Messages.Message("GuestBoughtItem".Translate(toil.actor.Faction.Name, price, new NamedArgument(toil.actor, "PAWN"), new NamedArgument(item, "ITEM")), toil.actor, MessageTypeDefOf.SilentInput);
-                    }
-
                     // Handle trade stuff
                     Trade(toil, item, map);
                 }
@@ -139,8 +136,7 @@ namespace Hospitality
             else
             {
                 // Failed to equip or take
-                Thing resultingThing;
-                if (!GenDrop.TryDropSpawn(thing, toil.actor.Position, map, ThingPlaceMode.Near, out resultingThing))
+                if (!GenDrop.TryDropSpawn(thing, toil.actor.Position, map, ThingPlaceMode.Near, out var resultingThing))
                 {
                     Log.Warning(toil.actor.Name.ToStringShort + " failed to buy and failed to drop " + thing.Label);
                 }
@@ -149,16 +145,16 @@ namespace Hospitality
 
         private void Trade(Toil toil, Thing item, Map map)
         {
-            var twc = item as ThingWithComps;
-            if (twc != null && map.mapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerSells, map.mapPawns.FreeColonistsSpawned.RandomElement(), toil.actor);
+            if (item is ThingWithComps twc && map.mapPawns.FreeColonistsSpawnedCount > 0)
+            {
+                twc.PreTraded(TradeAction.PlayerSells, map.mapPawns.FreeColonistsSpawned.RandomElement(), toil.actor);
+            }
 
             // Register with lord toil
             var lord = pawn.GetLord();
-            if (lord == null) return;
-            var lordToil = lord.CurLordToil as LordToil_VisitPoint;
-            if (lordToil == null) return;
+            var lordToil = lord?.CurLordToil as LordToil_VisitPoint;
 
-            lordToil.OnPlayerSoldItem(item);
+            lordToil?.OnPlayerSoldItem(item);
 
         }
     }
