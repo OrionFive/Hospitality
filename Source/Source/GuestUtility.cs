@@ -205,7 +205,14 @@ namespace Hospitality
 
         public static void Arrive(this Pawn pawn)
         {
-            pawn.PocketHeadgear();
+            try
+            {
+                pawn.PocketHeadgear();
+            }
+            catch(Exception e)
+            {
+                Log.Error($"Failed to pocket headgear:\n{e.Message}");
+            }
 
             // Save trader info
             bool trader = pawn.mindState?.wantsToTradeWithColony == true;
@@ -238,7 +245,14 @@ namespace Hospitality
 
         public static void Leave(this Pawn pawn)
         {
-            pawn.WearHeadgear();
+            try
+            {
+                pawn.WearHeadgear();
+            }
+            catch(Exception e)
+            {
+                Log.Error($"Failed to wear headgear:\n{e.Message}");
+            }
 
             pawn.needs.AddOrRemoveNeedsAsAppropriate();
 
