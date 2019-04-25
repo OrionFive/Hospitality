@@ -25,12 +25,15 @@ namespace Hospitality.Harmony
             {
                 if (selPawnForSocialInfo.IsGuest())
                 {
+                    Pawn otherPawn = Traverse.Create(entry).Field<Pawn>("otherPawn").Value;
+                    if (!otherPawn.IsColonist) return true;
+
                     var guest = selPawnForSocialInfo;
                     //SocialCardUtility.CachedSocialTabEntry
                     if (_getRowHeight == null) _getRowHeight = AccessTools.Method(typeof(SocialCardUtility), "GetRowHeight");
-                    float rowHeight = (float) _getRowHeight.Invoke(null, new object[] {entry, width, selPawnForSocialInfo});
+                    float rowHeight = (float) _getRowHeight.Invoke(null, new[] {entry, width, selPawnForSocialInfo});
                     Rect rect = new Rect(0f, y, width, rowHeight);
-                    Pawn otherPawn = Traverse.Create(entry).Field<Pawn>("otherPawn").Value;
+
                     float requiredOpinion = guest.GetMinRecruitOpinion();
 
                     float opinion = guest.relations.OpinionOf(otherPawn);
