@@ -7,6 +7,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
+using Harmony;
 
 namespace Hospitality
 {
@@ -267,8 +268,9 @@ namespace Hospitality
 
         protected new List<Pawn> SpawnPawns(IncidentParms parms)
         {
-            Map map = (Map)parms.target;
+            var map = (Map)parms.target;
             var options = GetKnownPawns(parms);
+
             if (options.Count < 10)
             {
                 // Create some new people
@@ -289,10 +291,17 @@ namespace Hospitality
             var selection = options.Take(amount).ToList();
             foreach (var pawn in selection)
             {
+                GenerateNewGearFor(pawn);
                 if (pawn.IsWorldPawn()) Find.WorldPawns.RemovePawn(pawn);
                 GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map);
             }
             return selection;
+        }
+
+        private static void GenerateNewGearFor(Pawn pawn)
+        {
+            var request = new PawnGenerationRequest(pawn.kindDef, pawn.Faction);
+            Traverse.Create(typeof(PawnGenerator)).Method("GenerateGearFor", pawn, request).GetValue();
         }
 
         private static void CheckVisitorsValid(List<Pawn> visitors)
