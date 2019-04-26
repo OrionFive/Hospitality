@@ -245,17 +245,12 @@ namespace Hospitality
 
         private static List<Pawn> GetKnownPawns(IncidentParms parms)
         {
-            Log.Message($"Checking {Find.WorldPawns.AllPawnsAlive.Count()} world pawns...");
             return Find.WorldPawns.AllPawnsAlive.Where(pawn => ValidGuest(pawn, parms.faction)).ToList();
         }
 
         private static bool ValidGuest(Pawn pawn, Faction faction)
         {
             var validGuest = !pawn.Discarded && !pawn.Dead && !pawn.Spawned && !pawn.Downed && pawn.Faction == faction;
-            if (pawn.Faction == faction && validGuest)
-            {
-                Log.Message($"{pawn.LabelShort}");
-            }
             // Leader only comes when relations are good
             if (faction.leader == pawn && faction.PlayerGoodwill < 80) return false;
 
@@ -287,7 +282,7 @@ namespace Hospitality
             // From year 1-6, increase for 0 to 6 as the optimal amount
             float optimalAmount = 1+Mathf.Clamp(GenDate.YearsPassedFloat, 0f, 5f);
 
-            Log.Message($"Optimal amount of guests = {optimalAmount}, max = {optimalAmount * 16f/6}");
+            //Log.Message($"Optimal amount of guests = {optimalAmount}, max = {optimalAmount * 16f/6}");
 
             var random = Rand.GaussianAsymmetric(optimalAmount, 1.5f, 16f/6);
             var amount = Mathf.Clamp(Mathf.CeilToInt(random), 1, Settings.maxGuestGroupSize);
