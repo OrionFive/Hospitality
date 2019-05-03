@@ -96,6 +96,7 @@
     <Compile Include="Harmony\TransitionAction_SetDefendLocalGroup_Patch.cs" />
     <Compile Include="Harmony\WildManUtility_Patch.cs" />
     <Compile Include="Harmony\WorkGiver_HunterHunt.cs" />
+    <Compile Include="IncidentWorker_VisitorGroupMax.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
     <Compile Include="CompGuest.cs" />
     <Compile Include="CompProperties_Guest.cs" />

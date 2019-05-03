@@ -281,13 +281,8 @@ namespace Hospitality
 
             options.Shuffle();
 
-            // From year 1-6, increase for 0 to 6 as the optimal amount
-            float optimalAmount = 1+Mathf.Clamp(GenDate.YearsPassedFloat, 0f, 5f);
+            var amount = GetGroupSize();
 
-            //Log.Message($"Optimal amount of guests = {optimalAmount}, max = {optimalAmount * 16f/6}");
-
-            var random = Rand.GaussianAsymmetric(optimalAmount, 1.5f, 16f/6);
-            var amount = Mathf.Clamp(Mathf.CeilToInt(random), 1, Settings.maxGuestGroupSize);
             var selection = options.Take(amount).ToList();
             foreach (var pawn in selection)
             {
@@ -297,6 +292,19 @@ namespace Hospitality
             }
             return selection;
         }
+
+        protected virtual int GetGroupSize()
+        {
+            //Log.Message($"Optimal amount of guests = {OptimalAmount}, max = {OptimalAmount * 16f/6}");
+            var random = Rand.GaussianAsymmetric(OptimalAmount, 1.5f, 16f / 6);
+            var amount = Mathf.Clamp(Mathf.CeilToInt(random), 1, Settings.maxGuestGroupSize);
+            return amount;
+        }
+
+        /// <summary>
+        /// From year 1-6, increase for 0 to 6 as the optimal amount
+        /// </summary>
+        private static float OptimalAmount => 1 + Mathf.Clamp(GenDate.YearsPassedFloat, 0f, 5f);
 
         private static void GenerateNewGearFor(Pawn pawn)
         {
