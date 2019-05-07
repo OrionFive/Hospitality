@@ -92,8 +92,9 @@ namespace Hospitality
                 {
                     if (incident.FireTick - GenTicks.TicksGame < GenDate.TicksPerDay*rangeOfDays)
                     {
-                        Log.Message(String.Format("More than {0} visitor groups planned within the next {1} days. Cancelling half.", maxIncidents - 1, rangeOfDays));
+                        Log.Message($"More than {maxIncidents - 1} visitor groups planned within the next {rangeOfDays} days. Cancelling half.");
                         RemoveSomeIncidents(incidentQueue);
+                        return;
                     }
                 }
             }
