@@ -10,7 +10,7 @@ namespace Hospitality
     public class JobDriver_CharmGuest : JobDriver_GuestBase
     {
         private static readonly string txtRecruitAngerOther = "RecruitAngerOther".Translate();
-        protected override InteractionDef InteractionDef { get { return InteractionDefOf.RecruitAttempt; } }
+        protected override InteractionDef InteractionDef => InteractionDefOf.RecruitAttempt;
 
         public Toil TryRecruitGuest(Pawn recruiter, Pawn guest)
         {

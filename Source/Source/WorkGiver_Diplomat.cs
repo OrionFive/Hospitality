@@ -24,20 +24,8 @@ namespace Hospitality
             return new Job(jobDef, t);
         }
 
-        public override ThingRequest PotentialWorkThingRequest
-        {
-            get
-            {
-                return ThingRequest.ForGroup(ThingRequestGroup.Pawn);
-            }
-        }
+        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
-        public override PathEndMode PathEndMode
-        {
-            get
-            {
-                return PathEndMode.OnCell;
-            }
-        }
+        public override PathEndMode PathEndMode => PathEndMode.OnCell;
     }
 }

@@ -35,6 +35,6 @@ namespace Hospitality
             return base.FailCondition() || !Talkee.ImproveRelationship();
         }
 
-        protected override InteractionDef InteractionDef { get { return InteractionDefOf.BuildRapport; } }
+        protected override InteractionDef InteractionDef => InteractionDefOf.BuildRapport;
     }
 }
