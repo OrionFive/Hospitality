@@ -550,6 +550,7 @@ namespace Hospitality
             if (!InteractionUtility.CanInitiateInteraction(pawn)) return false;
             if (!InteractionUtility.CanReceiveInteraction(guest)) return false;
             if (!pawn.HasReserved(guest) && !pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
+            if (guest.CurJob?.def.suspendable == false) return false;
 
             return true;
         }
@@ -565,6 +566,7 @@ namespace Hospitality
             if (!InteractionUtility.CanInitiateInteraction(pawn)) return false;
             if (!InteractionUtility.CanReceiveInteraction(guest)) return false;
             if (!pawn.HasReserved(guest) && !pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
+            if (guest.CurJob?.def.suspendable == false) return false;
 
             return true;
         }

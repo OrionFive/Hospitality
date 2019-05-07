@@ -23,7 +23,7 @@ namespace Hospitality
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
             this.FailOnDowned(TargetIndex.A);
             this.FailOnNotCasualInterruptible(TargetIndex.A);
-            //this.FailOnJobNotSuspendable(TargetIndex.A);
+            this.FailOnJobNotSuspendable(TargetIndex.A);
 
             var gotoGuest = GotoGuest(pawn, Talkee); // Jump target
             yield return gotoGuest;
@@ -40,6 +40,7 @@ namespace Hospitality
             }
             yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.A);
         }
+
 
         private void FailOnJobNotSuspendable(TargetIndex index)
         {
