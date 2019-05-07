@@ -251,7 +251,7 @@ namespace Hospitality
 
         private static bool ValidGuest(Pawn pawn, Faction faction)
         {
-            var validGuest = !pawn.Discarded && !pawn.Dead && !pawn.Spawned && !pawn.Downed && pawn.Faction == faction;
+            var validGuest = !pawn.Discarded && !pawn.Dead && !pawn.Spawned && !pawn.NonHumanlikeOrWildMan() && !pawn.Downed && pawn.Faction == faction;
             // Leader only comes when relations are good
             if (faction.leader == pawn && faction.PlayerGoodwill < 80) return false;
 
@@ -314,27 +314,24 @@ namespace Hospitality
 
         private static void CheckVisitorsValid(List<Pawn> visitors)
         {
-            if (visitors.Any(v => v.TryGetComp<CompGuest>() == null))
+            foreach (var visitor in visitors)
             {
-                foreach (var visitor in visitors)
+                if (visitor.TryGetComp<CompGuest>() != null) continue;
+
+                try
                 {
-                    if (visitor.TryGetComp<CompGuest>() != null) continue;
+                    var humanlike = (visitor.def.race.Humanlike ? "humanlike" : "not humanlike");
+                    var modName = visitor.def.modContentPack == null ? "vanilla (?)" : visitor.def.modContentPack.Name;
 
-                    try
-                    {
-                        var humanlike = (visitor.def.race.Humanlike ? "humanlike" : "not humanlike");
-                        var modName = visitor.def.modContentPack == null ? "vanilla (?)" : visitor.def.modContentPack.Name;
-
-                        Log.Error($"Spawned visitor without GuestComp: {visitor.def.defName} - {humanlike} - {modName}");
-                    }
-                    catch
-                    {
-                        Log.Error($"Failed to get more information about {visitor.Label}.");
-                    }
-
-                    visitors.Remove(visitor);
-                    visitor.Destroy();
+                    Log.Error($"Spawned visitor without GuestComp: {visitor.def.defName} - {humanlike} - {modName}");
                 }
+                catch
+                {
+                    Log.Error($"Failed to get more information about {visitor.Label}.");
+                }
+
+                visitors.Remove(visitor);
+                visitor.Destroy();
             }
         }
 
