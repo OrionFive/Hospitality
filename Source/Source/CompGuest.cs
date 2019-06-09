@@ -58,7 +58,6 @@ namespace Hospitality
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref lord, "lord");
             Scribe_Values.Look(ref arrived, "arrived");
             Scribe_Values.Look(ref chat, "chat");
             Scribe_Values.Look(ref recruit, "recruit");
@@ -67,7 +66,9 @@ namespace Hospitality
             Scribe_References.Look(ref shoppingArea_int, "shoppingArea");
             Scribe_Deep.Look(ref drugPolicy, "drugPolicy");
             if (boughtItems == null) boughtItems = new List<int>();
-            if (lord == null && Scribe.mode == LoadSaveMode.PostLoadInit) lord = Pawn.GetLord();
+
+            // Can't save lord (IExposable), so we just gotta find it each time
+            if (Scribe.mode == LoadSaveMode.PostLoadInit) lord = Pawn.GetLord();
         }
 
         public void Arrive()
