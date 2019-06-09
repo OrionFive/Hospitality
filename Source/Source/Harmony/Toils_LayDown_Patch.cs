@@ -18,7 +18,7 @@ namespace Hospitality.Harmony
             {
                 if (actor.needs.mood == null) return false;
 
-                Building_Bed building_Bed = actor.IsGuest() ?  actor.GetGuestBeds().FirstOrDefault() : actor.CurrentBed(); // Changed
+                Building_Bed building_Bed = actor.IsGuest() ?  actor.MapHeld.GetGuestBeds(actor.GetGuestArea()).FirstOrDefault() : actor.CurrentBed(); // Changed
                 actor.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.SleptInBedroom);
                 actor.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.SleptInBarracks);
                 actor.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.SleptOutside);

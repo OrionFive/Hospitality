@@ -85,7 +85,7 @@
   <SendAwayTooltip>Ask the group of this guest to go home again.</SendAwayTooltip>
 
   <!-- Main Tab -->
-  
+  <BedsFilled>Beds in use: {0}/{1}</BedsFilled>
   
   <!-- Infos -->
   <StatsReport_MissingFriends>Missing friends</StatsReport_MissingFriends>

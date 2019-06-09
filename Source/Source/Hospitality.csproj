@@ -120,6 +120,7 @@
     <Compile Include="MainTab\PawnColumnWorker_Entertain.cs" />
     <Compile Include="MainTab\PawnColumnWorker_Faction.cs" />
     <Compile Include="MainTab\PawnColumnWorker_FriendsForRecruiting.cs" />
+    <Compile Include="MainTab\PawnColumnWorker_LabelCustom.cs" />
     <Compile Include="MainTab\PawnColumnWorker_Hospitality.cs" />
     <Compile Include="MainTab\PawnColumnWorker_Recruit.cs" />
     <Compile Include="MainTab\PawnColumnWorker_ShoppingArea.cs" />
