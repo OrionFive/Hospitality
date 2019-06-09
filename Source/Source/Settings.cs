@@ -7,6 +7,7 @@ namespace Hospitality {
     internal class Settings
     {
         public static SettingHandle<int> minGuestWorkSkill;
+        public static SettingHandle<int> minGuestGroupSize;
         public static SettingHandle<int> maxGuestGroupSize;
         public static SettingHandle<bool> disableGuests;
         public static SettingHandle<bool> disableWork;
@@ -24,8 +25,9 @@ namespace Hospitality {
             disableArtAndCraft = settings.GetHandle("disableArtAndCraft", "DisableArtAndCraft".Translate(), "DisableArtAndCraftDesc".Translate(), true);
             disableOperations = settings.GetHandle("disableOperations", "DisableOperations".Translate(), "DisableOperationsDesc".Translate(), true);
             disableGifts = settings.GetHandle("disableGifts", "DisableGifts".Translate(), "DisableGiftsDesc".Translate(), false);
-            minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, WorkSkillLimits());
-            maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), 16, GroupSizeLimits());
+            minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, WorkSkillLimits);
+            minGuestGroupSize = settings.GetHandle("minGuestGroupSize", "MinGuestGroupSize".Translate(), "MinGuestGroupSizeDesc".Translate(), 1, GroupSizeLimitsMin);
+            maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), 16, GroupSizeLimitsMax);
             disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
             disableGuestsTab = settings.GetHandle("disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false);
             enableBuyNotification = settings.GetHandle("enableBuyNotification", "EnableBuyNotification".Translate(), "EnableBuyNotificationDesc".Translate(), false);
@@ -62,19 +64,24 @@ namespace Hospitality {
             }
         }
 
-        private static SettingHandle.ValueIsValid WorkSkillLimits()
-        {
-            return AtLeast(() => disableLimits?.Value != false ? 0 : 6);
-        }
+        private static SettingHandle.ValueIsValid WorkSkillLimits { get { return AtLeast(() => disableLimits?.Value != false ? 0 : 6); } }
 
-        private static SettingHandle.ValueIsValid GroupSizeLimits()
-        {
-            return AtLeast(() => disableLimits?.Value != false ? 1 : 8);
-        }
+        private static SettingHandle.ValueIsValid GroupSizeLimitsMin { get { return Between(() => 1, () => maxGuestGroupSize); } }
+        private static SettingHandle.ValueIsValid GroupSizeLimitsMax { get { return Between(() => minGuestGroupSize, () => disableLimits?.Value != false ? 1 : 8); } }
 
+        private static SettingHandle.ValueIsValid Between(Func<int> amountMin, Func<int> amountMax)
+        {
+            return value => int.TryParse(value, out var actual) && actual >= amountMin() && actual <= amountMax();
+        } 
+        
         private static SettingHandle.ValueIsValid AtLeast(Func<int> amount)
         {
             return value => int.TryParse(value, out var actual) && actual >= amount();
+        } 
+        
+        private static SettingHandle.ValueIsValid AtMost(Func<int> amount)
+        {
+            return value => int.TryParse(value, out var actual) && actual <= amount();
         }
     }
 }

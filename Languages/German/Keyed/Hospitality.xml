@@ -109,6 +109,8 @@
   <DisableGiftsDesc>Wenn diese Option aktiviert ist, werden Gäste keine Gegenstände zurücklassen, wenn sie zufrieden sind.</DisableGiftsDesc>
   <MinGuestWorkSkill>Mindestkenntnisse für die Arbeit</MinGuestWorkSkill>
   <MinGuestWorkSkillDesc>Die minimale Fähigkeit, die ein Gast erfüllen muss, wenn er aushilft. (Empfohlen: 7)</MinGuestWorkSkillDesc>
+  <MinGuestGroupSize>Minimale Gästegruppengröße</MinGuestGroupSize>
+  <MinGuestGroupSizeDesc>Die minimale Größe einer Gruppe von Gästen. (Empfohlen: 1)</MinGuestGroupSizeDesc>
   <MaxGuestGroupSize>Maximale Gästegruppengröße</MaxGuestGroupSize>
   <MaxGuestGroupSizeDesc>Die maximale Größe einer Gruppe von Gästen. (Empfohlen: 16)</MaxGuestGroupSizeDesc>
   <DisableGuestsTab>Gäste Tab deaktivieren</DisableGuestsTab>

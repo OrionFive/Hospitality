@@ -111,6 +111,8 @@
   <DisableGiftsDesc>When checked, guests will never leave items behind when satisfied.</DisableGiftsDesc>
   <MinGuestWorkSkill>Minimum skill for work</MinGuestWorkSkill>
   <MinGuestWorkSkillDesc>The minimum skill a guest needs to have to perform a task when helping out. (recommended: 7)</MinGuestWorkSkillDesc>
+  <MinGuestGroupSize>Minimum guest group size</MinGuestGroupSize>
+  <MinGuestGroupSizeDesc>The minimum size a group of guests can be. (recommended: 1)</MinGuestGroupSizeDesc>
   <MaxGuestGroupSize>Maximum guest group size</MaxGuestGroupSize>
   <MaxGuestGroupSizeDesc>The maximum size a group of guests can be. (recommended: 16)</MaxGuestGroupSizeDesc>
   <DisableGuestsTab>Disable guests tab</DisableGuestsTab>
