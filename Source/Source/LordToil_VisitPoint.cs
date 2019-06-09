@@ -18,7 +18,7 @@ namespace Hospitality
         {
             Scribe_Values.Look(ref radius, "radius", 45f);
             Scribe_Collections.Look(ref visitorMoods, "visitorMoods");
-            Scribe_Collections.Look(ref soldItemIDs, "soldItemIDs");
+            Scribe_Collections.Look(ref soldItemIDs, "soldItemIDs", LookMode.Value);
         }
     }
 

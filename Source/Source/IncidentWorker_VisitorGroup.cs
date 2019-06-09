@@ -283,13 +283,18 @@ namespace Hospitality
             var amount = GetGroupSize();
 
             var selection = options.Take(amount).ToList();
+            var spawned = new List<Pawn>();
             foreach (var pawn in selection)
             {
                 GenerateNewGearFor(pawn);
                 if (pawn.IsWorldPawn()) Find.WorldPawns.RemovePawn(pawn);
-                GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map);
+                if (GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map) is Pawn spawnedPawn)
+                {
+                    spawnedPawn.needs.SetInitialLevels();
+                    spawned.Add(spawnedPawn);
+                }
             }
-            return selection;
+            return spawned;
         }
 
         protected virtual int GetGroupSize()
