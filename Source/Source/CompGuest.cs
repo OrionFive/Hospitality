@@ -1,17 +1,21 @@
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
+using Verse.AI.Group;
 
 namespace Hospitality
 {
     public class CompGuest : ThingComp
     {
         public List<int> boughtItems = new List<int>();
+
         public bool chat;
         public bool recruit;
 
         public bool arrived;
         public bool sentAway;
+
+        private Lord lord; // Can't use yet - someone might have a save game with visitors where this is not yet initialized *sigh*. 09.06.2019
 
         public readonly Dictionary<Pawn, int> failedCharms = new Dictionary<Pawn, int>();
 
@@ -20,6 +24,15 @@ namespace Hospitality
 
         private DrugPolicy drugPolicy;
 
+        public void ResetForGuest(Lord lord)
+        {
+            boughtItems.Clear();
+            arrived = false;
+            sentAway = false;
+            failedCharms.Clear();
+            this.lord = lord;
+        }
+
         public Area GuestArea
         {
             get
@@ -27,10 +40,7 @@ namespace Hospitality
                 if (guestArea_int != null && guestArea_int.Map != Pawn.MapHeld) return null;
                 return guestArea_int;
             }
-            set
-            {
-                guestArea_int = value;
-            }
+            set => guestArea_int = value;
         }
 
         public Area ShoppingArea
@@ -40,10 +50,7 @@ namespace Hospitality
                 if (shoppingArea_int != null && shoppingArea_int.Map != Pawn.MapHeld) return null;
                 return shoppingArea_int;
             }
-            set
-            {
-                shoppingArea_int = value;
-            }
+            set => shoppingArea_int = value;
         }
 
         private Pawn Pawn => (Pawn) parent;
@@ -51,6 +58,7 @@ namespace Hospitality
         public override void PostExposeData()
         {
             base.PostExposeData();
+            Scribe_Values.Look(ref lord, "lord");
             Scribe_Values.Look(ref arrived, "arrived");
             Scribe_Values.Look(ref chat, "chat");
             Scribe_Values.Look(ref recruit, "recruit");

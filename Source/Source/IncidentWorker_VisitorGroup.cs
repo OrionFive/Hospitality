@@ -222,7 +222,6 @@ namespace Hospitality
                 visitor.FixDrugPolicy();
                 //Log.Message(visitor.NameStringShort + ": "
                 //            + visitor.drugs.CurrentPolicy[ThingDefOf.Luciferium].allowedForJoy);
-                visitor.GetComp<CompGuest>().sentAway = false;
             }
 
             var spot = GetSpot(map, visitors.First().GetGuestArea(), visitors.First().Position);
@@ -538,7 +537,7 @@ namespace Hospitality
 
             int stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
             var lordJob = new LordJob_VisitColony(faction, chillSpot, stayDuration);
-            LordMaker.MakeNewLord(faction, lordJob, map, pawns);
+            var lord = LordMaker.MakeNewLord(faction, lordJob, map, pawns);
 
 
             // Set default interaction
@@ -546,6 +545,7 @@ namespace Hospitality
                 var compGuest = p.GetComp<CompGuest>();
                 if (compGuest != null)
                 {
+                    compGuest.ResetForGuest(lord);
                     compGuest.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.ReduceResistance;
                     compGuest.GuestArea = mapComp.defaultAreaRestriction;
                     compGuest.ShoppingArea = mapComp.defaultAreaShopping;
