@@ -270,16 +270,16 @@ namespace Hospitality
 
         private static bool IsInVisitState(this Pawn guest)
         {
-            var lord = guest.GetLord();
-
+            var compGuest = guest?.GetComp<CompGuest>();
+            var lord = compGuest?.lord;
             var job = lord?.LordJob;
-            return  job is LordJob_VisitColony;
+            return job is LordJob_VisitColony;
         }
 
         private static bool IsInTraderState(this Pawn guest)
         {
-            var lord = guest.GetLord();
-
+            var compGuest = guest?.GetComp<CompGuest>();
+            var lord = compGuest?.lord;
             var job = lord?.LordJob;
             return  job is LordJob_TradeWithColony;
         }

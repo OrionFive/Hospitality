@@ -15,7 +15,7 @@ namespace Hospitality
         public bool arrived;
         public bool sentAway;
 
-        private Lord lord; // Can't use yet - someone might have a save game with visitors where this is not yet initialized *sigh*. 09.06.2019
+        public Lord lord;
 
         public readonly Dictionary<Pawn, int> failedCharms = new Dictionary<Pawn, int>();
 
@@ -67,6 +67,7 @@ namespace Hospitality
             Scribe_References.Look(ref shoppingArea_int, "shoppingArea");
             Scribe_Deep.Look(ref drugPolicy, "drugPolicy");
             if (boughtItems == null) boughtItems = new List<int>();
+            if (lord == null && Scribe.mode == LoadSaveMode.PostLoadInit) lord = Pawn.GetLord();
         }
 
         public void Arrive()
