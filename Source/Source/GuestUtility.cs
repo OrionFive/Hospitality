@@ -563,6 +563,7 @@ namespace Hospitality
             //if (guest.Faction.ColonyGoodwill >= 100) return false;
             if (guest.relations.OpinionOf(pawn) >= 100) return false;
             if (guest.InMentalState) return false;
+            if (!guest.IsInGuestZone(guest)) return false;
             if (!InteractionUtility.CanInitiateInteraction(pawn)) return false;
             if (!InteractionUtility.CanReceiveInteraction(guest)) return false;
             if (!pawn.HasReserved(guest) && !pawn.CanReserveAndReach(guest, PathEndMode.OnCell, pawn.NormalMaxDanger())) return false;
