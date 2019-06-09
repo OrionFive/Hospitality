@@ -17,12 +17,10 @@ namespace Hospitality.Harmony
             {
                 if (!__instance.IsGuest()) return true;
                 var lord = __instance.GetLord();
-                if (lord == null) return true;
-                var toil = lord.CurLordToil as LordToil_VisitPoint;
-                if (toil == null) return true;
+                var toil = lord?.CurLordToil as LordToil_VisitPoint;
 
                 // We got a proper guest
-                toil.OnPlayerBoughtItem(toGive);
+                toil?.OnPlayerBoughtItem(toGive);
                 return true;
             }
         }
@@ -36,12 +34,10 @@ namespace Hospitality.Harmony
             {
                 if (!__instance.IsGuest()) return true;
                 var lord = __instance.GetLord();
-                if (lord == null) return true;
-                var toil = lord.CurLordToil as LordToil_VisitPoint;
-                if (toil == null) return true;
+                var toil = lord?.CurLordToil as LordToil_VisitPoint;
 
                 // We got a proper guest
-                toil.OnPlayerSoldItem(toGive);
+                toil?.OnPlayerSoldItem(toGive);
                 return true;
             }
         }
@@ -95,7 +91,7 @@ namespace Hospitality.Harmony
             {
                 if (recruiter != null && recruiter.Faction != Faction.OfPlayer && recruiter.HostFaction == Faction.OfPlayer)
                 {
-                    Log.Message(String.Format("Guest {0} recruits prisoner to player faction (instead of {1}).", recruiter.Name.ToStringShort, newFaction));
+                    Log.Message($"Guest {recruiter.Name.ToStringShort} recruits prisoner to player faction (instead of {newFaction}).");
                     newFaction = Faction.OfPlayer;
                 }
                 return true;
