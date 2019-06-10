@@ -12,7 +12,7 @@ namespace Hospitality
     {
         private JobDef jobDefBuy = DefDatabase<JobDef>.GetNamed("BuyItem");
         private JobDef jobDefBrowse = DefDatabase<JobDef>.GetNamed("BrowseItems");
-        protected virtual ThingRequestGroup RequestGroup { get { return ThingRequestGroup.HaulableEver; } }
+        protected virtual ThingRequestGroup RequestGroup => ThingRequestGroup.HaulableEver;
 
         public override float GetChance(Pawn pawn)
         {
@@ -34,9 +34,9 @@ namespace Hospitality
         public override Job TryGiveJob(Pawn pawn)
         {
             var map = pawn.MapHeld;
-            var things = map.listerThings.ThingsInGroup(RequestGroup).Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t)).ToList();
+            var things = map.listerThings.ThingsInGroup(RequestGroup).Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
             var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(pawn.IsInShoppingZone);
-            things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t))));
+            things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
             if (things.Count == 0) return null;
             Thing thing = things.RandomElement(); //things.MaxBy(t => Likey(pawn, t));
 
@@ -47,10 +47,9 @@ namespace Hospitality
             if (Likey(pawn, thing) <= 0.5f)
             {
                 //Log.Message(thing.Label + ": not interesting for " + pawn.NameStringShort);
-                IntVec3 standTarget;
                 int duration = Rand.Range(JobDriver_BuyItem.MinShoppingDuration, JobDriver_BuyItem.MaxShoppingDuration);
 
-                var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, map, 2, out standTarget) && IsBuyableNow(pawn, thing);
+                var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, map, 2, out var standTarget) && IsBuyableNow(pawn, thing);
                 if (canBrowse)
                 {
                     return new Job(jobDefBrowse, standTarget, thing) {expiryInterval = duration*2};
@@ -69,8 +68,22 @@ namespace Hospitality
             var hpFactor = thing.def.useHitPoints?((float)thing.HitPoints/thing.MaxHitPoints):1;
             
             // Apparel
-            var appFactor = thing is Apparel ? 1+ApparelScoreGain(pawn, (Apparel) thing) : 0.8f; // Not apparel, less likey
+            var appFactor = thing is Apparel apparel ? 1+ApparelScoreGain(pawn, apparel) : 0.8f; // Not apparel, less likey
             //Log.Message(thing.Label + " - apparel score: " + appFactor);
+
+            // Food
+            if(IsFood(thing))
+            {
+                var needFood = pawn.needs.TryGetNeed<Need_Food>();
+                var hungerFactor = 1 - needFood?.CurLevelPercentage ?? 0;
+                hungerFactor -= 1 - needFood?.PercentageThreshHungry ?? 0; // about -0.7
+                appFactor = FoodUtility.FoodOptimality(pawn, thing, FoodUtility.GetFinalIngestibleDef(thing), 0, true) / 300f; // 300 = optimality max
+                //Log.Message($"{pawn.LabelShort} looked at {thing.LabelShort} at {thing.Position} and scored it {appFactor}.");
+                appFactor += hungerFactor;
+                //Log.Message($"{pawn.LabelShort} added {hungerFactor} to the score for his hunger.");
+                if (thing.def.IsWithinCategory(ThingCategoryDefOf.PlantFoodRaw)) appFactor -= 0.25f;
+                if (thing.def.IsWithinCategory(ThingCategoryDefOf.MeatRaw)) appFactor -= 0.5f;
+            }
 
             // Weapon
             if (thing.def.IsRangedWeapon)
@@ -89,8 +102,7 @@ namespace Hospitality
 
             // Quality of object
             var qFactor = 0.8f;
-            QualityCategory cat;
-            if (thing.TryGetQuality(out cat))
+            if (thing.TryGetQuality(out var cat))
             {
                 qFactor = (float) cat;
                 qFactor -= (float) QualityCategory.Normal;
@@ -111,6 +123,14 @@ namespace Hospitality
             var rFactor = Rand.RangeSeeded(0.5f, 2f, pawn.thingIDNumber*60509 + thing.thingIDNumber*33151);
             //Log.Message(thing.Label + " - score: " + hpFactor*hpFactor*qFactor*tFactor*appFactor);
             return Mathf.Max(0, hpFactor*hpFactor*qFactor*tFactor*appFactor*rFactor); // 0 = don't buy
+        }
+
+        private static bool IsFood(Thing thing)
+        {
+            return thing.def.ingestible != null 
+                   && thing.def.ingestible.preferability != FoodPreferability.NeverForNutrition 
+                   && thing.def.ingestible.preferability != FoodPreferability.DesperateOnlyForHumanlikes
+                   && thing.def.ingestible.preferability != FoodPreferability.DesperateOnly;
         }
 
         // Copied so outfits can be commented
@@ -136,7 +156,7 @@ namespace Hospitality
             return num;
         }
 
-        protected virtual bool Qualifies(Thing thing)
+        protected virtual bool Qualifies(Thing thing, Pawn pawn)
         {
             return true;
         }
@@ -187,14 +207,20 @@ namespace Hospitality
         private static bool BoughtByPlayer(Pawn pawn, Thing thing)
         {
             var lord = pawn.GetLord();
-            if (lord == null) return true;
-            var toil = lord.CurLordToil as LordToil_VisitPoint;
-            if (toil == null) return true;
-            return toil.BoughtOrSoldByPlayer(thing);
+            return !(lord?.CurLordToil is LordToil_VisitPoint toil) || toil.BoughtOrSoldByPlayer(thing);
         }
 
         public static bool IsBuyableNow(Pawn pawn, Thing thing)
         {
+            if (!thing.SpawnedOrAnyParentSpawned)
+            {
+                return false;
+            }
+            if (thing.ParentHolder is Pawn)
+            {
+                //Log.Message(thing.Label+": is inside pawn "+pawn.NameStringShort);
+                return false;
+            }
             if (thing.IsForbidden(Faction.OfPlayer))
             {
                 //Log.Message(thing.Label+": is forbidden for "+pawn.NameStringShort);
