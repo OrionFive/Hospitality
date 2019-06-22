@@ -18,7 +18,7 @@ namespace Hospitality
             injector.Inject();
         }
 
-        public override string ModIdentifier { get { return "Hospitality"; } }
+        public override string ModIdentifier => "Hospitality";
 
         public override void Initialize()
         {
