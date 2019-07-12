@@ -665,8 +665,14 @@ namespace Hospitality
 
         public static int FriendsRequired(Map mapHeld)
         {
-            var required = GetPawnsFromBase(mapHeld).Count() /3.75f;
-            return required < 1 ? 1 : Mathf.RoundToInt(required);
+            var x = GetPawnsFromBase(mapHeld).Count();
+            if (x <= 3) return 1;
+            // Formula from: https://mycurvefit.com/share/5b359026-5f44-4ac4-88ed-9b364a242f7b
+            var a = 0.887f;
+            var b = 0.646f;
+            var y = a * Mathf.Pow(x, b);
+            var required = y;
+            return Mathf.RoundToInt(required);
         }
 
         public static void EndorseColonists(Pawn recruiter, Pawn guest)
