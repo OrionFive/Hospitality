@@ -9,7 +9,7 @@
     <category>PawnSocial</category>
     <toStringStyle>Integer</toStringStyle>
     <roundToFiveOver>10</roundToFiveOver>
-    <defaultBaseValue>35</defaultBaseValue>
+    <defaultBaseValue>45</defaultBaseValue>
   </StatDef>
 
   <StatDef>
@@ -20,7 +20,7 @@
     <category>PawnSocial</category>
     <toStringStyle>Integer</toStringStyle>
     <roundToFiveOver>10</roundToFiveOver>
-    <defaultBaseValue>35</defaultBaseValue>
+    <defaultBaseValue>45</defaultBaseValue>
   </StatDef>
 
   <StatDef>

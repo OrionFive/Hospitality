@@ -11,7 +11,7 @@ namespace Hospitality
             if (!req.HasThing) return 0;
             if (!(req.Thing is Pawn pawn)) return 0;
             var factor = PriceUtility.PawnQualityPriceFactor(pawn);
-            return factor*stat.defaultBaseValue-stat.defaultBaseValue/5;
+            return factor*stat.defaultBaseValue+stat.defaultBaseValue/5;
         }
 
         public override string GetExplanationUnfinalized(StatRequest req, ToStringNumberSense numberSense)
@@ -25,7 +25,7 @@ namespace Hospitality
             
             var pawn = (Pawn) req.Thing;
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine($"{"StatsReport_CharacterQuality".Translate()}: x{PriceUtility.PawnQualityPriceFactor(pawn).ToStringPercent()} {-stat.defaultBaseValue / 5}");
+            stringBuilder.AppendLine($"{"StatsReport_CharacterQuality".Translate()}: x{PriceUtility.PawnQualityPriceFactor(pawn).ToStringPercent()} +{stat.defaultBaseValue / 5}");
             return stringBuilder.ToString();
         }
     }
