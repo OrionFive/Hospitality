@@ -7,7 +7,7 @@ namespace Hospitality {
         protected override bool Satisfied(Pawn pawn)
         {
             var compGuest = pawn.GetComp<CompGuest>();
-            Log.Message($"{pawn.LabelShort}: Has no lord: {compGuest?.lord == null}");
+            //Log.Message($"{pawn.LabelShort}: Has no lord: {compGuest?.lord == null}");
             return compGuest?.lord == null;
         }
     }
