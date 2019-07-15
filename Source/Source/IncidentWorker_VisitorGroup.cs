@@ -291,7 +291,9 @@ namespace Hospitality
                 if (GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map) is Pawn spawnedPawn)
                 {
                     spawnedPawn.needs.SetInitialLevels();
-                    spawnedPawn.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
+                    if (spawnedPawn.needs != null && spawnedPawn.needs.rest != null) {
+                        spawnedPawn.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
+                    }
                     spawned.Add(spawnedPawn);
                 }
             }
