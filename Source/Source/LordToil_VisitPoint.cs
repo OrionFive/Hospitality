@@ -268,6 +268,10 @@ namespace Hospitality
 
         private bool WillDrop(Pawn pawn, Thing i)
         {
+            // To prevent dropping ammo from CE or similar
+            var ammoCategory = ThingCategoryDef.Named("Ammo");
+            if (ammoCategory != null && i.def.IsWithinCategory(ammoCategory)) return false;
+
             return i.def != ThingDefOf.Silver && !i.IsMeal() && !pawn.Bought(i) && !BoughtOrSoldByPlayer(i);
         }
 
