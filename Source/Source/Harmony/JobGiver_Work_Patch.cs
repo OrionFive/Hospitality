@@ -23,6 +23,7 @@ namespace Hospitality.Harmony
                 
                 if (Settings.disableArtAndCraft.Value && IsArtOrCraft(giver.def.workType.workTags)) return false;
                 if (Settings.disableOperations.Value && IsOperation(giver)) return false;
+                if (Settings.disableMedical.Value && IsOperation(giver) || IsMedical(giver)) return false;
 
                 float score;
                 if (!pawn.GetVisitScore(out score)) return false;
@@ -51,6 +52,11 @@ namespace Hospitality.Harmony
             private static bool IsOperation(WorkGiver workGiver)
             {
                 return workGiver is WorkGiver_DoBill && (workGiver.def.billGiversAllHumanlikes || workGiver.def.billGiversAllAnimals);
+            }
+
+            private static bool IsMedical(WorkGiver workGiver)
+            {
+                return workGiver is WorkGiver_Tend;
             }
 
             private static bool IsSkilledEnough(Pawn pawn, WorkTypeDef workTypeDef)
