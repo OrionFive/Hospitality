@@ -94,7 +94,7 @@ namespace Hospitality
             }
 
             int tookItems;
-            if (thing.def.IsApparel && thing is Apparel apparel)
+            if (thing.def.IsApparel && thing is Apparel apparel && JoyGiver_BuyStuff.AlienFrameworkAllowsIt(toil.actor.def, apparel.def))
             {
                 toil.actor.apparel.Wear(apparel);
                 tookItems = apparel.stackCount;

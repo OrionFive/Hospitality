@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -72,7 +74,7 @@ namespace Hospitality
             //Log.Message(thing.Label + " - apparel score: " + appFactor);
 
             // Food
-            if(IsFood(thing))
+            if(IsFood(thing) && pawn.RaceProps.CanEverEat(thing))
             {
                 var needFood = pawn.needs.TryGetNeed<Need_Food>();
                 var hungerFactor = 1 - needFood?.CurLevelPercentage ?? 0;
@@ -127,7 +129,7 @@ namespace Hospitality
 
         private static bool IsFood(Thing thing)
         {
-            return thing.def.ingestible != null 
+            return thing.def.ingestible != null
                    && thing.def.ingestible.preferability != FoodPreferability.NeverForNutrition 
                    && thing.def.ingestible.preferability != FoodPreferability.DesperateOnlyForHumanlikes
                    && thing.def.ingestible.preferability != FoodPreferability.DesperateOnly;
@@ -138,6 +140,8 @@ namespace Hospitality
         {
             if (ap is ShieldBelt && pawn.equipment.Primary?.def.IsWeaponUsingProjectiles == true)
                 return -1000f;
+            if (!AlienFrameworkAllowsIt(pawn.def, ap.def)) 
+                return -1000;
             float num = JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
             List<Apparel> wornApparel = pawn.apparel.WornApparel;
             bool flag = false;
@@ -154,6 +158,14 @@ namespace Hospitality
             if (!flag)
                 num *= 10f;
             return num;
+        }
+
+        public static bool AlienFrameworkAllowsIt(ThingDef pawnDef, ThingDef apparelDef)
+        {
+            var restriction = Traverse.Create(pawnDef).Field("raceRestrictions");
+            if (!restriction.FieldExists()) return true; // Not using AlienFramework
+            var canWear = restriction.Method("CanWear").GetValue<bool>(apparelDef, pawnDef);
+            return canWear;
         }
 
         protected virtual bool Qualifies(Thing thing, Pawn pawn)
