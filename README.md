@@ -1,5 +1,19 @@
-# Hospitality
-Orion's RimWorld mod "Hospitality".
+# Orion's Mods
+This repository hosts the RimWorld mod *Hospitality*. I also collect feature requests and issues for my other mods.
+
+## Want to download the latest version?
+Find them [here](https://github.com/OrionFive/Hospitality/releases).
+
+## Got a problem, bug or feature request? 
+Post it [here](https://github.com/OrionFive/Hospitality/issues).
+
+## Become a patron! 
+Want to support the development of Hospitality and my other mods? 
+Want to vote on the next feature? 
+[Become my patron!](https://www.patreon.com/orionmods)
+
+
+# License
 
 All original artwork included is Copyright © 2015 Orion, and distributed under the Creative Commons License Attribution-ShareAlike 4.0 International, or CC-BY-SA 4.0I.
 
