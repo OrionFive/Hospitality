@@ -17,8 +17,7 @@ namespace Hospitality.Harmony
             {
                 __result = false;
 
-                if (p == null) return false;
-                return true;
+                return p != null;
             }
         }
     }
