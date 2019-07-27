@@ -59,7 +59,7 @@ namespace Hospitality
 
             var allDefsListForReading = PopulateChances(pawn); // Moved to own function
             if (GetJob(pawn, allDefsListForReading, out var job)) return job;
-            Log.ErrorOnce(pawn.LabelShort + " did not get a relax job.", 45745 + pawn.thingIDNumber);
+            //Log.ErrorOnce(pawn.LabelShort + " did not get a relax job.", 45745 + pawn.thingIDNumber);
             CheckArea(pawn);
             return null;
         }
@@ -79,10 +79,6 @@ namespace Hospitality
                 {
                     return true;
                 }
-
-                //var workerInfo = giverDef?.Worker==null?"Worker is null. ":string.Empty;
-                //var jobInfo = job == null ? "TryGiveJob returned null. " : string.Empty;
-                //Log.ErrorOnce($"{pawn.LabelShort} tried joygiver with def = {giverDef?.defName}. {workerInfo}{jobInfo}", 57443 + pawn.thingIDNumber);
                 joyGiverChances[giverDef] = 0f;
             }
 
