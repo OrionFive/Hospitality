@@ -70,6 +70,7 @@ namespace Hospitality
             {
                 if (!allDefsListForReading.TryRandomElementByWeight(d => joyGiverChances[d], out var giverDef))
                 {
+                    //Log.ErrorOnce($"{pawn.LabelShort} could not find a joygiver. DefsCount = {allDefsListForReading.Count}", 45747 + pawn.thingIDNumber);
                     break;
                 }
 
@@ -79,6 +80,9 @@ namespace Hospitality
                     return true;
                 }
 
+                //var workerInfo = giverDef?.Worker==null?"Worker is null. ":string.Empty;
+                //var jobInfo = job == null ? "TryGiveJob returned null. " : string.Empty;
+                //Log.ErrorOnce($"{pawn.LabelShort} tried joygiver with def = {giverDef?.defName}. {workerInfo}{jobInfo}", 57443 + pawn.thingIDNumber);
                 joyGiverChances[giverDef] = 0f;
             }
 
@@ -89,13 +93,13 @@ namespace Hospitality
         private static void CheckArea(Pawn pawn)
         {
             var area = pawn.GetGuestArea();
-            if (area == null)
-            {
-                Log.ErrorOnce(pawn.LabelShort + " has a null area!", 932463 + pawn.thingIDNumber);
-                return;
-            }
+            //if (area == null)
+            //{
+            //    Log.ErrorOnce(pawn.LabelShort + " has a null area!", 932463 + pawn.thingIDNumber);
+            //    return;
+            //}
 
-            if(area.TrueCount == 0)
+            if(area != null && area.TrueCount == 0)
             {
                 Log.ErrorOnce(pawn.LabelShort + " has an area that is empty!", 43737 + pawn.thingIDNumber);
                 return;
