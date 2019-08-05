@@ -123,6 +123,7 @@
     <Compile Include="MainTab\PawnColumnWorker_LabelCustom.cs" />
     <Compile Include="MainTab\PawnColumnWorker_Hospitality.cs" />
     <Compile Include="MainTab\PawnColumnWorker_Recruit.cs" />
+    <Compile Include="MainTab\PawnColumnWorker_Relationship.cs" />
     <Compile Include="MainTab\PawnColumnWorker_ShoppingArea.cs" />
     <Compile Include="MainTab\PawnTable_Guests.cs" />
     <Compile Include="ModBaseHospitality.cs" />

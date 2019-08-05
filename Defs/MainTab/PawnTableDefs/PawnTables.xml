@@ -5,6 +5,7 @@
     <defName>Guests</defName>
     <workerClass>Hospitality.MainTab.PawnTable_Guests</workerClass>
     <columns>
+      <li>GuestRelationship</li>
       <li>LabelCustom</li>
 	  <li>Faction</li>
       <li>GapTiny</li>

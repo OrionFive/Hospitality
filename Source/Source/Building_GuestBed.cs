@@ -46,7 +46,7 @@ namespace Hospitality
             if (ForPrisoners) ForPrisoners = false;
         }
 
-        public override Color DrawColorTwo { get { return sheetColorForGuests; } }
+        public override Color DrawColorTwo => sheetColorForGuests;
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
@@ -56,10 +56,7 @@ namespace Hospitality
             }
             var room = Position.GetRoom(Map);
             base.DeSpawn(mode);
-            if (room != null)
-            {
-                room.Notify_RoomShapeOrContainedBedsChanged();
-            }
+            room?.Notify_RoomShapeOrContainedBedsChanged();
         }
 
         //public override void DrawExtraSelectionOverlays()
@@ -190,7 +187,7 @@ namespace Hospitality
 
             var compQuality = spawnedBed.TryGetComp<CompQuality>();
 
-            if(compQuality != null) compQuality.SetQuality(bed.GetComp<CompQuality>().Quality, ArtGenerationContext.Outsider);
+            compQuality?.SetQuality(bed.GetComp<CompQuality>().Quality, ArtGenerationContext.Outsider);
             //var compArt = bed.TryGetComp<CompArt>();
             //if (compArt != null)
             //{

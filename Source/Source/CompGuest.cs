@@ -38,6 +38,7 @@ namespace Hospitality
             get
             {
                 if (guestArea_int != null && guestArea_int.Map != Pawn.MapHeld) return null;
+                if (!Pawn.MapHeld.areaManager.AllAreas.Contains(guestArea_int)) guestArea_int = null; // Area might be removed by player
                 return guestArea_int;
             }
             set => guestArea_int = value;
@@ -48,6 +49,7 @@ namespace Hospitality
             get
             {
                 if (shoppingArea_int != null && shoppingArea_int.Map != Pawn.MapHeld) return null;
+                if (!Pawn.MapHeld.areaManager.AllAreas.Contains(shoppingArea_int)) shoppingArea_int = null; // Area might be removed by player
                 return shoppingArea_int;
             }
             set => shoppingArea_int = value;
