@@ -3,7 +3,6 @@
 
   <!-- Recruiting -->
   <RecruitAngerMultiple>{0} verärgerte {1} {2}x nacheinander.</RecruitAngerMultiple>
-  <RecruitAngerOther>{3} sah {0} beim Rekrutieren von {1} und ist beleidigt ({2} Chance).</RecruitAngerOther>
   <RecruitFactionAnger>{0} von {1} ist verärgert über den Rekrutierungsversuch {2} ({3}).</RecruitFactionAnger>
   <RecruitFactionAngerLeaderless>Die Mitglieder von {0} sind verärgert über deinen Rekrutierungsversuch ({2}).</RecruitFactionAngerLeaderless>
   <LostGroupFactionAnger>{0} von {1} hat nie wieder etwas von dieser Delegation gehört ({2}).</LostGroupFactionAnger>

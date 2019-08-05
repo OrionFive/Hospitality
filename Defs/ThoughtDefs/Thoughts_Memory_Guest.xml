@@ -3,17 +3,15 @@
 
   <ThoughtDef>
     <defName>GuestAngered</defName>
-    <thoughtClass>Thought_MemorySocial</thoughtClass>
-    <durationDays>0.75</durationDays>
-    <stackedEffectMultiplier>0.98</stackedEffectMultiplier>
-    <stackLimit>1</stackLimit>
+	<icon>Things/Mote/ThoughtSymbol/Skull</icon>
+	<showBubble>true</showBubble>
+    <durationDays>2</durationDays>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
     <stages>
       <li>
-        <label>angered by seeing recruitment</label>
-        <labelSocial>angered me by recruiting</labelSocial>
+        <label>angered by recruitment</label>
         <description>These guys are trying to steal our members!</description>
-        <baseMoodEffect>-10</baseMoodEffect>
-        <baseOpinionOffset>-20</baseOpinionOffset>
+        <baseMoodEffect>-5</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>

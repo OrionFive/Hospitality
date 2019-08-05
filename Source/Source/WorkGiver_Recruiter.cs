@@ -6,12 +6,12 @@ namespace Hospitality
 {
     public class WorkGiver_Recruiter : WorkGiver_Scanner
     {
-        private readonly JobDef jobDefRecruit = DefDatabase<JobDef>.GetNamed("CharmGuest");
+        private readonly JobDef jobDefMakeFriends = DefDatabase<JobDef>.GetNamed("CharmGuest");
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             var guest = t as Pawn;
-            return pawn.ShouldRecruit(guest);
+            return pawn.ShouldMakeFriends(guest);
         }
 
         public override bool ShouldSkip(Pawn pawn, bool forced)
@@ -21,7 +21,7 @@ namespace Hospitality
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            return new Job(jobDefRecruit, t);
+            return new Job(jobDefMakeFriends, t);
         }
 
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);

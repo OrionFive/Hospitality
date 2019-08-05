@@ -3,7 +3,6 @@
 
   <!-- Recruiting -->
   <RecruitAngerMultiple>{0} upset {1} {2}x in a row.</RecruitAngerMultiple>
-  <RecruitAngerOther>{3} noticed {0} try to recruit {1} and got offended ({2} chance).</RecruitAngerOther>
   <RecruitFactionAnger>{0} of {1} is upset with you for recruiting {2} ({3}).</RecruitFactionAnger>
   <RecruitFactionAngerLeaderless>The members of {0} never heard back of their delegation ({2}).</RecruitFactionAngerLeaderless>
   <LostGroupFactionAnger>{0} of {1} never heard back of this delegation ({2}).</LostGroupFactionAnger>

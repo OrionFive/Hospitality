@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-	<GuestAngered.stages.angered_by_seeing_recruitment.label>angered by seeing recruitment</GuestAngered.stages.angered_by_seeing_recruitment.label>
-	<GuestAngered.stages.angered_by_seeing_recruitment.labelSocial>angered me by recruiting</GuestAngered.stages.angered_by_seeing_recruitment.labelSocial>
-	<GuestAngered.stages.angered_by_seeing_recruitment.description>These guys are trying to steal our members!</GuestAngered.stages.angered_by_seeing_recruitment.description>
+	<GuestAngered.stages.angered_by_recruitment.label>angered by recruitment</GuestAngered.stages.angered_by_recruitment.label>
+	<GuestAngered.stages.angered_by_recruitment.description>These guys are trying to steal our members!</GuestAngered.stages.angered_by_recruitment.description>
 	
 	<GuestRecruitmentForced.stages.involuntarily_recruited.label>involuntarily recruited</GuestRecruitmentForced.stages.involuntarily_recruited.label>
 	<GuestRecruitmentForced.stages.involuntarily_recruited.description>I'm not sure if I should be here.</GuestRecruitmentForced.stages.involuntarily_recruited.description>

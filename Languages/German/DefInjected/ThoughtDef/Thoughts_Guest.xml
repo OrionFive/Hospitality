@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-    <GuestAngered.stages.angered_by_seeing_recruitment.label>verärgert wegen Rekrutierung</GuestAngered.stages.angered_by_seeing_recruitment.label>
-    <GuestAngered.stages.angered_by_seeing_recruitment.labelSocial>verärgerte mich durch Rekrutierung</GuestAngered.stages.angered_by_seeing_recruitment.labelSocial>
-    <GuestAngered.stages.angered_by_seeing_recruitment.description>Diese Leute versuchen unsere Mitglieder zu stehlen!</GuestAngered.stages.angered_by_seeing_recruitment.description>
+    <GuestAngered.stages.angered_by_recruitment.label>verärgert wegen Rekrutierung</GuestAngered.stages.angered_by_recruitment.label>
+    <GuestAngered.stages.angered_by_recruitment.description>Diese Leute versuchen unsere Mitglieder zu stehlen!</GuestAngered.stages.angered_by_recruitment.description>
 
 	<GuestRecruitmentForced.stages.involuntarily_recruited.label>Rekrutierung erzwungen</GuestRecruitmentForced.stages.involuntarily_recruited.label>
 	<GuestRecruitmentForced.stages.involuntarily_recruited.description>Ich weiß nicht ob ich hier wirkich sein sollte.</GuestRecruitmentForced.stages.involuntarily_recruited.description>
