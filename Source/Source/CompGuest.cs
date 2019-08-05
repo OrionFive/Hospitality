@@ -9,8 +9,8 @@ namespace Hospitality
     {
         public List<int> boughtItems = new List<int>();
 
-        public bool chat;
-        public bool recruit;
+        public bool entertain;
+        public bool makeFriends;
 
         public bool arrived;
         public bool sentAway;
@@ -61,8 +61,8 @@ namespace Hospitality
         {
             base.PostExposeData();
             Scribe_Values.Look(ref arrived, "arrived");
-            Scribe_Values.Look(ref chat, "chat");
-            Scribe_Values.Look(ref recruit, "recruit");
+            Scribe_Values.Look(ref entertain, "chat");
+            Scribe_Values.Look(ref makeFriends, "recruit");
             Scribe_Collections.Look(ref boughtItems, "boughtItems", LookMode.Value);
             Scribe_References.Look(ref guestArea_int, "guestArea");
             Scribe_References.Look(ref shoppingArea_int, "shoppingArea");

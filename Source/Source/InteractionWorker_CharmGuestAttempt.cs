@@ -11,7 +11,7 @@ namespace Hospitality
             letterDef = null;
             letterLabel = null;
             letterText = null;
-            guest.CheckRecruitingSuccessful(recruiter, extraSentencePacks);
+            guest.TryImproveFriendship(recruiter, extraSentencePacks);
         }
     }
 }

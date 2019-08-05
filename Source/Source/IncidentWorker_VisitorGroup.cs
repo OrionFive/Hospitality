@@ -554,7 +554,8 @@ namespace Hospitality
                 if (compGuest != null)
                 {
                     compGuest.ResetForGuest(lord);
-                    compGuest.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.ReduceResistance;
+                    compGuest.entertain = mapComp.defaultEntertain;
+                    compGuest.makeFriends = mapComp.defaultMakeFriends;
                     compGuest.GuestArea = mapComp.defaultAreaRestriction;
                     compGuest.ShoppingArea = mapComp.defaultAreaShopping;
                 }

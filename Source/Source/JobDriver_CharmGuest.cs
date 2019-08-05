@@ -80,7 +80,7 @@ namespace Hospitality
 
         protected override bool FailCondition()
         {
-            return base.FailCondition() || !Talkee.TryRecruit();
+            return base.FailCondition() || !Talkee.MakeFriends();
         }
     }
 }

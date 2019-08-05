@@ -29,11 +29,11 @@
   </PawnColumnDef>
 
   <PawnColumnDef>
-    <defName>Recruit</defName>
-    <workerClass>Hospitality.MainTab.PawnColumnWorker_Recruit</workerClass>
+    <defName>MakeFriends</defName>
+    <workerClass>Hospitality.MainTab.PawnColumnWorker_MakeFriends</workerClass>
     <sortable>true</sortable>
-    <headerIcon>UI/Tab/Recruit</headerIcon>
-    <headerTip>Recruit</headerTip>
+    <headerIcon>UI/Tab/MakeFriends</headerIcon>
+    <headerTip>Make friends</headerTip>
     <paintable>true</paintable>
   </PawnColumnDef>
   
@@ -55,6 +55,7 @@
     <defName>FriendsForRecruiting</defName>
     <workerClass>Hospitality.MainTab.PawnColumnWorker_FriendsForRecruiting</workerClass>
     <headerIcon>UI/Tab/Friends</headerIcon>
+    <headerTip>Friends in colony</headerTip>
     <width>45</width>
 	<sortable>true</sortable>
   </PawnColumnDef>
@@ -63,6 +64,7 @@
     <defName>Hospitality</defName>
     <workerClass>Hospitality.MainTab.PawnColumnWorker_Hospitality</workerClass>
     <headerIcon>UI/Tab/Hospitality</headerIcon>
+    <headerTip>Hospitality</headerTip>
     <width>45</width>
 	<sortable>true</sortable>
   </PawnColumnDef>

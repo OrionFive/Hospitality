@@ -14,11 +14,15 @@ namespace Hospitality
         private static readonly string txtHospitality = "Hospitality".Translate();
         private static readonly string txtMakeDefault = "MakeDefault".Translate();
         private static readonly string txtForceRecruit = "ForceRecruit".Translate();
+        private static readonly string txtRecruit = "Recruit".Translate();
         private static readonly string txtSendAway = "SendAway".Translate();
         private static readonly string txtSendAwayQuestion = "SendAwayQuestion".Translate();
         private static readonly string txtMakeDefaultTooltip = "MakeDefaultTooltip".Translate();
+        private static readonly string txtRecruitTooltip = "RecruitTooltip".Translate();
         private static readonly string txtForceRecruitTooltip = "ForceRecruitTooltip".Translate();
         private static readonly string txtSendAwayTooltip = "SendAwayTooltip".Translate();
+        private static readonly string txtImproveTooltip = "ImproveTooltip".Translate();
+        private static readonly string txtMakeFriendsTooltip = "TryRecruitTooltip".Translate();
 
         protected static readonly Vector2 buttonSize = new Vector2(120f, 30f);
         private static Listing_Standard listingStandard = new Listing_Standard();
@@ -65,7 +69,7 @@ namespace Hospitality
 
             {
                 var tryImprove = SelPawn.ImproveRelationship();
-                var tryRecruit = SelPawn.TryRecruit();
+                var tryMakeFriends = SelPawn.MakeFriends();
 
                 listingStandard.ColumnWidth = size.x - 20;
 
@@ -86,25 +90,32 @@ namespace Hospitality
                     GenericUtility.DoAreaRestriction(SelPawn, rectBuy, comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel);
 
                     var rectImproveRelationship = listingStandard.GetRect(Text.LineHeight);
-                    CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, "ImproveTooltip".Translate());
-                    var rectRecruit = listingStandard.GetRect(Text.LineHeight);
-                    CheckboxLabeled(listingStandard, "ShouldTryToRecruit".Translate(), ref tryRecruit, rectRecruit, false, "TryRecruitTooltip".Translate());
+                    CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, txtImproveTooltip);
+                    var rectMakeFriends = listingStandard.GetRect(Text.LineHeight);
+                    CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref tryMakeFriends, rectMakeFriends, false, txtMakeFriendsTooltip);
 
-                    comp.chat = tryImprove;
-                    comp.recruit = tryRecruit;
+                    comp.entertain = tryImprove;
+                    comp.makeFriends = tryMakeFriends;
 
                     listingStandard.Gap(50);
 
-                    var mayForceRecruit = !SelPawn.InMentalState && comp.arrived && friends < friendsRequired;
+                    var mayRecruitAtAll = !SelPawn.InMentalState && comp.arrived;
 
                     var rectSetDefault = new Rect(rect.xMax - buttonSize.x - 10,160, buttonSize.x, buttonSize.y);
                     var rectSendHome = new Rect(rect.xMin - 10, 160, buttonSize.x, buttonSize.y);
                     DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, rectSetDefault, txtMakeDefaultTooltip);
                     DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
-                    if (mayForceRecruit)
+                    if (mayRecruitAtAll)
                     {
-                        var rectForceRecruit = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
-                        DrawButton(() => ForceRecruitDialog(SelPawn), txtForceRecruit, rectForceRecruit, txtForceRecruitTooltip);
+                        var rectRecruitButton = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
+                        if (friends < friendsRequired)
+                        {
+                            DrawButton(() => RecruitDialog(SelPawn, true), txtForceRecruit, rectRecruitButton, txtForceRecruitTooltip);
+                        }
+                        else
+                        {
+                            DrawButton(() => RecruitDialog(SelPawn, false), txtRecruit, rectRecruitButton, txtRecruitTooltip);
+                        }
                     }
 
                     // Highlight defaults
@@ -115,6 +126,7 @@ namespace Hospitality
                         Widgets.DrawHighlight(rectBuy);
                         Widgets.DrawHighlight(rectBuyLabel);
                         Widgets.DrawHighlight(rectImproveRelationship);
+                        Widgets.DrawHighlight(rectMakeFriends);
                     }
                 }
 
@@ -207,15 +219,15 @@ namespace Hospitality
             }
         }
 
-        private static void ForceRecruitDialog(Pawn pawn)
+        private static void RecruitDialog(Pawn pawn, bool forced)
         {
-            var forcedPenalty = pawn.ForcedRecruitPenalty();
-            int finalGoodwill = Mathf.Clamp(pawn.Faction.PlayerGoodwill - forcedPenalty, -100, 100);
+            var penalty = forced ? pawn.ForcedRecruitPenalty() : pawn.RecruitPenalty();
+            int finalGoodwill = Mathf.Clamp(pawn.Faction.PlayerGoodwill - penalty, -100, 100);
 
             string warning = finalGoodwill <= DiplomacyTuning.BecomeHostileThreshold ? "ForceRecruitWarning".Translate() : string.Empty;
 
-            var text = "ForceRecruitQuestion".Translate(forcedPenalty, warning, new NamedArgument(pawn, "PAWN"));
-            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => { GuestUtility.ForceRecruit(pawn, forcedPenalty); }));
+            var text = (forced ? "ForceRecruitQuestion" : "RecruitQuestion").Translate(penalty, warning, new NamedArgument(pawn, "PAWN"));
+            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => GuestUtility.Recruit(pawn, penalty, forced)));
         }
 
         private static void SendHomeDialog(Lord lord)
@@ -254,7 +266,8 @@ namespace Hospitality
 
             if (pawn.GetComp<CompGuest>() != null)
             {
-                mapComp.defaultInteractionMode = pawn.GetComp<CompGuest>().chat ? PrisonerInteractionModeDefOf.ReduceResistance : PrisonerInteractionModeDefOf.NoInteraction;
+                mapComp.defaultEntertain = pawn.GetComp<CompGuest>().entertain;
+                mapComp.defaultMakeFriends = pawn.GetComp<CompGuest>().makeFriends;
             }
             
             mapComp.defaultAreaRestriction = pawn.GetGuestArea();
@@ -266,7 +279,8 @@ namespace Hospitality
                 var comp = guest.GetComp<CompGuest>();
                 if (comp != null)
                 {
-                    comp.chat = mapComp.defaultInteractionMode == PrisonerInteractionModeDefOf.ReduceResistance;
+                    comp.entertain = mapComp.defaultEntertain;
+                    comp.makeFriends = mapComp.defaultMakeFriends;
                     comp.GuestArea = mapComp.defaultAreaRestriction;
                     comp.ShoppingArea = mapComp.defaultAreaShopping;
                 }

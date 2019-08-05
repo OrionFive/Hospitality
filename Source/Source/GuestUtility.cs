@@ -173,13 +173,13 @@ namespace Hospitality
         public static bool ImproveRelationship(this Pawn guest)
         {
             var guestComp = guest.GetComp<CompGuest>();
-            return guestComp?.chat == true;
+            return guestComp?.entertain == true;
         }
 
-        public static bool TryRecruit(this Pawn guest)
+        public static bool MakeFriends(this Pawn guest)
         {
             var guestComp = guest.GetComp<CompGuest>();
-            return guestComp?.recruit == true;
+            return guestComp?.makeFriends == true;
         }
 
         public static bool CanTalkTo(this Pawn talker, Pawn talkee)
@@ -392,34 +392,29 @@ namespace Hospitality
             };
         }
 
-        public static void CheckRecruitingSuccessful(this Pawn guest, Pawn recruiter, List<RulePackDef> extraSentencePacks)
+        public static void TryImproveFriendship(this Pawn guest, Pawn recruiter, List<RulePackDef> extraSentencePacks)
         {
-            if (!guest.TryRecruit()) return;
+            if (!guest.MakeFriends()) return;
 
             var friends = guest.GetFriendsInColony();
             var friendsRequired = FriendsRequired(guest.MapHeld) + guest.GetEnemiesInColony();
             float friendPercentage = 100f * friends / friendsRequired;
 
             //Log.Message(String.Format("Recruiting {0}: diff: {1} mood: {2}", guest.NameStringShort,recruitDifficulty, colonyTrust));
-            if (friendPercentage > 99)
-            {
-                PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("RecruitGuest"), KnowledgeAmount.Total);
-
-                Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
-
-                RecruitingSuccess(guest, guest.RecruitPenalty());
-            }
-            else
+            if (friendPercentage < 100)
             {
                 TryPleaseGuest(recruiter, guest, true, extraSentencePacks);
             }
         }
 
-        public static void ForceRecruit(Pawn guest, int recruitPenalty)
+        public static void Recruit(Pawn guest, int recruitPenalty, bool forced)
         {
-            GainThought(guest, ThoughtDef.Named("GuestRecruitmentForced"));
-           
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(txtForcedRecruit, guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
+            PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("RecruitGuest"), KnowledgeAmount.Total);
+
+            if(forced)
+                GainThought(guest, ThoughtDef.Named("GuestRecruitmentForced"));
+
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, string.Format(forced ? txtForcedRecruit : txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
 
             RecruitingSuccess(guest, recruitPenalty);
         }
@@ -542,7 +537,7 @@ namespace Hospitality
         {
             if (!pawn.IsColonist) return false;
             if (!ViableGuestTarget(guest, true)) return false;
-            if (!guest.TryRecruit()) return false;
+            if (!guest.MakeFriends()) return false;
             if (guest.InMentalState) return false;
             //if (guest.relations.OpinionOf(pawn) >= 100) return false;
             //if (guest.RelativeTrust() < 50) return false;

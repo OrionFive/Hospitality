@@ -16,12 +16,15 @@ namespace Hospitality
         }
 
         private IncidentQueue incidentQueue = new IncidentQueue();
-        public PrisonerInteractionModeDef defaultInteractionMode;
+        public bool defaultEntertain;
+        public bool defaultMakeFriends;
         public Area defaultAreaRestriction;
         public Area defaultAreaShopping;
         public bool refuseGuestsUntilWeHaveBeds;
         private int nextQueueInspection;
 
+        [Obsolete]
+        private PrisonerInteractionModeDef defaultInteractionMode; // Not used anymore, only for legacy saves
         [Obsolete]
         private int lastEventKey;
         [Obsolete]
@@ -31,6 +34,8 @@ namespace Hospitality
         {
             Scribe_Collections.Look(ref bribeCount, "bribeCount", LookMode.Value, LookMode.Value);
             Scribe_Defs.Look(ref defaultInteractionMode, "defaultInteractionMode");
+            Scribe_Values.Look(ref defaultEntertain, "defaultEntertain");
+            Scribe_Values.Look(ref defaultMakeFriends, "defaultMakeFriends");
             Scribe_References.Look(ref defaultAreaRestriction, "defaultAreaRestriction");
             Scribe_References.Look(ref defaultAreaShopping, "defaultAreaShopping");
             Scribe_Values.Look(ref lastEventKey, "lastEventKey");
@@ -39,6 +44,13 @@ namespace Hospitality
             Scribe_Values.Look(ref nextQueueInspection, "nextQueueInspection");
 
             if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
+
+            // For legacy:
+            if (defaultInteractionMode == PrisonerInteractionModeDefOf.ReduceResistance)
+            {
+                defaultEntertain = true;
+                defaultInteractionMode = PrisonerInteractionModeDefOf.NoInteraction;
+            }
         }
 
         public Hospitality_MapComponent(Map map) : base(map)

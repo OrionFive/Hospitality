@@ -66,20 +66,24 @@
   <FriendsRequirement>Enough friends to recruit: {0}/{1}</FriendsRequirement>
   <RecruitmentPenalty>Relationship damage when recruited: {0} ({1} forced)</RecruitmentPenalty>
   <ImproveRelationship>Try to entertain</ImproveRelationship>
+  <MakeFriends>Try to create friendships</MakeFriends>
   <LeaveAlone>Leave alone</LeaveAlone>
   <FactionGoodwill>Faction goodwill</FactionGoodwill>
   <Hospitality>Hospitality</Hospitality>
   <MakeDefault>Make Default</MakeDefault>
   <SendAway>Send away...</SendAway>
   <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?\nIf you send them away immediately after appearing, this will have no effect on relations.</SendAwayQuestion>
+  <Recruit>Recruit...</Recruit>
+  <RecruitQuestion>You can recruit {PAWN_nameDef} now.\n\nBecause {PAWN_pronoun} has enough friends, this only costs you {0} points of relationship with {PAWN_possessive} faction.{1}\n\n\nAre you sure you want to recruit {PAWN_objective}?</RecruitQuestion>
   <ForceRecruit>Force recruit...</ForceRecruit>
   <ForceRecruitQuestion>You can recruit {PAWN_nameDef} immediately.\n\nBecause {PAWN_pronoun} doesn't have enough friends yet to join you on {PAWN_possessive} own accord, this costs you {0} points of relationship with {PAWN_possessive} faction. This will be less if {PAWN_pronoun} has more friends. {1}\n\n\nAre you sure you don't want to wait?</ForceRecruitQuestion>
   <ForceRecruitWarning>\n\nThis will cause them to become hostile immediately.</ForceRecruitWarning>
   <NotEnoughFriends>[PAWN_nameDef] does not like enough of your colonists (opinion > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>[PAWN_nameDef] can now be recruited.</CanNowBeRecruited>
   <IsATrader>[PAWN_nameDef] is part of a trading caravan and not a guest.</IsATrader>
-  <ImproveTooltip>Your diplomats will try to temporarily improve the guest's mood and their personal relationship. Good diplomats are more effective at this. Bad diplomats can anger the guest.</ImproveTooltip>
+  <ImproveTooltip>Your diplomats will try to temporarily improve the guest's mood. Good diplomats are more effective at this. Bad diplomats can anger the guest.</ImproveTooltip>
   <TryRecruitTooltip>Your diplomats will try to befriend the guest with your other colonists. Good diplomats are more effective at this. Bad diplomats can anger the guest. When the guest has enough friends, he will join your colony.</TryRecruitTooltip>
+  <RecruitTooltip>Your guest has enough friendships in the colony and can be recruited now. Recruiting causes damage to your relationship with this faction, though.</RecruitTooltip>
   <MakeDefaultTooltip>Applies the areas and the entertain settings to all current and future visitors.</MakeDefaultTooltip>
   <ForceRecruitTooltip>Instead of waiting for your diplomats to convince this guest, you can also force them to stay. The relationship damage with this faction will be much higher, though.</ForceRecruitTooltip>
   <SendAwayTooltip>Ask the group of this guest to go home again.</SendAwayTooltip>
