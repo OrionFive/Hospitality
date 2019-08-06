@@ -3,19 +3,20 @@
 	<HugsLib.UpdateFeatureDef Abstract="true" Name="UpdateFeatureBase">
 		<modNameReadable>Hospitality</modNameReadable>
 		<modIdentifier>Hospitality</modIdentifier>
-		<linkUrl>https://extra-nice.net/help-with-skirmish/</linkUrl>
+		<linkUrl>https://www.patreon.com/orionmods</linkUrl>
+		<!-- <linkUrl>https://extra-nice.net/help-with-skirmish/</linkUrl> -->
 	</HugsLib.UpdateFeatureDef>
 	
-	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+	<!-- <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
 		<defName>Hospitality_1_0_17</defName>
 		<assemblyVersion>1.0.17</assemblyVersion>
 		<content>- New: Added setting for minimum group size|- New: Traveling guests will never have mental breaks|- New: Guest tab shows the amount of guests and beds|- Fix: Guests now only get entertained when they're inside of the guest area|- Fix: Returning visitors get their needs reset|img:Updates/Skirmish|caption:As you may know, I'm working hard on my own game. We've just updated the free version and I need YOUR opinion! Click the link above to check it out. Thanks!</content>
-	</HugsLib.UpdateFeatureDef>
+	</HugsLib.UpdateFeatureDef> -->
 
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-		<defName>Hospitality_1_0_14</defName>
-		<assemblyVersion>1.0.14</assemblyVersion>
-		<content>- Guests' colony friends are now highlighted green in the social tab|- Special relationships (e.g. relatives) now count double!|- New opt-in setting to get notified when guests buy things|- Known visitors will return much more often now!</content>
+		<defName>Hospitality_1_0_20</defName>
+		<assemblyVersion>1.0.20</assemblyVersion>
+		<content>- Fix: Lone guests without a group will leave the map (if they don't you have a mod conflict!)|- New: Setting to disable guests doing medical work|- New: Icon in guest overview that indicates relationships|- New: Recruiting is now a button and can be done instantly once enough friends are made. Making friends is now a toggle you can turn on or off|- New: Guests now get upset if you recruit a member of their faction|img:Updates/Patron|caption:To sustain my mod development, I'm trying to get a Patreon page off the ground, that I need your help with. You can vote for new mod features and I'm also posting tiny one shot mods there that you might find interesting. So if you feel curious, grateful or generous, please take a look by clicking the link above!|If a mod update causes you issues, don't hesitate to contact me (and remember to include the Ctrl-F12 error log!).</content>
 	</HugsLib.UpdateFeatureDef>
 
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
