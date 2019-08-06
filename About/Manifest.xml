@@ -18,6 +18,6 @@
   <!-- </suggests> -->
   <showCrossPromotions>true</showCrossPromotions>
   
-  <manifestUri>https://github.com/OrionFive/Hospitality/blob/develop/About/Manifest.xml</manifestUri>
+  <manifestUri>https://raw.githubusercontent.com/OrionFive/Hospitality/develop/About/Manifest.xml</manifestUri>
   <downloadUri>https://github.com/OrionFive/Hospitality/releases</downloadUri>
 </Manifest>
