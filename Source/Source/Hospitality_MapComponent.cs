@@ -22,6 +22,7 @@ namespace Hospitality
         public Area defaultAreaShopping;
         public bool refuseGuestsUntilWeHaveBeds;
         private int nextQueueInspection;
+        private int nextRogueGuestCheck;
 
         [Obsolete]
         private PrisonerInteractionModeDef defaultInteractionMode; // Not used anymore, only for legacy saves
@@ -78,6 +79,12 @@ namespace Hospitality
             {
                 nextQueueInspection = GenTicks.TicksGame + GenDate.TicksPerDay;
                 GenericUtility.CheckTooManyIncidentsAtOnce(incidentQueue);
+            }
+
+            if (GenTicks.TicksGame > nextRogueGuestCheck)
+            {
+                nextRogueGuestCheck = GenTicks.TicksGame + GenDate.TicksPerHour;
+                GuestUtility.CheckForRogueGuests(map);
             }
         }
 

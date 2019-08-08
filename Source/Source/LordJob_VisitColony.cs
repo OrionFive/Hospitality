@@ -36,6 +36,7 @@ namespace Hospitality
             Scribe_Values.Look(ref stayDuration, "stayDuration", GenDate.TicksPerDay);
         }
 
+        // Can't change the graph - not backwards compatible :(
         public override StateGraph CreateGraph()
         {
             StateGraph graphArrive = new StateGraph();

@@ -76,58 +76,63 @@ namespace Hospitality
                 var comp = SelPawn.GetComp<CompGuest>();
                 if (comp != null)
                 {
-                    listingStandard.Gap();
-                    string labelStay = "AreaToStay".Translate();
-                    string labelBuy = "AreaToBuy".Translate();
-                    var rectStayLabel = listingStandard.GetRect(Text.CalcHeight(labelStay, listingStandard.ColumnWidth));
-                    var rectStay = listingStandard.GetRect(24);
-                    var rectBuyLabel = listingStandard.GetRect(Text.CalcHeight(labelBuy, listingStandard.ColumnWidth));
-                    var rectBuy = listingStandard.GetRect(24);
-
-                    LabelWithTooltip(labelStay, "AreaToStayTooltip".Translate(), rectStayLabel);
-                    GenericUtility.DoAreaRestriction(SelPawn, rectStay, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
-                    LabelWithTooltip(labelBuy, "AreaToBuyTooltip".Translate(), rectBuyLabel);
-                    GenericUtility.DoAreaRestriction(SelPawn, rectBuy, comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel);
-
-                    var rectImproveRelationship = listingStandard.GetRect(Text.LineHeight);
-                    CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, txtImproveTooltip);
-                    var rectMakeFriends = listingStandard.GetRect(Text.LineHeight);
-                    CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref tryMakeFriends, rectMakeFriends, false, txtMakeFriendsTooltip);
-
-                    comp.entertain = tryImprove;
-                    comp.makeFriends = tryMakeFriends;
-
-                    listingStandard.Gap(50);
-
-                    var mayRecruitAtAll = !SelPawn.InMentalState && comp.arrived;
-
-                    var rectSetDefault = new Rect(rect.xMax - buttonSize.x - 10,160, buttonSize.x, buttonSize.y);
-                    var rectSendHome = new Rect(rect.xMin - 10, 160, buttonSize.x, buttonSize.y);
-                    DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, rectSetDefault, txtMakeDefaultTooltip);
-                    DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
-                    if (mayRecruitAtAll)
+                    // If the lord is not on the map it's invalid!
+                    if (SelPawn.Map.lordManager.lords.Contains(comp.lord))
                     {
-                        var rectRecruitButton = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
-                        if (friends < friendsRequired)
+                        listingStandard.Gap();
+                        string labelStay = "AreaToStay".Translate();
+                        string labelBuy = "AreaToBuy".Translate();
+                        var rectStayLabel = listingStandard.GetRect(Text.CalcHeight(labelStay, listingStandard.ColumnWidth));
+                        var rectStay = listingStandard.GetRect(24);
+                        var rectBuyLabel = listingStandard.GetRect(Text.CalcHeight(labelBuy, listingStandard.ColumnWidth));
+                        var rectBuy = listingStandard.GetRect(24);
+
+                        LabelWithTooltip(labelStay, "AreaToStayTooltip".Translate(), rectStayLabel);
+                        GenericUtility.DoAreaRestriction(SelPawn, rectStay, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
+                        LabelWithTooltip(labelBuy, "AreaToBuyTooltip".Translate(), rectBuyLabel);
+                        GenericUtility.DoAreaRestriction(SelPawn, rectBuy, comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel);
+
+                        var rectImproveRelationship = listingStandard.GetRect(Text.LineHeight);
+                        CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, txtImproveTooltip);
+                        var rectMakeFriends = listingStandard.GetRect(Text.LineHeight);
+                        CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref tryMakeFriends, rectMakeFriends, false, txtMakeFriendsTooltip);
+
+                        comp.entertain = tryImprove;
+                        comp.makeFriends = tryMakeFriends;
+
+                        listingStandard.Gap(50);
+
+                        var mayRecruitAtAll = !SelPawn.InMentalState && comp.arrived;
+
+                        var rectSetDefault = new Rect(rect.xMax - buttonSize.x - 10, 160, buttonSize.x, buttonSize.y);
+                        var rectSendHome = new Rect(rect.xMin - 10, 160, buttonSize.x, buttonSize.y);
+                        DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, rectSetDefault, txtMakeDefaultTooltip);
+                        DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
+                        if (mayRecruitAtAll)
                         {
-                            DrawButton(() => RecruitDialog(SelPawn, true), txtForceRecruit, rectRecruitButton, txtForceRecruitTooltip);
+                            var rectRecruitButton = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
+                            if (friends < friendsRequired)
+                            {
+                                DrawButton(() => RecruitDialog(SelPawn, true), txtForceRecruit, rectRecruitButton, txtForceRecruitTooltip);
+                            }
+                            else
+                            {
+                                DrawButton(() => RecruitDialog(SelPawn, false), txtRecruit, rectRecruitButton, txtRecruitTooltip);
+                            }
                         }
-                        else
+
+                        // Highlight defaults
+                        if (Mouse.IsOver(rectSetDefault))
                         {
-                            DrawButton(() => RecruitDialog(SelPawn, false), txtRecruit, rectRecruitButton, txtRecruitTooltip);
+                            Widgets.DrawHighlight(rectStay);
+                            Widgets.DrawHighlight(rectStayLabel);
+                            Widgets.DrawHighlight(rectBuy);
+                            Widgets.DrawHighlight(rectBuyLabel);
+                            Widgets.DrawHighlight(rectImproveRelationship);
+                            Widgets.DrawHighlight(rectMakeFriends);
                         }
                     }
-
-                    // Highlight defaults
-                    if (Mouse.IsOver(rectSetDefault))
-                    {
-                        Widgets.DrawHighlight(rectStay);
-                        Widgets.DrawHighlight(rectStayLabel);
-                        Widgets.DrawHighlight(rectBuy);
-                        Widgets.DrawHighlight(rectBuyLabel);
-                        Widgets.DrawHighlight(rectImproveRelationship);
-                        Widgets.DrawHighlight(rectMakeFriends);
-                    }
+                    else { }
                 }
 
                 if (SelPawn.Faction != null)

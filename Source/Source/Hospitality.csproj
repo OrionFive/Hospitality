@@ -129,7 +129,6 @@
     <Compile Include="ModBaseHospitality.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="StatWorker_ForcedRelationshipDamage.cs" />
-    <Compile Include="ThinkNode_CheckForNoLord.cs" />
     <Compile Include="ThinkNode_ConditionalWantsToHelp.cs" />
     <Compile Include="ThinkNode_InGuestArea.cs" />
     <Compile Include="ThoughtWorker_Beds.cs" />

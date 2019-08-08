@@ -50,16 +50,6 @@
 			  </subNodes>
 			</li>
 			
-			<li Class="Hospitality.ThinkNode_CheckForNoLord">
-				<subNodes>
-				  <li Class="JobGiver_ExitMapBest">
-					  <defaultLocomotion>Jog</defaultLocomotion>
-					  <jobMaxDuration>500</jobMaxDuration>
-					  <forceCanDig>false</forceCanDig>
-				  </li>
-				</subNodes>
-			</li>
-			
 			<!-- Wander -->
 			<li Class="JobGiver_WanderColony">
 			  <maxDanger>None</maxDanger>

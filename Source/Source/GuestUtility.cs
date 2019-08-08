@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
-using UnityEngine.Assertions;
 using Verse.AI.Group;
 using Verse;
 using Verse.AI;
 using Verse.Sound;
+using static System.String;
 
 namespace Hospitality
 {
@@ -58,25 +58,13 @@ namespace Hospitality
         {
             try
             {
-                if (pawn == null) return false;
-                if (pawn.Destroyed) return false;
-                if (!pawn.Spawned) return false;
-                if (pawn.thingIDNumber == 0) return false; // Yeah, this can happen O.O
-                if (pawn.Name == null) return false;
-                if (pawn.Dead) return false;
-                if (pawn.RaceProps?.Humanlike != true) return false;
-                if (pawn.guest == null) return false;
-                if (pawn.IsPrisonerOfColony || pawn.Faction == Faction.OfPlayer) return false;
+                if (!IsValidPawn(pawn)) return false;
                 if (!pawn.IsInVisitState()) return false;
-                if (pawn.HostileTo(Faction.OfPlayer)) return false;
-                //Log.Message(pawn.NameStringShort+": "+(pawn.mindState.duty!=null?pawn.mindState.duty.def.defName : "null"));
                 return true;
             }
             catch(Exception e)
             {
                 Log.Warning(pawn.Name.ToStringShort + ": \n" + e.Message);
-                //Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
-                //Log.Message("Ticks: "+Find.TickManager.TicksGame);
                 return false;
             }
         }
@@ -85,26 +73,30 @@ namespace Hospitality
         {
             try
             {
-                if (pawn == null) return false;
-                if (pawn.Destroyed) return false;
-                if (!pawn.Spawned) return false;
-                if (pawn.thingIDNumber == 0) return false; // Yeah, this can happen O.O
-                if (pawn.Name == null) return false;
-                if (pawn.Dead) return false;
-                if (pawn.RaceProps?.Humanlike != true) return false;
-                if (pawn.guest == null) return false;
-                if (pawn.IsPrisonerOfColony || pawn.Faction == Faction.OfPlayer) return false;
-                if (pawn.HostileTo(Faction.OfPlayer)) return false;
+                if (!IsValidPawn(pawn)) return false;
                 if (!pawn.IsInTraderState()) return false;
                 return true;
             }
             catch(Exception e)
             {
                 Log.Warning(e.Message);
-                //Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
-                //Log.Message("Ticks: "+Find.TickManager.TicksGame);
                 return false;
             }
+        }
+
+        public static bool IsValidPawn(this Pawn pawn)
+        {
+            if (pawn == null) return false;
+            if (pawn.Destroyed) return false;
+            if (!pawn.Spawned) return false;
+            if (pawn.thingIDNumber == 0) return false;
+            if (pawn.Name == null) return false;
+            if (pawn.Dead) return false;
+            if (pawn.RaceProps?.Humanlike != true) return false;
+            if (pawn.guest == null) return false;
+            if (pawn.IsPrisonerOfColony || pawn.Faction == Faction.OfPlayer) return false;
+            if (pawn.HostileTo(Faction.OfPlayer)) return false;
+            return true;
         }
 
         public static int RecruitPenalty(this Pawn guest)
@@ -272,6 +264,7 @@ namespace Hospitality
         {
             var compGuest = guest?.GetComp<CompGuest>();
             var lord = compGuest?.lord;
+            if (!guest.Map.lordManager.lords.Contains(lord)) return false;
             var job = lord?.LordJob;
             return job is LordJob_VisitColony;
         }
@@ -414,7 +407,7 @@ namespace Hospitality
             if(forced)
                 GainThought(guest, ThoughtDef.Named("GuestRecruitmentForced"));
 
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, String.Format(forced ? txtForcedRecruit : txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, Format(forced ? txtForcedRecruit : txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
 
             AngerFactionMembers(guest);
             RecruitingSuccess(guest, recruitPenalty);
@@ -433,12 +426,12 @@ namespace Hospitality
                         string message;
                         if (guest.Faction.leader != null)
                         {
-                            message = String.Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                         else
                         {
-                            message = String.Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = Format(txtRecruitFactionAngerLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                     }
@@ -448,12 +441,12 @@ namespace Hospitality
                         string message;
                         if (guest.Faction.leader != null)
                         {
-                            message = String.Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefPlease, message, LetterDefOf.PositiveEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                         else
                         {
-                            message = String.Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                            message = Format(txtRecruitFactionPleaseLeaderless, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionPlease, message, LetterDefOf.PositiveEvent, GlobalTargetInfo.Invalid, guest.Faction);
                         }
                     }
@@ -701,7 +694,7 @@ namespace Hospitality
             {
                 var isAbrasive = recruiter.story.traits.HasTrait(TraitDefOf.Abrasive);
                 int multiplier = isAbrasive ? 2 : 1;
-                string multiplierText = multiplier > 1 ? " x" + multiplier : String.Empty;
+                string multiplierText = multiplier > 1 ? " x" + multiplier : Empty;
 
                 if (failedCharms.TryGetValue(recruiter, out var amount))
                 {
@@ -754,7 +747,7 @@ namespace Hospitality
 
                 extraSentencePacks.Add(RulePackDef.Named("Sentence_CharmAttemptAccepted"));
 
-                string multiplierText = multiplier > 1 ? " x" + multiplier : String.Empty;
+                string multiplierText = multiplier > 1 ? " x" + multiplier : Empty;
                 MoteMaker.ThrowText((recruiter.DrawPos + guest.DrawPos) / 2f, recruiter.Map, "TextMote_CharmSuccess".Translate() + multiplierText, 8f);
             }
             GainThought(guest, ThoughtDef.Named("GuestDismissiveAttitude"));
@@ -832,10 +825,10 @@ namespace Hospitality
         public static bool GuestsShouldStayLonger(Lord lord)
         {
             var map = lord.Map;
-            var mentalPawns = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && !p.Downed && p.MentalState != null && p.InMentalState).ToArray();
+            var incapableToLeave = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && (p.Downed ||p.MentalState != null && p.InMentalState)).ToArray();
             //var temp = faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) && faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp);
 
-            return mentalPawns.Length > 0;
+            return incapableToLeave.Length > 0;
         }
 
         public static void OnLostEntireGroup(Lord lord)
@@ -848,12 +841,12 @@ namespace Hospitality
                 lord.faction.TryAffectGoodwillWith(Faction.OfPlayer, penalty, false);
                 if (lord.faction.leader == null)
                 {
-                    var message = String.Format(txtLostGroupFactionAngerLeaderless, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                    var message = Format(txtLostGroupFactionAngerLeaderless, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                     Find.LetterStack.ReceiveLetter(labelRecruitFactionAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, lord.faction);
                 }
                 else
                 {
-                    var message = String.Format(txtLostGroupFactionAnger, lord.faction.leader.Name, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
+                    var message = Format(txtLostGroupFactionAnger, lord.faction.leader.Name, lord.faction.Name, GenText.ToStringByStyle(penalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                     Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, lord.faction);
                 }
             }
@@ -895,6 +888,50 @@ namespace Hospitality
                     GainThought(ally, ThoughtDef.Named("GuestDismissiveAttitude"));
                 }
             }
+        }
+
+        public static void CheckForRogueGuests(Map map)
+        {
+            foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p=> p.GetPosture() == PawnPosture.Standing).Where(HasNoLord))
+            {
+                if (pawn.mindState.duty?.def == DutyDefOf.ExitMapBestAndDefendSelf) continue;
+
+                var lords = map.lordManager.lords.Where(lord => lord.CurLordToil is LordToil_VisitPoint && lord.faction == pawn.Faction).ToArray();
+                if (lords.Any())
+                {
+                    JoinLord(lords.RandomElement(), pawn);
+                }
+                else SendHome(pawn);
+            }
+        }
+
+        private static bool HasNoLord(Pawn pawn)
+        {
+            if (!IsValidPawn(pawn)) return false;
+
+            var comp = pawn.GetComp<CompGuest>();
+            if (comp == null) return false;
+
+            return comp.lord == null || !pawn.Map.lordManager.lords.Contains(comp.lord);
+        }
+
+        private static void JoinLord(Lord lord, Pawn pawn)
+        {
+            if (lord.ownedPawns.Contains(pawn))
+            {
+                pawn.GetComp<CompGuest>().lord = lord;
+                return;
+            }
+            if (!(lord.CurLordToil is LordToil_VisitPoint lordToil)) return;
+
+            Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
+            lordToil.Join(pawn);
+        }
+
+        private static void SendHome(Pawn pawn)
+        {
+            Log.Message($"{pawn.LabelShort}: Leaving map.");
+            pawn.mindState.duty = new PawnDuty(DutyDefOf.ExitMapBestAndDefendSelf) {canDig = false, locomotion = LocomotionUrgency.Jog, maxDanger = Danger.Some};
         }
     }
 }
