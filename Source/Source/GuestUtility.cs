@@ -394,10 +394,7 @@ namespace Hospitality
             float friendPercentage = 100f * friends / friendsRequired;
 
             //Log.Message(String.Format("Recruiting {0}: diff: {1} mood: {2}", guest.NameStringShort,recruitDifficulty, colonyTrust));
-            if (friendPercentage < 100)
-            {
-                TryPleaseGuest(recruiter, guest, true, extraSentencePacks);
-            }
+            TryPleaseGuest(recruiter, guest, friendPercentage < 100, extraSentencePacks);
         }
 
         public static void Recruit(Pawn guest, int recruitPenalty, bool forced)
