@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 using Harmony;
 using RimWorld;
@@ -37,7 +38,7 @@ namespace Hospitality.Harmony
                     float requiredOpinion = guest.GetMinRecruitOpinion();
 
                     float opinion = guest.relations.OpinionOf(otherPawn);
-                    var related = guest.relations.DirectRelations.Any(rel => rel.otherPawn == otherPawn);
+                    var related = guest.relations.RelatedPawns.Any(rel => rel == otherPawn);
 
                     float percent;
                     if (opinion > 0)

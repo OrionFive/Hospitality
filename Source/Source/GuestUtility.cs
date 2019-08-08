@@ -117,7 +117,7 @@ namespace Hospitality
 
         private static int GetRelationValue(Pawn pawn, Pawn guest)
         {
-            if (guest.relations.DirectRelations.Any(rel => rel.otherPawn == pawn)) return 2;
+            if (guest.relations.RelatedPawns.Any(rel => rel == pawn)) return 2;
             return 1;
         }
 

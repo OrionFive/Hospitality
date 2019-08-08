@@ -56,7 +56,7 @@
     <workerClass>Hospitality.MainTab.PawnColumnWorker_FriendsForRecruiting</workerClass>
     <headerIcon>UI/Tab/Friends</headerIcon>
     <headerTip>Friends in colony</headerTip>
-    <width>45</width>
+    <width>80</width>
 	<sortable>true</sortable>
   </PawnColumnDef>
 

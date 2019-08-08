@@ -7,6 +7,7 @@ namespace Hospitality.MainTab
     public class PawnColumnWorker_FriendsForRecruiting : PawnColumnWorker_Text
     {
         private Color enoughFriendsColor = new Color(0, 1, 0, 0.2f);
+        private static readonly string txtRecruit = "Recruit".Translate();
 
         // Storing it just long enough to use it twice
         protected internal int friendsShortCache;
@@ -26,9 +27,13 @@ namespace Hospitality.MainTab
             if (friendsShortCache >= friendsRequiredShortCache)
             {
                 var rect2 = rect;
-                rect2.width -= 10;
-                Widgets.DrawBoxSolid(rect2, enoughFriendsColor);
+                rect2.x -= 4;
+                if (Widgets.ButtonText(rect2, txtRecruit))
+                {
+                    ITab_Pawn_Guest.RecruitDialog(pawn, false);
+                }
             }
+            else base.DoCell(rect, pawn, table);
         }
 
         protected override string GetTextFor(Pawn pawn)

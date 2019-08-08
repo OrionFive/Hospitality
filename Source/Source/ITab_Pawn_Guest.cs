@@ -224,7 +224,7 @@ namespace Hospitality
             }
         }
 
-        private static void RecruitDialog(Pawn pawn, bool forced)
+        public static void RecruitDialog(Pawn pawn, bool forced)
         {
             var penalty = forced ? pawn.ForcedRecruitPenalty() : pawn.RecruitPenalty();
             int finalGoodwill = Mathf.Clamp(pawn.Faction.PlayerGoodwill - penalty, -100, 100);
