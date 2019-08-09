@@ -260,21 +260,22 @@ namespace Hospitality
             //}
         }
 
-        private static bool IsInVisitState(this Pawn guest)
+        private static bool IsInVisitState(this Pawn pawn)
         {
-            var compGuest = guest?.GetComp<CompGuest>();
+            var compGuest = pawn?.GetComp<CompGuest>();
             var lord = compGuest?.lord;
-            if (!guest.Map.lordManager.lords.Contains(lord)) return false;
+            //if (!pawn.Map.lordManager.lords.Contains(lord)) return false; // invalid lord
             var job = lord?.LordJob;
             return job is LordJob_VisitColony;
         }
 
-        private static bool IsInTraderState(this Pawn guest)
+        private static bool IsInTraderState(this Pawn pawn)
         {
-            var compGuest = guest?.GetComp<CompGuest>();
+            var compGuest = pawn?.GetComp<CompGuest>();
             var lord = compGuest?.lord;
+            //if (!pawn.Map.lordManager.lords.Contains(lord)) return false; // invalid lord
             var job = lord?.LordJob;
-            return  job is LordJob_TradeWithColony;
+            return job is LordJob_TradeWithColony;
         }
 
         public static bool HasDismissiveThought(this Pawn guest)
@@ -889,7 +890,7 @@ namespace Hospitality
 
         public static void CheckForRogueGuests(Map map)
         {
-            foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p=> p.GetPosture() == PawnPosture.Standing).Where(HasNoLord))
+            foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p=> p.GetPosture() == PawnPosture.Standing).Where(GuestHasNoLord))
             {
                 if (pawn.mindState.duty?.def == DutyDefOf.ExitMapBestAndDefendSelf) continue;
 
@@ -898,18 +899,21 @@ namespace Hospitality
                 {
                     JoinLord(lords.RandomElement(), pawn);
                 }
-                else SendHome(pawn);
+                //else SendHome(pawn);
             }
         }
 
-        private static bool HasNoLord(Pawn pawn)
+        private static bool GuestHasNoLord(Pawn pawn)
         {
             if (!IsValidPawn(pawn)) return false;
+            if (IsInTraderState(pawn)) return false;
 
             var comp = pawn.GetComp<CompGuest>();
             if (comp == null) return false;
 
-            return comp.lord == null || !pawn.Map.lordManager.lords.Contains(comp.lord);
+            var mapLord = pawn.GetLord(); // Expensive :(
+            if (mapLord != null && mapLord.Map != pawn.Map) Log.Warning($"{pawn.Name.ToStringFull}'s lord is on a different map!");
+            return mapLord == null;
         }
 
         private static void JoinLord(Lord lord, Pawn pawn)
