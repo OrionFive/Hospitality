@@ -239,7 +239,7 @@ namespace Hospitality
             
             GiveItems(visitors);
 
-            CreateLord(parms.faction, spot, visitors, map);
+            CreateLord(parms.faction, spot, visitors, map, true);
             return true;
         }
 
@@ -539,7 +539,7 @@ namespace Hospitality
             return (float) TechLevel.Ultra - Mathf.Abs((float) target - (float) def);
         }
 
-        private static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map)
+        public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter)
         {
             var mapComp = Hospitality_MapComponent.Instance(map);
 
@@ -567,7 +567,7 @@ namespace Hospitality
             {
                 gotTrader = TryConvertOnePawnToSmallTrader(pawns, faction, map, out traderIndex);
             }
-            Pawn pawn = pawns.Find((Pawn x) => faction.leader == x);
+            Pawn pawn = pawns.Find(x => faction.leader == x);
             string label;
             string description;
             if (pawns.Count == 1)
@@ -585,11 +585,12 @@ namespace Hospitality
                 description = "GroupVisitorsArrive".Translate(faction.Name, value3, value4);
             }
 
-            PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref label, ref description, "LetterRelatedPawnsNeutralGroup".Translate(Faction.OfPlayer.def.pawnsPlural), true, true);
-            // NEW
-            //Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.NeutralEvent, pawns[0], faction, null);
-            var lookTarget = gotTrader ? pawns[traderIndex] : pawns[0];
-            Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, lookTarget, faction);
+            if (showLetter)
+            {
+                PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref label, ref description, "LetterRelatedPawnsNeutralGroup".Translate(Faction.OfPlayer.def.pawnsPlural), true);
+                var lookTarget = gotTrader ? pawns[traderIndex] : pawns[0];
+                Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, lookTarget, faction);
+            }
         }
 
         private static bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction, Map map, out int traderIndex)

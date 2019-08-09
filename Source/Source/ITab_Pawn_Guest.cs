@@ -77,7 +77,7 @@ namespace Hospitality
                 if (comp != null)
                 {
                     // If the lord is not on the map it's invalid!
-                    if (SelPawn.Map.lordManager.lords.Contains(comp.lord))
+                    if (comp.lord != null && comp.lord.ownedPawns.Contains(SelPawn) && SelPawn.Map.lordManager.lords.Contains(comp.lord))
                     {
                         listingStandard.Gap();
                         string labelStay = "AreaToStay".Translate();

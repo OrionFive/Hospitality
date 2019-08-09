@@ -23,8 +23,8 @@ namespace Hospitality.MainTab
 
             base.DoCell(rect, pawn, table);
 
-            // Use cache
-            if (friendsShortCache >= friendsRequiredShortCache)
+            // Use cache - only get comp when we have enough friends
+            if (friendsShortCache >= friendsRequiredShortCache && MayRecruitAtAll(pawn))
             {
                 var rect2 = rect;
                 rect2.x -= 4;
@@ -34,6 +34,13 @@ namespace Hospitality.MainTab
                 }
             }
             else base.DoCell(rect, pawn, table);
+        }
+
+        private static bool MayRecruitAtAll(Pawn pawn)
+        {
+            var comp = pawn.GetComp<CompGuest>();
+            var mayRecruitAtAll = !pawn.InMentalState && comp.arrived;
+            return mayRecruitAtAll;
         }
 
         protected override string GetTextFor(Pawn pawn)

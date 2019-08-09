@@ -899,8 +899,14 @@ namespace Hospitality
                 {
                     JoinLord(lords.RandomElement(), pawn);
                 }
-                //else SendHome(pawn);
+                else CreateLordForPawn(pawn);
             }
+        }
+
+        private static void CreateLordForPawn(Pawn pawn)
+        {
+            Log.Message($"Creating a temporary lord for {pawn.Name.ToStringFull} of faction {pawn.Faction.Name}.");
+            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false);
         }
 
         private static bool GuestHasNoLord(Pawn pawn)
