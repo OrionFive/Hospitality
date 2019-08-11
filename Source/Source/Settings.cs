@@ -1,11 +1,15 @@
 using System;
 using System.IO;
 using HugsLib.Settings;
+using UnityEngine;
 using Verse;
 
-namespace Hospitality {
+namespace Hospitality
+{
     internal class Settings
     {
+        private const int DefaultMaxGroupSize = 16;
+
         public static SettingHandle<int> minGuestWorkSkill;
         public static SettingHandle<int> minGuestGroupSize;
         public static SettingHandle<int> maxGuestGroupSize;
@@ -29,15 +33,16 @@ namespace Hospitality {
             disableGifts = settings.GetHandle("disableGifts", "DisableGifts".Translate(), "DisableGiftsDesc".Translate(), false);
             minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, WorkSkillLimits);
             minGuestGroupSize = settings.GetHandle("minGuestGroupSize", "MinGuestGroupSize".Translate(), "MinGuestGroupSizeDesc".Translate(), 1, GroupSizeLimitsMin);
-            maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), 16, GroupSizeLimitsMax);
+            maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), DefaultMaxGroupSize, GroupSizeLimitsMax);
             disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
             disableGuestsTab = settings.GetHandle("disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false);
             enableBuyNotification = settings.GetHandle("enableBuyNotification", "EnableBuyNotification".Translate(), "EnableBuyNotificationDesc".Translate(), false);
-            
+
             string hiddenConfigFile = Path.Combine(GenFilePaths.ConfigFolderPath, "Hospitality.cfg");
             if (File.Exists(hiddenConfigFile))
             {
-                try {
+                try
+                {
                     var reader = File.OpenText(hiddenConfigFile);
                     string line;
                     while ((line = reader.ReadLine()) != null)
@@ -60,27 +65,29 @@ namespace Hospitality {
                                 break;
                         }
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     Log.Error("[Hospitality] Exception loading Hospitality.cfg: " + e.Message);
                 }
             }
         }
 
+        // Make sure that it still works when referenced settings are null!
         private static SettingHandle.ValueIsValid WorkSkillLimits { get { return AtLeast(() => disableLimits?.Value != false ? 0 : 6); } }
-
-        private static SettingHandle.ValueIsValid GroupSizeLimitsMin { get { return Between(() => 1, () => maxGuestGroupSize); } }
-        private static SettingHandle.ValueIsValid GroupSizeLimitsMax { get { return Between(() => minGuestGroupSize, () => disableLimits?.Value != false ? 1 : 8); } }
+        private static SettingHandle.ValueIsValid GroupSizeLimitsMin { get { return Between(() => 1, () => maxGuestGroupSize?.Value ?? DefaultMaxGroupSize); } }
+        private static SettingHandle.ValueIsValid GroupSizeLimitsMax { get { return AtLeast(() => Mathf.Max(minGuestGroupSize?.Value ?? 0, disableLimits?.Value != false ? 1 : 8)); } }
 
         private static SettingHandle.ValueIsValid Between(Func<int> amountMin, Func<int> amountMax)
         {
             return value => int.TryParse(value, out var actual) && actual >= amountMin() && actual <= amountMax();
-        } 
-        
+        }
+
         private static SettingHandle.ValueIsValid AtLeast(Func<int> amount)
         {
             return value => int.TryParse(value, out var actual) && actual >= amount();
-        } 
-        
+        }
+
         private static SettingHandle.ValueIsValid AtMost(Func<int> amount)
         {
             return value => int.TryParse(value, out var actual) && actual <= amount();
