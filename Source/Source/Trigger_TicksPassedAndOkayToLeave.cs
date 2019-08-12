@@ -9,9 +9,8 @@ namespace Hospitality
         public override bool ActivateOn(Lord lord, TriggerSignal signal)
         {
             bool leave = base.ActivateOn(lord, signal);
-
-            if (GuestUtility.GuestsShouldStayLonger(lord)) return false;
-            return leave;
+            if (!leave) return false;
+            return !GuestUtility.GuestsShouldStayLonger(lord);
         }
     }
 }

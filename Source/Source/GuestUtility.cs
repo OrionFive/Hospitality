@@ -824,11 +824,8 @@ namespace Hospitality
 
         public static bool GuestsShouldStayLonger(Lord lord)
         {
-            var map = lord.Map;
-            var incapableToLeave = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && (p.Downed ||p.MentalState != null && p.InMentalState)).ToArray();
-            //var temp = faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) && faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp);
-
-            return incapableToLeave.Length > 0;
+            var incapableToLeave = lord.ownedPawns.Where(p => !p.Dead && !p.IsPrisoner && (p.Downed || p.MentalState != null && p.InMentalState));
+            return incapableToLeave.Any();
         }
 
         public static void OnLostEntireGroup(Lord lord)
