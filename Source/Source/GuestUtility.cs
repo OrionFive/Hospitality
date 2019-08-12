@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -94,6 +95,7 @@ namespace Hospitality
             if (pawn.Dead) return false;
             if (pawn.RaceProps?.Humanlike != true) return false;
             if (pawn.guest == null) return false;
+            if (pawn.Faction == null) return false;
             if (pawn.IsPrisonerOfColony || pawn.Faction == Faction.OfPlayer) return false;
             if (pawn.HostileTo(Faction.OfPlayer)) return false;
             return true;
@@ -892,6 +894,7 @@ namespace Hospitality
         {
             foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p=> p.GetPosture() == PawnPosture.Standing).Where(GuestHasNoLord))
             {
+                if (pawn == null) continue; // I don't think this ever happens...
                 if (pawn.mindState.duty?.def == DutyDefOf.ExitMapBestAndDefendSelf) continue;
 
                 var lords = map.lordManager.lords.Where(lord => lord.CurLordToil is LordToil_VisitPoint && lord.faction == pawn.Faction).ToArray();
@@ -903,9 +906,9 @@ namespace Hospitality
             }
         }
 
-        private static void CreateLordForPawn(Pawn pawn)
+        private static void CreateLordForPawn([NotNull] Pawn pawn)
         {
-            Log.Message($"Creating a temporary lord for {pawn.Name.ToStringFull} of faction {pawn.Faction.Name}.");
+            Log.Message($"Creating a temporary lord for {pawn.Label} of faction {(pawn.Faction != null ? pawn.Faction.Name : "null")}.");
             IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false);
         }
 
