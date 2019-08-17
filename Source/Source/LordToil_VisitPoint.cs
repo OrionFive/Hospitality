@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -110,13 +111,14 @@ namespace Hospitality
                 var compGuest = pawn.GetComp<CompGuest>();
                 if(compGuest != null)
                 {
-                    var score = GetVisitScore(pawn);
                     if (compGuest.sentAway)
                     {
                         sentAway = true;
                     }
                     if(!unhappy)
                     {
+                        var score = GetVisitScore(pawn);
+
                         if (score > 0.99f) LeaveVerySatisfied(pawn, score);
                         else if (score > 0.65f) LeaveSatisfied(pawn, score);
                     }
@@ -218,7 +220,11 @@ namespace Hospitality
         public float GetVisitScore(Pawn pawn)
         {
             if (pawn.needs?.mood == null) return 0;
-            var increase = pawn.needs.mood.CurLevel - Data.visitorMoods[pawn.thingIDNumber];
+
+            const float defaultMood = 0.5f;
+            if (!Data.visitorMoods.TryGetValue(pawn.thingIDNumber, out var initialMood)) initialMood = defaultMood;
+
+            var increase = pawn.needs.mood.CurLevel - initialMood;
             var score = Mathf.Lerp(increase * 2.75f, pawn.needs.mood.CurLevel * 1.35f, 0.5f);
             //Log.Message(pawn.NameStringShort + " increase: " + (increase * 2.75f) + " mood: " + (pawn.needs.mood.CurLevel * 1.35f) + " score: " + score);
             return score;

@@ -25,8 +25,7 @@ namespace Hospitality.Harmony
                 if (Settings.disableOperations.Value && IsOperation(giver)) return false;
                 if (Settings.disableMedical.Value && IsOperation(giver) || IsMedical(giver)) return false;
 
-                float score;
-                if (!pawn.GetVisitScore(out score)) return false;
+                if (!pawn.GetVisitScore(out var score)) return false;
 
                 var passion = pawn.skills.MaxPassionOfRelevantSkillsFor(giver.def.workType);
                 float passionBonus = passion == Passion.Major ? 40 : passion == Passion.Minor ? 20 : 0;

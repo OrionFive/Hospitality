@@ -158,7 +158,7 @@ namespace Hospitality
                 }
 
 
-                // Will only have lord while "checked in", becomes null again when guests leave
+                // Will only have score while "checked in", becomes 0 again when guest leaves
                 if (SelPawn.GetVisitScore(out var score))
                 {
                     listingStandard.Label(txtHospitality + ":");
