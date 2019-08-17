@@ -2,9 +2,9 @@
 <!--suppress ALL -->
 <LanguageData>
 	
-	<Recruiter.label>Gäste und Gefangene rekrutieren</Recruiter.label>
-	<Recruiter.verb>rekrutiere</Recruiter.verb>
-	<Recruiter.gerund>am Rekrutieren</Recruiter.gerund>
+	<Recruiter.label>mit Gästen Freundschaft schliessen</Recruiter.label>
+	<Recruiter.verb>Freundschaft schliessen</Recruiter.verb>
+	<Recruiter.gerund>Freundschaften am schliessen</Recruiter.gerund>
 
 	<Diplomat.label>Gäste unterhalten</Diplomat.label>
 	<Diplomat.verb>unterhalten</Diplomat.verb>
