@@ -524,7 +524,7 @@ namespace Hospitality
             if (!ThoughtUtility.CanGetThought(target, thoughtDef)) return;
 
             var thoughtMemory = (Thought_Memory) ThoughtMaker.MakeThought(thoughtDef);
-            target.needs.mood.thoughts.memories.TryGainMemory(thoughtMemory);
+            target?.needs?.mood?.thoughts?.memories?.TryGainMemory(thoughtMemory); // *cough* Extra defensive
         }
 
         public static bool ShouldMakeFriends(this Pawn pawn, Pawn guest)
