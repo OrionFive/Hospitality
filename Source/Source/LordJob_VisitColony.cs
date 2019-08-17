@@ -12,17 +12,19 @@ namespace Hospitality
         private IntVec3 chillSpot;
         private int stayDuration;
         private int checkEventId = -1;
+        public bool getUpsetWhenLost;
         
         public LordJob_VisitColony()
         {
             // Required
         }
 
-        public LordJob_VisitColony(Faction faction, IntVec3 chillSpot, int stayDuration)
+        public LordJob_VisitColony(Faction faction, IntVec3 chillSpot, int stayDuration, bool getUpsetWhenLost)
         {
             this.faction = faction;
             this.chillSpot = chillSpot;
             this.stayDuration = stayDuration;
+            this.getUpsetWhenLost = getUpsetWhenLost;
         }
 
         public override bool NeverInRestraints => true;
@@ -34,6 +36,7 @@ namespace Hospitality
             Scribe_Values.Look(ref chillSpot, "chillSpot");
             Scribe_Values.Look(ref checkEventId, "checkEventId", -1);
             Scribe_Values.Look(ref stayDuration, "stayDuration", GenDate.TicksPerDay);
+            Scribe_Values.Look(ref getUpsetWhenLost, "getUpsetWhenLost", true);
         }
 
         // Can't change the graph - not backwards compatible :(
@@ -186,7 +189,6 @@ namespace Hospitality
         {
             if (condition == PawnLostCondition.ExitedMap) return;
 
-            //Log.Message("lord owns "+lord.ownedPawns.Select(p=>p.LabelShort).ToCommaList());
             if (!lord.ownedPawns.Any())
             {
                 GuestUtility.OnLostEntireGroup(lord);

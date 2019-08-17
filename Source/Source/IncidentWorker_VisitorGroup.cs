@@ -239,7 +239,7 @@ namespace Hospitality
             
             GiveItems(visitors);
 
-            CreateLord(parms.faction, spot, visitors, map, true);
+            CreateLord(parms.faction, spot, visitors, map, true, true);
             return true;
         }
 
@@ -539,12 +539,12 @@ namespace Hospitality
             return (float) TechLevel.Ultra - Mathf.Abs((float) target - (float) def);
         }
 
-        public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter)
+        public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost)
         {
             var mapComp = Hospitality_MapComponent.Instance(map);
 
             int stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
-            var lordJob = new LordJob_VisitColony(faction, chillSpot, stayDuration);
+            var lordJob = new LordJob_VisitColony(faction, chillSpot, stayDuration, getUpsetWhenLost);
             var lord = LordMaker.MakeNewLord(faction, lordJob, map, pawns);
 
 

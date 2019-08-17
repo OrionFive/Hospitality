@@ -830,6 +830,9 @@ namespace Hospitality
 
         public static void OnLostEntireGroup(Lord lord)
         {
+            // Check if we should get upset
+            if (lord?.LordJob is LordJob_VisitColony job && !job.getUpsetWhenLost) return;
+
             const int penalty = -10;
             //Log.Message("Lost group");
             if (lord?.faction != null)
@@ -906,7 +909,7 @@ namespace Hospitality
         private static void CreateLordForPawn([NotNull] Pawn pawn)
         {
             Log.Message($"Creating a temporary lord for {pawn.Label} of faction {(pawn.Faction != null ? pawn.Faction.Name : "null")}.");
-            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false);
+            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false);
         }
 
         private static bool GuestHasNoLord(Pawn pawn)
