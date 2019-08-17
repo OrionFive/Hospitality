@@ -19,10 +19,6 @@
   <TextMote_CharmFail>Offended</TextMote_CharmFail>
   <TextMote_CharmSuccess>Charmed</TextMote_CharmSuccess>
   
-  <!-- Diplomacy --> 
-  <ImproveFactionPlease>{0} improved the relationship between {4} and {1} from {2} ({3} chance).</ImproveFactionPlease>
-  <ImproveFactionAnger>{0} worsened the relationship with {1} from {2} ({3} chance).</ImproveFactionAnger>
-  
   <!-- Incident Results -->
   <VisitorsLeavingGreat>They are absolutely amazed by your hospitality! (Score: {1})</VisitorsLeavingGreat>
   <VisitorsLeavingGood>They really enjoyed their stay! (Score: {1})</VisitorsLeavingGood>

@@ -5,7 +5,7 @@
     <GuestBeds.helpText>Besucher wollen lieber in Betten schlafen.\n\nDu kannst Betten zu Gäste betten machen, wenn du den "Für Gäste" Knopf drückst.</GuestBeds.helpText>
 
     <RecruitGuest.label>Gäste rekrutieren</RecruitGuest.label>
-    <RecruitGuest.helpText>Du kannst Gäste rekrutieren.\n\nEinen Gast zu rekrutieren, kostet dich Wohlwollen bei der Fraktion zu der dieser gehört. Stelle sicher, dass du einen Kolonisten mit guten sozialen Fähigkeiten zur Verhandlung verwendest.</RecruitGuest.helpText>
+    <RecruitGuest.helpText>Du kannst Gäste rekrutieren.\n\nEinen Gast zu rekrutieren, kostet dich Wohlwollen bei der Fraktion zu der dieser gehört. Fähige Kollonisten können Freundschaften mit den Gästen aufbauen.</RecruitGuest.helpText>
 
     <GuestWork.label>Gäste helfen aus</GuestWork.label>
     <GuestWork.helpText>Zufriedene Gäste helfen bei der Arbeit in ihrem Bereich, wenn sie gut genug sind. Du kannst dies deaktivieren oder den erforderlichen Skill in den Mod-Optionen erhöhen.</GuestWork.helpText>

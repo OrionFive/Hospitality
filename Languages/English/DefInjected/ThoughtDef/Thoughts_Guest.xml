@@ -15,7 +15,7 @@
 	<GuestPleasedRelationship.stages.charmed_by_colonist.labelSocial>charmed me</GuestPleasedRelationship.stages.charmed_by_colonist.labelSocial>
 	<GuestPleasedRelationship.stages.charmed_by_colonist.description>Such nice people!</GuestPleasedRelationship.stages.charmed_by_colonist.description>
 	
-	<EndorsedByRecruiter.stages.endorsed_by_recruiter.label>endorsed by recruiter</EndorsedByRecruiter.stages.endorsed_by_recruiter.label>
+	<EndorsedByRecruiter.stages.endorsed_by_recruiter.label>endorsed by diplomat</EndorsedByRecruiter.stages.endorsed_by_recruiter.label>
 	<EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>was endorsed to me</EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>
 	<EndorsedByRecruiter.stages.endorsed_by_recruiter.description>This person was recommended to me.</EndorsedByRecruiter.stages.endorsed_by_recruiter.description>
 	

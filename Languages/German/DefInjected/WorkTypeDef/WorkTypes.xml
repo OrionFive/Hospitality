@@ -2,10 +2,10 @@
 <!--suppress ALL -->
 <LanguageData>
 	
-	<Diplomat.labelShort>Verhandeln</Diplomat.labelShort>
+	<Diplomat.labelShort>Unterhalten</Diplomat.labelShort>
 	<Diplomat.pawnLabel>Diplomat</Diplomat.pawnLabel>
-	<Diplomat.gerundLabel>verhandeln</Diplomat.gerundLabel>
-	<Diplomat.description>Diplomaten unterhalten Gäste und rekrutieren neue Kolonisten.</Diplomat.description>
+	<Diplomat.gerundLabel>unterhalten</Diplomat.gerundLabel>
+	<Diplomat.description>Diplomaten unterhalten Gäste und bauen Freundschaften auf.</Diplomat.description>
 	<Diplomat.verb>unterhalte</Diplomat.verb>
 
 </LanguageData>

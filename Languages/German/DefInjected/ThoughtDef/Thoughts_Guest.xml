@@ -15,7 +15,7 @@
     <GuestPleasedRelationship.stages.charmed_by_colonist.labelSocial>beeindruckte mich</GuestPleasedRelationship.stages.charmed_by_colonist.labelSocial>
     <GuestPleasedRelationship.stages.charmed_by_colonist.description>Solch freundlichen Leute!</GuestPleasedRelationship.stages.charmed_by_colonist.description>
 
-    <EndorsedByRecruiter.stages.endorsed_by_recruiter.label>befürwortet vom Anwerber</EndorsedByRecruiter.stages.endorsed_by_recruiter.label>
+    <EndorsedByRecruiter.stages.endorsed_by_recruiter.label>befürwortet vom Diplomaten</EndorsedByRecruiter.stages.endorsed_by_recruiter.label>
     <EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>wurde mir empfohlen</EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>
     <EndorsedByRecruiter.stages.endorsed_by_recruiter.description>Diese Person wurde mir empfohlen.</EndorsedByRecruiter.stages.endorsed_by_recruiter.description>
 

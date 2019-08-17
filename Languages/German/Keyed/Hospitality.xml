@@ -19,10 +19,6 @@
   <TextMote_CharmFail>Beleidigt</TextMote_CharmFail>
   <TextMote_CharmSuccess>Fasziniert</TextMote_CharmSuccess>
   
-  <!-- Diplomacy --> 
-  <ImproveFactionPlease>{0} verbesserte die Beziehung zwischen {4} und {1} von {2} ({3} Chance).</ImproveFactionPlease>
-  <ImproveFactionAnger>{0} verschlechterte die Beziehungen mit {1} von {2} ({3} Chance).</ImproveFactionAnger>
-  
   <!-- Incident Results -->
   <VisitorsLeavingGreat>Sie sind absolut begeistert von eurer Gastfreundschaft! (Wertung: {1})</VisitorsLeavingGreat>
   <VisitorsLeavingGood>Sie haben ihren Aufenthalt sehr genossen! (Wertung: {1})</VisitorsLeavingGood>
