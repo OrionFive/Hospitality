@@ -6,5 +6,6 @@
 	<GuestImproveRelationship.reportString>Versuche die Beziehung zu TargetA's Fraktion zu verbessern.</GuestImproveRelationship.reportString>
 	<BuyItem.reportString>Begutachte TargetA.</BuyItem.reportString>
 	<BrowseItems.reportString>Schaue die Waren an.</BrowseItems.reportString>
+	<ClaimGuestBed.reportString>Reserviere ein Bett.</ClaimGuestBed.reportString>
 
 </LanguageData>

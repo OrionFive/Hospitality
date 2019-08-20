@@ -24,6 +24,9 @@ namespace Hospitality
 
         private DrugPolicy drugPolicy;
 
+        public Building_GuestBed bed;
+        public int lastBedCheckTick;
+
         public void ResetForGuest(Lord lord)
         {
             boughtItems.Clear();
@@ -31,6 +34,7 @@ namespace Hospitality
             sentAway = false;
             failedCharms.Clear();
             this.lord = lord;
+            bed = null;
         }
 
         public Area GuestArea
@@ -66,6 +70,7 @@ namespace Hospitality
             Scribe_Collections.Look(ref boughtItems, "boughtItems", LookMode.Value);
             Scribe_References.Look(ref guestArea_int, "guestArea");
             Scribe_References.Look(ref shoppingArea_int, "shoppingArea");
+            Scribe_References.Look(ref bed, "bed");
             Scribe_Deep.Look(ref drugPolicy, "drugPolicy");
             if (boughtItems == null) boughtItems = new List<int>();
 

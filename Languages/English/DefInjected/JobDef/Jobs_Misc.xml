@@ -6,5 +6,6 @@
 	<GuestImproveRelationship.reportString>Trying to improve relationship with TargetA's faction.</GuestImproveRelationship.reportString>
 	<BuyItem.reportString>Checking out TargetA.</BuyItem.reportString>
 	<BrowseItems.reportString>Browsing wares.</BrowseItems.reportString>
+	<ClaimGuestBed.reportString>Claiming a bed.</ClaimGuestBed.reportString>
 
 </LanguageData>
