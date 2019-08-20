@@ -90,11 +90,16 @@
   <StatsReport_MissingFriends>Missing friends</StatsReport_MissingFriends>
   
   <!-- Bed -->
-  <ForGuestUse>For guest use</ForGuestUse>
   <GuestBedFormat>guest {0}</GuestBedFormat>
   <CommandBedSetAsGuestLabel>For guests</CommandBedSetAsGuestLabel>
   <CommandBedSetAsGuestDesc>Whether this bed is for guests.</CommandBedSetAsGuestDesc>
-  
+  <FeeNone>Price: No fee</FeeNone>
+  <FeeAmount>Price: {0} silver per stay</FeeAmount>
+  <CommandBedIncreaseFeeLabel>+{0}</CommandBedIncreaseFeeLabel>
+  <CommandBedIncreaseFeeDesc>Increase the fee by {0}. Guests renting this bed will have a {1} mood effect.</CommandBedIncreaseFeeDesc>
+  <CommandBedDecreaseFeeLabel>-{0}</CommandBedDecreaseFeeLabel>
+  <CommandBedDecreaseFeeDesc>Decrease the fee by {0}. Guests renting this bed will have a {1} mood effect.</CommandBedDecreaseFeeDesc>
+
   <!-- Settings -->
   <DisableLimits>Disable option limits</DisableLimits>
   <DisableLimitsDesc>When this option is turned on, you can tweak the settings further than recommended for a fair game.</DisableLimitsDesc>
