@@ -64,7 +64,7 @@ namespace Hospitality
                 guestBedDef.label = "GuestBedFormat".Translate(guestBedDef.label);
                 guestBedDef.thingClass = typeof(Building_GuestBed);
                 guestBedDef.shortHash = 0;
-                guestBedDef.minifiedDef = null;
+                guestBedDef.minifiedDef = bedDef.minifiedDef;
                 guestBedDef.tradeability = Tradeability.None;
                 guestBedDef.scatterableOnMapGen = false;
 

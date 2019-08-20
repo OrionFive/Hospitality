@@ -16,6 +16,14 @@ namespace Hospitality
 
         private static readonly List<IntVec3> guestField = new List<IntVec3>();
 
+        public int rentalFee;
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref rentalFee, "rentalFee");
+        }
+
         public Pawn CurOccupant
         {
             get
@@ -114,32 +122,44 @@ namespace Hospitality
             return stringBuilder.ToString();
         }
 
-        // Is this one even being used??
+        // Note to whoever wants to add to this method (hi jptrrs!):
+        // You can just do
+        // foreach (Gizmo c in base.GetGizmos())
+        // {
+        //    yield return c;
+        // }
+        // yield return [whatever you want to add];
+        //
+        // No need to copy this method.
         public override IEnumerable<Gizmo> GetGizmos()
         {
-            // Get original gizmos from Building class
-            var method = typeof(Building).GetMethod("GetGizmos");
-            var ftn = method.MethodHandle.GetFunctionPointer();
-            var func = (Func<IEnumerable<Gizmo>>)Activator.CreateInstance(typeof(Func<IEnumerable<Gizmo>>), this, ftn);
-
-            foreach (var gizmo in func())
+            // Display the original gizmos (includes the swap guest bed button via patch)
+            foreach (var gizmo in base.GetGizmos())
             {
+                switch (gizmo)
+                {
+                    case Command_Toggle toggle: {
+                        // Disable prisoner and medical buttons
+                        if (toggle.defaultLabel == "CommandBedSetForPrisonersLabel".Translate() 
+                            || toggle.defaultLabel == "CommandBedSetAsMedicalLabel".Translate()) gizmo.Disable();
+                        break;
+                    }
+                    case Command_Action action: {
+                        // Disable set owner button
+                        if (action.defaultLabel == "CommandBedSetOwnerLabel".Translate()) action.Disable();
+                        break;
+                    }
+                }
                 yield return gizmo;
             }
 
-            if(def.building.bed_humanlike)
-            {
-                yield return
-                        new Command_Toggle
-                        {
-                            defaultLabel = "CommandBedSetAsGuestLabel".Translate(),
-                            defaultDesc = "CommandBedSetAsGuestDesc".Translate(),
-                            icon = ContentFinder<Texture2D>.Get("UI/Commands/AsGuest"),
-                            isActive = () => true,
-                            toggleAction = () => Swap(this),
-                            hotKey = KeyBindingDefOf.Misc4
-                        };
-            }
+            // Get base def
+            var defName = def.defName.ReplaceFirst("Guest", string.Empty);
+            var baseDef = DefDatabase<ThingDef>.GetNamed(defName);
+
+            // Add build copy command
+            Command buildCopy = BuildCopyCommandUtility.BuildCopyCommand(baseDef, Stuff);
+            if (buildCopy != null) yield return buildCopy;
         }
 
         public override void PostMake()
@@ -172,7 +192,7 @@ namespace Hospitality
         public static void Swap(Building_Bed bed)
         {
             Building_Bed newBed;
-            if (bed is Building_GuestBed)
+            if (IsGuestBed(bed))
             {
                 newBed = (Building_Bed) MakeBed(bed, bed.def.defName.Split(new[] {"Guest"}, StringSplitOptions.RemoveEmptyEntries)[0]);
             }
@@ -205,6 +225,11 @@ namespace Hospitality
         {
             ThingDef newDef = DefDatabase<ThingDef>.GetNamed(defName);
             return ThingMaker.MakeThing(newDef, bed.Stuff);
+        }
+
+        public static bool IsGuestBed(Building_Bed bed)
+        {
+            return bed is Building_GuestBed;
         }
     }
 }

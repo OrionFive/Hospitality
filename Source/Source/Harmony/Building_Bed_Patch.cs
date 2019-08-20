@@ -43,7 +43,7 @@ namespace Hospitality.Harmony
                             defaultLabel = "CommandBedSetAsGuestLabel".Translate(),
                             defaultDesc = "CommandBedSetAsGuestDesc".Translate(),
                             icon = ContentFinder<Texture2D>.Get("UI/Commands/AsGuest"),
-                            isActive = () => false,
+                            isActive = () => Building_GuestBed.IsGuestBed(__instance),
                             toggleAction = () => Building_GuestBed.Swap(__instance),
                             hotKey = KeyBindingDefOf.Misc4
                         };
