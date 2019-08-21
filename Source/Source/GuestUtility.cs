@@ -479,7 +479,7 @@ namespace Hospitality
             }
             guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
 
-
+            guest.ownership.UnclaimBed();
             guest.SetFaction(Faction.OfPlayer);
 
             guest.mindState.exitMapAfterTick = -99999;
