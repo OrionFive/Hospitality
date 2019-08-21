@@ -26,7 +26,13 @@ namespace Hospitality
             {
                 initAction = () => {
                     var actor = GetActor();
-                    if (!(TargetA.Thing is Building_GuestBed newBed))
+                    var silver = actor.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
+                    var money = silver?.stackCount ?? 0;
+                    
+                    // Check the stored rentalFee (takeExtraIngestibles)... if it was increased, cancel!
+                    if (!(TargetA.Thing is Building_GuestBed newBed) 
+                        || newBed.rentalFee > job.takeExtraIngestibles 
+                        || newBed.rentalFee > money) 
                     {
                         actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                         return;
@@ -36,6 +42,11 @@ namespace Hospitality
                     if (compGuest.HasBed) Log.Error($"{actor.LabelShort} already has a bed ({compGuest.bed.Label})");
 
                     compGuest.ClaimBed(newBed);
+
+                    if (newBed.rentalFee > 0)
+                    {
+                        actor.inventory.innerContainer.TryDrop(silver, actor.Position, Map, ThingPlaceMode.Near, newBed.rentalFee, out silver);
+                    }
                 }
             }.FailOnDespawnedNullOrForbidden(TargetIndex.A);
         }

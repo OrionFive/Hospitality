@@ -1,4 +1,6 @@
 using System.Linq;
+using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -18,19 +20,22 @@ namespace Hospitality
             
             guestComp.lastBedCheckTick = GenTicks.TicksGame;
 
-            var beds = FindAvailableBeds(guest);
-            Log.Message($"Found {beds.Length} guest beds.");
+            
+            var silver = guest.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
+            var money = silver?.stackCount ?? 0;
+
+            var beds = FindAvailableBeds(guest, money);
+            Log.Message($"Found {beds.Length} guest beds that {guest.LabelShort} can afford (<= {money} silver).");
             if (!beds.Any()) return null;
 
             var bed = beds.RandomElement();
-            Log.Message($"{guest.LabelShort} got ClaimGuestBed job on {bed.Label}.");
-            return new Job(JobDef, bed);
+            return new Job(JobDef, bed) {takeExtraIngestibles = bed.rentalFee}; // Store rentalFee to avoid cheating
         }
 
-        private static Building_GuestBed[] FindAvailableBeds(Pawn guest)
+        private static Building_GuestBed[] FindAvailableBeds(Pawn guest, int money)
         {
             var beds = guest.MapHeld.GetGuestBeds(guest.GetGuestArea());
-            return beds.Where(bed => bed.AnyUnownedSleepingSlot).ToArray();
+            return beds.Where(bed => bed.AnyUnownedSleepingSlot && bed.rentalFee <= money).ToArray();
         }
     }
 }
