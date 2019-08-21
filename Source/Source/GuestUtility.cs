@@ -946,11 +946,5 @@ namespace Hospitality
             Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
             lordToil.Join(pawn);
         }
-
-        private static void SendHome(Pawn pawn)
-        {
-            Log.Message($"{pawn.LabelShort}: Leaving map.");
-            pawn.mindState.duty = new PawnDuty(DutyDefOf.ExitMapBestAndDefendSelf) {canDig = false, locomotion = LocomotionUrgency.Jog, maxDanger = Danger.Some};
-        }
     }
 }

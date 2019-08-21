@@ -130,7 +130,7 @@ namespace Hospitality
             Pawn.ownership.UnclaimBed();
             newBed.owners.Add(Pawn);
             bed = newBed;
-            Log.Message($"{Pawn.LabelShort} proudly claims {newBed.Label}!");
+            //Log.Message($"{Pawn.LabelShort} proudly claims {newBed.Label}!");
         }
     }
 }

@@ -3,7 +3,6 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 using static UnityEngine.Mathf;
-using Log = Verse.Log;
 
 namespace Hospitality
 {
@@ -24,7 +23,7 @@ namespace Hospitality
             var money = silver?.stackCount ?? 0;
 
             var beds = FindAvailableBeds(guest, money);
-            Log.Message($"Found {beds.Length} guest beds that {guest.LabelShort} can afford (<= {money} silver).");
+            //Log.Message($"Found {beds.Length} guest beds that {guest.LabelShort} can afford (<= {money} silver).");
             if (!beds.Any()) return null;
 
             var bed = SelectBest(beds, guest, money);
@@ -74,8 +73,8 @@ namespace Hospitality
 
             var score = impressiveness + quality + roomType + temperature + otherPawnOpinion * 4;
             var value = score - fee;
-            Log.Message($"For {guest.LabelShort} {bed.ThingID} has a score of {score} and value of {value}:\n"
-                        + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}");
+            //Log.Message($"For {guest.LabelShort} {bed.ThingID} has a score of {score} and value of {value}:\n"
+            //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}");
             return value;
         }
 
@@ -94,7 +93,7 @@ namespace Hospitality
             if (room.Role == RoomRoleDefOf.Barracks) roomType = 0;
             else if (room.Role == GuestUtility.roleDefGuestRoom) roomType = 20;
             else roomType = -30;
-            if (GenericUtility.OnlyOneBed(room)) roomType += 30;
+            if (room.OnlyOneBed()) roomType += 30;
             return roomType;
         }
 
