@@ -8,6 +8,9 @@ namespace Hospitality.Harmony
 {
     public class Building_Bed_Patch
     {
+        /// <summary>
+        /// When the room is made for prisoners, guest beds also switch to prisoner beds
+        /// </summary>
         [HarmonyPatch(typeof(Building_Bed))]
         [HarmonyPatch("ForPrisoners", MethodType.Setter)]
         public class ForPrisoners

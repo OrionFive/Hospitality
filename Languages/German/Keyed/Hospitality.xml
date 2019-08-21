@@ -88,10 +88,15 @@
   <StatsReport_MissingFriends>Fehlende Freunde</StatsReport_MissingFriends>
   
   <!-- Bed -->
-  <ForGuestUse>Zur Benutzung durch Gäste</ForGuestUse>
   <GuestBedFormat>Gäste-{0}</GuestBedFormat>
   <CommandBedSetAsGuestLabel>Für Gäste</CommandBedSetAsGuestLabel>
   <CommandBedSetAsGuestDesc>Dieses Bett ist für Gäste.</CommandBedSetAsGuestDesc>
+  <FeeNone>Preis: Keine Gebühr</FeeNone>
+  <FeeAmount>Preis: {0} Silber pro Aufenthalt</FeeAmount>
+  <CommandBedIncreaseFeeLabel>+{0}</CommandBedIncreaseFeeLabel>
+  <CommandBedIncreaseFeeDesc>Erhöhe die Gebühr um {0}. Gäste die dieses Bett mieten bekommen einen {1} Stimmungsabzug.</CommandBedIncreaseFeeDesc>
+  <CommandBedDecreaseFeeLabel>-{0}</CommandBedDecreaseFeeLabel>
+  <CommandBedDecreaseFeeDesc>Verringere die Gebühr um {0}. Gäste die dieses Bett mieten bekommen einen {1} Stimmungsabzug.</CommandBedDecreaseFeeDesc>
   
   <!-- Settings -->
   <DisableLimits>Deaktiviere Optionslimits</DisableLimits>

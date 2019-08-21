@@ -29,8 +29,7 @@ namespace Hospitality
         public static int GetMoney(Pawn pawn)
         {
             var money = pawn.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
-            if (money == null) return 0;
-            return money.stackCount;
+            return money?.stackCount ?? 0;
         }
 
         public override Job TryGiveJob(Pawn pawn)
@@ -103,7 +102,7 @@ namespace Hospitality
             if (thing is ShieldBelt && pawn.equipment.Primary?.def.IsRangedWeapon == true) return 0;
 
             // Quality of object
-            var qFactor = 0.8f;
+            var qFactor = 0.4f;
             if (thing.TryGetQuality(out var cat))
             {
                 qFactor = (float) cat;
@@ -122,7 +121,7 @@ namespace Hospitality
                 tFactor += 1;
                 //Log.Message(thing.Label + " - techlevel: " + thing.def.techLevel + " = " + tFactor);
             }
-            var rFactor = Rand.RangeSeeded(0.5f, 2f, pawn.thingIDNumber*60509 + thing.thingIDNumber*33151);
+            var rFactor = Rand.RangeSeeded(0.5f, 1.5f, pawn.thingIDNumber*60509 + thing.thingIDNumber*33151);
             //Log.Message(thing.Label + " - score: " + hpFactor*hpFactor*qFactor*tFactor*appFactor);
             return Mathf.Max(0, hpFactor*hpFactor*qFactor*tFactor*appFactor*rFactor); // 0 = don't buy
         }

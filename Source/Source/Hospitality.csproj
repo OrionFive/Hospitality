@@ -85,6 +85,7 @@
     <Compile Include="Harmony\Pawn_GuestTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_InteractionsTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_NeedsTracker_Patch.cs" />
+    <Compile Include="Harmony\Pawn_Ownership_Patch.cs" />
     <Compile Include="Harmony\Pawn_Patch.cs" />
     <Compile Include="Harmony\Pawn_WorkSettings_Patch.cs" />
     <Compile Include="Harmony\Reachability_Patch.cs" />
@@ -95,9 +96,11 @@
     <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
     <Compile Include="Harmony\TransitionAction_EnsureHaveExitDestination_Patch.cs" />
     <Compile Include="Harmony\TransitionAction_SetDefendLocalGroup_Patch.cs" />
-    <Compile Include="Harmony\WildManUtility_Patch.cs" />
+    <Compile Include="Harmony\Building_Door_Patch.cs" />
     <Compile Include="Harmony\WorkGiver_HunterHunt.cs" />
     <Compile Include="IncidentWorker_VisitorGroupMax.cs" />
+    <Compile Include="JobDriver_ClaimBed.cs" />
+    <Compile Include="JobGiver_ClaimBed.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
     <Compile Include="CompGuest.cs" />
     <Compile Include="CompProperties_Guest.cs" />

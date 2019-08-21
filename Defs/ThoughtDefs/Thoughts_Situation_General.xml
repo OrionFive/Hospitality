@@ -2,6 +2,22 @@
 <Defs>
 
   <ThoughtDef>
+    <defName>GuestCantAffordBed</defName>
+    <workerClass>Hospitality.ThoughtWorker_CantAffordBed</workerClass>
+    <nullifyingTraits>
+      <li>Masochist</li>
+      <li>Ascetic</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>can't afford a bed</label>
+        <description>I can't afford one of the free beds.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  
+  <ThoughtDef>
     <defName>GuestBedCount</defName>
     <workerClass>Hospitality.ThoughtWorker_Beds</workerClass>
     <nullifyingTraits>

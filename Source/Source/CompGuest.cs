@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
@@ -24,6 +25,9 @@ namespace Hospitality
 
         private DrugPolicy drugPolicy;
 
+        public Building_GuestBed bed;
+        public int lastBedCheckTick;
+
         public void ResetForGuest(Lord lord)
         {
             boughtItems.Clear();
@@ -31,7 +35,12 @@ namespace Hospitality
             sentAway = false;
             failedCharms.Clear();
             this.lord = lord;
+            Pawn.ownership.UnclaimBed();
         }
+
+        private Pawn Pawn => (Pawn) parent;
+
+        public bool HasBed => bed != null && bed.Spawned && bed.owners.Contains(Pawn);
 
         public Area GuestArea
         {
@@ -55,8 +64,6 @@ namespace Hospitality
             set => shoppingArea_int = value;
         }
 
-        private Pawn Pawn => (Pawn) parent;
-
         public override void PostExposeData()
         {
             base.PostExposeData();
@@ -66,11 +73,26 @@ namespace Hospitality
             Scribe_Collections.Look(ref boughtItems, "boughtItems", LookMode.Value);
             Scribe_References.Look(ref guestArea_int, "guestArea");
             Scribe_References.Look(ref shoppingArea_int, "shoppingArea");
+            Scribe_References.Look(ref bed, "bed");
             Scribe_Deep.Look(ref drugPolicy, "drugPolicy");
             if (boughtItems == null) boughtItems = new List<int>();
 
-            // Can't save lord (IExposable), so we just gotta find it each time
-            if (Scribe.mode == LoadSaveMode.PostLoadInit) lord = Pawn.GetLord();
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                // Can't save lord (IExposable), so we just gotta find it each time
+                lord = Pawn.GetLord();
+                // Bed doesn't store owners
+                if(bed != null && !bed.owners.Contains(Pawn)) bed.owners.Add(Pawn);
+            }
+        }
+
+        /// <summary>
+        /// Only call by Pawn_Ownership_Patch!
+        /// </summary>
+        internal void ClearOwnership()
+        {
+            bed?.owners.Remove(Pawn);
+            bed = null;
         }
 
         public void Arrive()
@@ -81,6 +103,7 @@ namespace Hospitality
         public void Leave()
         {
             arrived = false;
+            Pawn.ownership.UnclaimBed();
         }
 
         public DrugPolicy GetDrugPolicy(Pawn pawn)
@@ -91,6 +114,23 @@ namespace Hospitality
                 drugPolicy.InitializeIfNeeded();
             }
             return drugPolicy;
+        }
+
+        public void ClaimBed(Building_GuestBed newBed)
+        {
+            if (!newBed.AnyUnownedSleepingSlot) return;
+
+            var allOtherBeds = newBed.Map.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>().Where(b => b != newBed);
+
+            foreach (var otherBed in allOtherBeds)
+            {
+                if (otherBed.owners.Contains(Pawn)) Log.Warning($"{Pawn.LabelShort} already owns {otherBed.Label}!");
+            }
+
+            Pawn.ownership.UnclaimBed();
+            newBed.owners.Add(Pawn);
+            bed = newBed;
+            //Log.Message($"{Pawn.LabelShort} proudly claims {newBed.Label}!");
         }
     }
 }

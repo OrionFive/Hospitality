@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -17,22 +17,17 @@ namespace Hospitality
         private static readonly List<IntVec3> guestField = new List<IntVec3>();
 
         public int rentalFee;
+        private int feeStep = 10;
+        private string silverLabel = " " + ThingDefOf.Silver.label;
+
+        public string FeeString => rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
+   
+        public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref rentalFee, "rentalFee");
-        }
-
-        public Pawn CurOccupant
-        {
-            get
-            {
-                var list = Map.thingGrid.ThingsListAt(Position);
-                return list.OfType<Pawn>()
-                    .Where(pawn => pawn.jobs.curJob != null)
-                    .FirstOrDefault(pawn => pawn.jobs.curJob.def == JobDefOf.LayDown && pawn.jobs.curJob.targetA.Thing == this);
-            }
         }
 
         public override Color DrawColor
@@ -61,6 +56,7 @@ namespace Hospitality
             foreach (var owner in owners.ToArray())
             {
                 owner.ownership.UnclaimBed();
+                owners.Clear();
             }
             var room = Position.GetRoom(Map);
             base.DeSpawn(mode);
@@ -92,30 +88,31 @@ namespace Hospitality
             var stringBuilder = new StringBuilder();
             //stringBuilder.Append(base.GetInspectString());
             stringBuilder.Append(InspectStringPartsFromComps());
+            
             stringBuilder.AppendLine();
-            stringBuilder.Append("ForGuestUse".Translate());
+            stringBuilder.Append(FeeString);
             
             stringBuilder.AppendLine();
             if (owners.Count == 0)
             {
-                stringBuilder.Append("Owner".Translate() + ": " + "Nobody".Translate());
+                stringBuilder.Append($"{"Owner".Translate()}: {"Nobody".Translate()}");
             }
             else if (owners.Count == 1)
             {
-                stringBuilder.Append("Owner".Translate() + ": " + owners[0].LabelCap);
+                stringBuilder.Append($"{"Owner".Translate()}: {owners[0].LabelShortCap}");
             }
             else
             {
                 stringBuilder.Append("Owners".Translate() + ": ");
                 bool notFirst = false;
-                foreach (Pawn owner in owners)
+                foreach (var owner in owners)
                 {
                     if (notFirst)
                     {
                         stringBuilder.Append(", ");
                     }
                     notFirst = true;
-                    stringBuilder.Append(owner.Label);
+                    stringBuilder.Append(owner.LabelShortCap);
                 }
                 //if(notFirst) stringBuilder.AppendLine();
             }
@@ -153,6 +150,25 @@ namespace Hospitality
                 yield return gizmo;
             }
 
+            // Add buttons to decrease / increase the fee
+            yield return new Command_Action
+            {
+                defaultLabel = "CommandBedDecreaseFeeLabel".Translate(feeStep),
+                defaultDesc = "CommandBedDecreaseFeeDesc".Translate(feeStep, MoodEffect),
+                icon = ContentFinder<Texture2D>.Get("UI/Commands/ChangePriceDown"),
+                action = () => AdjustFee(-feeStep),
+                hotKey = KeyBindingDefOf.Misc5,
+                disabled = rentalFee < feeStep
+            };
+            yield return new Command_Action
+            {
+                defaultLabel = "CommandBedIncreaseFeeLabel".Translate(feeStep),
+                defaultDesc = "CommandBedIncreaseFeeDesc".Translate(feeStep, MoodEffect),
+                icon = ContentFinder<Texture2D>.Get("UI/Commands/ChangePriceUp"),
+                action = () => AdjustFee(feeStep),
+                hotKey = KeyBindingDefOf.Misc6
+            };
+
             // Get base def
             var defName = def.defName.ReplaceFirst("Guest", string.Empty);
             var baseDef = DefDatabase<ThingDef>.GetNamed(defName);
@@ -160,6 +176,12 @@ namespace Hospitality
             // Add build copy command
             Command buildCopy = BuildCopyCommandUtility.BuildCopyCommand(baseDef, Stuff);
             if (buildCopy != null) yield return buildCopy;
+        }
+
+        private void AdjustFee(int amount)
+        {
+            rentalFee += amount;
+            if (rentalFee < 0) rentalFee = 0;
         }
 
         public override void PostMake()
@@ -170,23 +192,31 @@ namespace Hospitality
 
         public override void DrawGUIOverlay()
         {
-            //if (Find.CameraMap.CurrentZoom == CameraZoomRange.Closest)
-            //{
-            //    if (owner != null && owner.InBed() && owner.CurrentBed().owner == owner)
-            //    {
-            //        return;
-            //    }
-            //    string text;
-            //    if (owner != null)
-            //    {
-            //        text = owner.NameStringShort;
-            //    }
-            //    else
-            //    {
-            //        text = "Unowned".Translate();
-            //    }
-            //    GenWorldUI.DrawThingLabel(this, text, new Color(1f, 1f, 1f, 0.75f));
-            //}
+            if (Find.CameraDriver.CurrentZoom == CameraZoomRange.Closest)
+            {
+                Color defaultThingLabelColor = GenMapUI.DefaultThingLabelColor;
+
+                if (!owners.Any())
+                {
+                    GenMapUI.DrawThingLabel(this, rentalFee + silverLabel, defaultThingLabelColor);
+                }
+                else if (owners.Count == 1)
+                {
+                    if (owners[0].InBed() && owners[0].CurrentBed() == this) return;
+                    GenMapUI.DrawThingLabel(this, owners[0].LabelShort, defaultThingLabelColor);
+                }
+                else
+                {
+                    for (int index = 0; index < owners.Count; ++index)
+                    {
+                        if (!owners[index].InBed() || owners[index].CurrentBed() != this || !(owners[index].Position == GetSleepingSlotPos(index)))
+                        {
+                            var pos = Traverse.Create(this).Method("GetMultiOwnersLabelScreenPosFor", index).GetValue<Vector3>();
+                            GenMapUI.DrawThingLabel(pos, owners[index].LabelShort, defaultThingLabelColor);
+                        }
+                    }
+                }
+            }
         }
 
         public static void Swap(Building_Bed bed)

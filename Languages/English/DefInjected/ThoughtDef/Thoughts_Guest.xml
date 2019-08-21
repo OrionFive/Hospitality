@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
+	<GuestPaidFee.stages.had_to_pay_fee.label>had to pay fee</GuestPaidFee.stages.had_to_pay_fee.label>
+	<GuestPaidFee.stages.had_to_pay_fee.description>I had to pay a fee for my bed.</GuestPaidFee.stages.had_to_pay_fee.description>
+
 	<GuestAngered.stages.angered_by_recruitment.label>angered by recruitment</GuestAngered.stages.angered_by_recruitment.label>
 	<GuestAngered.stages.angered_by_recruitment.description>These guys are trying to steal our members!</GuestAngered.stages.angered_by_recruitment.description>
 	
@@ -21,6 +24,9 @@
 	
 	<GuestDismissiveAttitude.stages.tired_of_talking.label>tired of talking</GuestDismissiveAttitude.stages.tired_of_talking.label>
 	<GuestDismissiveAttitude.stages.tired_of_talking.description>I'm done talking for now. Leave me alone.</GuestDismissiveAttitude.stages.tired_of_talking.description>
+	
+	<GuestCantAffordBed.stages.cant_afford_a_bed.label>can't afford a bed</GuestCantAffordBed.stages.cant_afford_a_bed.label>
+	<GuestCantAffordBed.stages.cant_afford_a_bed.description>I can't afford one of the beds.</GuestCantAffordBed.stages.cant_afford_a_bed.description>
 	
 	<GuestBedCount.stages.no_guest_beds.label>no guest beds</GuestBedCount.stages.no_guest_beds.label>
 	<GuestBedCount.stages.no_guest_beds.description>They don't even have beds here.</GuestBedCount.stages.no_guest_beds.description>

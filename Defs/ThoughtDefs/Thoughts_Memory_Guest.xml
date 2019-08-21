@@ -2,6 +2,23 @@
 <Defs>
 
   <ThoughtDef>
+    <defName>GuestPaidFee</defName>
+    <durationDays>5</durationDays>
+    <stackedEffectMultiplier>0.98</stackedEffectMultiplier>
+	<stackLimit>100</stackLimit>
+    <stages>
+      <li>
+        <label>had to pay fee</label>
+        <description>I had to pay a fee to stay here.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+    </stages>
+	<nullifyingTraits>
+	  <li>Kind</li>
+	</nullifyingTraits>
+  </ThoughtDef>
+  
+  <ThoughtDef>
     <defName>GuestAngered</defName>
 	<icon>Things/Mote/ThoughtSymbol/Skull</icon>
 	<showBubble>true</showBubble>
