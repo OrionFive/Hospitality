@@ -56,7 +56,6 @@ namespace Hospitality
             foreach (var owner in owners.ToArray())
             {
                 owner.ownership.UnclaimBed();
-                owner.GetComp<CompGuest>()?.UnclaimBed();
                 owners.Clear();
             }
             var room = Position.GetRoom(Map);

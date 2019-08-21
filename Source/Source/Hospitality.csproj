@@ -85,6 +85,7 @@
     <Compile Include="Harmony\Pawn_GuestTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_InteractionsTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_NeedsTracker_Patch.cs" />
+    <Compile Include="Harmony\Pawn_Ownership_Patch.cs" />
     <Compile Include="Harmony\Pawn_Patch.cs" />
     <Compile Include="Harmony\Pawn_WorkSettings_Patch.cs" />
     <Compile Include="Harmony\Reachability_Patch.cs" />

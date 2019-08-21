@@ -5,7 +5,7 @@ using Verse;
 namespace Hospitality.Harmony
 {
     /// <summary>
-    /// Allow only visitors to use only guest beds
+    /// Allow only visitors to use guest beds
     /// </summary>
     internal static class RestUtility_Patch
     {

@@ -35,7 +35,7 @@ namespace Hospitality
             sentAway = false;
             failedCharms.Clear();
             this.lord = lord;
-            UnclaimBed();
+            Pawn.ownership.UnclaimBed();
         }
 
         private Pawn Pawn => (Pawn) parent;
@@ -86,9 +86,11 @@ namespace Hospitality
             }
         }
 
-        public void UnclaimBed()
+        /// <summary>
+        /// Only call by Pawn_Ownership_Patch!
+        /// </summary>
+        internal void ClearOwnership()
         {
-            Pawn.ownership.UnclaimBed(); // Sometimes ownership made a claim already
             bed?.owners.Remove(Pawn);
             bed = null;
         }
@@ -101,13 +103,7 @@ namespace Hospitality
         public void Leave()
         {
             arrived = false;
-            UnclaimBed();
-        }
-
-        public override void PostDeSpawn(Map map)
-        {
-            arrived = false;
-            UnclaimBed();
+            Pawn.ownership.UnclaimBed();
         }
 
         public DrugPolicy GetDrugPolicy(Pawn pawn)
@@ -131,7 +127,7 @@ namespace Hospitality
                 if (otherBed.owners.Contains(Pawn)) Log.Warning($"{Pawn.LabelShort} already owns {otherBed.Label}!");
             }
 
-            UnclaimBed();
+            Pawn.ownership.UnclaimBed();
             newBed.owners.Add(Pawn);
             bed = newBed;
             Log.Message($"{Pawn.LabelShort} proudly claims {newBed.Label}!");
