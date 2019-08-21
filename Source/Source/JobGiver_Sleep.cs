@@ -60,8 +60,11 @@ namespace Hospitality
             Building_GuestBed bed = pawn.FindBedFor();
             if (bed != null)
             {
+                var canReserve = pawn.CanReserve(bed, bed.SleepingSlotsCount, 0);
+                Log.Message($"CanReserve = {canReserve}");
                 return new ThinkResult(new Job(JobDefOf.LayDown, bed), this);
             }
+            Log.Message($"No bed available for {pawn.LabelShort}.");
             IntVec3 vec = CellFinder.RandomClosewalkCellNear(pawn.mindState.duty.focus.Cell, pawn.MapHeld, 4);
             if(!pawn.CanReserve(vec)) return ThinkResult.NoJob;
 

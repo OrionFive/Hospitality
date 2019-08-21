@@ -12,9 +12,9 @@ namespace Hospitality
         {
             var guestComp = guest.GetComp<CompGuest>();
             if (guestComp == null) return null;
-            if (guestComp.bed != null && guestComp.bed.owners.Contains(guest)) return null;
+            if (guestComp.HasBed) return null;
 
-            if (GenTicks.TicksGame < guestComp.lastBedCheckTick + 500) return null;
+            if (GenTicks.TicksGame < guestComp.lastBedCheckTick + 2500) return null;
             
             guestComp.lastBedCheckTick = GenTicks.TicksGame;
 

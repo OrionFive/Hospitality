@@ -312,19 +312,14 @@ namespace Hospitality
 
         public static Building_GuestBed FindBedFor(this Pawn pawn)
         {
-            bool BedValidator(Thing t)
-            {
-                if (!(t is Building_GuestBed)) return false;
-                if (!pawn.CanReserveAndReach(t, PathEndMode.OnCell, Danger.Some)) return false;
-                var b = (Building_GuestBed) t;
-                if (b.CurOccupant != null) return false;
-                if (b.ForPrisoners) return false;
-                Find.Maps.ForEach(m => m.reservationManager.ReleaseAllForTarget(b)); // TODO: Put this somewhere smarter
-                return (!b.IsForbidden(pawn) && !b.IsBurning());
-            }
+            var compGuest = pawn.GetComp<CompGuest>();
+            //Log.Message(
+            //    $"{pawn.LabelShort}: HasBed = {compGuest.HasBed}, Forbidden = {compGuest.bed.IsForbidden(pawn)}, Burning = {compGuest.bed.IsBurning()}, CanReach = {pawn.CanReach(compGuest.bed, PathEndMode.OnCell, Danger.Some)}");
+            if (compGuest == null || !compGuest.HasBed) return null;
+            if (compGuest.bed.IsForbidden(pawn) || compGuest.bed.IsBurning()) return null;
+            if (!pawn.CanReach(compGuest.bed, PathEndMode.OnCell, Danger.Some)) return null;
 
-            var bed = (Building_GuestBed)GenClosest.ClosestThingReachable(pawn.Position, pawn.MapHeld, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(pawn), 500f, BedValidator);
-            return bed;
+            return compGuest.bed;
         }
 
         public static void PocketHeadgear(this Pawn pawn)

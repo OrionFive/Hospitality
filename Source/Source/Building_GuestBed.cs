@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Harmony;
 using RimWorld;
@@ -21,21 +20,14 @@ namespace Hospitality
         private int feeStep = 10;
         private string silverLabel = " " + ThingDefOf.Silver.label;
 
+        public string FeeString => rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
+   
+        public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.2f);
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref rentalFee, "rentalFee");
-        }
-
-        public Pawn CurOccupant
-        {
-            get
-            {
-                var list = Map.thingGrid.ThingsListAt(Position);
-                return list.OfType<Pawn>()
-                    .Where(pawn => pawn.jobs.curJob != null)
-                    .FirstOrDefault(pawn => pawn.jobs.curJob.def == JobDefOf.LayDown && pawn.jobs.curJob.targetA.Thing == this);
-            }
         }
 
         public override Color DrawColor
@@ -64,6 +56,8 @@ namespace Hospitality
             foreach (var owner in owners.ToArray())
             {
                 owner.ownership.UnclaimBed();
+                owner.GetComp<CompGuest>()?.UnclaimBed();
+                owners.Clear();
             }
             var room = Position.GetRoom(Map);
             base.DeSpawn(mode);
@@ -102,32 +96,29 @@ namespace Hospitality
             stringBuilder.AppendLine();
             if (owners.Count == 0)
             {
-                stringBuilder.Append("Owner".Translate() + ": " + "Nobody".Translate());
+                stringBuilder.Append($"{"Owner".Translate()}: {"Nobody".Translate()}");
             }
             else if (owners.Count == 1)
             {
-                stringBuilder.Append("Owner".Translate() + ": " + owners[0].LabelCap);
+                stringBuilder.Append($"{"Owner".Translate()}: {owners[0].LabelShortCap}");
             }
             else
             {
                 stringBuilder.Append("Owners".Translate() + ": ");
                 bool notFirst = false;
-                foreach (Pawn owner in owners)
+                foreach (var owner in owners)
                 {
                     if (notFirst)
                     {
                         stringBuilder.Append(", ");
                     }
                     notFirst = true;
-                    stringBuilder.Append(owner.Label);
+                    stringBuilder.Append(owner.LabelShortCap);
                 }
                 //if(notFirst) stringBuilder.AppendLine();
             }
             return stringBuilder.ToString();
         }
-
-        public string FeeString => rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
-        public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.2f);
 
         // Note to whoever wants to add to this method (hi jptrrs!):
         // You can just do
@@ -221,7 +212,7 @@ namespace Hospitality
                     {
                         if (!owners[index].InBed() || owners[index].CurrentBed() != this || !(owners[index].Position == GetSleepingSlotPos(index)))
                         {
-                            var pos = Traverse.Create(this).Method("GetMultiOwnersLabelScreenPosFor", index).GetValue<Vector2>();
+                            var pos = Traverse.Create(this).Method("GetMultiOwnersLabelScreenPosFor", index).GetValue<Vector3>();
                             GenMapUI.DrawThingLabel(pos, owners[index].LabelShort, defaultThingLabelColor);
                         }
                     }
