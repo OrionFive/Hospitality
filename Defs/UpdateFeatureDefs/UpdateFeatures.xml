@@ -14,9 +14,9 @@
 	</HugsLib.UpdateFeatureDef> -->
 
 	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
-		<defName>Hospitality_1_0_20</defName>
-		<assemblyVersion>1.0.20</assemblyVersion>
-		<content>- Fix: Lone guests without a group will leave the map (if they don't you have a mod conflict!)|- New: Setting to disable guests doing medical work|- New: Icon in guest overview that indicates relationships|- New: Recruiting is now a button and can be done instantly once enough friends are made. Making friends is now a toggle you can turn on or off|- New: Guests now get upset if you recruit a member of their faction|img:Updates/Patron|caption:To sustain my mod development, I'm trying to get a Patreon page off the ground, that I need your help with. You can vote for new mod features and I'm also posting tiny one shot mods there that you might find interesting. So if you feel curious, grateful or generous, please take a look by clicking the link above!|If a mod update causes you issues, don't hesitate to contact me (and remember to include the Ctrl-F12 error log!).</content>
+		<defName>Hospitality_1_0_24</defName>
+		<assemblyVersion>1.0.24</assemblyVersion>
+		<content>- Major new feature (vote winner): You can now set a price for guest beds. Guests will now claim beds during their stay and pay the price up front.|- Tweak: Selling items to guests is now less effective. They will buy less ordinary items and pay 15% less.|- Fix: Did tons of small fixes.|- New: When a guest has enough friends, the Force Recruit button becomes Recruit and you can recruit them by clicking it. Guests won't automatically join you anymore.|- New: Left behind pawns will become guests and leave after a few days.|- Fix: No more broken mod configs!|- Fix: Various outdated labels and descriptions (translators should update their language again!)|- Fix: Guest beds now have reinstall, uninstall and build copy buttons.|img:Updates/Patron|caption:To sustain my mod development, I'm trying to get a Patreon page off the ground, that I need your help with. You can vote for new mod features and I'm also posting tiny one shot mods there that you might find interesting. So if you feel curious, grateful or generous, please take a look by clicking the link above!|If a mod update causes you issues, don't hesitate to contact me (and remember to include the Ctrl-F12 error log!).</content>
 	</HugsLib.UpdateFeatureDef>
 
 	<!--HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
