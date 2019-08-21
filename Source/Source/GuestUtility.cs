@@ -35,6 +35,9 @@ namespace Hospitality
         private static readonly StatDef statRecruitRelationshipDamage = StatDef.Named("RecruitRelationshipDamage");
         private static readonly StatDef statForcedRecruitRelationshipDamage = StatDef.Named("ForcedRecruitRelationshipDamage");
         private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
+        
+        public static readonly RoomRoleDef roleDefGuestRoom = DefDatabase<RoomRoleDef>.GetNamed("GuestRoom");
+        public static readonly JobDef jobDefClaimGuestBed = DefDatabase<JobDef>.GetNamed("ClaimGuestBed");
 
         private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve
         { new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30) };

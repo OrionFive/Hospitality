@@ -192,5 +192,10 @@ namespace Hospitality
             if (area != null) return area.Label;
             return "AreaNoShopping".Translate();
         }
+
+        public static bool OnlyOneBed(this Room room)
+        {
+            return room.ContainedBeds.Count() <= 1;
+        }
     }
 }

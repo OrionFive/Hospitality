@@ -9,9 +9,6 @@ namespace Hospitality
 {
     public class JobGiver_ClaimBed : ThinkNode_JobGiver
     {
-        private static RoomRoleDef GuestRoomRoleDef => DefDatabase<RoomRoleDef>.GetNamed("GuestRoom");
-        private static JobDef JobDef => DefDatabase<JobDef>.GetNamed("ClaimGuestBed");
-
         protected override Job TryGiveJob(Pawn guest)
         {
             var guestComp = guest.GetComp<CompGuest>();
@@ -31,7 +28,7 @@ namespace Hospitality
             if (!beds.Any()) return null;
 
             var bed = SelectBest(beds, guest, money);
-            return new Job(JobDef, bed) {takeExtraIngestibles = bed.rentalFee}; // Store rentalFee to avoid cheating
+            return new Job(GuestUtility.jobDefClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}; // Store rentalFee to avoid cheating
         }
 
         private static Building_GuestBed SelectBest(Building_GuestBed[] beds, Pawn guest, int money)
@@ -95,15 +92,10 @@ namespace Hospitality
 
             int roomType;
             if (room.Role == RoomRoleDefOf.Barracks) roomType = 0;
-            else if (room.Role == GuestRoomRoleDef) roomType = 20;
+            else if (room.Role == GuestUtility.roleDefGuestRoom) roomType = 20;
             else roomType = -30;
-            if (OnlyOneBed(room)) roomType += 30;
+            if (GenericUtility.OnlyOneBed(room)) roomType += 30;
             return roomType;
-        }
-
-        private static bool OnlyOneBed(Room room)
-        {
-            return room.ContainedBeds.Count() <= 1;
         }
 
         private static Building_GuestBed[] FindAvailableBeds(Pawn guest, int money)

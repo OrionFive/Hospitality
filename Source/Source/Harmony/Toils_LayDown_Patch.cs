@@ -1,4 +1,3 @@
-using System.Linq;
 using Harmony;
 using RimWorld;
 using Verse;
@@ -18,7 +17,8 @@ namespace Hospitality.Harmony
             {
                 if (actor.needs.mood == null) return false;
 
-                Building_Bed building_Bed = actor.IsGuest() ?  actor.MapHeld.GetGuestBeds(actor.GetGuestArea()).FirstOrDefault() : actor.CurrentBed(); // Changed
+                Building_Bed building_Bed = actor.CurrentBed();
+                Log.Message($"{actor.LabelShort} in bed {building_Bed?.Label}");
                 actor.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.SleptInBedroom);
                 actor.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.SleptInBarracks);
                 actor.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.SleptOutside);
@@ -44,7 +44,12 @@ namespace Hospitality.Harmony
                 if (building_Bed != null && AddedBedIsOwned(actor, building_Bed) && !building_Bed.ForPrisoners && !actor.story.traits.HasTrait(TraitDefOf.Ascetic))
                 {
                     ThoughtDef thoughtDef = null;
-                    if (building_Bed.GetRoom(RegionType.Set_Passable).Role == RoomRoleDefOf.Bedroom)
+                    // ADDED:
+                    if (building_Bed.GetRoom(RegionType.Set_Passable).Role == GuestUtility.roleDefGuestRoom)
+                    {
+                        thoughtDef = building_Bed.GetRoom().OnlyOneBed() ? ThoughtDefOf.SleptInBedroom : ThoughtDefOf.SleptInBarracks;
+                    } ////
+                    else if (building_Bed.GetRoom(RegionType.Set_Passable).Role == RoomRoleDefOf.Bedroom)
                     {
                         thoughtDef = ThoughtDefOf.SleptInBedroom;
                     }
@@ -64,10 +69,18 @@ namespace Hospitality.Harmony
                 return false;
             }
 
-            // Added
-            private static bool AddedBedIsOwned(Pawn actor, Building_Bed building_Bed)
+            private static Building_Bed GetGuestBed(Pawn pawn)
             {
-                return actor.IsGuest() || building_Bed == actor.ownership.OwnedBed;
+                var compGuest = pawn.GetComp<CompGuest>();
+                return compGuest?.bed;
+            }
+
+            // Added
+            private static bool AddedBedIsOwned(Pawn pawn, Building_Bed building_Bed)
+            {
+                return pawn.IsGuest() 
+                    ? GetGuestBed(pawn) == building_Bed 
+                    : building_Bed == pawn.ownership.OwnedBed;
             }
         }
     }
