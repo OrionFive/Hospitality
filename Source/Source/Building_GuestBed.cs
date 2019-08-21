@@ -22,7 +22,7 @@ namespace Hospitality
 
         public string FeeString => rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
    
-        public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.2f);
+        public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
 
         public override void ExposeData()
         {

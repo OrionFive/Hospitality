@@ -16,8 +16,13 @@ namespace Hospitality
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
-            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);//.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
+            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOn(BedHasBeenClaimed);//.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
             yield return GetClaimToil();
+        }
+
+        private bool BedHasBeenClaimed(Toil toil)
+        {
+            return !(TargetA.Thing is Building_GuestBed newBed) || !newBed.AnyUnownedSleepingSlot;
         }
 
         private Toil GetClaimToil()
@@ -38,6 +43,12 @@ namespace Hospitality
                         return;
                     }
 
+                    if (!newBed.AnyUnownedSleepingSlot)
+                    {
+                        actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
+                        return;
+                    }
+
                     var compGuest = actor.GetComp<CompGuest>();
                     if (compGuest.HasBed) Log.Error($"{actor.LabelShort} already has a bed ({compGuest.bed.Label})");
 
@@ -46,6 +57,7 @@ namespace Hospitality
                     if (newBed.rentalFee > 0)
                     {
                         actor.inventory.innerContainer.TryDrop(silver, actor.Position, Map, ThingPlaceMode.Near, newBed.rentalFee, out silver);
+                        actor.UpsetAboutFee(newBed.rentalFee);
                     }
                 }
             }.FailOnDespawnedNullOrForbidden(TargetIndex.A);

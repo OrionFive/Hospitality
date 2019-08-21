@@ -5,6 +5,35 @@ using Verse;
 
 namespace Hospitality
 {
+    public class ThoughtWorker_CantAffordBed : ThoughtWorker
+    {
+        protected override ThoughtState CurrentStateInternal(Pawn pawn)
+        {
+            if (pawn == null) return ThoughtState.Inactive;
+            if (pawn.thingIDNumber == 0) return ThoughtState.Inactive; // What do you know!!!
+
+            if (Current.ProgramState != ProgramState.Playing)
+            {
+                return ThoughtState.Inactive;
+            }
+            if (!pawn.IsGuest()) return ThoughtState.Inactive;
+
+            var compGuest = pawn.GetComp<CompGuest>();
+            if (compGuest == null) return ThoughtState.Inactive;
+            if(!compGuest.arrived) return ThoughtState.Inactive;
+
+            if(compGuest.HasBed) return ThoughtState.Inactive;
+            
+            var silver = pawn.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
+            var money = silver?.stackCount ?? 0;
+
+            var beds = pawn.MapHeld.GetGuestBeds(pawn.GetGuestArea()).ToArray();
+            if(beds.Length == 0) return ThoughtState.Inactive;
+
+            return !beds.Any(bed => bed.rentalFee <= money);
+        }
+    }
+
     /// <summary>
     /// Loaded via xml. Added so guests want beds.
     /// </summary>
@@ -33,7 +62,7 @@ namespace Hospitality
                 var bedCount = pawn.MapHeld.GetGuestBeds(pawn.GetGuestArea()).Count(b => b?.def.useHitPoints == true); // Sleeping spots don't count
 
                 if (bedCount == 0) return ThoughtState.ActiveAtStage(0);
-                if (bedCount < visitors && !pawn.InBed()) return ThoughtState.ActiveAtStage(1);
+                if (bedCount < visitors && !compGuest.HasBed) return ThoughtState.ActiveAtStage(1);
                 if(bedCount > visitors*1.3f && bedCount > visitors+3) return ThoughtState.ActiveAtStage(3);
                 return ThoughtState.ActiveAtStage(2);
             }

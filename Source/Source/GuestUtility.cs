@@ -514,7 +514,18 @@ namespace Hospitality
             target.needs.mood.thoughts.memories.TryGainMemory(thoughtMemory, initiator);
         }
 
-        private static void GainThought(Pawn target, ThoughtDef thoughtDef)
+        public static void UpsetAboutFee(this Pawn pawn, int cost)
+        {
+            var thoughtDef = ThoughtDef.Named("GuestPaidFee");
+            var amount = cost / 10;
+            for (int i = 0; i < amount; i++)
+            {
+                var thoughtMemory = (Thought_Memory) ThoughtMaker.MakeThought(thoughtDef);
+                pawn?.needs?.mood?.thoughts?.memories?.TryGainMemory(thoughtMemory); // *cough* Extra defensive
+            }
+        }
+
+        private static void GainThought(this Pawn target, ThoughtDef thoughtDef)
         {
             if (!ThoughtUtility.CanGetThought(target, thoughtDef)) return;
 
