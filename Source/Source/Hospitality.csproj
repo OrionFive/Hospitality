@@ -96,7 +96,7 @@
     <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
     <Compile Include="Harmony\TransitionAction_EnsureHaveExitDestination_Patch.cs" />
     <Compile Include="Harmony\TransitionAction_SetDefendLocalGroup_Patch.cs" />
-    <Compile Include="Harmony\WildManUtility_Patch.cs" />
+    <Compile Include="Harmony\Building_Door_Patch.cs" />
     <Compile Include="Harmony\WorkGiver_HunterHunt.cs" />
     <Compile Include="IncidentWorker_VisitorGroupMax.cs" />
     <Compile Include="JobDriver_ClaimBed.cs" />
