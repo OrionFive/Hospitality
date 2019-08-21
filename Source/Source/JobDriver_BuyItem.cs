@@ -155,7 +155,6 @@ namespace Hospitality
             var lordToil = lord?.CurLordToil as LordToil_VisitPoint;
 
             lordToil?.OnPlayerSoldItem(item);
-            pawn.inventory.TryAddItemNotForSale(item);
         }
     }
 }
