@@ -16,7 +16,7 @@ namespace Hospitality.Harmony {
             {
                 var pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
                 
-                Log.Message($"Trying to Unclaim Bed of {pawn.LabelShort}... OwnedBed = {__instance.OwnedBed?.Label}");
+                //Log.Message($"Trying to Unclaim Bed of {pawn.LabelShort}... OwnedBed = {__instance.OwnedBed?.Label}");
                 
                 pawn.GetComp<CompGuest>()?.ClearOwnership();
                 return true;
