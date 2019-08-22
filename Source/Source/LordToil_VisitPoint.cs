@@ -51,8 +51,7 @@ namespace Hospitality
             lord.AddPawn(pawn);
             if(!Data.visitorMoods.ContainsKey(pawn.thingIDNumber))
             {
-                // Let's make it slightly positive
-                var startMood = pawn.needs.mood.CurInstantLevel - 0.2f;
+                var startMood = pawn.needs.mood.CurInstantLevel;
                 Data.visitorMoods.Add(pawn.thingIDNumber, startMood);
             }
             pawn.Arrive();
