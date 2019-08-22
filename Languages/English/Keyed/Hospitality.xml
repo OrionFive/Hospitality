@@ -42,6 +42,11 @@
   <VisitorsArrivedRefuseUntilBeds>Refuse visitors until I have guest beds</VisitorsArrivedRefuseUntilBeds>
   <VisitorsArrivedReasonNoBeds>No guest beds</VisitorsArrivedReasonNoBeds>
   
+  <LetterLabelDownedPawnBecameGuest>{PAWN_labelShort} became a guest</LetterLabelDownedPawnBecameGuest>
+  <LetterLabelDownedPawnJoinedGroup>{PAWN_labelShort} joined guests</LetterLabelDownedPawnJoinedGroup>
+  <DownedPawnBecameGuest>{PAWN_nameDef}, who you rescued, is now a guest and {PAWN_pronoun} will stay for a few more hours. You can wait, send {PAWN_objective} home or recruit {PAWN_objective}.\n\nWhen {PAWN_labelShort} leaves the map safely, {PAWN_possessive} faction will be grateful.</DownedPawnBecameGuest>
+  <DownedPawnJoinedGroup>{PAWN_nameDef}, who you rescued, has joined a visiting group of {PAWN_possessive} faction. When {PAWN_pronoun} leaves the map with them safely, they will be grateful.</DownedPawnJoinedGroup>
+  
   <GuestBoughtItem>A member of {0} has bought {ITEM_label} for {1} silver.</GuestBoughtItem>
 
   <!-- Communication -->

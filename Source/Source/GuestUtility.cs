@@ -918,7 +918,9 @@ namespace Hospitality
         private static void CreateLordForPawn([NotNull] Pawn pawn)
         {
             Log.Message($"Creating a temporary lord for {pawn.Label} of faction {(pawn.Faction != null ? pawn.Faction.Name : "null")}.");
-            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false);
+            Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), LetterDefOf.NeutralEvent, pawn, pawn.Faction);
+            var duration = (int)(Rand.Range(0.5f, 1f) * GenDate.TicksPerDay);
+            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false, duration);
         }
 
         private static bool GuestHasNoLord(Pawn pawn)
@@ -944,7 +946,8 @@ namespace Hospitality
             if (!(lord.CurLordToil is LordToil_VisitPoint lordToil)) return;
 
             Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
-            lordToil.Join(pawn);
+            Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), LetterDefOf.NeutralEvent, pawn, pawn.Faction);
+            lordToil.JoinLate(pawn);
         }
     }
 }

@@ -44,14 +44,16 @@ namespace Hospitality
             return Data.soldItemIDs.Contains(thing.thingIDNumber);
         }
 
-        public void Join(Pawn pawn)
+        public void JoinLate(Pawn pawn)
         {
             pawn.GetComp<CompGuest>().lord = lord;
             if (lord.ownedPawns.Contains(pawn)) return;
             lord.AddPawn(pawn);
             if(!Data.visitorMoods.ContainsKey(pawn.thingIDNumber))
             {
-                Data.visitorMoods.Add(pawn.thingIDNumber, 1); // max expectations
+                // Let's make it slightly positive
+                var startMood = pawn.needs.mood.CurInstantLevel - 0.2f;
+                Data.visitorMoods.Add(pawn.thingIDNumber, startMood);
             }
             pawn.Arrive();
         }

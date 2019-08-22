@@ -239,7 +239,8 @@ namespace Hospitality
             
             GiveItems(visitors);
 
-            CreateLord(parms.faction, spot, visitors, map, true, true);
+            var stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
+            CreateLord(parms.faction, spot, visitors, map, true, true, stayDuration);
             return true;
         }
 
@@ -483,10 +484,7 @@ namespace Hospitality
             item.stackCount = 1;
 
             CompQuality compQuality = item.TryGetComp<CompQuality>();
-            if (compQuality != null)
-            {
-                compQuality.SetQuality(QualityUtility.GenerateQualityTraderItem(), ArtGenerationContext.Outsider);
-            }
+            compQuality?.SetQuality(QualityUtility.GenerateQualityTraderItem(), ArtGenerationContext.Outsider);
             if (item.def.Minifiable)
             {
                 item = item.MakeMinified();
@@ -514,16 +512,13 @@ namespace Hospitality
         {
             if (_items == null)
             {
-                Predicate<ThingDef> qualifies =
-                    d =>
-                        d.category == ThingCategory.Item && d.EverStorable(true) && d.alwaysHaulable
-                        && d.thingClass != typeof(MinifiedThing) && d.tradeability != Tradeability.None
-                        && d.GetCompProperties<CompProperties_Hatcher>() == null;
-                _items = DefDatabase<ThingDef>.AllDefs.Where(d => qualifies(d)).ToArray();
+                bool Qualifies(ThingDef d) => d.category == ThingCategory.Item && d.EverStorable(true) && d.alwaysHaulable && d.thingClass != typeof(MinifiedThing) && d.tradeability != Tradeability.None && d.GetCompProperties<CompProperties_Hatcher>() == null;
+
+                _items = DefDatabase<ThingDef>.AllDefs.Where(Qualifies).ToArray();
                 //highestValue = _items.Max(i => i.BaseMarketValue);
             }
-            ThingDef def;
-            return _items.Where(thingDef => thingDef.techLevel <= Increase(techLevel)).TryRandomElementByWeight(thingDef => TechLevelDiff(thingDef.techLevel, techLevel), out def)
+
+            return _items.Where(thingDef => thingDef.techLevel <= Increase(techLevel)).TryRandomElementByWeight(thingDef => TechLevelDiff(thingDef.techLevel, techLevel), out var def)
                 ? def
                 : null;
             //return _items.RandomElementByWeight(i => highestValue + 50 - i.BaseMarketValue);
@@ -539,12 +534,11 @@ namespace Hospitality
             return (float) TechLevel.Ultra - Mathf.Abs((float) target - (float) def);
         }
 
-        public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost)
+        public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost, int duration)
         {
             var mapComp = Hospitality_MapComponent.Instance(map);
 
-            int stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
-            var lordJob = new LordJob_VisitColony(faction, chillSpot, stayDuration, getUpsetWhenLost);
+            var lordJob = new LordJob_VisitColony(faction, chillSpot, duration, getUpsetWhenLost);
             var lord = LordMaker.MakeNewLord(faction, lordJob, map, pawns);
 
 

@@ -42,6 +42,13 @@
   <VisitorsArrivedRefuseUntilBeds>Besucher abweisen, bis ich Gästebetten habe</VisitorsArrivedRefuseUntilBeds>
   <VisitorsArrivedReasonNoBeds>Keine Gästebetten</VisitorsArrivedReasonNoBeds>
 
+  <LetterLabelDownedPawnBecameGuest>{PAWN_labelShort} wurde ein Gast</LetterLabelDownedPawnBecameGuest>
+  <LetterLabelDownedPawnJoinedGroup>{PAWN_labelShort} schließt sich Gästen an</LetterLabelDownedPawnJoinedGroup>
+  <DownedPawnBecameGuest>Du hast {PAWN_nameDef} gerettet. {PAWN_pronoun} ist jetzt ein Gast und bleibt noch ein paar Stunden. Du kannst warten, {PAWN_objective} nach hause schicken oder {PAWN_objective} rekrutieren.\n\nWenn {PAWN_labelShort} das Gebiet sicher verlässt, wird {PAWN_possessive}e Fraktion dankbar sein.</DownedPawnBecameGuest>
+  <DownedPawnJoinedGroup>Du hast {PAWN_nameDef} gerettet. {PAWN_pronoun} hat sich einer Gruppe {PAWN_possessive}er Fraktion angeschlossen. When {PAWN_pronoun} das Gebiet sicher verlässt, werden sie dankbar sein.</DownedPawnJoinedGroup>
+  
+  <GuestBoughtItem>Ein Mitglied von {0} hat {ITEM_label} für {1} Silber gekauft.</GuestBoughtItem>
+
   <!-- Communication -->
   <InviteGuests>Einladung für einen Besuch</InviteGuests>
   <GuestsCantBeHostile>kann nicht feindselig sein</GuestsCantBeHostile>
@@ -74,8 +81,8 @@
   <NotEnoughFriends>[PAWN_nameDef] mag nicht genügend deiner Kolonisten (Meinung > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>[PAWN_nameDef] kann nun rekrutiert werden.</CanNowBeRecruited>
   <IsATrader>[PAWN_nameDef] ist Teil einer Karavane und kein Gast.</IsATrader>
-  <TryRecruitTooltip>Deine Diplomaten werden versuchen, den Gast mit deinen anderen Kolonisten zu befreunden. Gute Diplomaten sind effektiver. Schlechte Diplomaten können den Gast verärgern. Wenn der Gast genügend Freunde hat, wird er sich deiner Kolonie anschließen.</TryRecruitTooltip>
   <ImproveTooltip>Deine Diplomaten werden versuchen, die Stimmung des Gastes zu verbessern und ihn mit deinen anderen Kolonisten zu befreunden. Gute Diplomaten sind effektiver. Schlechte Diplomaten können den Gast verärgern.</ImproveTooltip>
+  <TryRecruitTooltip>Deine Diplomaten werden versuchen, den Gast mit deinen anderen Kolonisten zu befreunden. Gute Diplomaten sind effektiver. Schlechte Diplomaten können den Gast verärgern. Wenn der Gast genügend Freunde hat, wird er sich deiner Kolonie anschließen.</TryRecruitTooltip>
   <RecruitTooltip>Dein Gast hat genug Freunde in der Kolonie um jetzt rekrutiert zu werden. Dies schadet allerdings deiner Beziehung mit seiner Fraktion.</RecruitTooltip>
   <MakeDefaultTooltip>Wendet die Zonen- und Unterhaltungseinstellungen auf alle gegenwärtigen und zukünftigen Besucher an.</MakeDefaultTooltip>
   <ForceRecruitTooltip>Statt darauf zu warten, dass deine Diplomaten diesen Gast überzeugen, kannst du auch erzwingen, dass er bleibt. Der Beziehungsschaden mit dieser Fraktion ist dann allerdings viel höher.</ForceRecruitTooltip>
