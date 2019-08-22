@@ -67,6 +67,7 @@
     <Compile Include="Harmony\ExpectationsUtility_Patch.cs" />
     <Compile Include="Harmony\FactionDialogMaker_Patch.cs" />
     <Compile Include="Harmony\FactionUtility_Patch.cs" />
+    <Compile Include="Harmony\Faction_Patch.cs" />
     <Compile Include="Harmony\GatheringsUtility_Patch.cs" />
     <Compile Include="Harmony\JobDriver_Patch.cs" />
     <Compile Include="Harmony\MentalStateHandler_Patch.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Harmony\Pawn_NeedsTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_Ownership_Patch.cs" />
     <Compile Include="Harmony\Pawn_Patch.cs" />
+    <Compile Include="Harmony\Pawn_RelationsTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_WorkSettings_Patch.cs" />
     <Compile Include="Harmony\Reachability_Patch.cs" />
     <Compile Include="Harmony\ReservationManager_Patch.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="ThinkNode_ConditionalWantsToHelp.cs" />
     <Compile Include="ThinkNode_InGuestArea.cs" />
     <Compile Include="ThoughtWorker_Beds.cs" />
+    <Compile Include="ThoughtWorker_CantAffordBed.cs" />
     <Compile Include="Trigger_SentAway.cs" />
     <Compile Include="Trigger_TicksPassedAndOkayToLeave.cs" />
     <Compile Include="Trigger_UrgentlyCold.cs" />
