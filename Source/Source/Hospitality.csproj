@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BedUtility.cs" />
     <Compile Include="DefsUtility.cs" />
     <Compile Include="Harmony\AddictionUtility_Patch.cs" />
     <Compile Include="Harmony\Building_Bed_Patch.cs" />

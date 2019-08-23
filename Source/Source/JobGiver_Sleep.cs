@@ -57,12 +57,17 @@ namespace Hospitality
                 Log.Message(pawn.Name.ToStringShort + " can't sleep - got disturbed");
                 return ThinkResult.NoJob;
             }
+
+            var compGuest = pawn.GetComp<CompGuest>();
+            if (compGuest != null && compGuest.HasBed)
+            {
+                return new ThinkResult(new Job(JobDefOf.LayDown, compGuest.bed), this);
+            }
+
             Building_GuestBed bed = pawn.FindBedFor();
             if (bed != null)
             {
-                var canReserve = pawn.CanReserve(bed, bed.SleepingSlotsCount, 0);
-                //Log.Message($"CanReserve = {canReserve}");
-                return new ThinkResult(new Job(JobDefOf.LayDown, bed), this);
+                return new ThinkResult(new Job(BedUtility.jobDefClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}, this);
             }
             //Log.Message($"No bed available for {pawn.LabelShort}.");
             IntVec3 vec = CellFinder.RandomClosewalkCellNear(pawn.mindState.duty.focus.Cell, pawn.MapHeld, 4);

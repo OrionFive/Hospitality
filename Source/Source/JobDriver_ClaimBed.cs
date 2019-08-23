@@ -10,14 +10,21 @@ namespace Hospitality
     {
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            return true;
+            if (!(TargetA.Thing is Building_GuestBed newBed)) return false;
+            if (pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed))
+            {
+                return true;
+            }
+
+            Log.Message($"{pawn.LabelShort} failed to reserve {TargetA.Thing.LabelShort}!");
+            return false;
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            this.EndOnDespawnedOrNull(TargetIndex.A);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOn(BedHasBeenClaimed);//.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
-            yield return GetClaimToil();
+            yield return ClaimBed();
         }
 
         private bool BedHasBeenClaimed(Toil toil)
@@ -25,7 +32,7 @@ namespace Hospitality
             return !(TargetA.Thing is Building_GuestBed newBed) || !newBed.AnyUnownedSleepingSlot;
         }
 
-        private Toil GetClaimToil()
+        private Toil ClaimBed()
         {
             return new Toil
             {

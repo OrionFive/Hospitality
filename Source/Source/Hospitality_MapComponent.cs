@@ -127,5 +127,14 @@ namespace Hospitality
 
             bribeCount[faction.randomKey] = GetBribeCount(faction) + 1;
         }
+
+        public static void RefuseGuestsUntilWeHaveBeds(Map map)
+        {
+            if (map == null) return;
+
+            var mapComp = Instance(map);
+            mapComp.refuseGuestsUntilWeHaveBeds = true;
+            LessonAutoActivator.TeachOpportunity(ConceptDef.Named("GuestBeds"), null, OpportunityType.Important);
+        }
     }
 }

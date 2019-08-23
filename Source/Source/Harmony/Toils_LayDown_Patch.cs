@@ -44,7 +44,7 @@ namespace Hospitality.Harmony
                 {
                     ThoughtDef thoughtDef = null;
                     // ADDED:
-                    if (building_Bed.GetRoom(RegionType.Set_Passable).Role == GuestUtility.roleDefGuestRoom)
+                    if (building_Bed.GetRoom(RegionType.Set_Passable).Role == BedUtility.roleDefGuestRoom)
                     {
                         thoughtDef = building_Bed.GetRoom().OnlyOneBed() ? ThoughtDefOf.SleptInBedroom : ThoughtDefOf.SleptInBarracks;
                     } ////

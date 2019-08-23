@@ -35,9 +35,6 @@ namespace Hospitality
         private static readonly StatDef statRecruitRelationshipDamage = StatDef.Named("RecruitRelationshipDamage");
         private static readonly StatDef statForcedRecruitRelationshipDamage = StatDef.Named("ForcedRecruitRelationshipDamage");
         private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
-        
-        public static readonly RoomRoleDef roleDefGuestRoom = DefDatabase<RoomRoleDef>.GetNamed("GuestRoom");
-        public static readonly JobDef jobDefClaimGuestBed = DefDatabase<JobDef>.GetNamed("ClaimGuestBed");
 
         private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve
         { new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30) };
@@ -197,7 +194,12 @@ namespace Hospitality
         
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
-            return guest.IsGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && guest.IsArrived() && !guest.HasDismissiveThought() && !IsInTherapy(guest);
+            return guest.IsGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && guest.IsArrived() && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest);
+        }
+
+        public static bool IsTired(this Pawn pawn)
+        {
+            return pawn?.needs?.rest?.CurCategory >= RestCategory.VeryTired;
         }
 
         public static void Arrive(this Pawn pawn)
@@ -311,18 +313,6 @@ namespace Hospitality
                 addNeed.Invoke(pawn.needs, new object[] { DefDatabase<NeedDef>.GetNamed("Comfort") });
             }
             pawn.needs.comfort.CurLevel = Rand.Range(0, 0.5f);
-        }
-
-        public static Building_GuestBed FindBedFor(this Pawn pawn)
-        {
-            var compGuest = pawn.GetComp<CompGuest>();
-            //Log.Message(
-            //    $"{pawn.LabelShort}: HasBed = {compGuest.HasBed}, Forbidden = {compGuest.bed.IsForbidden(pawn)}, Burning = {compGuest.bed.IsBurning()}, CanReach = {pawn.CanReach(compGuest.bed, PathEndMode.OnCell, Danger.Some)}");
-            if (compGuest == null || !compGuest.HasBed) return null;
-            if (compGuest.bed.IsForbidden(pawn) || compGuest.bed.IsBurning()) return null;
-            if (!pawn.CanReach(compGuest.bed, PathEndMode.OnCell, Danger.Some)) return null;
-
-            return compGuest.bed;
         }
 
         public static void PocketHeadgear(this Pawn pawn)
@@ -654,13 +644,6 @@ namespace Hospitality
             return area[s.Position];
         }
 
-        public static IEnumerable<Building_GuestBed> GetGuestBeds(this Map map, Area area = null)
-        {
-            if (map == null) return new Building_GuestBed[0];
-            if (area == null) return map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>();
-            return map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Where(b => area[b.Position]);
-        }
-
         public static int FriendsRequired(Map mapHeld)
         {
             var x = GetPawnsFromBase(mapHeld).Count();
@@ -859,28 +842,6 @@ namespace Hospitality
                     Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, lord.faction);
                 }
             }
-        }
-
-        public static void RefuseGuestsUntilWeHaveBeds(Map map)
-        {
-            if (map == null) return;
-
-            var mapComp = Hospitality_MapComponent.Instance(map);
-            mapComp.refuseGuestsUntilWeHaveBeds = true;
-            LessonAutoActivator.TeachOpportunity(ConceptDef.Named("GuestBeds"), null, OpportunityType.Important);
-        }
-
-        public static bool BedCheck(Map map)
-        {
-            if (map == null) return false;
-            var mapComp = Hospitality_MapComponent.Instance(map);
-
-            if (!mapComp.refuseGuestsUntilWeHaveBeds) return true;
-            if (!map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Any()) return false;
-
-            // We have beds now!
-            mapComp.refuseGuestsUntilWeHaveBeds = false;
-            return true;
         }
 
         private static void AngerFactionMembers(Pawn guest)

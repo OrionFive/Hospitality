@@ -98,7 +98,7 @@ namespace Hospitality
             {
                 DiaOption diaOption3 = new DiaOption("VisitorsArrivedRefuseUntilBeds".Translate());
                 diaOption3.action = () => {
-                    GuestUtility.RefuseGuestsUntilWeHaveBeds(map);
+                    Hospitality_MapComponent.RefuseGuestsUntilWeHaveBeds(map);
                     refuse();
                 };
                 diaOption3.resolveTree = true;
@@ -154,7 +154,7 @@ namespace Hospitality
             else
             {
                 // Did the player refuse guests until beds are made and there are no beds yet?
-                if (!GuestUtility.BedCheck(map))
+                if (!BedCheck(map))
                 {
                     GenericUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
                     return true;
@@ -566,15 +566,15 @@ namespace Hospitality
             string description;
             if (pawns.Count == 1)
             {
-                string value = (!gotTrader) ? string.Empty : ("\n\n" + "SingleVisitorArrivesTraderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN"));
-                string value2 = (pawn == null) ? string.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN"));
+                string value = (!gotTrader) ? String.Empty : ("\n\n" + "SingleVisitorArrivesTraderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN"));
+                string value2 = (pawn == null) ? String.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN"));
                 label = "LetterLabelSingleVisitorArrives".Translate();
                 description = "SingleVisitorArrives".Translate(pawns[0].story.Title, faction.Name, pawns[0].Name.ToStringFull, value, value2, pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN");
             }
             else
             {
-                string value3 = (!gotTrader) ? string.Empty : ("\n\n" + "GroupVisitorsArriveTraderInfo".Translate());
-                string value4 = (pawn == null) ? string.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(pawn.LabelShort, pawn));
+                string value3 = (!gotTrader) ? String.Empty : ("\n\n" + "GroupVisitorsArriveTraderInfo".Translate());
+                string value4 = (pawn == null) ? String.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(pawn.LabelShort, pawn));
                 label = "LetterLabelGroupVisitorsArrive".Translate();
                 description = "GroupVisitorsArrive".Translate(faction.Name, value3, value4);
             }
@@ -642,6 +642,19 @@ namespace Hospitality
                 }
             }
             traderIndex = pawns.IndexOf(pawn);
+            return true;
+        }
+
+        public static bool BedCheck(Map map)
+        {
+            if (map == null) return false;
+            var mapComp = Hospitality_MapComponent.Instance(map);
+
+            if (!mapComp.refuseGuestsUntilWeHaveBeds) return true;
+            if (!map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Any()) return false;
+
+            // We have beds now!
+            mapComp.refuseGuestsUntilWeHaveBeds = false;
             return true;
         }
     }
