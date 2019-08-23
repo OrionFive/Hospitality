@@ -21,7 +21,7 @@ namespace Hospitality.MainTab
             {
                 guestCountCached = Find.CurrentMap.lordManager.lords.Where(l => l?.ownedPawns != null)
                     .SelectMany(l => l.ownedPawns).Count(p => p.IsGuest());
-                bedCountCached =  Find.CurrentMap.GetGuestBeds().Count();
+                bedCountCached = Find.CurrentMap.GetGuestBeds().Sum(bed => bed.SleepingSlotsCount);
                 lastTimeCached = Time.unscaledTime;
                 currentMap = Find.CurrentMap;
             }
