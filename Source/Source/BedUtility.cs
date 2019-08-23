@@ -81,13 +81,13 @@ namespace Hospitality
             if (guest.IsTired())
             {
                 distance = (int) bed.Position.DistanceTo(guest.Position);
-                Log.Message($"{guest.LabelShort} is tired. {bed.LabelCap} is {distance} units far away.");
+                //Log.Message($"{guest.LabelShort} is tired. {bed.LabelCap} is {distance} units far away.");
             }
 
             var score = impressiveness + quality + roomType + temperature + otherPawnOpinion * 4 - distance;
             var value = score - fee;
-            Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
-                        + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
+            //Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
+            //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
             return value;
         }
 
