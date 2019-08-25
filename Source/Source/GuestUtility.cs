@@ -95,6 +95,7 @@ namespace Hospitality
             if (pawn.Dead) return false;
             if (pawn.RaceProps?.Humanlike != true) return false;
             if (pawn.guest == null) return false;
+            if (pawn.guest.HostFaction != Faction.OfPlayer && pawn.Map.ParentFaction != Faction.OfPlayer) return false;
             if (pawn.Faction == null) return false;
             if (pawn.IsPrisonerOfColony || pawn.Faction == Faction.OfPlayer) return false;
             if (pawn.HostileTo(Faction.OfPlayer)) return false;
