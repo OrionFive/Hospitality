@@ -3,7 +3,7 @@
 
   <ThoughtDef>
     <defName>GuestPaidFee</defName>
-    <durationDays>5</durationDays>
+    <durationDays>2.5</durationDays>
     <stackedEffectMultiplier>0.98</stackedEffectMultiplier>
 	<stackLimit>100</stackLimit>
     <stages>
