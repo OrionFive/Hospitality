@@ -143,7 +143,7 @@ namespace Hospitality
             }
             if (parms.faction.RelationWith(Faction.OfPlayer).kind == FactionRelationKind.Hostile)
             {
-                Log.ErrorOnce("Trying to spawn visitors, but they are hostile to the player (now).", 4736345);
+                Log.Message($"Trying to spawn visitors of faction {parms.faction.Name}, but they are hostile to the player (now).");
                 return true;
             }
 
