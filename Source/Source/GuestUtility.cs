@@ -874,6 +874,9 @@ namespace Hospitality
                     JoinLord(lords.RandomElement(), pawn);
                 }
                 else CreateLordForPawn(pawn);
+
+                pawn.jobs.StopAll();
+                pawn.pather.StopDead();
             }
         }
 
