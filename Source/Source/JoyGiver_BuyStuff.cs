@@ -94,12 +94,18 @@ namespace Hospitality
             }
             if (thing.def.IsWeapon)
             {
-                appFactor = 1; // Weapon is also good!
+                // Weapon is also good!
+                appFactor = 1;
                 if (pawn.RaceProps.Humanlike && pawn.story.WorkTagIsDisabled(WorkTags.Violent)) return 0;
                 if (!pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)) return 0;
+                if (!AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEquip")) return 0;
             }
-            // Shieldbelt
-            if (thing is ShieldBelt && pawn.equipment.Primary?.def.IsRangedWeapon == true) return 0;
+            // Shield belt
+            if (thing is ShieldBelt)
+            {
+                if (pawn.equipment.Primary?.def.IsRangedWeapon == true) return 0;
+                if (!AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEquip")) return 0;
+            }
 
             // Quality of object
             var qFactor = 0.4f;
@@ -121,7 +127,7 @@ namespace Hospitality
                 tFactor += 1;
                 //Log.Message(thing.Label + " - techlevel: " + thing.def.techLevel + " = " + tFactor);
             }
-            var rFactor = Rand.RangeSeeded(0.5f, 1.5f, pawn.thingIDNumber*60509 + thing.thingIDNumber*33151);
+            var rFactor = Rand.RangeSeeded(0.5f, 1.7f, pawn.thingIDNumber*60509 + thing.thingIDNumber*33151);
             //Log.Message(thing.Label + " - score: " + hpFactor*hpFactor*qFactor*tFactor*appFactor);
             return Mathf.Max(0, hpFactor*hpFactor*qFactor*tFactor*appFactor*rFactor); // 0 = don't buy
         }
@@ -139,7 +145,7 @@ namespace Hospitality
         {
             if (ap is ShieldBelt && pawn.equipment.Primary?.def.IsWeaponUsingProjectiles == true)
                 return -1000f;
-            if (!AlienFrameworkAllowsIt(pawn.def, ap.def)) 
+            if (!AlienFrameworkAllowsIt(pawn.def, ap.def, "CanWear")) 
                 return -1000;
             float num = JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
             List<Apparel> wornApparel = pawn.apparel.WornApparel;
@@ -159,12 +165,14 @@ namespace Hospitality
             return num;
         }
 
-        public static bool AlienFrameworkAllowsIt(ThingDef pawnDef, ThingDef apparelDef)
+        /// <summary>
+        /// methodName = "CanWear", "CanEat" or "CanEquip"
+        /// </summary>
+        public static bool AlienFrameworkAllowsIt(ThingDef raceDef, ThingDef thingDef, string methodName)
         {
-            var restriction = Traverse.Create(pawnDef).Field("raceRestrictions");
-            if (!restriction.FieldExists()) return true; // Not using AlienFramework
-            var canWear = restriction.Method("CanWear").GetValue<bool>(apparelDef, pawnDef);
-            return canWear;
+            var method = Traverse.CreateWithType("RaceRestrictionSettings").Method(methodName, thingDef, raceDef);
+            if (!method.MethodExists()) return true; // Not using AlienFramework
+            return method.GetValue<bool>();
         }
 
         protected virtual bool Qualifies(Thing thing, Pawn pawn)
