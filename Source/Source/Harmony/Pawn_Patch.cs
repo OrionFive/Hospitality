@@ -80,20 +80,29 @@ namespace Hospitality.Harmony
             }
         }
 
-        /// <summary>
-        /// When a guest recruits a prisoner, make sure he's recruited to the player's faction.
-        /// </summary>
         [HarmonyPatch(typeof(Pawn), "SetFaction")]
         public class SetFaction
         {
             [HarmonyPrefix]
-            public static bool Prefix(ref Faction newFaction, Pawn recruiter)
+            public static bool Prefix(ref Faction newFaction, Pawn recruiter, Pawn __instance)
             {
+                // When a guest recruits a prisoner, make sure he's recruited to the player's faction.
                 if (recruiter != null && recruiter.Faction != Faction.OfPlayer && recruiter.HostFaction == Faction.OfPlayer)
                 {
                     Log.Message($"Guest {recruiter.Name.ToStringShort} recruits prisoner to player faction (instead of {newFaction}).");
                     newFaction = Faction.OfPlayer;
                 }
+                // When a pawn is recruited to the player's faction, turn off the rescued flag
+                if (newFaction == Faction.OfPlayer)
+                {
+                    var compGuest = __instance.GetComp<CompGuest>();
+                    if (compGuest != null)
+                    {
+                        //Log.Message($"{__instance.Name.ToStringShort} has joined the player faction. 'rescued' was {compGuest.rescued}.");
+                        compGuest.rescued = false;
+                    }
+                }
+
                 return true;
             }
         }

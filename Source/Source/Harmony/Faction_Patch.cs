@@ -15,6 +15,8 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static void Prefix(Pawn member, ref bool free)
             {
+                if (member.Faction == Faction.OfPlayer) return;
+
                 var compGuest = member.GetComp<CompGuest>();
                 if (compGuest == null || !compGuest.rescued || member.guest == null || PawnUtility.IsTravelingInTransportPodWorldObject(member)) return;
 
