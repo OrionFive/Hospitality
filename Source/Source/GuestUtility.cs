@@ -885,7 +885,7 @@ namespace Hospitality
             Log.Message($"Creating a temporary lord for {pawn.Label} of faction {(pawn.Faction != null ? pawn.Faction.Name : "null")}.");
             Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), LetterDefOf.NeutralEvent, pawn, pawn.Faction);
             var duration = (int)(Rand.Range(0.5f, 1f) * GenDate.TicksPerDay);
-            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false, duration);
+            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false, duration, false);
         }
 
         private static bool GuestHasNoLord(Pawn pawn)

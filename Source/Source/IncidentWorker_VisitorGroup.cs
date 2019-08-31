@@ -240,7 +240,7 @@ namespace Hospitality
             GiveItems(visitors);
 
             var stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
-            CreateLord(parms.faction, spot, visitors, map, true, true, stayDuration);
+            CreateLord(parms.faction, spot, visitors, map, true, true, stayDuration, Rand.Value < 0.75f);
             return true;
         }
 
@@ -534,7 +534,7 @@ namespace Hospitality
             return (float) TechLevel.Ultra - Mathf.Abs((float) target - (float) def);
         }
 
-        public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost, int duration)
+        public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost, int duration, bool gotTrader)
         {
             var mapComp = Hospitality_MapComponent.Instance(map);
 
@@ -555,9 +555,8 @@ namespace Hospitality
                 }
             });
 
-            bool gotTrader = false;
             int traderIndex = 0;
-            if (Rand.Value < 0.75f)
+            if (gotTrader)
             {
                 gotTrader = TryConvertOnePawnToSmallTrader(pawns, faction, map, out traderIndex);
             }
