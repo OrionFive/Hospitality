@@ -195,7 +195,12 @@ namespace Hospitality
         
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
-            return guest.IsGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && guest.IsArrived() && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest);
+            return guest.IsGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && guest.IsArrived() && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest);
+        }
+
+        private static bool IsEating(Pawn guest)
+        {
+            return guest.CurJobDef == JobDefOf.Ingest;
         }
 
         public static bool IsTired(this Pawn pawn)
