@@ -103,7 +103,7 @@ namespace Hospitality
         private void Leave()
         {
             var pawns = lord.ownedPawns.ToArray(); // Copy, because recruiting changes lord
-            bool unhappy = lord.faction.RelationWith(Faction.OfPlayer).kind == FactionRelationKind.Hostile;
+            bool hostile = lord.faction.RelationWith(Faction.OfPlayer).kind == FactionRelationKind.Hostile;
 
             bool sentAway = false;
 
@@ -116,7 +116,7 @@ namespace Hospitality
                     {
                         sentAway = true;
                     }
-                    if(!unhappy)
+                    if(!hostile)
                     {
                         var score = GetVisitScore(pawn);
 
@@ -127,19 +127,22 @@ namespace Hospitality
                 pawn.Leave();
             }
 
-            if (lord.ownedPawns.Count > 0 && !unhappy)
+            // Rescued pawns don't factor in here. If the group is only rescued pawns, we want no message
+            var nonRescuedPawns = lord.ownedPawns.Where(p => p.GetComp<CompGuest>()?.rescued != true).ToArray();
+
+            if (nonRescuedPawns.Any() && !hostile)
             {
-                var avgScore = lord.ownedPawns.Average(pawn => GetVisitScore(pawn));
+                var avgScore = nonRescuedPawns.Average(pawn => GetVisitScore(pawn));
 
                 DisplayLeaveMessage(avgScore, lord.faction, lord.ownedPawns.Count, lord.Map, sentAway);
             }
             else
             {
-                DisplayLostMessage(lord.faction, lord.Map);
+                DisplayNoMessage(lord.faction, lord.Map);
             }
         }
 
-        private static void DisplayLostMessage(Faction faction, Map currentMap)
+        private static void DisplayNoMessage(Faction faction, Map currentMap)
         {
             // Not affecting goodwill, no revisit, no message
             // There is a goodwill penalty somewhere else
