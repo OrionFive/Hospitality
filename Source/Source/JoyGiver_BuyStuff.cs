@@ -40,7 +40,7 @@ namespace Hospitality
             if (things.Count == 0) return null;
 
             // Try some things
-            var selection = things.TakeRandom(10).ToArray();
+            var selection = things.TakeRandom(5).ToArray();
             Thing thing = null;
             if (selection.Length > 1)
                 thing = selection.MaxBy(t => Likey(pawn, t));
@@ -76,12 +76,11 @@ namespace Hospitality
             var appFactor = thing is Apparel apparel ? 1+ApparelScoreGain(pawn, apparel) : 0.8f; // Not apparel, less likey
             //Log.Message(thing.Label + " - apparel score: " + appFactor);
 
+            var hungerFactor = GetHungerFactor(pawn);
+
             // Food
             if(IsFood(thing) && pawn.RaceProps.CanEverEat(thing))
             {
-                var needFood = pawn.needs.TryGetNeed<Need_Food>();
-                var hungerFactor = 1 - needFood?.CurLevelPercentage ?? 0;
-                hungerFactor -= 1 - needFood?.PercentageThreshHungry ?? 0; // about -0.7
                 appFactor = FoodUtility.FoodOptimality(pawn, thing, FoodUtility.GetFinalIngestibleDef(thing), 0, true) / 300f; // 300 = optimality max
                 //Log.Message($"{pawn.LabelShort} looked at {thing.LabelShort} at {thing.Position} and scored it {appFactor}.");
                 appFactor += hungerFactor;
@@ -93,6 +92,14 @@ namespace Hospitality
             else if (IsIngestible(thing) && thing.def.ingestible.joy > 0)
             {
                 appFactor = 1 + thing.def.ingestible.joy*0.5f;
+
+                // Hungry? Care less about other stuff
+                if(hungerFactor > 0) appFactor -= hungerFactor;
+            }
+            else
+            {
+                // Hungry? Care less about other stuff
+                if(hungerFactor > 0) appFactor -= hungerFactor;
             }
 
             // Weapon
@@ -141,6 +148,14 @@ namespace Hospitality
             return Mathf.Max(0, hpFactor*hpFactor*qFactor*qFactor*tFactor*appFactor*rFactor); // 0 = don't buy
         }
 
+        private static float GetHungerFactor(Pawn pawn)
+        {
+            var needFood = pawn.needs.TryGetNeed<Need_Food>();
+            var hungerFactor = 1 - needFood?.CurLevelPercentage ?? 0;
+            hungerFactor -= 1 - needFood?.PercentageThreshHungry ?? 0; // about -0.7
+            return hungerFactor;
+        }
+
         private static bool IsIngestible(Thing thing)
         {
             return thing.def.IsIngestible && thing.def.ingestible.preferability != FoodPreferability.RawBad && thing.def.ingestible.preferability != FoodPreferability.MealAwful;
@@ -177,7 +192,6 @@ namespace Hospitality
             }
             if (!flag)
                 num *= 10f;
-            Log.Message($"{ap.LabelCap}: ApparelScoreGain={num}");
             return num;
         }
 
