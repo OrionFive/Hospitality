@@ -69,6 +69,8 @@
     <Compile Include="Harmony\FactionDialogMaker_Patch.cs" />
     <Compile Include="Harmony\FactionUtility_Patch.cs" />
     <Compile Include="Harmony\Faction_Patch.cs" />
+    <Compile Include="Harmony\FoodUtility_Patch.cs" />
+    <Compile Include="Harmony\ForbidUtility_Patch.cs" />
     <Compile Include="Harmony\GatheringsUtility_Patch.cs" />
     <Compile Include="Harmony\JobDriver_Patch.cs" />
     <Compile Include="Harmony\MentalStateHandler_Patch.cs" />
@@ -79,7 +81,6 @@
     <Compile Include="Harmony\MinifiedThing_Patch.cs" />
     <Compile Include="Harmony\ModContentPack_Patch.cs" />
     <Compile Include="GenericUtility.cs" />
-    <Compile Include="Harmony\ForbidUtility_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Gear_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Guest_Patch.cs" />
     <Compile Include="Harmony\JobDriver_Ingest_Patch.cs" />

@@ -1,7 +1,6 @@
 using Harmony;
 using RimWorld;
 using Verse;
-using Verse.AI;
 
 namespace Hospitality.Harmony
 {
@@ -17,8 +16,7 @@ namespace Hospitality.Harmony
             public static bool Replacement(ref bool __result, Pawn pawn, bool cellTarget)
             {
                 // I have split up the original check to make some sense of it. Still doesn't make any sense.
-                __result = 
-                    CrazyRimWorldCheck(pawn) && !pawn.InMentalState && (!cellTarget || !ThinkNode_ConditionalShouldFollowMaster.ShouldFollowMaster(pawn));
+                __result = CrazyRimWorldCheck(pawn) && !pawn.InMentalState && (!cellTarget || !ThinkNode_ConditionalShouldFollowMaster.ShouldFollowMaster(pawn));
                 return false;
             }
 
@@ -62,6 +60,7 @@ namespace Hospitality.Harmony
                 {
                     return false;
                 }
+
                 return true;
             }
         }
@@ -84,6 +83,5 @@ namespace Hospitality.Harmony
                 if (!c.IsValid || !area[c]) __result = false;
             }
         }
-
     }
 }

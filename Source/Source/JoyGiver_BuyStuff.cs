@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Harmony;
@@ -39,12 +38,16 @@ namespace Hospitality
             var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(pawn.IsInShoppingZone);
             things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
             if (things.Count == 0) return null;
-            Thing thing = things.RandomElement(); //things.MaxBy(t => Likey(pawn, t));
 
-            if (thing == null)
-            {
-                return null;
-            }
+            // Try some things
+            var selection = things.TakeRandom(10).ToArray();
+            Thing thing = null;
+            if (selection.Length > 1)
+                thing = selection.MaxBy(t => Likey(pawn, t));
+            else if (selection.Length == 1) thing = selection[0];
+
+            if (thing == null) return null;
+
             if (Likey(pawn, thing) <= 0.5f)
             {
                 //Log.Message(thing.Label + ": not interesting for " + pawn.NameStringShort);
@@ -53,8 +56,9 @@ namespace Hospitality
                 var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, map, 2, out var standTarget) && IsBuyableNow(pawn, thing);
                 if (canBrowse)
                 {
-                    return new Job(jobDefBrowse, standTarget, thing) {expiryInterval = duration*2};
+                    return new Job(jobDefBrowse, standTarget, thing) {expiryInterval = duration * 2};
                 }
+
                 return null;
             }
 
@@ -85,6 +89,11 @@ namespace Hospitality
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.PlantFoodRaw)) appFactor -= 0.25f;
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.MeatRaw)) appFactor -= 0.5f;
             }
+            // Other consumables
+            else if (IsIngestible(thing) && thing.def.ingestible.joy > 0)
+            {
+                appFactor = 1 + thing.def.ingestible.joy*0.5f;
+            }
 
             // Weapon
             if (thing.def.IsRangedWeapon)
@@ -108,7 +117,7 @@ namespace Hospitality
             }
 
             // Quality of object
-            var qFactor = 0.4f;
+            var qFactor = 0.7f;
             if (thing.TryGetQuality(out var cat))
             {
                 qFactor = (float) cat;
@@ -129,7 +138,12 @@ namespace Hospitality
             }
             var rFactor = Rand.RangeSeeded(0.5f, 1.7f, pawn.thingIDNumber*60509 + thing.thingIDNumber*33151);
             //Log.Message(thing.Label + " - score: " + hpFactor*hpFactor*qFactor*tFactor*appFactor);
-            return Mathf.Max(0, hpFactor*hpFactor*qFactor*tFactor*appFactor*rFactor); // 0 = don't buy
+            return Mathf.Max(0, hpFactor*hpFactor*qFactor*qFactor*tFactor*appFactor*rFactor); // 0 = don't buy
+        }
+
+        private static bool IsIngestible(Thing thing)
+        {
+            return thing.def.IsIngestible && thing.def.ingestible.preferability != FoodPreferability.RawBad && thing.def.ingestible.preferability != FoodPreferability.MealAwful;
         }
 
         private static bool IsFood(Thing thing)
@@ -147,6 +161,7 @@ namespace Hospitality
                 return -1000f;
             if (!AlienFrameworkAllowsIt(pawn.def, ap.def, "CanWear")) 
                 return -1000;
+            if (PawnApparelGenerator.IsHeadgear(ap.def)) return 0;
             float num = JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
             List<Apparel> wornApparel = pawn.apparel.WornApparel;
             bool flag = false;
@@ -162,6 +177,7 @@ namespace Hospitality
             }
             if (!flag)
                 num *= 10f;
+            Log.Message($"{ap.LabelCap}: ApparelScoreGain={num}");
             return num;
         }
 
