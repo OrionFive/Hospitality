@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BedUtility.cs" />
+    <Compile Include="ChoiceLetter_GuestJoinRequest.cs" />
     <Compile Include="DefsUtility.cs" />
     <Compile Include="Harmony\AddictionUtility_Patch.cs" />
     <Compile Include="Harmony\Building_Bed_Patch.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Harmony\TransitionAction_SetDefendLocalGroup_Patch.cs" />
     <Compile Include="Harmony\Building_Door_Patch.cs" />
     <Compile Include="Harmony\WorkGiver_HunterHunt.cs" />
+    <Compile Include="IncidentWorker_HappyGuestJoins.cs" />
     <Compile Include="IncidentWorker_VisitorGroupMax.cs" />
     <Compile Include="JobDriver_ClaimBed.cs" />
     <Compile Include="JobGiver_ClaimBed.cs" />

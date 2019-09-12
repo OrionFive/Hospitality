@@ -114,10 +114,8 @@ namespace Hospitality
         {
             if (!TryResolveParms(parms)) return false;
 
-            Map map = parms.target as Map;
-
             // Is map not available anymore?
-            if (map == null) return true;
+            if (!(parms.target is Map map)) return true;
 
             if (parms.points < 40)
             {
