@@ -210,7 +210,7 @@ namespace Hospitality
             if (Rand.Value < targetGoodwill / 100f && Rand.Value < 0.2f)
             {
                 // Send another friendly faction as well (start walking now)
-                if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && !f.HostileTo(Faction.OfPlayer)).TryRandomElement(out var newFaction))
+                if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && !f.HostileTo(Faction.OfPlayer) && !f.IsPlayer).TryRandomElement(out var newFaction))
                 {
                     GenericUtility.TryCreateVisit(randomVisitMap, 0, newFaction);
                 }

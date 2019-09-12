@@ -161,6 +161,12 @@ namespace Hospitality
 
         public static void TryCreateVisit(Map map, float days, Faction faction, float travelFactor = 1)
         {
+            if (faction.IsPlayer)
+            {
+                Log.Warning($"Trying to create visit for player's faction.");
+                return;
+            }
+
             var travelDays = GetTravelDays(faction, map);
 
             // ReSharper disable once CompareOfFloatsByEqualityOperator
