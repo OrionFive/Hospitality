@@ -868,7 +868,7 @@ namespace Hospitality
 
         public static void CheckForRogueGuests(Map map)
         {
-            foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p=> p.GetPosture() == PawnPosture.Standing).Where(GuestHasNoLord))
+            foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p=> p.GetPosture() == PawnPosture.Standing && !HealthAIUtility.ShouldSeekMedicalRest(p)).Where(GuestHasNoLord))
             {
                 if (pawn == null) continue; // I don't think this ever happens...
                 if (pawn.mindState.duty?.def == DutyDefOf.ExitMapBestAndDefendSelf) continue;
