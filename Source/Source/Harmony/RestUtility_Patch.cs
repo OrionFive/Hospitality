@@ -5,19 +5,26 @@ using Verse;
 namespace Hospitality.Harmony
 {
     /// <summary>
-    /// Allow only visitors to use guest beds
+    /// Allow only visitors to use guest beds and guests to only use medical regular beds
     /// </summary>
     internal static class RestUtility_Patch
     {
-        [HarmonyPatch(typeof(RestUtility), "CanUseBedEver")]
-        public class CanUseBedEver
+        [HarmonyPatch(typeof(RestUtility), "IsValidBedFor")]
+        public class IsValidBedFor
         {
             [HarmonyPostfix]
-            public static void Postfix(Pawn p, ThingDef bedDef, ref bool __result)
+            public static void Postfix(Pawn sleeper, Thing bedThing, ref bool __result)
             {
-                if (bedDef.thingClass == typeof(Building_GuestBed))
-                {
-                    __result &= p.IsGuest();
+                if (!__result) return;
+                switch (bedThing) {
+                    // guest bed
+                    case Building_GuestBed guestBed:
+                        if (!sleeper.IsGuest()) __result = false;
+                        break;
+                    // normal bed
+                    case Building_Bed bed:
+                        if (sleeper.IsGuest()) __result = bed.Medical;
+                        break;
                 }
             }
         }
