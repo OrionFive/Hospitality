@@ -16,6 +16,8 @@
   <LetterLabelRecruitFactionChiefPlease>Anführer erfreut</LetterLabelRecruitFactionChiefPlease>
   <LetterLabelRecruitFactionPlease>Fraktion erfreut</LetterLabelRecruitFactionPlease>
   
+  <GuestCanBeRecruitedNow>{PAWN_labelShort} hat jetzt genügend Freunde um rekrutiert zu werden.</GuestCanBeRecruitedNow>
+  
   <TextMote_CharmFail>Beleidigt</TextMote_CharmFail>
   <TextMote_CharmSuccess>Fasziniert</TextMote_CharmSuccess>
   
@@ -131,5 +133,9 @@
   <MaxGuestGroupSizeDesc>Die maximale Größe einer Gruppe von Gästen. (Empfohlen: 16)</MaxGuestGroupSizeDesc>
   <DisableGuestsTab>Gäste Tab deaktivieren</DisableGuestsTab>
   <DisableGuestsTabDesc>Versteckt den Gäste Tab in der Tab Leiste.</DisableGuestsTabDesc>
+  <EnableBuyNotification>Aktiviere Kaufbenachrichtigung</EnableBuyNotification>
+  <EnableBuyNotificationDesc>Du bekommst eine Nachricht, wenn ein Gast etwas gekauft hat. Du kannst diese Nachrichten auch im Nachrichtenverlauf sehen.</EnableBuyNotificationDesc>
+  <EnableRecruitNotification>Aktiviere "Genügend Freunde" Benachrichtigung</EnableRecruitNotification>
+  <EnableRecruitNotificationDesc>Du bekommst eine Nachricht, wenn ein Gast genügend Freunde hat, um rekrutiert zu werden.</EnableRecruitNotificationDesc>
   
 </LanguageData>

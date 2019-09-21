@@ -386,12 +386,27 @@ namespace Hospitality
         {
             if (!guest.MakeFriends()) return;
 
-            var friends = guest.GetFriendsInColony();
-            var friendsRequired = FriendsRequired(guest.MapHeld) + guest.GetEnemiesInColony();
-            float friendPercentage = 100f * friends / friendsRequired;
+            var friendPercentage = GetFriendPercentage(guest);
 
             //Log.Message(String.Format("Recruiting {0}: diff: {1} mood: {2}", guest.NameStringShort,recruitDifficulty, colonyTrust));
-            TryPleaseGuest(recruiter, guest, friendPercentage < 100, extraSentencePacks);
+            TryPleaseGuest(recruiter, guest, friendPercentage < 1, extraSentencePacks);
+
+            // Notify player if the guest can be recruited now
+            if (friendPercentage < 1 && Settings.enableRecruitNotification)
+            {
+                var newFriendPercentage = GetFriendPercentage(guest);
+                if (newFriendPercentage >= 1)
+                {
+                    Messages.Message("GuestCanBeRecruitedNow".Translate(new NamedArgument {arg = guest, label = "PAWN"}).AdjustedFor(guest), guest, MessageTypeDefOf.NeutralEvent);
+                }
+            }
+        }
+
+        private static float GetFriendPercentage(Pawn guest)
+        {
+            var friends = guest.GetFriendsInColony();
+            var friendsRequired = FriendsRequired(guest.MapHeld) + guest.GetEnemiesInColony();
+            return 1f * friends / friendsRequired;
         }
 
         public static void Recruit(Pawn guest, int recruitPenalty, bool forced)

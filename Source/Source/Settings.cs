@@ -22,6 +22,7 @@ namespace Hospitality
         public static SettingHandle<bool> disableMedical;
         public static SettingHandle<bool> disableGuestsTab;
         public static SettingHandle<bool> enableBuyNotification;
+        public static SettingHandle<bool> enableRecruitNotification;
 
         public Settings(ModSettingsPack settings)
         {
@@ -37,6 +38,7 @@ namespace Hospitality
             disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
             disableGuestsTab = settings.GetHandle("disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false);
             enableBuyNotification = settings.GetHandle("enableBuyNotification", "EnableBuyNotification".Translate(), "EnableBuyNotificationDesc".Translate(), false);
+            enableRecruitNotification = settings.GetHandle("enableRecruitNotification", "EnableRecruitNotification".Translate(), "EnableRecruitNotificationDesc".Translate(), true);
 
             string hiddenConfigFile = Path.Combine(GenFilePaths.ConfigFolderPath, "Hospitality.cfg");
             if (File.Exists(hiddenConfigFile))
