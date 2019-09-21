@@ -48,15 +48,15 @@ namespace Hospitality
             if (!bed.TryGetQuality(out QualityCategory category)) category = QualityCategory.Normal;
             var quality = ((int) category - 2) * 25; // -50 - 100
             var impressiveness = RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness)); // 0 - 100 (and more)
-            var fee = RoundToInt(money > bed.rentalFee ? 150 * bed.rentalFee / money : 0); // 0 - 150
-            var roomType = GetRoomTypeScore(room); // -50 - 50
-            var otherPawnOpinion = bed.owners.Any() ? bed.owners.Where(owner => owner != guest).Sum(owner => guest.relations.OpinionOf(owner) - 15) : 0;
+            var fee = RoundToInt(money > 0 ? 125 * bed.rentalFee / money : 0); // 0 - 125
+            var roomType = GetRoomTypeScore(room) * 2; // -100 - 100
+            var otherPawnOpinion = bed.owners.Any() ? bed.owners.Where(owner => owner != guest).Sum(owner => guest.relations.OpinionOf(owner) - 15) * 4 : 0;
             var temperature = GetTemperatureScore(guest, room); // -200 - 0
 
             // Traits
             if (guest.story.traits.HasTrait(TraitDefOf.Greedy))
             {
-                fee *= 2;
+                fee *= 3;
                 impressiveness -= 50;
             }
 
@@ -84,7 +84,7 @@ namespace Hospitality
                 //Log.Message($"{guest.LabelShort} is tired. {bed.LabelCap} is {distance} units far away.");
             }
 
-            var score = impressiveness + quality + roomType + temperature + otherPawnOpinion * 4 - distance;
+            var score = impressiveness + quality + roomType + temperature + otherPawnOpinion - distance;
             var value = score - fee;
             //Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
             //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
