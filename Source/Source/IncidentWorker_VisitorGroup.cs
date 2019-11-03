@@ -196,50 +196,47 @@ namespace Hospitality
 
         private bool SpawnGroup(IncidentParms parms, Map map)
         {
-            List<Pawn> visitors;
+            var visitors = new List<Pawn>();
             try
             {
                 //Log.Message(string.Format("Spawning visitors from {0}, at {1}.", parms.faction, parms.spawnCenter));
-                visitors = SpawnPawns(parms);
+                SpawnPawns(parms, visitors);
 
                 CheckVisitorsValid(visitors);
+
+                if (visitors == null || visitors.Count == 0) return false;
+
+
+                foreach (var visitor in visitors)
+                {
+                    GuestUtility.AddNeedJoy(visitor);
+                    GuestUtility.AddNeedComfort(visitor);
+                    visitor.FixTimetable();
+                    visitor.FixDrugPolicy();
+                }
+
+                var spot = GetSpot(map, visitors.First().GetGuestArea(), visitors.First().Position);
+
+                if (!spot.IsValid)
+                {
+                    throw new Exception("Visitors failed to find a valid travel target.");
+                }
+
+                GiveItems(visitors);
+
+                var stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
+                CreateLord(parms.faction, spot, visitors, map, true, true, stayDuration, Rand.Value < 0.75f);
             }
             catch (Exception e)
             {
-                Log.ErrorOnce("Something failed when spawning visitors: " + e.Message + "\n" + e.StackTrace, 464365853);
-                GenericUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
-                return true; // be gone, event
-            }
-            if (visitors == null || visitors.Count == 0) return false;
-
-            foreach (var visitor in visitors)
-            {
-                GuestUtility.AddNeedJoy(visitor);
-                GuestUtility.AddNeedComfort(visitor);
-                visitor.FixTimetable();
-                visitor.FixDrugPolicy();
-                //Log.Message(visitor.NameStringShort + ": "
-                //            + visitor.drugs.CurrentPolicy[ThingDefOf.Luciferium].allowedForJoy);
-            }
-
-            var spot = GetSpot(map, visitors.First().GetGuestArea(), visitors.First().Position);
-
-            if (!spot.IsValid)
-            {
-                Log.ErrorOnce("Visitors failed to find a valid travel target.", 827358325);
+                Log.Error($"Hospitality: Something failed when setting up visitors:\n{e.Message}\n{e.StackTrace}");
                 foreach (var visitor in visitors)
                 {
-                    visitor.DestroyOrPassToWorld();
+                    if (visitor?.Spawned == true) visitor.DestroyOrPassToWorld();
                 }
                 GenericUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
-                return false;
             }
-            
-            GiveItems(visitors);
-
-            var stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
-            CreateLord(parms.faction, spot, visitors, map, true, true, stayDuration, Rand.Value < 0.75f);
-            return true;
+            return true; // be gone, event
         }
 
         private static List<Pawn> GetKnownPawns(IncidentParms parms)
@@ -264,7 +261,7 @@ namespace Hospitality
             }
         }
 
-        protected new List<Pawn> SpawnPawns(IncidentParms parms)
+        protected void SpawnPawns(IncidentParms parms,  List<Pawn> spawned)
         {
             var map = (Map)parms.target;
             var options = GetKnownPawns(parms);
@@ -282,7 +279,7 @@ namespace Hospitality
             var amount = GetGroupSize();
 
             var selection = options.Take(amount).ToList();
-            var spawned = new List<Pawn>();
+            spawned = new List<Pawn>();
             foreach (var pawn in selection)
             {
                 GenerateNewGearFor(pawn);
@@ -290,13 +287,12 @@ namespace Hospitality
                 if (GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map) is Pawn spawnedPawn)
                 {
                     spawnedPawn.needs.SetInitialLevels();
-                    if (spawnedPawn.needs != null && spawnedPawn.needs.rest != null) {
+                    if (spawnedPawn.needs?.rest != null) {
                         spawnedPawn.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
                     }
                     spawned.Add(spawnedPawn);
                 }
             }
-            return spawned;
         }
 
         protected virtual int GetGroupSize()
