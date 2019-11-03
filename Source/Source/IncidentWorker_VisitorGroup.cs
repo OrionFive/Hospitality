@@ -282,15 +282,25 @@ namespace Hospitality
             spawned = new List<Pawn>();
             foreach (var pawn in selection)
             {
-                GenerateNewGearFor(pawn);
-                if (pawn.IsWorldPawn()) Find.WorldPawns.RemovePawn(pawn);
-                if (GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map) is Pawn spawnedPawn)
+                try
                 {
-                    spawnedPawn.needs.SetInitialLevels();
-                    if (spawnedPawn.needs?.rest != null) {
-                        spawnedPawn.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
+                    GenerateNewGearFor(pawn, map.Tile);
+                    if (GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map) is Pawn spawnedPawn)
+                    {
+                        spawnedPawn.needs.SetInitialLevels();
+                        if (spawnedPawn.needs?.rest != null)
+                        {
+                            spawnedPawn.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
+                        }
+
+                        spawned.Add(spawnedPawn);
+                        if (pawn.IsWorldPawn()) Find.WorldPawns.RemovePawn(pawn);
                     }
-                    spawned.Add(spawnedPawn);
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Hospitality: Failed to spawn pawn {pawn?.Label}:\n{e.Message}\n{e.StackTrace}");
+                    if(pawn.Spawned) pawn.DestroyOrPassToWorld();
                 }
             }
         }
@@ -308,11 +318,11 @@ namespace Hospitality
         /// </summary>
         private static float OptimalAmount => 1 + Mathf.Clamp(GenDate.YearsPassedFloat, 0f, 5f);
 
-        private static void GenerateNewGearFor(Pawn pawn)
+        private static void GenerateNewGearFor(Pawn pawn, int tile)
         {
             // All default, except kindDef, faction and forceAddFreeWarmLayerIfNeeded
             var request = new PawnGenerationRequest(pawn.kindDef, pawn.Faction, PawnGenerationContext.NonPlayer,
-                -1, false, false, false, false, true, 
+                tile, false, false, false, false, true, 
                 false, 1, true, true, true, false, 
                 false, false, false, null, null, 
                 0.7f);
