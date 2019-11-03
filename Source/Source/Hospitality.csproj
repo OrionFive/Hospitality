@@ -75,7 +75,6 @@
     <Compile Include="Harmony\GatheringsUtility_Patch.cs" />
     <Compile Include="Harmony\JobDriver_Patch.cs" />
     <Compile Include="Harmony\MentalStateHandler_Patch.cs" />
-    <Compile Include="Harmony\MinifyUtility_Patch.cs" />
     <Compile Include="Harmony\PawnNameColorUtility_Patch.cs" />
     <Compile Include="Harmony\Pawn_ApparelTracker_Patch.cs" />
     <Compile Include="Harmony\JobGiver_Work_Patch.cs" />
