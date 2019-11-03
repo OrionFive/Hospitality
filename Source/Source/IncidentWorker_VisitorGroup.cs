@@ -112,21 +112,29 @@ namespace Hospitality
 
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
-            if (!TryResolveParms(parms)) return false;
+            if (!TryResolveParms(parms))
+            {
+                Log.ErrorOnce($"Trying to spawn visitors, but parms couldn't be resolved.", 84289426);
+                return false;
+            }
 
             // Is map not available anymore?
-            if (!(parms.target is Map map)) return true;
+            if (!(parms.target is Map map))
+            {
+                Log.ErrorOnce("Trying to spawn visitors, but map does not exist anymore.", 43692862);
+                return true;
+            }
 
             if (parms.points < 40)
             {
-                Log.ErrorOnce("Trying to spawn visitors, but points are too low.", 9827456);
+                Log.Error("Trying to spawn visitors, but points are too low.");
                 return false;
             }
 
             if (parms.faction == null)
             {
                 Log.ErrorOnce("Trying to spawn visitors, but couldn't find valid faction.", 43638973);
-                return false;
+                return true;
             }
             if (!parms.spawnCenter.IsValid)
             {
@@ -145,8 +153,14 @@ namespace Hospitality
                 return true;
             }
 
+
             if (Settings.disableGuests || map.mapPawns.ColonistCount == 0)
             {
+                if(Settings.disableGuests)
+                    Log.Message($"Guest group arrived, but guests are disabled in the options.");
+                else if(map.mapPawns.ColonistCount == 0)
+                    Log.Message($"Guest group arrived, but there are no remaining colonists on the map.");
+
                 GenericUtility.PlanNewVisit(map, Rand.Range(5f, 25f), parms.faction);
             }
             else
@@ -154,7 +168,9 @@ namespace Hospitality
                 // Did the player refuse guests until beds are made and there are no beds yet?
                 if (!BedCheck(map))
                 {
-                    GenericUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
+                    Log.Message("Guest group arrived, but there are no guest beds and the player asked to wait until they are built.");
+
+                    GenericUtility.PlanNewVisit(map, Rand.Range(5f, 10f), parms.faction);
                     return true;
                 }
 
@@ -279,7 +295,7 @@ namespace Hospitality
             var amount = GetGroupSize();
 
             var selection = options.Take(amount).ToList();
-            spawned = new List<Pawn>();
+
             foreach (var pawn in selection)
             {
                 try
