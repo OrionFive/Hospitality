@@ -219,7 +219,7 @@ namespace Hospitality
             }
         }
 
-        public static void Swap(Building_Bed bed)
+        public static Building_Bed Swap(Building_Bed bed)
         {
             Building_Bed newBed;
             if (IsGuestBed(bed))
@@ -249,6 +249,7 @@ namespace Hospitality
             //    // TODO: Make this work, art is now destroyed
             //}
             Find.Selector.Select(spawnedBed, false);
+            return spawnedBed;
         }
 
         private static Thing MakeBed(Building_Bed bed, string defName)
