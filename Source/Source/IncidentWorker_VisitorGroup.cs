@@ -352,12 +352,12 @@ namespace Hospitality
             GetSpotAddDropSpots(map, cells);
 
             // Prefer roofed
-            foreach (var cell in cells)
+            foreach (var cell in cells.InRandomOrder())
             {
                 if (cell.IsValid && cell.Roofed(map) && map.reachability.CanReach(startPos, cell, PathEndMode.OnCell, TraverseMode.PassDoors)) return cell;
             }
             // Otherwise not roofed
-            foreach (var cell in cells)
+            foreach (var cell in cells.InRandomOrder())
             {
                 if (cell.IsValid && map.reachability.CanReach(startPos, cell, PathEndMode.OnCell, TraverseMode.PassDoors)) return cell;
             }
