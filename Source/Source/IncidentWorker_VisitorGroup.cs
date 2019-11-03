@@ -310,8 +310,13 @@ namespace Hospitality
 
         private static void GenerateNewGearFor(Pawn pawn)
         {
-            var request = new PawnGenerationRequest(pawn.kindDef, pawn.Faction);
-            Traverse.Create(typeof(PawnGenerator)).Method("GenerateGearFor", pawn, request).GetValue();
+            // All default, except kindDef, faction and forceAddFreeWarmLayerIfNeeded
+            var request = new PawnGenerationRequest(pawn.kindDef, pawn.Faction, PawnGenerationContext.NonPlayer,
+                -1, false, false, false, false, true, 
+                false, 1, true, true, true, false, 
+                false, false, false, null, null, 
+                0.7f);
+            PawnGenerator.RedressPawn(pawn, request);
         }
 
         private static void CheckVisitorsValid(List<Pawn> visitors)
