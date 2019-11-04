@@ -13,14 +13,14 @@ namespace Hospitality.Harmony
         public class Allows
         {
             [HarmonyPrefix]
-            public static bool Prefix(ref ThingFilter __instance, ref bool __result, ThingDef def)
+            public static bool Prefix(ref ThingDef def)
             {
-                if (def.thingClass == typeof(Building_GuestBed))
+                // Is from a guest bed?
+                if (def?.defName != null && def.thingClass == typeof(Building_GuestBed))
                 {
                     var bedDef = DefDatabase<ThingDef>.GetNamed(def.defName.Substring(0, def.defName.Length - 5)); // remove "Guest" from name
-
-                    __result = __instance.AllowedThingDefs.Contains(bedDef);
-                    return false;
+                    // Use def of original bed instead
+                    if (bedDef != null) def = bedDef;
                 }
 
                 // Business as usual
