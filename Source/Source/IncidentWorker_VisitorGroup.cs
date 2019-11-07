@@ -7,7 +7,6 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
-using Harmony;
 
 namespace Hospitality
 {
@@ -218,18 +217,9 @@ namespace Hospitality
                 //Log.Message(string.Format("Spawning visitors from {0}, at {1}.", parms.faction, parms.spawnCenter));
                 SpawnPawns(parms, visitors);
 
-                CheckVisitorsValid(visitors);
+                SpawnGroupUtility.CheckVisitorsValid(visitors);
 
                 if (visitors == null || visitors.Count == 0) return false;
-
-
-                foreach (var visitor in visitors)
-                {
-                    GuestUtility.AddNeedJoy(visitor);
-                    GuestUtility.AddNeedComfort(visitor);
-                    visitor.FixTimetable();
-                    visitor.FixDrugPolicy();
-                }
 
                 var spot = GetSpot(map, visitors.First().GetGuestArea(), visitors.First().Position);
 
@@ -300,18 +290,9 @@ namespace Hospitality
             {
                 try
                 {
-                    GenerateNewGearFor(pawn, map.Tile);
-                    if (GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(parms.spawnCenter, map, 5), map) is Pawn spawnedPawn)
-                    {
-                        spawnedPawn.needs.SetInitialLevels();
-                        if (spawnedPawn.needs?.rest != null)
-                        {
-                            spawnedPawn.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
-                        }
-
-                        spawned.Add(spawnedPawn);
-                        if (pawn.IsWorldPawn()) Find.WorldPawns.RemovePawn(pawn);
-                    }
+                    var visitor = SpawnGroupUtility.SpawnVisitor(spawned, pawn, map, parms.spawnCenter);
+                    if (visitor.needs?.rest != null) visitor.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
+                    spawned.Add(visitor);
                 }
                 catch (Exception e)
                 {
@@ -333,40 +314,6 @@ namespace Hospitality
         /// From year 1-6, increase for 0 to 6 as the optimal amount
         /// </summary>
         private static float OptimalAmount => 1 + Mathf.Clamp(GenDate.YearsPassedFloat, 0f, 5f);
-
-        private static void GenerateNewGearFor(Pawn pawn, int tile)
-        {
-            // All default, except kindDef, faction and forceAddFreeWarmLayerIfNeeded
-            var request = new PawnGenerationRequest(pawn.kindDef, pawn.Faction, PawnGenerationContext.NonPlayer,
-                tile, false, false, false, false, true, 
-                false, 1, true, true, true, false, 
-                false, false, false, null, null, 
-                0.7f);
-            PawnGenerator.RedressPawn(pawn, request);
-        }
-
-        private static void CheckVisitorsValid(List<Pawn> visitors)
-        {
-            foreach (var visitor in visitors)
-            {
-                if (visitor.TryGetComp<CompGuest>() != null) continue;
-
-                try
-                {
-                    var humanlike = (visitor.def.race.Humanlike ? "humanlike" : "not humanlike");
-                    var modName = visitor.def.modContentPack == null ? "vanilla (?)" : visitor.def.modContentPack.Name;
-
-                    Log.Error($"Spawned visitor without GuestComp: {visitor.def.defName} - {humanlike} - {modName}");
-                }
-                catch
-                {
-                    Log.Error($"Failed to get more information about {visitor.Label}.");
-                }
-
-                visitors.Remove(visitor);
-                visitor.Destroy();
-            }
-        }
 
         private static IntVec3 GetSpot(Map map, Area guestArea, IntVec3 startPos)
         {
@@ -425,7 +372,7 @@ namespace Hospitality
                 var amountS = Mathf.RoundToInt(Rand.Gaussian(visitor.Faction.PlayerGoodwill, visitor.Faction.PlayerGoodwill)*2)+Rand.Range(0, 50);
                 if (amountS > Rand.Range(10, 50))
                 {
-                    var money = CreateRandomItem(visitor, ThingDefOf.Silver);
+                    var money = SpawnGroupUtility.CreateRandomItem(visitor, ThingDefOf.Silver);
                     money.stackCount = amountS;
 
                     var spaceFor = visitor.GetInventorySpaceFor(money);
@@ -451,7 +398,7 @@ namespace Hospitality
 
                     bool apparel = Rand.Value < 0.5f;
                     ThingDef thingDef;
-                    do thingDef = GetRandomItem(visitor.Faction.def.techLevel); 
+                    do thingDef = SpawnGroupUtility.GetRandomItem(visitor.Faction.def.techLevel, ref _items); 
                     while (thingDef != null && apparel && thingDef.IsApparel);
                     if (thingDef == null) break;
 
@@ -459,7 +406,7 @@ namespace Hospitality
                     //    thingDef.stackLimit);
                     //if (amount <= 0) continue;
 
-                    var item = CreateRandomItem(visitor, thingDef);
+                    var item = SpawnGroupUtility.CreateRandomItem(visitor, thingDef);
 
                     //Log.Message(item.Label + " has this value: " + item.MarketValue);
                     if (item.Destroyed) continue;
@@ -500,63 +447,6 @@ namespace Hospitality
                     value = maxValue - totalValue;
                 }
             }
-        }
-
-        private static Thing CreateRandomItem(Pawn visitor, ThingDef thingDef)
-        {
-            ThingDef stuff = GenStuff.RandomStuffFor(thingDef);
-            var item = ThingMaker.MakeThing(thingDef, stuff);
-            item.stackCount = 1;
-
-            CompQuality compQuality = item.TryGetComp<CompQuality>();
-            compQuality?.SetQuality(QualityUtility.GenerateQualityTraderItem(), ArtGenerationContext.Outsider);
-            if (item.def.Minifiable)
-            {
-                item = item.MakeMinified();
-            }
-            if (item.def.useHitPoints)
-            {
-                // Make sure health is at least 60%. Otherwise too expensive items can become gifts.
-                const float minHealthPct = 0.6f;
-                var healthRange = visitor.kindDef.gearHealthRange;
-                healthRange.min = minHealthPct;
-                healthRange.max = Mathf.Max(minHealthPct, healthRange.max);
-
-                var healthPct = healthRange.RandomInRange;
-                if (healthPct < 1)
-                {
-                    int num = Mathf.RoundToInt(healthPct * item.MaxHitPoints);
-                    num = Mathf.Max(1, num);
-                    item.HitPoints = num;
-                }
-            }
-            return item;
-        }
-
-        private static ThingDef GetRandomItem(TechLevel techLevel)
-        {
-            if (_items == null)
-            {
-                bool Qualifies(ThingDef d) => d.category == ThingCategory.Item && d.EverStorable(true) && d.alwaysHaulable && d.thingClass != typeof(MinifiedThing) && d.tradeability != Tradeability.None && d.GetCompProperties<CompProperties_Hatcher>() == null;
-
-                _items = DefDatabase<ThingDef>.AllDefs.Where(Qualifies).ToArray();
-                //highestValue = _items.Max(i => i.BaseMarketValue);
-            }
-
-            return _items.Where(thingDef => thingDef.techLevel <= Increase(techLevel)).TryRandomElementByWeight(thingDef => TechLevelDiff(thingDef.techLevel, techLevel), out var def)
-                ? def
-                : null;
-            //return _items.RandomElementByWeight(i => highestValue + 50 - i.BaseMarketValue);
-        }
-
-        private static TechLevel Increase(TechLevel techLevel)
-        {
-            return techLevel+1;
-        }
-
-        private static float TechLevelDiff(TechLevel def, TechLevel target)
-        {
-            return (float) TechLevel.Ultra - Mathf.Abs((float) target - (float) def);
         }
 
         public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost, int duration, bool gotTrader)
