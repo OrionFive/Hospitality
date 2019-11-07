@@ -139,6 +139,10 @@
     <Compile Include="MainTab\PawnTable_Guests.cs" />
     <Compile Include="ModBaseHospitality.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacer.cs" />
+    <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacerCruise.cs" />
+    <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacerLuxury.cs" />
+    <Compile Include="SpawnGroupUtility.cs" />
     <Compile Include="StatWorker_ForcedRelationshipDamage.cs" />
     <Compile Include="ThinkNode_ConditionalWantsToHelp.cs" />
     <Compile Include="ThinkNode_InGuestArea.cs" />
