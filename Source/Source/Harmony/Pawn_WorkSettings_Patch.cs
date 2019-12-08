@@ -70,7 +70,7 @@ namespace Hospitality.Harmony
             {
                 foreach (var workTypeDef in WorkTypeDefsUtility.WorkTypeDefsInPriorityOrder)
                 {
-                    if (pawn.story.WorkTypeIsDisabled(workTypeDef))
+                    if (pawn?.story?.WorkTypeIsDisabled(workTypeDef) == true)
                     {
                         _this.Disable(workTypeDef);
                     }
