@@ -513,6 +513,12 @@ namespace Hospitality
             if (item.def.Minifiable)
             {
                 item = item.MakeMinified();
+                if (item.GetInnerIfMinified() == null)
+                {
+                    Log.ErrorOnce($"Hospitality: Tried to create minified {item.def.defName}, but InnerThing ended up being null. It is from {item.def.modContentPack.Name}.", 42896749 + item.def.debugRandomId);
+                    item.Destroy();
+                    return null;
+                }
             }
             if (item.def.useHitPoints)
             {
@@ -537,7 +543,12 @@ namespace Hospitality
         {
             if (_items == null)
             {
-                bool Qualifies(ThingDef d) => d.category == ThingCategory.Item && d.EverStorable(true) && d.alwaysHaulable && d.thingClass != typeof(MinifiedThing) && d.tradeability != Tradeability.None && d.GetCompProperties<CompProperties_Hatcher>() == null;
+                bool Qualifies(ThingDef d) => d.category == ThingCategory.Item 
+                                              && d.EverStorable(true) 
+                                              && d.alwaysHaulable 
+                                              && d.thingClass != typeof(MinifiedThing) 
+                                              && d.tradeability != Tradeability.None 
+                                              && d.GetCompProperties<CompProperties_Hatcher>() == null;
 
                 _items = DefDatabase<ThingDef>.AllDefs.Where(Qualifies).ToArray();
                 //highestValue = _items.Max(i => i.BaseMarketValue);
