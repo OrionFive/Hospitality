@@ -32,6 +32,13 @@
           </subNodes>
         </li>
 
+        <!-- If we CAN keep lying down... -->
+        <li Class="Hospitality.ThinkNode_ConditionalShouldKeepLyingDown">
+          <subNodes>
+				<li Class="Hospitality.JobGiver_Sleep" />
+          </subNodes>
+        </li>
+
 		<li Class="Hospitality.ThinkNode_InGuestArea">
 		  <invert>true</invert>
           <subNodes>

@@ -23,7 +23,7 @@ namespace Hospitality.Harmony
                         break;
                     // normal bed
                     case Building_Bed bed:
-                        if (sleeper.IsGuest()) __result = bed.Medical;
+                        if (sleeper.IsGuest()) __result = HealthAIUtility.ShouldSeekMedicalRest(sleeper) || sleeper.health.hediffSet.HasNaturallyHealingInjury();
                         break;
                 }
             }
