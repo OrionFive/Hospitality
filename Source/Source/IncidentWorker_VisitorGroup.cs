@@ -553,7 +553,8 @@ namespace Hospitality
                                               && d.alwaysHaulable 
                                               && d.thingClass != typeof(MinifiedThing) 
                                               && d.tradeability != Tradeability.None 
-                                              && d.GetCompProperties<CompProperties_Hatcher>() == null;
+                                              && d.GetCompProperties<CompProperties_Hatcher>() == null
+                                              && !WillRotSoon(d);
 
                 _items = DefDatabase<ThingDef>.AllDefs.Where(Qualifies).ToArray();
                 //highestValue = _items.Max(i => i.BaseMarketValue);
@@ -563,6 +564,11 @@ namespace Hospitality
                 ? def
                 : null;
             //return _items.RandomElementByWeight(i => highestValue + 50 - i.BaseMarketValue);
+        }
+
+        private static bool WillRotSoon(ThingDef d)
+        {
+            return d.GetCompProperties<CompProperties_Rottable>()?.daysToRotStart < 6;
         }
 
         private static TechLevel Increase(TechLevel techLevel)
