@@ -316,7 +316,11 @@ namespace Hospitality
                 catch (Exception e)
                 {
                     Log.Error($"Hospitality: Failed to spawn pawn {pawn?.Label}:\n{e.Message}\n{e.StackTrace}");
-                    if(pawn.Spawned) pawn.DestroyOrPassToWorld();
+                    if (pawn.Spawned)
+                    {
+                        pawn.DeSpawn();
+                        pawn.DestroyOrPassToWorld();
+                    }
                 }
             }
         }
