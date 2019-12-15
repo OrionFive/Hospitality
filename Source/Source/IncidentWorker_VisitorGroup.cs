@@ -427,7 +427,7 @@ namespace Hospitality
                 // Money
                 //Log.Message("Goodwill: "+visitor.Faction.ColonyGoodwill);
                 var amountS = Mathf.RoundToInt(Rand.Gaussian(visitor.Faction.PlayerGoodwill, visitor.Faction.PlayerGoodwill)*2)+Rand.Range(0, 50);
-                if (amountS > Rand.Range(10, 50))
+                if (amountS >= Rand.Range(10, 25))
                 {
                     var money = CreateRandomItem(visitor, ThingDefOf.Silver);
                     money.stackCount = amountS;
@@ -524,6 +524,7 @@ namespace Hospitality
                     return null;
                 }
             }
+
             if (item.def.useHitPoints)
             {
                 // Make sure health is at least 60%. Otherwise too expensive items can become gifts.
@@ -650,8 +651,7 @@ namespace Hospitality
 
             foreach (Thing current in ThingSetMakerDefOf.TraderStock.root.Generate(parms))
             {
-                Pawn slave = current as Pawn;
-                if (slave != null)
+                if (current is Pawn slave)
                 {
                     if (slave.Faction != pawn.Faction)
                     {
