@@ -245,7 +245,9 @@ namespace Hospitality
             }
             catch (Exception e)
             {
-                Log.Error($"Hospitality: Something failed when setting up visitors:\n{e.Message}\n{e.StackTrace}");
+                var faction = parms.faction?.Name;
+                var factionType = parms.faction?.def.label;
+                Log.Error($"Hospitality: Something failed when setting up visitors from faction {faction}({factionType}):\n{e.Message}\n{e.StackTrace}");
                 foreach (var visitor in visitors)
                 {
                     if (visitor?.Spawned == true) visitor.DestroyOrPassToWorld();
