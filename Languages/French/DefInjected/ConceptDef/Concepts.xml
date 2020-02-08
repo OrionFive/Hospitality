@@ -3,29 +3,29 @@
 
 	<rep>
 		<path>GuestBeds.label</path>
-		<trans>Lit de Visiteurs</trans>
+		<trans>Lits de visiteurs</trans>
 	</rep>
 	<rep>
 		<path>GuestBeds.helpText</path>
-		<trans>Les visiteurs préfèrent dormir dans des lits.\n\nVous pouvez convertir des lits en utilisants le bouton "Pour les visiteurs"</trans>
+		<trans>Les visiteurs préfèrent dormir dans des lits.\n\nVous pouvez convertir des lits en utilisants le bouton "Pour visiteurs"</trans>
 	</rep>
 
 	<rep>
 		<path>RecruitGuest.label</path>
-		<trans>Recruter des visiteurs</trans>
+		<trans>En train de recruter des visiteurs</trans>
 	</rep>
 	<rep>
 		<path>RecruitGuest.helpText</path>
-		<trans>Vous pouvez recruter des visiteurs\n\nrecruter un visiteur va détériorer vos relations avec la faction du visiteur. Assurez vous d'avoir un colon avec une bonne compétence en Social avec le job "Négociation"</trans>
+		<trans>Vous pouvez recruter des visiteurs\n\nRecruter coûte un certain nombre de points de "Bonne Volonté" que vous entretenez avec la faction du visiteur. Assurez-vous de la compétence "Sociabilité" du colon recruteur en sélectionnant le job "Négocier" dans l'onglet "Travail".</trans>
 	</rep>
 
 	<rep>
 		<path>GuestWork.label</path>
-		<trans>Aide des visiteurs</trans>
+		<trans>Aide des visiteurs </trans>
 	</rep>
 	<rep>
 		<path>GuestWork.helpText</path>
-		<trans>Les invités heureux aideront la colonie s'ils sont assez qualifiés. Vous pouvez désactiver ceci ou augmenter la compétence minimum requise pour travailler dans les options de mod.</trans>
+		<trans> Les visiteurs heureux peuvent aider la colonie en fonction de leur qualification. Vous pouvez désactiver, réduire ou augmenter le niveau requis de la compétence dans les options du mod. </trans>
 	</rep>
 
 	<rep>
@@ -34,7 +34,7 @@
 	</rep>
 	<rep>
 		<path>Hospitality.helpText</path>
-		<trans>Quand un groupe de visiteurs arrive, ils utiliseront vos installations, dormiront dans des lits de visiteurs et achèteront des objets dans les zones autorisées. \n\nSi ils ont apprécié leur visite, cela augmentera votre réputation auprès de leur faction.</trans>
+		<trans> Quand des visiteurs arrivent, ils utiliseront vos loisirs, dormiront dans les lits réservés aux visiteurs et achèteront des objets dans la zone commerciale. \n\nLeur appréciation du séjour déterminera votre relation avec leur faction et augmentera ou baissera les points de "Bonne volonté" que vous entretenez avec la faction des visiteurs.</trans>
 	</rep>
 
 </LanguageData>

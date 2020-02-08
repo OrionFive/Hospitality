@@ -1,84 +1,43 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-	<rep>
-		<path>GuestAngered.stages[0].label</path>
-		<trans>en colère en voyant le recrutement</trans>
-	</rep>
-	<rep>
-		<path>GuestAngered.stages[0].labelSocial</path>
-		<trans>m'a mis en colère en recrutant</trans>
-	</rep>
-	<rep>
-		<path>GuestAngered.stages[0].description</path>
-		<trans>Ces gars-là essaient de voler nos membres!</trans>
-	</rep>
+	<GuestPaidFee.stages.had_to_pay_fee.label>A du payer</GuestPaidFee.stages.had_to_pay_fee.label>
+	<GuestPaidFee.stages.had_to_pay_fee.description>J'ai du payer pour avoir un lit...</GuestPaidFee.stages.had_to_pay_fee.description>
 
-	<rep>
-		<path>GuestOffendedRelationship.stages[0].label</path>
-		<trans>insulté par un colon</trans>
-	</rep>
-	<rep>
-		<path>GuestOffendedRelationship.stages[0].labelSocial</path>
-		<trans>m'insulte</trans>
-	</rep>
-	<rep>
-		<path>GuestOffendedRelationship.stages[0].description</path>
-		<trans>Ces gars sont des perdants !</trans>
-	</rep>
+	<GuestAngered.stages.angered_by_recruitment.label>Faché du recrutement !</GuestAngered.stages.angered_by_recruitment.label>
+	<GuestAngered.stages.angered_by_recruitment.description>Ces gens essaient d'enrôler de force nos membres !</GuestAngered.stages.angered_by_recruitment.description>
+	
+	<GuestRecruitmentForced.stages.involuntarily_recruited.label>Recrutement involontaire</GuestRecruitmentForced.stages.involuntarily_recruited.label>
+	<GuestRecruitmentForced.stages.involuntarily_recruited.description>Je ne suis même pas sur(e) de rester ici.</GuestRecruitmentForced.stages.involuntarily_recruited.description>
+	
+	<GuestOffendedRelationship.stages.insulted_by_colonist.label>Offensé(e) par les colons</GuestOffendedRelationship.stages.insulted_by_colonist.label>
+	<GuestOffendedRelationship.stages.insulted_by_colonist.labelSocial>M'a offensé</GuestOffendedRelationship.stages.insulted_by_colonist.labelSocial>
+	<GuestOffendedRelationship.stages.insulted_by_colonist.description>Que des perdants !</GuestOffendedRelationship.stages.insulted_by_colonist.description>
+  
+	<GuestPleasedRelationship.stages.charmed_by_colonist.label>Fasciné(e) par les colons</GuestPleasedRelationship.stages.charmed_by_colonist.label>
+	<GuestPleasedRelationship.stages.charmed_by_colonist.labelSocial>M'a fasciné</GuestPleasedRelationship.stages.charmed_by_colonist.labelSocial>
+	<GuestPleasedRelationship.stages.charmed_by_colonist.description>Des gens tellement sympathiques !</GuestPleasedRelationship.stages.charmed_by_colonist.description>
+	
+	<EndorsedByRecruiter.stages.endorsed_by_recruiter.label>Consenti par les colons diplomates</EndorsedByRecruiter.stages.endorsed_by_recruiter.label>
+	<EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>M'a consenti</EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>
+	<EndorsedByRecruiter.stages.endorsed_by_recruiter.description>Cette personne m'a été recommandée</EndorsedByRecruiter.stages.endorsed_by_recruiter.description>
+	
+	<GuestDismissiveAttitude.stages.tired_of_talking.label>Fatigué de parler</GuestDismissiveAttitude.stages.tired_of_talking.label>
+	<GuestDismissiveAttitude.stages.tired_of_talking.description>Je vous ai trop parlé, fichez-moi la paix !</GuestDismissiveAttitude.stages.tired_of_talking.description>
+	
+	<GuestCantAffordBed.stages.cant_afford_a_bed.label>Lits trop chers !</GuestCantAffordBed.stages.cant_afford_a_bed.label>
+	<GuestCantAffordBed.stages.cant_afford_a_bed.description>Je n'ai pas les moyens de louer un lit !</GuestCantAffordBed.stages.cant_afford_a_bed.description>
+	
+	<GuestBedCount.stages.no_guest_beds.label>Pas de lits d'invités !</GuestBedCount.stages.no_guest_beds.label>
+	<GuestBedCount.stages.no_guest_beds.description>Ils n'ont même pas un seul lits pour invité ici...</GuestBedCount.stages.no_guest_beds.description>
 
-	<rep>
-		<path>GuestPleasedRelationship.stages[0].label</path>
-		<trans>charmé par un colon !</trans>
-	</rep>
-	<rep>
-		<path>GuestPleasedRelationship.stages[0].labelSocial</path>
-		<trans>me charme</trans>
-	</rep>
-	<rep>
-		<path>GuestPleasedRelationship.stages[0].description</path>
-		<trans>Des gens si sympas!</trans>
-	</rep>
+	<GuestBedCount.stages.not_enough_guest_beds.label>Pas assez de lits</GuestBedCount.stages.not_enough_guest_beds.label>
+	<GuestBedCount.stages.not_enough_guest_beds.description>Il devrait y avoid plus de lits pour invites...</GuestBedCount.stages.not_enough_guest_beds.description>
 
-	<rep>
-		<path>GuestDismissiveAttitude.stages[0].label</path>
-		<trans>fatigué de parler</trans>
-	</rep>
-	<rep>
-		<path>GuestDismissiveAttitude.stages[0].description</path>
-		<trans>J'ai fini de parler pour le moment. Laisse-moi tranquille.</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[0].label</path>
-		<trans>pas de lits pour visiteurs</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[0].description</path>
-		<trans>Ils n'ont même pas de lits ici.</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[1].label</path>
-		<trans>Pas assez de lits pour visiteurs</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[1].description</path>
-		<trans>Il devrait y avoir plus de lits pour les visiteurs.</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[2].label</path>
-		<trans>assez de lits</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[2].description</path>
-		<trans>Il y a suffisamment de lits pour visiteurs pour nous tous.</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[3].label</path>
-		<trans>beaucoup de lits</trans>
-	</rep>
-	<rep>
-		<path>GuestBedCount.stages[3].description</path>
-		<trans>Wow, tellement de lits !</trans>
-	</rep>
+	<GuestBedCount.stages.enough_beds.label>Assez de lits</GuestBedCount.stages.enough_beds.label>
+	<GuestBedCount.stages.enough_beds.description>C'est bien, il y a assez de lits pour nous tous.</GuestBedCount.stages.enough_beds.description>
 
+	<GuestBedCount.stages.lots_of_beds.label>Tant et tant de lits !</GuestBedCount.stages.lots_of_beds.label>
+	<GuestBedCount.stages.lots_of_beds.description>Il y a tellement de lits que je ne sais pas lequel choisir !</GuestBedCount.stages.lots_of_beds.description>
+	
 </LanguageData>

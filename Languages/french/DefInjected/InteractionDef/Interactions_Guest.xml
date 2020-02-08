@@ -2,42 +2,56 @@
 <!--suppress ALL -->
 <LanguageData>
 	
-	<GuestDiplomacy.label>improve relationship</GuestDiplomacy.label>
+	<GuestDiplomacy.label>Améliore les relations</GuestDiplomacy.label>
 	<GuestDiplomacy.logRulesInitiator.rulesStrings>
-		<li>r_logentry->[INITIATOR_nameDef] fait une conversation diplomatique avec [RECIPIENT_nameDef] à propos de [TalkTopicLight].</li>
-		<li>r_logentry->[INITIATOR_nameDef] discuté de la pertinence politique de [subject] avec [RECIPIENT_nameDef].</li>
+		<li>r_logentry->[INITIATOR_nameDef] a ingénieusement parlé de [TalkTopicLight] à [RECIPIENT_nameDef].</li>
+		<li>r_logentry->[INITIATOR_nameDef] n'a pas apprécié les propos de [subject] au sujet de [RECIPIENT_nameDef].</li>
+
 		<li>r_logentry->[INITIATOR_nameDef] [complimented] [RECIPIENT_nameDef] de [PersonalCharacteristic].</li>
 		<li>r_logentry->[INITIATOR_nameDef] [complimented] [RECIPIENT_nameDef] la faction.</li>
-		<li>r_logentry->[INITIATOR_nameDef] [complimented] sa relation avec [RECIPIENT_factionName].</li>
-		<li>r_logentry->[INITIATOR_nameDef] a donné des salutations à [RECIPIENT_nameDef] [PersonFamily].</li>
-		<li>r_logentry->[INITIATOR_nameDef] essayé de se lier avec [RECIPIENT_nameDef] à propos de leur partage [opinion].</li>
+		<li>r_logentry->[INITIATOR_nameDef] [complimented] la relation qu'il entretient avec [RECIPIENT_factionName].</li>
+
+		<li>r_logentry->[INITIATOR_nameDef] a salué [RECIPIENT_nameDef] de la part de [PersonFamily].</li>
+
+		<li>r_logentry->[INITIATOR_nameDef] a essayé de se lier avec [RECIPIENT_nameDef] en partageant son(sa) [opinion].</li>
 
 		<li>opinion->soutien de [ConceptPositive]</li>
 		<li>opinion->dégoût de [ConceptNegative]</li>
+
+		<li>opinion->nostalgie de [ConceptPositive]</li>
 		<li>opinion->crainte de [ConceptNegative]</li>
+
 		<li>opinion->opinion à propos de [ConceptAny]</li>
-		<li>opinion->longing for [ConceptPositive]</li>
-		<li>complimented->vanté</li>
-        <li>complimented->félicité</li>
-        <li>complimented->glorifié</li>
-        <li>complimented->applaudit</li>
-        <li>complimented->célébré</li>
-	</GuestDiplomacy.logRulesInitiator.rulesStrings>
+
+		<li>complimented->a vanté</li>
+     		<li>complimented->a félicite</li>
+        	<li>complimented->a glorifie</li>
+        	<li>complimented->a applaudit</li>
+        	<li>complimented->a célébré</li>
+
+		</GuestDiplomacy.logRulesInitiator.rulesStrings>
 
 	<CharmGuestAttempt.label>charm attempt</CharmGuestAttempt.label>
  	<CharmGuestAttempt.logRulesInitiator.rulesStrings>
+
         <li>r_logentry->[INITIATOR_nameDef] [saidwords] [RECIPIENT_nameDef].</li>
-        <li>r_logentry->[INITIATOR_nameDef] Raconte [RECIPIENT_nameDef] à propos de tous les [ConceptPositive] de [INITIATOR_factionName].</li>
-        <li>r_logentry->[INITIATOR_nameDef] Raconte [RECIPIENT_nameDef] [adjwords] des choses sur un autre colon.</li>
-        <li>r_logentry->[INITIATOR_nameDef] introduit [RECIPIENT_nameDef] à un autre colon.</li>
-        <li>saidwords->a dit [adjwords] des mots à</li>
-        <li>saidwords->exprime [ConceptPositive] vers</li>
-        <li>saidwords->fait [adjwords] des gestes vers</li>
-		<li>adjwords->intrige</li>
-		<li>adjwords->est gentil</li>
-		<li>adjwords->est attrayant</li>
-		<li>adjwords->amical</li>
-		<li>adjwords->charmant</li>
+
+        <li>r_logentry->[INITIATOR_nameDef] raconte à [RECIPIENT_nameDef] le(la) [ConceptPositive] de [INITIATOR_factionName].</li>
+
+        <li>r_logentry->[INITIATOR_nameDef] a échangé avec [RECIPIENT_nameDef] des dires [adjwords] à propos d'un autre colon.</li>
+
+        <li>r_logentry->[INITIATOR_nameDef] parle d'un autre colon à [RECIPIENT_nameDef].</li>
+
+        <li>saidwords->parle en utilisant des mots [adjwords] à</li>
+        <li>saidwords->exprime son(sa) [ConceptPositive] envers</li>
+        <li>saidwords->fait des gestes [adjwords] envers</li>
+
+		<li>adjwords->intriguants</li>
+		<li>adjwords->gentils</li>
+		<li>adjwords->attrayants</li>
+		<li>adjwords->amicaux</li>
+		<li>adjwords->charmants</li>
+
 	</CharmGuestAttempt.logRulesInitiator.rulesStrings>
 
 </LanguageData>
