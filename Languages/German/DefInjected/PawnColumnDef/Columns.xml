@@ -2,6 +2,10 @@
 <!--suppress ALL -->
 <LanguageData>
 	
+	<Faction.label>Fraktion</Faction.label>
+	<AccommodationArea.label>Aufenthaltszone</AccommodationArea.label>
+	<ShoppingArea.label>Einkaufszone</ShoppingArea.label>
+	
 	<MakeFriends.headerTip>Freundschaften aufbauen</MakeFriends.headerTip>
 	<Entertain.headerTip>Unterhalten</Entertain.headerTip>
 	<Hospitality.headerTip>Gastfreundschaft</Hospitality.headerTip>
