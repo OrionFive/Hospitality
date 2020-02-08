@@ -277,6 +277,7 @@ namespace Hospitality
         {
             var compGuest = pawn?.GetComp<CompGuest>();
             var lord = compGuest?.lord;
+            if (lord == null) return true;
             //if (!pawn.Map.lordManager.lords.Contains(lord)) return false; // invalid lord
             var job = lord?.LordJob;
             return job is LordJob_VisitColony;
