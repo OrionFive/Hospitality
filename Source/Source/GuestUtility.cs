@@ -17,6 +17,7 @@ namespace Hospitality
     internal static class GuestUtility
     {
         public static DutyDef relaxDef = DefDatabase<DutyDef>.GetNamed("Relax");
+        private static readonly TraderKindDef traderKindDef = DefDatabase<TraderKindDef>.GetNamed("Guest");
 
         private static readonly string labelRecruitSuccess = "LetterLabelMessageRecruitSuccess".Translate(); // from core
         private static readonly string labelRecruitFactionAnger = "LetterLabelRecruitFactionAnger".Translate();
@@ -936,6 +937,13 @@ namespace Hospitality
             Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
             Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), LetterDefOf.NeutralEvent, pawn, pawn.Faction);
             lordToil.JoinLate(pawn);
+        }
+
+        public static void ConvertToTrader(this Pawn pawn, bool actAsIfSpawned)
+        {
+            pawn.mindState.wantsToTradeWithColony = true;
+            PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, actAsIfSpawned);
+            pawn.trader.traderKind = traderKindDef;
         }
     }
 }

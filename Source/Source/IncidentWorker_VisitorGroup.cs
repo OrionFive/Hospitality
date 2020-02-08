@@ -21,7 +21,6 @@ namespace Hospitality
         {
             new CurvePoint(45f, 0f), new CurvePoint(50f, 1f), new CurvePoint(100f, 1f), new CurvePoint(200f, 0.25f), new CurvePoint(300f, 0.1f), new CurvePoint(500f, 0f)
         };
-        private static readonly TraderKindDef traderKindDef = DefDatabase<TraderKindDef>.GetNamed("Guest");
 
         public static float MaxPleaseAmount(float current)
         {
@@ -605,7 +604,10 @@ namespace Hospitality
                 }
             });
 
-            ConvertPawnsToTraders(pawns);
+            foreach (var pawn in pawns)
+            {
+                pawn.ConvertToTrader(true);
+            }
 
             Pawn leader = pawns.Find(x => faction.leader == x);
             string label;
@@ -627,16 +629,6 @@ namespace Hospitality
             {
                 PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref label, ref description, "LetterRelatedPawnsNeutralGroup".Translate(Faction.OfPlayer.def.pawnsPlural), true);
                 Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, pawns[0], faction);
-            }
-        }
-
-        private static void ConvertPawnsToTraders(List<Pawn> pawns)
-        {
-            foreach (var pawn in pawns)
-            {
-                pawn.mindState.wantsToTradeWithColony = true;
-                PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, true);
-                pawn.trader.traderKind = traderKindDef;
             }
         }
 
