@@ -137,5 +137,19 @@ namespace Hospitality
             if (pawn.IsWorldPawn()) Find.WorldPawns.RemovePawn(pawn);
             return spawnedPawn;
         }
+
+        public static IEnumerable<Pawn> GetKnownPawns(IncidentParms parms)
+        {
+            return Find.WorldPawns.AllPawnsAlive.Where(pawn => ValidGuest(pawn, parms.faction));
+        }
+
+        private static bool ValidGuest(Pawn pawn, Faction faction)
+        {
+            var validGuest = !pawn.Discarded && !pawn.Dead && !pawn.Spawned && !pawn.NonHumanlikeOrWildMan() && !pawn.Downed && pawn.Faction == faction;
+            // Leader only comes when relations are good
+            if (faction.leader == pawn && faction.PlayerGoodwill < 80) return false;
+
+            return validGuest;
+        }
     }
 }

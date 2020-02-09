@@ -182,14 +182,22 @@ namespace Hospitality
                 }
 
                 // Yes, ask the player for permission
-                var spawnDirection = GetSpawnDirection(map, parms.spawnCenter);
-                ShowAskMayComeDialog(parms.faction, map, reasons, spawnDirection,
-                    // Permission, spawn
-                    () => SpawnGroup(parms, map),
-                    // No permission, come again later
-                    () => { GenericUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction); });
+                void Allow() => SpawnGroup(parms, map);
+                void Refuse() => GenericUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
+
+                AskForPermission(parms, map, reasons, Allow, Refuse);
             }
             return true;
+        }
+
+        protected virtual void AskForPermission(IncidentParms parms, Map map, string reasons, Action allow, Action refuse)
+        {
+            var spawnDirection = GetSpawnDirection(map, parms.spawnCenter);
+            ShowAskMayComeDialog(parms.faction, map, reasons, spawnDirection,
+                // Permission, spawn
+                allow,
+                // No permission, come again later
+                refuse);
         }
 
         private static Direction8Way GetSpawnDirection(Map map, IntVec3 position)
@@ -251,20 +259,6 @@ namespace Hospitality
             return true; // be gone, event
         }
 
-        private static List<Pawn> GetKnownPawns(IncidentParms parms)
-        {
-            return Find.WorldPawns.AllPawnsAlive.Where(pawn => ValidGuest(pawn, parms.faction)).ToList();
-        }
-
-        private static bool ValidGuest(Pawn pawn, Faction faction)
-        {
-            var validGuest = !pawn.Discarded && !pawn.Dead && !pawn.Spawned && !pawn.NonHumanlikeOrWildMan() && !pawn.Downed && pawn.Faction == faction;
-            // Leader only comes when relations are good
-            if (faction.leader == pawn && faction.PlayerGoodwill < 80) return false;
-
-            return validGuest;
-        }
-
         protected override void ResolveParmsPoints(IncidentParms parms)
         {
             if (parms.points < 0f)
@@ -276,21 +270,8 @@ namespace Hospitality
         protected void SpawnPawns(IncidentParms parms,  List<Pawn> spawned)
         {
             var map = (Map)parms.target;
-            var options = GetKnownPawns(parms);
 
-            if (options.Count < 10)
-            {
-                // Create some new people
-                var newPawns = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false);
-                Log.Message($"Created {newPawns.Count()} new pawns.");
-                options.AddRange(newPawns);
-            }
-
-            options.Shuffle();
-
-            var amount = GetGroupSize();
-
-            var selection = options.Take(amount).ToList();
+            var selection = GetPawnsToSpawn(parms);
 
             foreach (var pawn in selection)
             {
@@ -312,25 +293,49 @@ namespace Hospitality
             }
         }
 
+        protected List<Pawn> GetPawnsToSpawn(IncidentParms parms)
+        {
+            var totalAmount = GetGroupSize();
+            int knownPawnAmount = Mathf.RoundToInt(totalAmount * ChanceToKnowEachPawn);
+            
+            var options = SpawnGroupUtility.GetKnownPawns(parms).InRandomOrder().Take(knownPawnAmount).ToList();
+
+            if (options.Count < totalAmount)
+            {
+                // Create some new people
+                int missing = totalAmount - options.Count;
+                var newPawns = GenerateNewPawns(parms, missing);
+                options.AddRange(newPawns);
+            }
+            return options;
+        }
+
+        protected virtual IEnumerable<Pawn> GenerateNewPawns(IncidentParms parms, int preferredAmount)
+        {
+            var newPawns = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false);
+            Log.Message($"Created {newPawns.Count()} new pawns for {parms.faction.Name}.");
+            return newPawns.Take(preferredAmount);
+        }
+
         protected virtual int GetGroupSize()
         {
             //Log.Message($"Optimal amount of guests = {OptimalAmount}, max = {OptimalAmount * 16f/6}");
             var random = Rand.GaussianAsymmetric(OptimalAmount, 1.5f, 16f / 6);
-            var amount = Mathf.Clamp(Mathf.CeilToInt(random), Settings.minGuestGroupSize, Settings.maxGuestGroupSize);
-            return amount;
+            return Mathf.Clamp(Mathf.CeilToInt(random), Settings.minGuestGroupSize, Settings.maxGuestGroupSize);
         }
 
         /// <summary>
         /// From year 1-6, increase for 0 to 6 as the optimal amount
         /// </summary>
         private static float OptimalAmount => 1 + Mathf.Clamp(GenDate.YearsPassedFloat, 0f, 5f);
+        protected virtual float ChanceToKnowEachPawn => 0.75f;
 
         private static IntVec3 GetSpot(Map map, Area guestArea, IntVec3 startPos)
         {
             if(map == null) throw new NullReferenceException("map is null!");
             if(map.reachability == null) throw new NullReferenceException("map.reachability is null!");
 
-            List<IntVec3> cells = new List<IntVec3>();
+            var cells = new List<IntVec3>();
             GetSpotAddGuestArea(map, guestArea, cells);
 
             GetSpotAddDropSpots(map, cells);
@@ -394,9 +399,7 @@ namespace Hospitality
                         else if(!money.Destroyed) money.Destroy();
                     }
                 }
-
-
-
+                
                 // Items
                 float maxValue = (visitor.Faction.PlayerGoodwill + 10)*Rand.Range(3, 5);
                 float value = maxValue - totalValue;
