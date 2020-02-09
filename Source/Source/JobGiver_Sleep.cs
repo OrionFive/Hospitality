@@ -8,6 +8,8 @@ namespace Hospitality
     {
         public override float GetPriority(Pawn pawn)
         {
+            if (pawn.health.hediffSet.HasNaturallyHealingInjury() || HealthAIUtility.ShouldSeekMedicalRest(pawn)) return 6;
+
             if (pawn.needs?.rest == null)
             {
                 Log.Message(pawn.Name.ToStringShort + " needs no rest...");
@@ -65,12 +67,20 @@ namespace Hospitality
             }
 
             Building_GuestBed bed = pawn.FindBedFor();
+
             if (bed != null)
             {
-                return new ThinkResult(new Job(BedUtility.jobDefClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}, this);
+                if (pawn.health.hediffSet.HasNaturallyHealingInjury() || HealthAIUtility.ShouldSeekMedicalRest(pawn))
+                {
+                    return new ThinkResult(new Job(JobDefOf.LayDown, bed), this);
+                }
+                else
+                {
+                    return new ThinkResult(new Job(BedUtility.jobDefClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}, this);
+                }
             }
             //Log.Message($"No bed available for {pawn.LabelShort}.");
-            IntVec3 vec = CellFinder.RandomClosewalkCellNear(pawn.mindState.duty.focus.Cell, pawn.MapHeld, 4);
+            IntVec3 vec = CellFinder.RandomClosewalkCellNear(pawn.Position, pawn.MapHeld, 4);
             if(!pawn.CanReserve(vec)) return ThinkResult.NoJob;
 
             return new ThinkResult(new Job(JobDefOf.LayDown, vec), this);

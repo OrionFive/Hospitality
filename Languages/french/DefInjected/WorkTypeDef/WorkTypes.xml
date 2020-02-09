@@ -2,10 +2,10 @@
 <!--suppress ALL -->
 <LanguageData>
 	
-	<Diplomat.labelShort>Négocier</Diplomat.labelShort>
-	<Diplomat.pawnLabel>Diplomate</Diplomat.pawnLabel>
-	<Diplomat.gerundLabel>Négociation</Diplomat.gerundLabel>
-	<Diplomat.description>Les diplomates divertissent les invités et recrutent de nouveaux colons.</Diplomat.description>
-	<Diplomat.verb>Manipule</Diplomat.verb>
+	<Diplomat.labelShort>Hospitalité</Diplomat.labelShort>
+	<Diplomat.pawnLabel>Diplomat</Diplomat.pawnLabel>
+	<Diplomat.gerundLabel>Accueil des visiteurs</Diplomat.gerundLabel>
+	<Diplomat.description>Les colons diplomates accueillent les visiteurs et sympathisent avec eux.</Diplomat.description>
+	<Diplomat.verb>Hospitalité</Diplomat.verb>
 
 </LanguageData>

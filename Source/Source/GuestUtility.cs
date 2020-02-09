@@ -17,6 +17,7 @@ namespace Hospitality
     internal static class GuestUtility
     {
         public static DutyDef relaxDef = DefDatabase<DutyDef>.GetNamed("Relax");
+        private static readonly TraderKindDef traderKindDef = DefDatabase<TraderKindDef>.GetNamed("Guest");
 
         private static readonly string labelRecruitSuccess = "LetterLabelMessageRecruitSuccess".Translate(); // from core
         private static readonly string labelRecruitFactionAnger = "LetterLabelRecruitFactionAnger".Translate();
@@ -55,11 +56,11 @@ namespace Hospitality
             return guestComp?.ShoppingArea != null;
         }
 
-        public static bool IsGuest(this Pawn pawn)
+        public static bool IsGuest(this Pawn pawn, bool makeValidPawnCheck = true)
         {
             try
             {
-                if (!IsValidPawn(pawn)) return false;
+                if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
                 if (!pawn.IsInVisitState()) return false;
                 return true;
             }
@@ -70,11 +71,11 @@ namespace Hospitality
             }
         }
 
-        public static bool IsTrader(this Pawn pawn)
+        public static bool IsTrader(this Pawn pawn, bool makeValidPawnCheck = true)
         {
             try
             {
-                if (!IsValidPawn(pawn)) return false;
+                if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
                 if (!pawn.IsInTraderState()) return false;
                 return true;
             }
@@ -277,6 +278,7 @@ namespace Hospitality
         {
             var compGuest = pawn?.GetComp<CompGuest>();
             var lord = compGuest?.lord;
+            if (lord == null) return true;
             //if (!pawn.Map.lordManager.lords.Contains(lord)) return false; // invalid lord
             var job = lord?.LordJob;
             return job is LordJob_VisitColony;
@@ -296,9 +298,9 @@ namespace Hospitality
             return guest.needs.mood.thoughts.memories.Memories.Any(t => t.def.defName == "GuestDismissiveAttitude");
         }
 
-        public static Pawn[] GetAllGuests(Map map)
+        public static IEnumerable<Pawn> GetAllGuests(Map map)
         {
-            return map.mapPawns.AllPawnsSpawned.Where(IsGuest).ToArray();
+            return map.mapPawns.AllPawnsSpawned.Where(p => p.IsGuest());
         }
 
         public static void AddNeedJoy(Pawn pawn)
@@ -883,7 +885,7 @@ namespace Hospitality
 
         public static void CheckForRogueGuests(Map map)
         {
-            var pawns = map.mapPawns.AllPawnsSpawned.Where(p => p.GetPosture() == PawnPosture.Standing && !HealthAIUtility.ShouldSeekMedicalRest(p)).Where(GuestHasNoLord).ToArray();
+            var pawns = map.mapPawns.AllPawnsSpawned.Where(p => p.GetPosture() == PawnPosture.Standing && !HealthAIUtility.ShouldSeekMedicalRest(p) && !p.health.hediffSet.HasNaturallyHealingInjury()).Where(GuestHasNoLord).ToArray();
 
             foreach (var pawn in pawns)
             {
@@ -907,7 +909,7 @@ namespace Hospitality
             Log.Message($"Creating a temporary lord for {pawn.Label} of faction {(pawn.Faction != null ? pawn.Faction.Name : "null")}.");
             Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), LetterDefOf.NeutralEvent, pawn, pawn.Faction);
             var duration = (int)(Rand.Range(0.5f, 1f) * GenDate.TicksPerDay);
-            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false, duration, false);
+            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false, duration);
         }
 
         private static bool GuestHasNoLord(Pawn pawn)
@@ -935,6 +937,13 @@ namespace Hospitality
             Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
             Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), LetterDefOf.NeutralEvent, pawn, pawn.Faction);
             lordToil.JoinLate(pawn);
+        }
+
+        public static void ConvertToTrader(this Pawn pawn, bool actAsIfSpawned)
+        {
+            pawn.mindState.wantsToTradeWithColony = true;
+            PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, actAsIfSpawned);
+            pawn.trader.traderKind = traderKindDef;
         }
     }
 }

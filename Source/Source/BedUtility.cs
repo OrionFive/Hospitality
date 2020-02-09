@@ -4,7 +4,6 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 using static UnityEngine.Mathf;
-using Log = Verse.Log;
 
 namespace Hospitality
 {

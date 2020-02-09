@@ -231,14 +231,20 @@ namespace Hospitality
                 GiveItems(visitors);
 
                 var stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
-                CreateLord(parms.faction, spot, visitors, map, true, true, stayDuration, Rand.Value < 0.75f);
+                CreateLord(parms.faction, spot, visitors, map, true, true, stayDuration);
             }
             catch (Exception e)
             {
-                Log.Error($"Hospitality: Something failed when setting up visitors:\n{e.Message}\n{e.StackTrace}");
+                var faction = parms.faction?.Name;
+                var factionType = parms.faction?.def.label;
+                Log.Error($"Hospitality: Something failed when setting up visitors from faction {faction}({factionType}):\n{e.Message}\n{e.StackTrace}");
                 foreach (var visitor in visitors)
                 {
-                    if (visitor?.Spawned == true) visitor.DestroyOrPassToWorld();
+                    if (visitor?.Spawned == true)
+                    {
+                        visitor.DeSpawn();
+                        visitor.DestroyOrPassToWorld();
+                    }
                 }
                 GenericUtility.PlanNewVisit(map, Rand.Range(1f, 3f), parms.faction);
             }
@@ -297,7 +303,11 @@ namespace Hospitality
                 catch (Exception e)
                 {
                     Log.Error($"Hospitality: Failed to spawn pawn {pawn?.Label}:\n{e.Message}\n{e.StackTrace}");
-                    if(pawn.Spawned) pawn.DestroyOrPassToWorld();
+                    if (pawn.Spawned)
+                    {
+                        pawn.DeSpawn();
+                        pawn.DestroyOrPassToWorld();
+                    }
                 }
             }
         }
@@ -370,7 +380,7 @@ namespace Hospitality
                 // Money
                 //Log.Message("Goodwill: "+visitor.Faction.ColonyGoodwill);
                 var amountS = Mathf.RoundToInt(Rand.Gaussian(visitor.Faction.PlayerGoodwill, visitor.Faction.PlayerGoodwill)*2)+Rand.Range(0, 50);
-                if (amountS > Rand.Range(10, 50))
+                if (amountS >= Rand.Range(10, 25))
                 {
                     var money = SpawnGroupUtility.CreateRandomItem(visitor, ThingDefOf.Silver);
                     money.stackCount = amountS;
@@ -449,7 +459,7 @@ namespace Hospitality
             }
         }
 
-        public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost, int duration, bool gotTrader)
+        public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost, int duration)
         {
             var mapComp = Hospitality_MapComponent.Instance(map);
 
@@ -470,93 +480,32 @@ namespace Hospitality
                 }
             });
 
-            int traderIndex = 0;
-            if (gotTrader)
+            foreach (var pawn in pawns)
             {
-                gotTrader = TryConvertOnePawnToSmallTrader(pawns, faction, map, out traderIndex);
+                pawn.ConvertToTrader(true);
             }
-            Pawn pawn = pawns.Find(x => faction.leader == x);
+
+            Pawn leader = pawns.Find(x => faction.leader == x);
             string label;
             string description;
             if (pawns.Count == 1)
             {
-                string value = (!gotTrader) ? String.Empty : ("\n\n" + "SingleVisitorArrivesTraderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN"));
-                string value2 = (pawn == null) ? String.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN"));
+                string value2 = (leader == null) ? string.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0]));
                 label = "LetterLabelSingleVisitorArrives".Translate();
-                description = "SingleVisitorArrives".Translate(pawns[0].story.Title, faction.Name, pawns[0].Name.ToStringFull, value, value2, pawns[0].Named("PAWN")).AdjustedFor(pawns[0], "PAWN");
+                description = "SingleVisitorArrives".Translate(pawns[0].story.Title, faction.Name, pawns[0].Name.ToStringFull, string.Empty, value2, pawns[0].Named("PAWN")).AdjustedFor(pawns[0]);
             }
             else
             {
-                string value3 = (!gotTrader) ? String.Empty : ("\n\n" + "GroupVisitorsArriveTraderInfo".Translate());
-                string value4 = (pawn == null) ? String.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(pawn.LabelShort, pawn));
+                string value4 = (leader == null) ? string.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(leader.LabelShort, leader));
                 label = "LetterLabelGroupVisitorsArrive".Translate();
-                description = "GroupVisitorsArrive".Translate(faction.Name, value3, value4);
+                description = "GroupVisitorsArrive".Translate(faction.Name, string.Empty, value4);
             }
 
             if (showLetter)
             {
                 PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref label, ref description, "LetterRelatedPawnsNeutralGroup".Translate(Faction.OfPlayer.def.pawnsPlural), true);
-                var lookTarget = gotTrader ? pawns[traderIndex] : pawns[0];
-                Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, lookTarget, faction);
+                Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, pawns[0], faction);
             }
-        }
-
-        private static bool TryConvertOnePawnToSmallTrader(List<Pawn> pawns, Faction faction, Map map, out int traderIndex)
-        {
-            if (faction.def.visitorTraderKinds.NullOrEmpty())
-            {
-                traderIndex = 0;
-                return false;
-            }
-            Pawn pawn = pawns.RandomElement();
-            Lord lord = pawn.GetLord();
-            pawn.mindState.wantsToTradeWithColony = true;
-            PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, true);
-            TraderKindDef traderKindDef = faction.def.visitorTraderKinds.RandomElementByWeight(traderDef => traderDef.commonality);
-            pawn.trader.traderKind = traderKindDef;
-            pawn.inventory.DestroyAll();
-
-            pawn.TryGiveBackpack();
-
-            var parms = default(ThingSetMakerParams);
-            parms.traderDef = traderKindDef;
-            parms.tile = map.Tile;
-            parms.traderFaction = faction;
-
-            foreach (Thing current in ThingSetMakerDefOf.TraderStock.root.Generate(parms))
-            {
-                Pawn slave = current as Pawn;
-                if (slave != null)
-                {
-                    if (slave.Faction != pawn.Faction)
-                    {
-                        slave.SetFaction(pawn.Faction);
-                    }
-                    IntVec3 loc = CellFinder.RandomClosewalkCellNear(pawn.Position, lord.Map, 5);
-                    GenSpawn.Spawn(slave, loc, lord.Map);
-                    lord.AddPawn(slave);
-                }
-                else
-                {
-                    var spaceFor = pawn.GetInventorySpaceFor(current);
-
-                    if (current.Destroyed) continue;
-                    if (spaceFor <= 0)
-                    {
-                        current.Destroy();
-                        continue;
-                    }
-                    current.stackCount = spaceFor;
-
-                    // Core stuff
-                    if (!pawn.inventory.innerContainer.TryAdd(current))
-                    {
-                        current.Destroy();
-                    }
-                }
-            }
-            traderIndex = pawns.IndexOf(pawn);
-            return true;
         }
 
         public static bool BedCheck(Map map)

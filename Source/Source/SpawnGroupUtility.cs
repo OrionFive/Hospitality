@@ -56,6 +56,12 @@ namespace Hospitality
             if (item.def.Minifiable)
             {
                 item = item.MakeMinified();
+                if (item.GetInnerIfMinified() == null)
+                {
+                    Log.ErrorOnce($"Hospitality: Tried to create minified {item.def.defName}, but InnerThing ended up being null. It is from {item.def.modContentPack.Name}.", 42896749 + item.def.debugRandomId);
+                    item.Destroy();
+                    return null;
+                }
             }
             if (item.def.useHitPoints)
             {
@@ -80,7 +86,13 @@ namespace Hospitality
         {
             if (itemsCache == null)
             {
-                bool Qualifies(ThingDef d) => d.category == ThingCategory.Item && d.EverStorable(true) && d.alwaysHaulable && d.thingClass != typeof(MinifiedThing) && d.tradeability != Tradeability.None && d.GetCompProperties<CompProperties_Hatcher>() == null;
+                bool Qualifies(ThingDef d) => d.category == ThingCategory.Item 
+                                              && d.EverStorable(true) 
+                                              && d.alwaysHaulable 
+                                              && d.thingClass != typeof(MinifiedThing) 
+                                              && d.tradeability != Tradeability.None 
+                                              && d.GetCompProperties<CompProperties_Hatcher>() == null
+                                              && !d.WillRotSoon();
 
                 itemsCache = DefDatabase<ThingDef>.AllDefs.Where(Qualifies).ToArray();
             }
@@ -88,6 +100,11 @@ namespace Hospitality
             return itemsCache.Where(thingDef => thingDef.techLevel <= Increase(techLevel)).TryRandomElementByWeight(thingDef => TechLevelDiff(thingDef.techLevel, techLevel), out var def)
                 ? def
                 : null;
+        }
+
+        private static bool WillRotSoon(this ThingDef d)
+        {
+            return d.GetCompProperties<CompProperties_Rottable>()?.daysToRotStart < 6;
         }
 
         private static TechLevel Increase(TechLevel techLevel)
@@ -110,7 +127,7 @@ namespace Hospitality
 
         public static Pawn SpawnVisitor(List<Pawn> spawned, Pawn pawn, Map map, IntVec3 location)
         {
-            SpawnGroupUtility.GenerateNewGearFor(pawn, map.Tile);
+            GenerateNewGearFor(pawn, map.Tile);
             var spawnedPawn = (Pawn)GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(location, map, 5), map);
 
             spawnedPawn.SetupAsVisitor();

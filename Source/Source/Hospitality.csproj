@@ -75,6 +75,8 @@
     <Compile Include="Harmony\GatheringsUtility_Patch.cs" />
     <Compile Include="Harmony\JobDriver_Patch.cs" />
     <Compile Include="Harmony\MentalStateHandler_Patch.cs" />
+    <Compile Include="Harmony\OverlayDrawer_Patch.cs" />
+    <Compile Include="Harmony\Pawn_MindState_Patch.cs" />
     <Compile Include="Harmony\ThingFilter_Patch.cs" />
     <Compile Include="Harmony\PawnNameColorUtility_Patch.cs" />
     <Compile Include="Harmony\Pawn_ApparelTracker_Patch.cs" />
@@ -144,6 +146,7 @@
     <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacerLuxury.cs" />
     <Compile Include="SpawnGroupUtility.cs" />
     <Compile Include="StatWorker_ForcedRelationshipDamage.cs" />
+    <Compile Include="ThinkNode_ConditionalShouldKeepLyingDown.cs" />
     <Compile Include="ThinkNode_ConditionalWantsToHelp.cs" />
     <Compile Include="ThinkNode_InGuestArea.cs" />
     <Compile Include="ThoughtWorker_Beds.cs" />
