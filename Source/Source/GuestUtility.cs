@@ -56,11 +56,11 @@ namespace Hospitality
             return guestComp?.ShoppingArea != null;
         }
 
-        public static bool IsGuest(this Pawn pawn)
+        public static bool IsGuest(this Pawn pawn, bool makeValidPawnCheck = true)
         {
             try
             {
-                if (!IsValidPawn(pawn)) return false;
+                if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
                 if (!pawn.IsInVisitState()) return false;
                 return true;
             }
@@ -71,11 +71,11 @@ namespace Hospitality
             }
         }
 
-        public static bool IsTrader(this Pawn pawn)
+        public static bool IsTrader(this Pawn pawn, bool makeValidPawnCheck = true)
         {
             try
             {
-                if (!IsValidPawn(pawn)) return false;
+                if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
                 if (!pawn.IsInTraderState()) return false;
                 return true;
             }
@@ -298,9 +298,9 @@ namespace Hospitality
             return guest.needs.mood.thoughts.memories.Memories.Any(t => t.def.defName == "GuestDismissiveAttitude");
         }
 
-        public static Pawn[] GetAllGuests(Map map)
+        public static IEnumerable<Pawn> GetAllGuests(Map map)
         {
-            return map.mapPawns.AllPawnsSpawned.Where(IsGuest).ToArray();
+            return map.mapPawns.AllPawnsSpawned.Where(p => p.IsGuest());
         }
 
         public static void AddNeedJoy(Pawn pawn)
