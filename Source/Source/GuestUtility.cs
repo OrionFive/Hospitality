@@ -61,8 +61,7 @@ namespace Hospitality
             try
             {
                 if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
-                if (!pawn.IsInVisitState()) return false;
-                return true;
+                return pawn.IsInVisitState();
             }
             catch(Exception e)
             {
@@ -76,8 +75,7 @@ namespace Hospitality
             try
             {
                 if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
-                if (!pawn.IsInTraderState()) return false;
-                return true;
+                return pawn.IsInTraderState();
             }
             catch(Exception e)
             {
@@ -277,8 +275,8 @@ namespace Hospitality
         private static bool IsInVisitState(this Pawn pawn)
         {
             var compGuest = pawn?.GetComp<CompGuest>();
-            var lord = compGuest?.lord;
-            if (lord == null) return true;
+            if (compGuest == null) return false;
+            var lord = compGuest.lord;
             //if (!pawn.Map.lordManager.lords.Contains(lord)) return false; // invalid lord
             var job = lord?.LordJob;
             return job is LordJob_VisitColony;

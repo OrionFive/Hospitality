@@ -14,7 +14,7 @@ namespace Hospitality.Harmony {
             [HarmonyPrefix]
             public static bool Prefix(ref Color __result, Pawn pawn)
             {
-                if (!pawn.IsGuest()) return true;
+                if (!pawn.IsGuest() || pawn.IsTrader(false)) return true;
                 if (pawn.Faction == null) return true;
 
                 __result = pawn.Faction.Color;

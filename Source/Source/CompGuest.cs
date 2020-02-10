@@ -97,6 +97,12 @@ namespace Hospitality
             bed = null;
         }
 
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            lord = Pawn.GetLord();
+        }
+
         public void Arrive()
         {
             arrived = true;
