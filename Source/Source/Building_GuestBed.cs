@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -53,10 +53,10 @@ namespace Hospitality
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
-            foreach (var owner in owners.ToArray())
+            foreach (var owner in OwnersForReading.ToArray())
             {
                 owner.ownership.UnclaimBed();
-                owners.Clear();
+                OwnersForReading.Clear();
             }
             var room = Position.GetRoom(Map);
             base.DeSpawn(mode);
@@ -93,19 +93,19 @@ namespace Hospitality
             stringBuilder.Append(FeeString);
             
             stringBuilder.AppendLine();
-            if (owners.Count == 0)
+            if (OwnersForReading.Count == 0)
             {
                 stringBuilder.Append($"{"Owner".Translate()}: {"Nobody".Translate()}");
             }
-            else if (owners.Count == 1)
+            else if (OwnersForReading.Count == 1)
             {
-                stringBuilder.Append($"{"Owner".Translate()}: {owners[0].LabelShortCap}");
+                stringBuilder.Append($"{"Owner".Translate()}: {OwnersForReading[0].LabelShortCap}");
             }
             else
             {
                 stringBuilder.Append("Owners".Translate() + ": ");
                 bool notFirst = false;
-                foreach (var owner in owners)
+                foreach (var owner in OwnersForReading)
                 {
                     if (notFirst)
                     {
@@ -196,23 +196,23 @@ namespace Hospitality
             {
                 Color defaultThingLabelColor = GenMapUI.DefaultThingLabelColor;
 
-                if (!owners.Any())
+                if (!OwnersForReading.Any())
                 {
                     GenMapUI.DrawThingLabel(this, rentalFee + silverLabel, defaultThingLabelColor);
                 }
-                else if (owners.Count == 1)
+                else if (OwnersForReading.Count == 1)
                 {
-                    if (owners[0].InBed() && owners[0].CurrentBed() == this) return;
-                    GenMapUI.DrawThingLabel(this, owners[0].LabelShort, defaultThingLabelColor);
+                    if (OwnersForReading[0].InBed() && OwnersForReading[0].CurrentBed() == this) return;
+                    GenMapUI.DrawThingLabel(this, OwnersForReading[0].LabelShort, defaultThingLabelColor);
                 }
                 else
                 {
-                    for (int index = 0; index < owners.Count; ++index)
+                    for (int index = 0; index < OwnersForReading.Count; ++index)
                     {
-                        if (!owners[index].InBed() || owners[index].CurrentBed() != this || !(owners[index].Position == GetSleepingSlotPos(index)))
+                        if (!OwnersForReading[index].InBed() || OwnersForReading[index].CurrentBed() != this || !(OwnersForReading[index].Position == GetSleepingSlotPos(index)))
                         {
                             var pos = Traverse.Create(this).Method("GetMultiOwnersLabelScreenPosFor", index).GetValue<Vector3>();
-                            GenMapUI.DrawThingLabel(pos, owners[index].LabelShort, defaultThingLabelColor);
+                            GenMapUI.DrawThingLabel(pos, OwnersForReading[index].LabelShort, defaultThingLabelColor);
                         }
                     }
                 }

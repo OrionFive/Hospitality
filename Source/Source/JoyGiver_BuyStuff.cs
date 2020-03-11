@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -112,7 +112,7 @@ namespace Hospitality
             {
                 // Weapon is also good!
                 appFactor = 1;
-                if (pawn.RaceProps.Humanlike && pawn.story.WorkTagIsDisabled(WorkTags.Violent)) return 0;
+                if (pawn.RaceProps.Humanlike && pawn.WorkTagIsDisabled(WorkTags.Violent)) return 0;
                 if (!pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)) return 0;
                 if (!AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEquip")) return 0;
             }

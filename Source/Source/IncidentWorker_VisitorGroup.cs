@@ -488,17 +488,17 @@ namespace Hospitality
             }
 
             Pawn leader = pawns.Find(x => faction.leader == x);
-            string label;
-            string description;
+            TaggedString label;
+            TaggedString description;
             if (pawns.Count == 1)
             {
-                string value2 = (leader == null) ? string.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0]));
+                string value2 = (leader == null) ? string.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0]).ToString());
                 label = "LetterLabelSingleVisitorArrives".Translate();
                 description = "SingleVisitorArrives".Translate(pawns[0].story.Title, faction.Name, pawns[0].Name.ToStringFull, string.Empty, value2, pawns[0].Named("PAWN")).AdjustedFor(pawns[0]);
             }
             else
             {
-                string value4 = (leader == null) ? string.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(leader.LabelShort, leader));
+                string value4 = (leader == null) ? string.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(leader.LabelShort, leader).ToString());
                 label = "LetterLabelGroupVisitorsArrive".Translate();
                 description = "GroupVisitorsArrive".Translate(faction.Name, string.Empty, value4);
             }

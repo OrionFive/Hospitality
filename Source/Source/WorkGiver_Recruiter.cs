@@ -16,7 +16,7 @@ namespace Hospitality
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            return pawn?.story?.WorkTagIsDisabled(def.workType.workTags) ?? true;
+            return pawn?.WorkTagIsDisabled(def.workType.workTags) ?? true;
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)

@@ -11,3 +11,8 @@ ExportedObj/
 *.svd
 Source/.idea/
 Source/.vs/
+
+
+Assemblies/
+Source/packages
+Source/Source/packages.*
