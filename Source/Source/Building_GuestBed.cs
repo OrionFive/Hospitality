@@ -53,10 +53,11 @@ namespace Hospitality
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
-            foreach (var owner in OwnersForReading.ToArray())
+            foreach (var owner in CompAssignableToPawn.AssignedPawnsForReading.ToArray())
             {
                 owner.ownership.UnclaimBed();
-                OwnersForReading.Clear();
+                // not sure if there the CompAssignableToPawn changes in the loop? Why would it be cleared every iteration?
+                CompAssignableToPawn.ForceRemovePawn(owner);
             }
             var room = Position.GetRoom(Map);
             base.DeSpawn(mode);

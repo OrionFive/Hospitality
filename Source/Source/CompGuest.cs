@@ -85,7 +85,7 @@ namespace Hospitality
                 // Can't save lord (IExposable), so we just gotta find it each time
                 lord = Pawn.GetLord();
                 // Bed doesn't store owners
-                if(bed != null && !bed.OwnersForReading.Contains(Pawn)) bed.OwnersForReading.Add(Pawn);
+                if(bed != null && !bed.OwnersForReading.Contains(Pawn)) bed.CompAssignableToPawn.TryAssignPawn(Pawn);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Hospitality
         /// </summary>
         internal void ClearOwnership()
         {
-            bed?.OwnersForReading.Remove(Pawn);
+            bed?.CompAssignableToPawn.TryUnassignPawn(Pawn);
             bed = null;
         }
 
@@ -138,8 +138,8 @@ namespace Hospitality
 
             Pawn.ownership.UnclaimBed();
             // @@@@Attention
-            // not sure how this will work as its probably intended as a readonly
-            newBed.OwnersForReading.Add(Pawn);
+
+            newBed.CompAssignableToPawn.TryAssignPawn(Pawn);
             bed = newBed;
             //Log.Message($"{Pawn.LabelShort} proudly claims {newBed.Label}!");
         }
