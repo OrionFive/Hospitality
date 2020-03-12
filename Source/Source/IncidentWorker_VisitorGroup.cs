@@ -41,7 +41,8 @@ namespace Hospitality
 
         protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
         {
-            return !f.IsPlayer && !f.defeated && !f.def.hidden && !f.HostileTo(Faction.OfPlayer);
+            return !f.IsPlayer && !f.defeated && !f.def.hidden && !f.HostileTo(Faction.OfPlayer) 
+                   && f.def.pawnGroupMakers != null && f.def.pawnGroupMakers.Any(x => x.kindDef == PawnGroupKindDef);
         }
 
         private static bool CheckCanCome(Map map, Faction faction, out TaggedString reasons)

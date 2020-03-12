@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationFindMod">
+	  <mods>
+		<li>Royalty</li>
+	  </mods>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/FactionDef[defName = "Empire"]/pawnGroupMakers</xpath>
+        <value>
+		  <li>
+			<kindDef>Peaceful</kindDef>
+			<options>
+			  <Villager>3</Villager>
+			  <Empire_Fighter_Trooper>10</Empire_Fighter_Trooper>
+			  <Empire_Fighter_Cataphract>2</Empire_Fighter_Cataphract>
+			  <Empire_Fighter_Janissary>3</Empire_Fighter_Janissary>
+			  <Empire_Fighter_Champion>4</Empire_Fighter_Champion>
+			</options>
+		  </li>
+        </value>
+	  </match>
+	</Operation>
+</Patch>

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
@@ -23,7 +22,7 @@ namespace Hospitality
             {
                 if (factionDef.pawnGroupMakers?.Any(pgm => pgm.kindDef.defName == "Peaceful") != true)
                 {
-                    LogMisconfiguration(factionDef, $"FactionDef {factionDef.defName} must have at least one pawnGroupMaker with kindDef 'Peaceful', or 'permanentEnemy', 'isPlayer' or 'hidden' must be set to true.");
+                    LogMisconfiguration(factionDef, $"FactionDef {factionDef.defName} must have at least one pawnGroupMaker with kindDef 'Peaceful', or 'permanentEnemy', 'isPlayer' or 'hidden' should be set to true. Otherwise no guests from this faction will arrive.");
                 }
             }
         }
