@@ -17,9 +17,10 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(ReservationManager __instance, Pawn claimant, LocalTargetInfo target)
             {
-                // @@@@Attention
-                // what is going on here?
+                // We disable the error message entirely, it does no harm
                 return false;
+
+                // Code for only disabling it for guests:
                 //if (claimant.IsGuest()) return false;
                 
                 //Pawn pawn = __instance.FirstRespectedReserver(target, claimant);

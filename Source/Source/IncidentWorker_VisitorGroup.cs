@@ -44,7 +44,7 @@ namespace Hospitality
             return !f.IsPlayer && !f.defeated && !f.def.hidden && !f.HostileTo(Faction.OfPlayer);
         }
 
-        private static bool CheckCanCome(Map map, Faction faction, out string reasons)
+        private static bool CheckCanCome(Map map, Faction faction, out TaggedString reasons)
         {
             var fallout = map.GameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout);
             var hostileFactions = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed && !IsFogged(p)).Select(p => p.Faction).Where(p =>
@@ -57,7 +57,7 @@ namespace Hospitality
 
             if (temp && !fallout && !winter && !hostileFactions.Any() && beds) return true; // All clear, don't ask
 
-            var reasonList = new List<string>();
+            var reasonList = new List<TaggedString>();
             if (!beds) reasonList.Add("- " + "VisitorsArrivedReasonNoBeds".Translate());
             if (fallout) reasonList.Add("- " + GameConditionDefOf.ToxicFallout.LabelCap);
             if (winter) reasonList.Add("- " + GameConditionDefOf.VolcanicWinter.LabelCap);
@@ -78,29 +78,25 @@ namespace Hospitality
             return pawn.MapHeld.fogGrid.IsFogged(pawn.PositionHeld);
         }
 
-        private static void ShowAskMayComeDialog(Faction faction, Map map, string reasons, Direction8Way spawnDirection, Action allow, Action refuse)
+        private static void ShowAskMayComeDialog(Faction faction, Map map, TaggedString reasons, Direction8Way spawnDirection, Action allow, Action refuse)
         {
-            string text = "VisitorsArrivedDesc".Translate(faction, reasons);
+            var text = "VisitorsArrivedDesc".Translate(faction, reasons);
 
             DiaNode diaNode = new DiaNode(text);
-            DiaOption diaOption = new DiaOption("VisitorsArrivedAccept".Translate());
-            diaOption.action = allow;
-            diaOption.resolveTree = true;
+            DiaOption diaOption = new DiaOption("VisitorsArrivedAccept".Translate()) {action = allow, resolveTree = true};
             diaNode.options.Add(diaOption);
 
-            DiaOption diaOption2 = new DiaOption("VisitorsArrivedRefuse".Translate());
-            diaOption2.action = refuse;
-            diaOption2.resolveTree = true;
+            DiaOption diaOption2 = new DiaOption("VisitorsArrivedRefuse".Translate()) {action = refuse, resolveTree = true};
             diaNode.options.Add(diaOption2);
 
             if (!map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Any())
             {
                 DiaOption diaOption3 = new DiaOption("VisitorsArrivedRefuseUntilBeds".Translate());
+                diaOption3.resolveTree = true;
                 diaOption3.action = () => {
                     Hospitality_MapComponent.RefuseGuestsUntilWeHaveBeds(map);
                     refuse();
                 };
-                diaOption3.resolveTree = true;
                 diaNode.options.Add(diaOption3);
             }
 
@@ -492,13 +488,13 @@ namespace Hospitality
             TaggedString description;
             if (pawns.Count == 1)
             {
-                string value2 = (leader == null) ? string.Empty : ("\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0]).ToString());
+                var value2 = leader == null ? TaggedString.Empty : "\n\n" + "SingleVisitorArrivesLeaderInfo".Translate(pawns[0].Named("PAWN")).AdjustedFor(pawns[0]);
                 label = "LetterLabelSingleVisitorArrives".Translate();
                 description = "SingleVisitorArrives".Translate(pawns[0].story.Title, faction.Name, pawns[0].Name.ToStringFull, string.Empty, value2, pawns[0].Named("PAWN")).AdjustedFor(pawns[0]);
             }
             else
             {
-                string value4 = (leader == null) ? string.Empty : ("\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(leader.LabelShort, leader).ToString());
+                var value4 = leader == null ? TaggedString.Empty : "\n\n" + "GroupVisitorsArriveLeaderInfo".Translate(leader.LabelShort, leader);
                 label = "LetterLabelGroupVisitorsArrive".Translate();
                 description = "GroupVisitorsArrive".Translate(faction.Name, string.Empty, value4);
             }

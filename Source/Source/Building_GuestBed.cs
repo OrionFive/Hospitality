@@ -53,10 +53,10 @@ namespace Hospitality
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
+            // Creating copy for iteration, since list changes during loop
             foreach (var owner in CompAssignableToPawn.AssignedPawnsForReading.ToArray())
             {
                 owner.ownership.UnclaimBed();
-                // not sure if there the CompAssignableToPawn changes in the loop? Why would it be cleared every iteration?
                 CompAssignableToPawn.ForceRemovePawn(owner);
             }
             var room = Position.GetRoom(Map);
@@ -94,7 +94,7 @@ namespace Hospitality
             stringBuilder.Append(FeeString);
             
             stringBuilder.AppendLine();
-            if (OwnersForReading.Count == 0)
+            if (!OwnersForReading.Any())
             {
                 stringBuilder.Append($"{"Owner".Translate()}: {"Nobody".Translate()}");
             }
