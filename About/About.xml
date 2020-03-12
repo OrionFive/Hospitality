@@ -15,9 +15,9 @@ You can also improve your relationship with visiting factions and sell items to 
 
 Errors and bugs: If you get errors, most likely Hospitality is clashing with another mod you're using.
 
-So to help me fix bugs, please describe clearly what happened. I also need a log. You create it by pressing Ctrl-F12 after you get an error or the problem first occurs. You'll get a link that you can post with your description.
+So to help me fix bugs, please describe clearly what happened. I also need a log. You create it by pressing Ctrl-F12 after you get an error or the problem first occurs. You'll get a link that you can post with your description. 
 
-Hospitality requires the HugsLib mod to be loaded first. Hospitality should be loaded as late as possible in the load order.
+Hospitality should be loaded as late as possible in the load order.
   </description>
 
   <modDependencies>
