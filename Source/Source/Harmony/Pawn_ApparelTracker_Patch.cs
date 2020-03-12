@@ -19,7 +19,7 @@ namespace Hospitality.Harmony
         {
             // Targeting specific overload with ref!
             [UsedImplicitly]
-            static MethodBase TargetMethod()
+            private static MethodBase TargetMethod()
             {
                 return AccessTools.Method(typeof(Pawn_ApparelTracker), "TryDrop", new[] {typeof(Apparel), typeof(Apparel).MakeByRefType(), typeof(IntVec3), typeof(bool)});
             }
@@ -27,7 +27,6 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Replacement(Pawn_ApparelTracker __instance, ref bool __result, Apparel ap, ref Apparel resultingAp, ThingOwner<Apparel> ___wornApparel)
             {
-                Log.Message("Drop overloaded");
                 if (!__instance.pawn.IsGuest()) return true;
 
                 __result = ___wornApparel.TryTransferToContainer(ap, __instance.pawn.inventory.innerContainer);
