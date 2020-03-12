@@ -101,8 +101,7 @@ namespace Hospitality
                 diaNode.options.Add(diaOption3);
             }
 
-            var location = ((MapParent) map.ParentHolder).Label;
-            string title = "VisitorsArrivedTitle".Translate(location, spawnDirection.LabelShort());
+            string title = "VisitorsArrivedTitle".Translate(new NamedArgument((MapParent)map.ParentHolder, "WORLDOBJECT"), spawnDirection.LabelShort());
             Find.WindowStack.Add(new Dialog_NodeTree(diaNode, true, true, title));
         }
 

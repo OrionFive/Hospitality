@@ -37,7 +37,7 @@
   <VisitorsReturnNotSoon>Sie werden nicht so bald zurückkommen.</VisitorsReturnNotSoon>
   <VisitorsReturnNot>Sie haben genug von dir und werden diesen Ort in Zukunft meiden.</VisitorsReturnNot>
 
-  <VisitorsArrivedTitle>Besucher sind in {0} angekommen (von {1})</VisitorsArrivedTitle>
+  <VisitorsArrivedTitle>Besucher sind in {WORLDOBJECT_label} angekommen (von {1})</VisitorsArrivedTitle>
   <VisitorsArrivedDesc>Sie haben Angst, aus folgenden Gründen in dein Gebiet einzureisen:\n{1}\n\nWenn du sie wegschickst, bleiben sie in der Gegend und kommen später zurück.</VisitorsArrivedDesc>
   <VisitorsArrivedAccept>Gewähre Sicherheit</VisitorsArrivedAccept>
   <VisitorsArrivedRefuse>Schicke sie weg</VisitorsArrivedRefuse>
@@ -52,7 +52,7 @@
   <LetterLabelHappyGuestJoins>{PAWN_labelShort} möchte bleiben</LetterLabelHappyGuestJoins>
   <HappyGuestJoins>{PAWN_labelShort} von {0} hat mit {PAWN_possessive}er Fraktion ausgehandelt, dass er als Botschafter bleiben darf. Dies wirkt sich nicht negatief auf die Beziehung mit {PAWN_possessive}er Fraktion aus.\n\nDu hast Zeit zu entscheiden, bis die Gruppe geht.</HappyGuestJoins>
 
-  <GuestBoughtItem>Ein Mitglied von {0} hat {ITEM_label} für {1} Silber gekauft.</GuestBoughtItem>
+  <GuestBoughtItem>Ein Mitglied von {FACTION_name} hat {ITEM_label} für {1} Silber gekauft.</GuestBoughtItem>
 
   <!-- Communication -->
   <InviteGuests>Einladung für einen Besuch</InviteGuests>
@@ -77,7 +77,7 @@
   <Hospitality>Gastfreundschaft</Hospitality>
   <MakeDefault>Allen Gästen zuweisen</MakeDefault>
   <SendAway>Wegschicken...</SendAway>
-  <SendAwayQuestion>Bist du sicher die Besucher von {0} wegzuschicken?\nWenn du sie sofort nach dem Erscheinen wegschickst, hat dies keine Auswirkungen auf die Beziehungen.</SendAwayQuestion>
+  <SendAwayQuestion>Bist du sicher die Besucher von {FACTION_name} wegzuschicken?\nWenn du sie sofort nach dem Erscheinen wegschickst, hat dies keine Auswirkungen auf die Beziehungen.</SendAwayQuestion>
   <Recruit>Rekrutieren...</Recruit>
   <RecruitQuestion>Du kannst {PAWN_nameDef} jetzt rekrutieren.\n\nWeil {PAWN_pronoun} ausreichend Freunde hat, kostet dich dies nur {0} Beziehungspunkte mit {PAWN_possessive}er Fraktion.{1}\n\n\nBist du sicher, dass du {PAWN_objective} rekrutieren möchtest?</RecruitQuestion>
   <ForceRecruit>Rekrutierung erzwingen...</ForceRecruit>

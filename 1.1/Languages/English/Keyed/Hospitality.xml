@@ -37,7 +37,7 @@
   <VisitorsReturnNotSoon>They won't come back any time soon.</VisitorsReturnNotSoon>
   <VisitorsReturnNot>They've had enough of you.</VisitorsReturnNot>
 
-  <VisitorsArrivedTitle>Visitors have arrived at {0} (from {1})</VisitorsArrivedTitle>
+  <VisitorsArrivedTitle>Visitors have arrived at {WORLDOBJECT_label} (from {1})</VisitorsArrivedTitle>
   <VisitorsArrivedDesc>They are afraid to enter your territory for the following reasons:\n{1}\n\nIf you send them away they will stay in the area and come back later.</VisitorsArrivedDesc>
   <VisitorsArrivedAccept>Ensure safety</VisitorsArrivedAccept>
   <VisitorsArrivedRefuse>Send away</VisitorsArrivedRefuse>
@@ -52,7 +52,7 @@
   <LetterLabelHappyGuestJoins>{PAWN_labelShort} wants to stay</LetterLabelHappyGuestJoins>
   <HappyGuestJoins>{PAWN_labelShort} of {0} made a deal with {PAWN_possessive} faction to let them join you as an ambassador. It will not worsen the relationship with {PAWN_possessive} faction.\n\nYou have time to decide until they leave.</HappyGuestJoins>
   
-  <GuestBoughtItem>A member of {0} has bought {ITEM_label} for {1} silver.</GuestBoughtItem>
+  <GuestBoughtItem>A member of {FACTION_name} has bought {ITEM_label} for {1} silver.</GuestBoughtItem>
 
   <!-- Communication -->
   <InviteGuests>Invite for a visit</InviteGuests>
@@ -77,7 +77,7 @@
   <Hospitality>Hospitality</Hospitality>
   <MakeDefault>Make Default</MakeDefault>
   <SendAway>Send away...</SendAway>
-  <SendAwayQuestion>Are you sure you want to send the visitors from {0} away?\nIf you send them away immediately after appearing, this will have no effect on relations.</SendAwayQuestion>
+  <SendAwayQuestion>Are you sure you want to send the visitors from {FACTION_name} away?\nIf you send them away immediately after appearing, this will have no effect on relations.</SendAwayQuestion>
   <Recruit>Recruit...</Recruit>
   <RecruitQuestion>You can recruit {PAWN_nameDef} now.\n\nBecause {PAWN_pronoun} has enough friends, this only costs you {0} points of relationship with {PAWN_possessive} faction.{1}\n\n\nAre you sure you want to recruit {PAWN_objective}?</RecruitQuestion>
   <ForceRecruit>Force recruit...</ForceRecruit>

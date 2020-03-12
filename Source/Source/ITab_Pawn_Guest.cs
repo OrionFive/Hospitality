@@ -16,7 +16,7 @@ namespace Hospitality
         private static readonly string txtForceRecruit = "ForceRecruit".Translate();
         private static readonly string txtRecruit = "Recruit".Translate();
         private static readonly string txtSendAway = "SendAway".Translate();
-        private static readonly string txtSendAwayQuestion = "SendAwayQuestion".Translate();
+        private static readonly string txtSendAwayQuestion = "SendAwayQuestion";
         private static readonly string txtMakeDefaultTooltip = "MakeDefaultTooltip".Translate();
         private static readonly string txtRecruitTooltip = "RecruitTooltip".Translate();
         private static readonly string txtForceRecruitTooltip = "ForceRecruitTooltip".Translate();
@@ -237,7 +237,7 @@ namespace Hospitality
 
         private static void SendHomeDialog(Lord lord)
         {
-            var text = string.Format(txtSendAwayQuestion, lord.faction.Name);
+            var text = txtSendAwayQuestion.Translate(new NamedArgument(lord.faction, "FACTION"));
             Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => SendHome(lord)));
         }
 
