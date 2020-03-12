@@ -135,7 +135,7 @@ namespace Hospitality
             // Add some visits
             float days = Rand.Range(10f, 16f); // initial delay
             int amount = Rand.Range(1, 4);
-            foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && f != Faction.OfPlayer && !f.HostileTo(Faction.OfPlayer)).OrderBy(f => GetTravelDays(f, map)))
+            foreach (var faction in Find.FactionManager.AllFactionsVisible.Where(f => !f.IsPlayer && !f.defeated && !f.HostileTo(Faction.OfPlayer)).OrderBy(f => GetTravelDays(f, map)))
             {
                 amount--;
                 Log.Message(faction.GetCallLabel() + " are coming after " + days + " days.");

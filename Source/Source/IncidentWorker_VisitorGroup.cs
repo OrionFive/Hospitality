@@ -148,6 +148,11 @@ namespace Hospitality
                 return true;
             }
 
+            if (parms.faction.defeated)
+            {
+                Log.Message($"Trying to spawn visitors of faction {parms.faction.Name}, but they have been defeated.");
+                return true;
+            }
 
             if (Settings.disableGuests || map.mapPawns.ColonistCount == 0)
             {
