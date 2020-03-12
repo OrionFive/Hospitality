@@ -12,12 +12,9 @@ namespace Hospitality.Harmony
     /// So guests will put apparel in their inventory that they would otherwise drop
     /// </summary>
      
-    // @@@@Attention
-    // this is the current method which is failing upon loading. Might be a good place to start on (after the foreach bed comps thingo)
-
     public static class Pawn_ApparelTracker_Patch
     {
-        [HarmonyPatch(typeof(Pawn_ApparelTracker), "TryDrop")]
+        [HarmonyPatch]
         public class TryDrop
         {
             // Targeting specific overload with ref!
@@ -30,6 +27,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Replacement(Pawn_ApparelTracker __instance, ref bool __result, Apparel ap, ref Apparel resultingAp, ThingOwner<Apparel> ___wornApparel)
             {
+                Log.Message("Drop overloaded");
                 if (!__instance.pawn.IsGuest()) return true;
 
                 __result = ___wornApparel.TryTransferToContainer(ap, __instance.pawn.inventory.innerContainer);
