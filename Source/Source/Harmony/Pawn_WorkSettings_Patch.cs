@@ -1,5 +1,5 @@
 using System.Linq;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 using Source = RimWorld.Pawn_WorkSettings;
@@ -70,7 +70,7 @@ namespace Hospitality.Harmony
             {
                 foreach (var workTypeDef in WorkTypeDefsUtility.WorkTypeDefsInPriorityOrder)
                 {
-                    if (pawn?.story?.WorkTypeIsDisabled(workTypeDef) == true)
+                    if(pawn?.WorkTypeIsDisabled(workTypeDef) == true)
                     {
                         _this.Disable(workTypeDef);
                     }

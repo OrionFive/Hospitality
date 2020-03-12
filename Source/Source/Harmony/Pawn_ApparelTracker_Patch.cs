@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
@@ -11,6 +11,10 @@ namespace Hospitality.Harmony
     /// <summary>
     /// So guests will put apparel in their inventory that they would otherwise drop
     /// </summary>
+     
+    // @@@@Attention
+    // this is the current method which is failing upon loading. Might be a good place to start on (after the foreach bed comps thingo)
+
     public static class Pawn_ApparelTracker_Patch
     {
         [HarmonyPatch(typeof(Pawn_ApparelTracker), "TryDrop")]

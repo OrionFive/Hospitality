@@ -1,4 +1,4 @@
-using Harmony;
+using HarmonyLib;
 using Source = Verse.ModContentPack;
 
 namespace Hospitality.Harmony

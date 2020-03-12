@@ -40,8 +40,8 @@ namespace Hospitality
             var request = new PawnGenerationRequest(pawn.kindDef, pawn.Faction, PawnGenerationContext.NonPlayer,
                 mapTile, false, false, false, false, true, 
                 false, 1, true, true, true, false, 
-                false, false, false, null, null, 
-                0.7f);
+                false, false, false, false, 0, null, 0.7f, null, null, null);
+
             PawnGenerator.RedressPawn(pawn, request);
         }
 

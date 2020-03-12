@@ -49,7 +49,7 @@ namespace Hospitality
             var impressiveness = RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness)); // 0 - 100 (and more)
             var fee = RoundToInt(money > 0 ? 125 * bed.rentalFee / money : 0); // 0 - 125
             var roomType = GetRoomTypeScore(room) * 2; // -100 - 100
-            var otherPawnOpinion = bed.owners.Any() ? bed.owners.Where(owner => owner != guest).Sum(owner => guest.relations.OpinionOf(owner) - 15) * 4 : 0;
+            var otherPawnOpinion = bed.OwnersForReading.Any() ? bed.OwnersForReading.Where(owner => owner != guest).Sum(owner => guest.relations.OpinionOf(owner) - 15) * 4 : 0;
             var temperature = GetTemperatureScore(guest, room); // -200 - 0
 
             // Traits

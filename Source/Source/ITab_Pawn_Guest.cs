@@ -229,7 +229,7 @@ namespace Hospitality
             var penalty = forced ? pawn.ForcedRecruitPenalty() : pawn.RecruitPenalty();
             int finalGoodwill = Mathf.Clamp(pawn.Faction.PlayerGoodwill - penalty, -100, 100);
 
-            string warning = finalGoodwill <= DiplomacyTuning.BecomeHostileThreshold ? "ForceRecruitWarning".Translate() : string.Empty;
+            string warning = finalGoodwill <= DiplomacyTuning.BecomeHostileThreshold ? "ForceRecruitWarning".Translate().ToString() : string.Empty;
 
             var text = (forced ? "ForceRecruitQuestion" : "RecruitQuestion").Translate(penalty, warning, new NamedArgument(pawn, "PAWN"));
             Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => GuestUtility.Recruit(pawn, penalty, forced)));

@@ -1,4 +1,4 @@
-using Harmony;
+using HarmonyLib;
 using Verse;
 using Verse.AI;
 
@@ -17,13 +17,15 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(ReservationManager __instance, Pawn claimant, LocalTargetInfo target)
             {
+                // @@@@Attention
+                // what is going on here?
                 return false;
-                if (claimant.IsGuest()) return false;
+                //if (claimant.IsGuest()) return false;
                 
-                Pawn pawn = __instance.FirstRespectedReserver(target, claimant);
-                if (pawn.IsGuest()) return false;
+                //Pawn pawn = __instance.FirstRespectedReserver(target, claimant);
+                //if (pawn.IsGuest()) return false;
 
-                return true;
+                //return true;
             }
         }
     }
