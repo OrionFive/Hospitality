@@ -14,28 +14,27 @@ namespace Hospitality.Harmony
         public class CurrentExpectationForPawn
         {
             [HarmonyPostfix]
-            public static void Postfix(ref ExpectationDef __result, Pawn p)
+            public static void Postfix(ref ExpectationDef __result, Pawn p, List<ExpectationDef> ___wealthExpectationsInOrder)
             {
                 if (__result == null) return; // Original method aborted, so will we
                 if (p.IsGuest())
                 {
-                    __result = CurrentExpectationFor(p.MapHeld);
+                    __result = CurrentExpectationFor(p.MapHeld, ___wealthExpectationsInOrder);
                 }
             }
 
             // Copied
-            private static ExpectationDef CurrentExpectationFor(Map m)
+            private static ExpectationDef CurrentExpectationFor(Map map, List<ExpectationDef> wealthExpectations)
             {
-                float wealthTotal = m.wealthWatcher.WealthTotal * 2; // Doubled for guests
-                var list = Traverse.Create(typeof(ExpectationsUtility)).Field("expectationsInOrder").GetValue<List<ExpectationDef>>(); // had to add
-                foreach (ExpectationDef expectationDef in list) 
+                float wealthTotal = map.wealthWatcher.WealthTotal * 2; // Doubled for guests
+                foreach (ExpectationDef expectationDef in wealthExpectations) 
                 {
                     if (wealthTotal < expectationDef.maxMapWealth)
                     {
                         return expectationDef;
                     }
                 }
-                return list[list.Count - 1];
+                return wealthExpectations[wealthExpectations.Count - 1];
             }
         }
     }
