@@ -58,7 +58,7 @@ namespace Hospitality
 
             if (temp && !fallout && !winter && !hostileFactions.Any() && beds) return true; // All clear, don't ask
 
-            var reasonList = new List<TaggedString>();
+            var reasonList = new List<string>(); // string, so we can check for Distinct later
             if (!beds) reasonList.Add("- " + "VisitorsArrivedReasonNoBeds".Translate());
             if (fallout) reasonList.Add("- " + GameConditionDefOf.ToxicFallout.LabelCap);
             if (winter) reasonList.Add("- " + GameConditionDefOf.VolcanicWinter.LabelCap);
@@ -68,7 +68,7 @@ namespace Hospitality
             {
                 reasonList.Add("- " + f.def.pawnsPlural.CapitalizeFirst());
             }
-            
+
             reasons = reasonList.Distinct().Aggregate((a, b) => a+"\n"+b);
             return false; // Do ask
     

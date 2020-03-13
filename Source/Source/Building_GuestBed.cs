@@ -24,6 +24,7 @@ namespace Hospitality
    
         public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
 
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -54,12 +55,11 @@ namespace Hospitality
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             // Creating copy for iteration, since list changes during loop
-            foreach (var owner in CompAssignableToPawn.AssignedPawnsForReading.ToArray())
+            foreach (var owner in OwnersForReading.ToArray())
             {
                 owner.ownership.UnclaimBed();
-                CompAssignableToPawn.ForceRemovePawn(owner);
             }
-            var room = Position.GetRoom(Map);
+            var room = this.GetRoom();
             base.DeSpawn(mode);
             room?.Notify_RoomShapeOrContainedBedsChanged();
         }

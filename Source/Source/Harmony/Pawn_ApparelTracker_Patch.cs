@@ -19,7 +19,7 @@ namespace Hospitality.Harmony
         {
             // Targeting specific overload with ref!
             [UsedImplicitly]
-            private static MethodBase TargetMethod()
+            public static MethodBase TargetMethod()
             {
                 return AccessTools.Method(typeof(Pawn_ApparelTracker), "TryDrop", new[] {typeof(Apparel), typeof(Apparel).MakeByRefType(), typeof(IntVec3), typeof(bool)});
             }

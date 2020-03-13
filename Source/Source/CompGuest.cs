@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
@@ -90,11 +92,22 @@ namespace Hospitality
         }
 
         /// <summary>
-        /// Only call by Pawn_Ownership_Patch!
+        /// Only call from Pawn_Ownership_Patch!
         /// </summary>
         internal void ClearOwnership()
         {
-            bed?.CompAssignableToPawn.TryUnassignPawn(Pawn);
+            // Calling this method directly crashes the game (infinite loop, somehow). So here's a copy.
+            Action<CompAssignableToPawn> TryUnassignPawn = comp => {
+                var assignedPawns = Traverse.Create(comp).Field<List<Pawn>>("assignedPawns").Value;
+                if (!assignedPawns.Contains(Pawn)) return;
+                assignedPawns.Remove(Pawn);
+                Traverse.Create(comp).Method("SortAssignedPawns").GetValue();
+            };
+
+            if (bed?.CompAssignableToPawn != null)
+            {
+                TryUnassignPawn.Invoke(bed?.CompAssignableToPawn);
+            }
             bed = null;
         }
 
