@@ -401,7 +401,7 @@ namespace Hospitality
                 }
                 
                 // Items
-                float maxValue = (visitor.Faction.PlayerGoodwill + 10)*Rand.Range(3, 5);
+                float maxValue = (visitor.Faction.PlayerGoodwill + 10)*Rand.Range(5, 8);
                 float value = maxValue - totalValue;
                 int curCount = 0;
                 while (value > 100 && curCount < 200)
