@@ -109,7 +109,15 @@
   <CommandBedIncreaseFeeDesc>Erhöhe die Gebühr um {0}. Gäste die dieses Bett mieten bekommen einen {1} Stimmungsabzug.</CommandBedIncreaseFeeDesc>
   <CommandBedDecreaseFeeLabel>-{0}</CommandBedDecreaseFeeLabel>
   <CommandBedDecreaseFeeDesc>Verringere die Gebühr um {0}. Gäste die dieses Bett mieten bekommen einen {1} Stimmungsabzug.</CommandBedDecreaseFeeDesc>
-  
+  <BedAttractiveness>Attraktivität: {0}</BedAttractiveness>
+
+  <!-- Alerts -->
+  <AlertCantClaimBed>Gast kann kein Bett reservieren</AlertCantClaimBed>
+  <AlertCantClaimBedDesc>Diese Gäste können es sich nicht leisten ein Bett zu reservieren und sind jetzt traurig:\n\n{0}\nBiete günstigere Betten an oder schenke ihnen etwas Silber.\nFraktionen mit einer besseren Beziehung bringen mehr Silber mit.</AlertCantClaimBedDesc>
+  <AlertNotEnoughBeds>Nicht genügend Gästebetten</AlertNotEnoughBeds>
+  <AlertNotEnoughBedsDesc>Für diese Gäste sind keine Betten mehr verfügbar:\n\n{0}\nDu solltest weitere Betten für Gäste anbieten.</AlertNotEnoughBedsDesc>
+
+
   <!-- Settings -->
   <DisableLimits>Deaktiviere Optionslimits</DisableLimits>
   <DisableLimitsDesc>Wenn diese Option aktiviert ist, können die Einstellungen für ein faires Spiel weiter anpassen werden</DisableLimitsDesc>

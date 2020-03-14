@@ -41,15 +41,14 @@ namespace Hospitality
 
         private static float BedValue(Building_GuestBed bed, Pawn guest, int money)
         {
-            // Stats
-            var room = bed.GetRoom();
-            //QualityCategory category;
-            if (!bed.TryGetQuality(out QualityCategory category)) category = QualityCategory.Normal;
-            var quality = ((int) category - 2) * 25; // -50 - 100
-            var impressiveness = RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness)); // 0 - 100 (and more)
+            StaticBedValue(bed, out var room, out var quality, out var impressiveness, out var roomType);
+
             var fee = RoundToInt(money > 0 ? 125 * bed.rentalFee / money : 0); // 0 - 125
-            var roomType = GetRoomTypeScore(room) * 2; // -100 - 100
+
+            // Shared
             var otherPawnOpinion = bed.OwnersForReading.Any() ? bed.OwnersForReading.Where(owner => owner != guest).Sum(owner => guest.relations.OpinionOf(owner) - 15) * 4 : 0;
+            
+            // Temperature
             var temperature = GetTemperatureScore(guest, room); // -200 - 0
 
             // Traits
@@ -88,6 +87,17 @@ namespace Hospitality
             //Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
             //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
             return value;
+        }
+
+        public static int StaticBedValue(Building_GuestBed bed, out Room room, out int quality, out int impressiveness, out int roomType)
+        {
+            room = bed.GetRoom();
+            
+            if (!bed.TryGetQuality(out QualityCategory category)) category = QualityCategory.Normal;
+            quality = ((int) category - 2) * 25;
+            impressiveness = RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness));
+            roomType = GetRoomTypeScore(room) * 2;
+            return quality + impressiveness + roomType;
         }
 
         private static float GetTemperatureScore(Pawn guest, Room room)

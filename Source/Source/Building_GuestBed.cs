@@ -21,6 +21,7 @@ namespace Hospitality
         private string silverLabel = " " + ThingDefOf.Silver.label;
 
         public string FeeString => rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
+        public string AttractivenessString => "BedAttractiveness".Translate(BedUtility.StaticBedValue(this, out _, out _, out _, out _)-rentalFee);
    
         public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
 
@@ -89,7 +90,10 @@ namespace Hospitality
             var stringBuilder = new StringBuilder();
             //stringBuilder.Append(base.GetInspectString());
             stringBuilder.Append(InspectStringPartsFromComps());
-            
+
+            stringBuilder.AppendLine();
+            stringBuilder.Append(AttractivenessString);
+
             stringBuilder.AppendLine();
             stringBuilder.Append(FeeString);
             
