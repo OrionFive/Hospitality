@@ -68,17 +68,11 @@ namespace Hospitality.Harmony
                 return false;
             }
 
-            private static Building_Bed GetGuestBed(Pawn pawn)
-            {
-                var compGuest = pawn.GetComp<CompGuest>();
-                return compGuest?.bed;
-            }
-
             // Added
             private static bool AddedBedIsOwned(Pawn pawn, Building_Bed building_Bed)
             {
                 return pawn.IsGuest() 
-                    ? GetGuestBed(pawn) == building_Bed 
+                    ? BedUtility.GetGuestBed(pawn) == building_Bed 
                     : building_Bed == pawn.ownership.OwnedBed;
             }
         }

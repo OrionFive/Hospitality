@@ -39,6 +39,7 @@ namespace Hospitality
             Scribe_Values.Look(ref getUpsetWhenLost, "getUpsetWhenLost", true);
         }
 
+        /*
         // Can't change the graph - not backwards compatible :(
         public override StateGraph CreateGraph()
         {
@@ -97,11 +98,9 @@ namespace Hospitality
             graphArrive.transitions.Add(t7);
 
             return graphArrive;
-        }
+        }*/
 
-        // TODO: Use this if we have move to a new version, it's cleaned up
-        /*
-        public override StateGraph CreateGraphNew()
+        public override StateGraph CreateGraph()
         {
             StateGraph graphArrive = new StateGraph();
             StateGraph graphExit = new LordJob_TravelAndExit(IntVec3.Invalid).CreateGraph();
@@ -174,7 +173,7 @@ namespace Hospitality
             //graphExit.AddTransition(t9);
 
             return graphArrive;
-        }*/
+        }
 
         private static void StopPawns(IEnumerable<Pawn> pawns)
         {
@@ -188,6 +187,8 @@ namespace Hospitality
         public override void Notify_PawnLost(Pawn pawn, PawnLostCondition condition)
         {
             if (condition == PawnLostCondition.ExitedMap) return;
+
+            pawn.Map.GetMapComponent().OnGuestLeft(pawn);
 
             if (!lord.ownedPawns.Any())
             {

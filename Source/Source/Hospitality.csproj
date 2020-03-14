@@ -84,6 +84,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alert_Guest.cs" />
+    <Compile Include="Alert_GuestCantClaimBed.cs" />
+    <Compile Include="Alert_GuestNotEnoughBeds.cs" />
+    <Compile Include="Alert_GuestThought.cs" />
     <Compile Include="BedUtility.cs" />
     <Compile Include="ChoiceLetter_GuestJoinRequest.cs" />
     <Compile Include="DefsUtility.cs" />

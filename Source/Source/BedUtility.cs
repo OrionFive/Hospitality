@@ -115,5 +115,11 @@ namespace Hospitality
             if (area == null) return map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>();
             return map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Where(b => area[b.Position]);
         }
+
+        public static Building_Bed GetGuestBed(Pawn pawn)
+        {
+            var compGuest = pawn.GetComp<CompGuest>();
+            return compGuest?.bed;
+        }
     }
 }
