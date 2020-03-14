@@ -32,7 +32,7 @@ namespace Hospitality {
             var beds = pawn.MapHeld.GetGuestBeds(pawn.GetGuestArea()).ToArray();
             if(beds.Length == 0) return ThoughtState.Inactive;
 
-            return !beds.Any(bed => bed.rentalFee <= money);
+            return !beds.Any(bed => bed.rentalFee <= money && bed.AnyUnownedSleepingSlot);
         }
     }
 }
