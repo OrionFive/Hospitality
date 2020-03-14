@@ -18,7 +18,6 @@ namespace Hospitality.Harmony
                 if (!__instance.pawn.IsGuest()) return;
 
                 __instance.pawn.ConvertToTrader(false);
-                Log.Message($"Converted {__instance.pawn.LabelShort} to trader again.");
             }
         }
     }

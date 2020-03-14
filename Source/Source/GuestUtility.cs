@@ -24,8 +24,8 @@ namespace Hospitality
         private static readonly string labelRecruitFactionPlease = "LetterLabelRecruitFactionPlease".Translate();
         private static readonly string labelRecruitFactionChiefAnger = "LetterLabelRecruitFactionChiefAnger".Translate();
         private static readonly string labelRecruitFactionChiefPlease = "LetterLabelRecruitFactionChiefPlease".Translate();
-        private static readonly string txtRecruitSuccess = "MessageGuestRecruitSuccess".Translate();
-        private static readonly string txtForcedRecruit = "MessageGuestForcedRecruit".Translate();
+        private static readonly string txtRecruitSuccess = "MessageGuestRecruitSuccess";
+        private static readonly string txtForcedRecruit = "MessageGuestForcedRecruit";
         private static readonly string txtRecruitFactionAnger = "RecruitFactionAnger".Translate();
         private static readonly string txtRecruitFactionPlease = "RecruitFactionPlease".Translate();
         private static readonly string txtRecruitFactionAngerLeaderless = "RecruitFactionAngerLeaderless".Translate();
@@ -420,7 +420,7 @@ namespace Hospitality
             if(forced)
                 GainThought(guest, ThoughtDef.Named("GuestRecruitmentForced"));
 
-            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, Format(forced ? txtForcedRecruit : txtRecruitSuccess, guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
+            Find.LetterStack.ReceiveLetter(labelRecruitSuccess, (forced ? txtForcedRecruit : txtRecruitSuccess).Translate(guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
 
             AngerFactionMembers(guest);
             RecruitingSuccess(guest, recruitPenalty);
@@ -435,7 +435,7 @@ namespace Hospitality
                     guest.Faction.TryAffectGoodwillWith(Faction.OfPlayer, -recruitPenalty, false, true, null, guest);
                     if (recruitPenalty >= 1)
                     {
-                        //Log.Message("txtRecruitFactionAnger");
+                        // TODO: Use Translate instead of Format
                         string message;
                         if (guest.Faction.leader != null)
                         {
@@ -450,7 +450,7 @@ namespace Hospitality
                     }
                     else if (recruitPenalty <= -1)
                     {
-                        //Log.Message("txtRecruitFactionPlease");
+                        // TODO: Use Translate instead of Format
                         string message;
                         if (guest.Faction.leader != null)
                         {

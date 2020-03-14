@@ -231,7 +231,7 @@ namespace Hospitality
 
             var warning = finalGoodwill <= DiplomacyTuning.BecomeHostileThreshold ? "ForceRecruitWarning".Translate() : TaggedString.Empty;
 
-            var text = (forced ? "ForceRecruitQuestion" : "RecruitQuestion").Translate(penalty, warning, new NamedArgument(pawn, "PAWN"));
+            var text = (forced ? "ForceRecruitQuestion" : "RecruitQuestion").Translate(penalty.ToString("##0"), ColoredText.Colorize(warning, ColoredText.FactionColor_Hostile), new NamedArgument(pawn, "PAWN"));
             Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => GuestUtility.Recruit(pawn, penalty, forced)));
         }
 
