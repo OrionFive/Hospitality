@@ -490,11 +490,19 @@ namespace Hospitality
             var lord = guest.GetLord();
             if (lord?.ownedPawns.Count > 1)
             {
+                // Inventory
                 for (int i = guest.inventory.innerContainer.Count - 1; i >= 0; i--)
                 {
                     var item = guest.inventory.innerContainer[i];
                     var randomOther = lord.ownedPawns.Where(p => p != guest).RandomElement();
                     guest.inventory.innerContainer.TryTransferToContainer(item, randomOther.inventory.innerContainer);
+                }
+                // Equipment
+                for (int i = guest.equipment.AllEquipmentListForReading.Count - 1; i >= 0; i--)
+                {
+                    var item = guest.equipment.AllEquipmentListForReading[i];
+                    var randomOther = lord.ownedPawns.Where(p => p != guest).RandomElement();
+                    guest.equipment.TryTransferEquipmentToContainer(item, randomOther.inventory.innerContainer);
                 }
             }
             guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
