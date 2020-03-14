@@ -366,7 +366,7 @@ namespace Hospitality
         {
             if(map.areaManager == null) throw new NullReferenceException("map.areaManager is null!");
 
-            if (guestArea?.ActiveCells.Any() != true) guestArea = Hospitality_MapComponent.Instance(map).defaultAreaRestriction;
+            if (guestArea?.ActiveCells.Any() != true) guestArea = map.GetMapComponent().defaultAreaRestriction;
             if (guestArea?.ActiveCells.Any() != true) guestArea = map.areaManager.Home;
 
             cells.AddRange(guestArea.ActiveCells);
@@ -464,7 +464,7 @@ namespace Hospitality
 
         public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost, int duration)
         {
-            var mapComp = Hospitality_MapComponent.Instance(map);
+            var mapComp = map.GetMapComponent();
 
             var lordJob = new LordJob_VisitColony(faction, chillSpot, duration, getUpsetWhenLost);
             var lord = LordMaker.MakeNewLord(faction, lordJob, map, pawns);
@@ -514,7 +514,7 @@ namespace Hospitality
         public static bool BedCheck(Map map)
         {
             if (map == null) return false;
-            var mapComp = Hospitality_MapComponent.Instance(map);
+            var mapComp = map.GetMapComponent();
 
             if (!mapComp.refuseGuestsUntilWeHaveBeds) return true;
             if (!map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Any()) return false;

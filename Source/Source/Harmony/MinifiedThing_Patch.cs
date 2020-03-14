@@ -17,7 +17,7 @@ namespace Hospitality.Harmony
                 if (__instance.InnerThing?.def?.Minifiable != true)
                 {
                     // Destroy next tick
-                    ModBaseHospitality.RegisterTickAction(DestroySafely(__instance));
+                    HospitalityModBase.RegisterTickAction(DestroySafely(__instance));
                     return false;
                 }
                 return true;

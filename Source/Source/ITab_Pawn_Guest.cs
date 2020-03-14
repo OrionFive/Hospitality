@@ -267,7 +267,7 @@ namespace Hospitality
             Map map = SelPawn.MapHeld;
             if (map == null) return;
 
-            var mapComp = Hospitality_MapComponent.Instance(map);
+            var mapComp = map.GetMapComponent();
 
             if (pawn.GetComp<CompGuest>() != null)
             {

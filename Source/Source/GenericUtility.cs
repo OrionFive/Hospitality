@@ -156,7 +156,7 @@ namespace Hospitality
 
             incidentParms.faction = faction;
             var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
-            Hospitality_MapComponent.Instance(realMap).QueueIncident(incident, afterDays);
+            GetMapComponent(realMap).QueueIncident(incident, afterDays);
         }
 
         public static void TryCreateVisit(Map map, float days, Faction faction, float travelFactor = 1)
@@ -202,6 +202,11 @@ namespace Hospitality
         public static bool OnlyOneBed(this Room room)
         {
             return room.ContainedBeds.Count() <= 1;
+        }
+
+        public static Hospitality_MapComponent GetMapComponent(this Map map)
+        {
+            return map.GetComponent<Hospitality_MapComponent>() ?? new Hospitality_MapComponent(true, map);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Hospitality.Harmony
                     optionNoHostiles.Disable("GuestsCantBeHostile".Translate());
                     return optionNoHostiles;
                 }
-                var nextVisit = Hospitality_MapComponent.Instance(map).GetNextVisit(faction);
+                var nextVisit = map.GetMapComponent().GetNextVisit(faction);
                 float travelDays = GenericUtility.GetTravelDays(faction, map);
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
                 if (travelDays == GenericUtility.NoBasesLeft)

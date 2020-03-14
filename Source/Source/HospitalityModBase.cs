@@ -6,7 +6,7 @@ using Verse;
 
 namespace Hospitality
 {
-    internal class ModBaseHospitality : ModBase
+    internal class HospitalityModBase : ModBase
     {
         private static List<Action> TickActions = new List<Action>();
 
@@ -53,9 +53,10 @@ namespace Hospitality
         public override void WorldLoaded()
         {
             ToggleTabIfNeeded();
+            foreach (var map in Find.Maps) map.GetMapComponent().Initialize();
         }
 
-        private void ToggleTabIfNeeded()
+        private static void ToggleTabIfNeeded()
         {
             DefDatabase<MainButtonDef>.GetNamed("Guests").buttonVisible = !Hospitality.Settings.disableGuestsTab;
         }

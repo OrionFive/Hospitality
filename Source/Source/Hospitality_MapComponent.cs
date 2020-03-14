@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 
@@ -8,13 +8,6 @@ namespace Hospitality
 {
     public class Hospitality_MapComponent : MapComponent
     {
-        public static Hospitality_MapComponent Instance(Map map)
-        {
-            {
-                return map.GetComponent<Hospitality_MapComponent>() ?? new Hospitality_MapComponent(true, map);
-            }
-        }
-
         private IncidentQueue incidentQueue = new IncidentQueue();
         public bool defaultEntertain;
         public bool defaultMakeFriends;
@@ -24,47 +17,49 @@ namespace Hospitality
         private int nextQueueInspection;
         private int nextRogueGuestCheck;
 
-        [Obsolete]
-        private PrisonerInteractionModeDef defaultInteractionMode; // Not used anymore, only for legacy saves
-        [Obsolete]
-        private int lastEventKey;
-        [Obsolete]
-        private Dictionary<int, int> bribeCount = new Dictionary<int, int>(); // uses faction.randomKey
-
         public override void ExposeData()
         {
-            Scribe_Collections.Look(ref bribeCount, "bribeCount", LookMode.Value, LookMode.Value);
-            Scribe_Defs.Look(ref defaultInteractionMode, "defaultInteractionMode");
             Scribe_Values.Look(ref defaultEntertain, "defaultEntertain");
             Scribe_Values.Look(ref defaultMakeFriends, "defaultMakeFriends");
             Scribe_References.Look(ref defaultAreaRestriction, "defaultAreaRestriction");
             Scribe_References.Look(ref defaultAreaShopping, "defaultAreaShopping");
-            Scribe_Values.Look(ref lastEventKey, "lastEventKey");
             Scribe_Deep.Look(ref incidentQueue, "incidentQueue");
             Scribe_Values.Look(ref refuseGuestsUntilWeHaveBeds, "refuseGuestsUntilWeHaveBeds");
             Scribe_Values.Look(ref nextQueueInspection, "nextQueueInspection");
 
             if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
-
-            // For legacy:
-            if (defaultInteractionMode == PrisonerInteractionModeDefOf.ReduceResistance)
-            {
-                defaultEntertain = true;
-                defaultInteractionMode = PrisonerInteractionModeDefOf.NoInteraction;
-            }
         }
 
-        public Hospitality_MapComponent(Map map) : base(map)
-        {
-        }
+        [UsedImplicitly]
+        public Hospitality_MapComponent(Map map) : base(map) {}
 
         public Hospitality_MapComponent(bool forReal, Map map) : base(map)
         {
             // Multi-Threading killed the elegant solution
             if (!forReal) return;
+
             map.components.Add(this);
             defaultAreaRestriction = map.areaManager.Home;
-            defaultInteractionMode = PrisonerInteractionModeDefOf.NoInteraction;
+            
+            Initialize();
+        }
+
+        public void Initialize()
+        {
+            foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p=>p.IsGuest())) OnGuestArrived(pawn);
+            Log.Message($"Hospitality: Added {PresentGuests.Count} guests on map.");
+        }
+
+        public List<Pawn> PresentGuests { get; } = new List<Pawn>();
+
+        public void OnGuestArrived(Pawn pawn)
+        {
+            PresentGuests.AddDistinct(pawn);
+        }
+
+        public void OnGuestLeft(Pawn pawn)
+        {
+            PresentGuests.Remove(pawn);
         }
 
         public override void MapComponentTick()
@@ -110,29 +105,11 @@ namespace Hospitality
             return nearest;
         }
 
-        [Obsolete]
-        public int GetBribeCount(Faction faction)
-        {
-            if (faction == null) throw new NullReferenceException("Faction not set.");
-            int result;
-            if (bribeCount.TryGetValue(faction.randomKey, out result)) return result;
-
-            return 0;
-        }
-
-        [Obsolete]
-        public void Bribe(Faction faction)
-        {
-            if (faction == null) throw new NullReferenceException("Faction not set.");
-
-            bribeCount[faction.randomKey] = GetBribeCount(faction) + 1;
-        }
-
         public static void RefuseGuestsUntilWeHaveBeds(Map map)
         {
             if (map == null) return;
 
-            var mapComp = Instance(map);
+            var mapComp = map.GetMapComponent();
             mapComp.refuseGuestsUntilWeHaveBeds = true;
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("GuestBeds"), null, OpportunityType.Important);
         }

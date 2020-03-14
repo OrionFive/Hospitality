@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -12,7 +11,7 @@ namespace Hospitality.MainTab
 
         protected override PawnTableDef PawnTableDef => pawnTableDef ?? (pawnTableDef = DefDatabase<PawnTableDef>.GetNamed("Guests"));
 
-        protected override IEnumerable<Pawn> Pawns => Find.CurrentMap.mapPawns.AllPawns.Where(p => p.IsGuest());
+        protected override IEnumerable<Pawn> Pawns => Find.CurrentMap.GetMapComponent().PresentGuests;
 
         public override void PostOpen()
         {

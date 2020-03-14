@@ -19,8 +19,7 @@ namespace Hospitality.MainTab
 
             if (Time.unscaledTime > lastTimeCached + 2 || Find.CurrentMap != currentMap)
             {
-                guestCountCached = Find.CurrentMap.lordManager.lords.Where(l => l?.ownedPawns != null)
-                    .SelectMany(l => l.ownedPawns).Count(p => p.IsGuest());
+                guestCountCached = Find.CurrentMap.GetMapComponent().PresentGuests.Count;
                 bedCountCached = Find.CurrentMap.GetGuestBeds().Sum(bed => bed.SleepingSlotsCount);
                 lastTimeCached = Time.unscaledTime;
                 currentMap = Find.CurrentMap;

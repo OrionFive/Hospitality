@@ -209,6 +209,8 @@ namespace Hospitality
 
         public static void Arrive(this Pawn pawn)
         {
+            pawn.Map.GetMapComponent().OnGuestArrived(pawn);
+
             try
             {
                 pawn.PocketHeadgear();
@@ -249,6 +251,8 @@ namespace Hospitality
 
         public static void Leave(this Pawn pawn)
         {
+            pawn.Map.GetMapComponent().OnGuestLeft(pawn);
+
             try
             {
                 pawn.WearHeadgear();
@@ -468,6 +472,8 @@ namespace Hospitality
 
         public static void Adopt(this Pawn guest)
         {
+            guest.Map.GetMapComponent().OnGuestLeft(guest);
+
             // Clear mind
             guest.pather.StopDead();
 

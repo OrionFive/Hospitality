@@ -161,7 +161,7 @@
     <Compile Include="MainTab\PawnColumnWorker_Relationship.cs" />
     <Compile Include="MainTab\PawnColumnWorker_ShoppingArea.cs" />
     <Compile Include="MainTab\PawnTable_Guests.cs" />
-    <Compile Include="ModBaseHospitality.cs" />
+    <Compile Include="HospitalityModBase.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacer.cs" />
     <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacerCruise.cs" />
