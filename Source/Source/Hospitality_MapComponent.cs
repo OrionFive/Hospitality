@@ -47,7 +47,6 @@ namespace Hospitality
         public void Initialize()
         {
             foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p=>p.IsGuest())) OnGuestArrived(pawn);
-            Log.Message($"Hospitality: Added {PresentGuests.Count} guests on map.");
         }
 
         public List<Pawn> PresentGuests { get; } = new List<Pawn>();

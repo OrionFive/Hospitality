@@ -10,16 +10,9 @@ namespace Hospitality {
         {
             defaultLabel = "AlertNotEnoughBeds".Translate();
             explanationKey = "AlertNotEnoughBedsDesc";
-            Log.Message($"Created CantClaimBed alert for {Thought.Label}.");
         }
 
         protected ThoughtDef Thought => DefDatabase<ThoughtDef>.GetNamed("GuestBedCount");
-
-        public override void AlertActiveUpdate()
-        {
-            Log.Message($"Updating alert... {AffectedPawns.Count} pawns affected.");
-            base.AlertActiveUpdate();
-        }
 
         protected override List<Pawn> AffectedPawns
         {
