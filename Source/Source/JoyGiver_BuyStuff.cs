@@ -25,12 +25,6 @@ namespace Hospitality
             return Mathf.InverseLerp(0, 25, money)*base.GetChance(pawn);
         }
 
-        public static int GetMoney(Pawn pawn)
-        {
-            var money = pawn.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
-            return money?.stackCount ?? 0;
-        }
-
         public override Job TryGiveJob(Pawn pawn)
         {
             var map = pawn.MapHeld;
@@ -156,20 +150,7 @@ namespace Hospitality
             return hungerFactor;
         }
 
-        private static bool IsIngestible(Thing thing)
-        {
-            return thing.def.IsIngestible && thing.def.ingestible.preferability != FoodPreferability.RawBad && thing.def.ingestible.preferability != FoodPreferability.MealAwful;
-        }
-
-        private static bool IsFood(Thing thing)
-        {
-            return thing.def.ingestible != null
-                   && thing.def.ingestible.preferability != FoodPreferability.NeverForNutrition 
-                   && thing.def.ingestible.preferability != FoodPreferability.DesperateOnlyForHumanlikes
-                   && thing.def.ingestible.preferability != FoodPreferability.DesperateOnly;
-        }
-
-        // Copied so outfits can be commented
+        // Copied so we can make some adjustments
         public static float ApparelScoreGain(Pawn pawn, Apparel ap)
         {
             if (ap is ShieldBelt && pawn.equipment.Primary?.def.IsWeaponUsingProjectiles == true)
@@ -177,17 +158,24 @@ namespace Hospitality
             // Added
             if (!ItemUtility.AlienFrameworkAllowsIt(pawn.def, ap.def, "CanWear")) 
                 return -1000;
-            if (PawnApparelGenerator.IsHeadgear(ap.def)) return 0;
+            //if (PawnApparelGenerator.IsHeadgear(ap.def)) return 0;
             float num = JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
             List<Apparel> wornApparel = pawn.apparel.WornApparel;
             bool flag = false;
-            for (int index = 0; index < wornApparel.Count; ++index)
+            // Added:
+            var newReq = ItemUtility.IsRequiredByRoyalty(pawn, ap.def);
+
+            for (int i = 0; i < wornApparel.Count; ++i)
             {
-                if (!ApparelUtility.CanWearTogether(wornApparel[index].def, ap.def, pawn.RaceProps.body))
+                if (!ApparelUtility.CanWearTogether(wornApparel[i].def, ap.def, pawn.RaceProps.body))
                 {
+                    if (pawn.apparel.IsLocked(wornApparel[i])) return -1000;
+                    // Added: 
+                    var wornReq = ItemUtility.IsRequiredByRoyalty(pawn, wornApparel[i].def);
+                    if (wornReq && !newReq) return -1000;
                     //if (!pawn.outfits.forcedHandler.AllowedToAutomaticallyDrop(wornApparel[index]))
                     //    return -1000f;
-                    num -= JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, wornApparel[index]);
+                    num -= JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, wornApparel[i]);
                     flag = true;
                 }
             }
