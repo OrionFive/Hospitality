@@ -150,11 +150,12 @@ namespace Hospitality
             }
 
             Pawn.ownership.UnclaimBed();
-            // @@@@Attention
 
-            newBed.CompAssignableToPawn.TryAssignPawn(Pawn);
-            bed = newBed;
-            //Log.Message($"{Pawn.LabelShort} proudly claims {newBed.Label}!");
+            if(newBed.TryClaimBed(Pawn))
+            {
+                bed = newBed;
+                //Log.Message($"{Pawn.LabelShort} proudly claims {newBed.Label}!");
+            }
         }
     }
 }

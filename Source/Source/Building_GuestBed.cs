@@ -18,17 +18,7 @@ namespace Hospitality
         public int rentalFee;
         private string silverLabel = " " + ThingDefOf.Silver.label;
 
-        public string FeeString => rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
-        public string AttractivenessString => "BedAttractiveness".Translate(BedUtility.StaticBedValue(this, out _, out _, out _, out _)-rentalFee);
-   
         public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
-
-
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_Values.Look(ref rentalFee, "rentalFee");
-        }
 
         public override Color DrawColor
         {
@@ -42,14 +32,53 @@ namespace Hospitality
             }
         }
 
+        public override Color DrawColorTwo => sheetColorForGuests;
+
+        public BedStats Stats { get; } = new BedStats();
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref rentalFee, "rentalFee");
+        }
+
+        public override void TickLong()
+        {
+            UpdateStats();
+        }
+
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            base.SpawnSetup(map, respawningAfterLoad);
+            UpdateStats();
+        }
+
+        private void UpdateStats()
+        {
+            // Calculate stats
+            Stats.lastCalculated = GenTicks.TicksGame;
+            Log.Message($"Updated stats of {Label} at {Stats.lastCalculated}.");
+            try
+            {
+                var owners = OwnersForReading.Count == 0 ? (string) "Nobody".Translate() : OwnersForReading.Select(o => (string) o.NameShortColored).ToCommaList(true);
+                Stats.title = $"{def.LabelCap} ({owners})";
+                Stats.staticBedValue = BedUtility.StaticBedValue(this, out Stats.room, out _, out _, out _);
+                Stats.textAttractiveness = "BedAttractiveness".Translate(Stats.staticBedValue - rentalFee);
+                Stats.textFee = rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
+                Stats.textAsArray = new[] {Stats.textAttractiveness, Stats.textFee};
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce(e.Message, 834763462);
+            }
+        }
+
         public override void Draw()
         {
             base.Draw();
             if (Medical) Medical = false;
             if (ForPrisoners) ForPrisoners = false;
         }
-
-        public override Color DrawColorTwo => sheetColorForGuests;
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
@@ -58,30 +87,11 @@ namespace Hospitality
             {
                 owner.ownership.UnclaimBed();
             }
+
             var room = this.GetRoom();
             base.DeSpawn(mode);
             room?.Notify_RoomShapeOrContainedBedsChanged();
         }
-
-        //public override void DrawExtraSelectionOverlays()
-        //{
-        //    base.DrawExtraSelectionOverlays();
-        //    var room = this.GetRoom();
-        //    if (room == null) return;
-        //    if (room.isPrisonCell) return;
-        //
-        //    if (room.RegionCount < 20 && !room.TouchesMapEdge)
-        //    {
-        //        foreach (var current in room.Cells)
-        //        {
-        //            guestField.Add(current);
-        //        }
-        //        var color = guestFieldColor;
-        //        color.a = Pulser.PulseBrightness(1f, 0.6f);
-        //        GenDraw.DrawFieldEdges(guestField, color);
-        //        guestField.Clear();
-        //    }
-        //}
 
         public override string GetInspectString()
         {
@@ -89,12 +99,6 @@ namespace Hospitality
             //stringBuilder.Append(base.GetInspectString());
             stringBuilder.Append(InspectStringPartsFromComps());
 
-            stringBuilder.AppendLine();
-            stringBuilder.Append(AttractivenessString);
-
-            stringBuilder.AppendLine();
-            stringBuilder.Append(FeeString);
-            
             stringBuilder.AppendLine();
             if (!OwnersForReading.Any())
             {
@@ -140,18 +144,21 @@ namespace Hospitality
                 {
                     case Command_Toggle toggle: {
                         // Disable prisoner and medical buttons
-                        if (toggle.defaultLabel == "CommandBedSetForPrisonersLabel".Translate() 
-                            || toggle.defaultLabel == "CommandBedSetAsMedicalLabel".Translate()) gizmo.Disable();
+                        if (toggle.defaultLabel == "CommandBedSetForPrisonersLabel".Translate() || toggle.defaultLabel == "CommandBedSetAsMedicalLabel".Translate()) gizmo.Disable();
                         break;
                     }
                     case Command_Action action: {
                         // Disable set owner button
-                        if (action.defaultLabel == "CommandBedSetOwnerLabel".Translate()) action.Disable();
+                        if (action.defaultLabel == "CommandThingSetOwnerLabel".Translate()) action.Disable();
                         break;
                     }
                 }
                 yield return gizmo;
             }
+
+            // Gizmo for drawing guest room info
+            if (Stats.lastCalculated == 0 || Stats.room == null) UpdateStats();
+            yield return new Gizmo_GuestBedStats(this);
 
             // Add buttons to decrease / increase the fee
             yield return new Command_Action
@@ -185,6 +192,7 @@ namespace Hospitality
         {
             rentalFee += amount;
             if (rentalFee < 0) rentalFee = 0;
+            UpdateStats();
         }
 
         public override void PostMake()
@@ -225,16 +233,17 @@ namespace Hospitality
         public static void Swap(Building_Bed bed)
         {
             Building_Bed newBed;
-            if (IsGuestBed(bed))
+            if (bed.IsGuestBed())
             {
                 newBed = (Building_Bed) MakeBed(bed, bed.def.defName.Split(new[] {"Guest"}, StringSplitOptions.RemoveEmptyEntries)[0]);
             }
             else
             {
-                newBed = (Building_GuestBed) MakeBed(bed, bed.def.defName+"Guest");
+                newBed = (Building_GuestBed) MakeBed(bed, bed.def.defName + "Guest");
             }
+
             newBed.SetFactionDirect(bed.Faction);
-            var spawnedBed = (Building_Bed)GenSpawn.Spawn(newBed, bed.Position, bed.Map, bed.Rotation);
+            var spawnedBed = (Building_Bed) GenSpawn.Spawn(newBed, bed.Position, bed.Map, bed.Rotation);
             spawnedBed.HitPoints = bed.HitPoints;
             spawnedBed.ForPrisoners = bed.ForPrisoners;
 
@@ -260,9 +269,22 @@ namespace Hospitality
             return ThingMaker.MakeThing(newDef, bed.Stuff);
         }
 
-        public static bool IsGuestBed(Building_Bed bed)
+        public bool TryClaimBed(Pawn pawn)
         {
-            return bed is Building_GuestBed;
+            CompAssignableToPawn.TryAssignPawn(pawn);
+            UpdateStats();
+            return CompAssignableToPawn.AssignedPawnsForReading.Contains(pawn);
+        }
+
+        public class BedStats
+        {
+            public int lastCalculated;
+            public Room room;
+            public TaggedString textAttractiveness;
+            public TaggedString textFee;
+            public TaggedString title;
+            public IEnumerable<TaggedString> textAsArray = new TaggedString[0];
+            public int staticBedValue;
         }
     }
 }

@@ -45,9 +45,13 @@ namespace Hospitality
 
             var fee = RoundToInt(money > 0 ? 125 * bed.rentalFee / money : 0); // 0 - 125
 
+
             // Shared
-            var otherPawnOpinion = bed.OwnersForReading.Any() ? bed.OwnersForReading.Where(owner => owner != guest).Sum(owner => guest.relations.OpinionOf(owner) - 15) * 4 : 0;
-            
+            var otherOwner = bed.OwnersForReading.FirstOrDefault(owner => owner != guest);
+            // Royalty requires single bed?
+            if (otherOwner != null && guest.royalty?.HighestTitleWithBedroomRequirements() != null) return -100;
+            var otherPawnOpinion = otherOwner != null ? (guest.relations.OpinionOf(otherOwner) - 15) * 4 : 0;
+
             // Temperature
             var temperature = GetTemperatureScore(guest, room); // -200 - 0
 
@@ -91,11 +95,11 @@ namespace Hospitality
 
         public static int StaticBedValue(Building_GuestBed bed, out Room room, out int quality, out int impressiveness, out int roomType)
         {
-            room = bed.GetRoom();
-            
+            room = bed.Map.regionAndRoomUpdater.Enabled ? bed.GetRoom() : null;
+
             if (!bed.TryGetQuality(out QualityCategory category)) category = QualityCategory.Normal;
             quality = ((int) category - 2) * 25;
-            impressiveness = RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness));
+            impressiveness = room != null ? RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness)) : 0;
             roomType = GetRoomTypeScore(room) * 2;
             return quality + impressiveness + roomType;
         }
@@ -109,6 +113,7 @@ namespace Hospitality
 
         private static int GetRoomTypeScore(Room room)
         {
+            if (room == null) return -30;
             if (room.OutdoorsForWork) return -50;
 
             int roomType;
@@ -131,5 +136,7 @@ namespace Hospitality
             var compGuest = pawn.GetComp<CompGuest>();
             return compGuest?.bed;
         }
+
+        public static bool IsGuestBed(this Building_Bed bed) => bed is Building_GuestBed;
     }
 }

@@ -88,6 +88,7 @@
     <Compile Include="Alert_GuestCantClaimBed.cs" />
     <Compile Include="Alert_GuestNotEnoughBeds.cs" />
     <Compile Include="Alert_GuestThought.cs" />
+    <Compile Include="Gizmo_GuestBedStats.cs" />
     <Compile Include="Utilities\BedUtility.cs" />
     <Compile Include="ChoiceLetter_GuestJoinRequest.cs" />
     <Compile Include="Utilities\DefsUtility.cs" />

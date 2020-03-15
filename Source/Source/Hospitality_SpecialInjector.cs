@@ -67,6 +67,7 @@ namespace Hospitality
                 guestBedDef.minifiedDef = bedDef.minifiedDef;
                 guestBedDef.tradeability = Tradeability.None;
                 guestBedDef.scatterableOnMapGen = false;
+                guestBedDef.tickerType = TickerType.Long;
 
                 typeof(ShortHashGiver).GetMethod("GiveShortHash", BindingFlags.NonPublic|BindingFlags.Static).Invoke(null, new object[] {guestBedDef, typeof(ThingDef)});
                 DefDatabase<ThingDef>.Add(guestBedDef);
