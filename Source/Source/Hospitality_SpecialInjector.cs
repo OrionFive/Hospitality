@@ -25,7 +25,7 @@ namespace Hospitality
             CreateGuestBedDefs(bedDefs, facilities);
         }
 
-        private IEnumerable<CompProperties_Facility> GetFacilitiesFor(ThingDef[] bedDefs)
+        private static IEnumerable<CompProperties_Facility> GetFacilitiesFor(ThingDef[] bedDefs)
         {
             var sb = new StringBuilder("Injecting guest beds into the following facilities: ");
             foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
@@ -43,7 +43,7 @@ namespace Hospitality
             Log.Message(sb.ToString().TrimEnd(' ', ','));
         }
 
-        private void CreateGuestBedDefs(ThingDef[] bedDefs, CompProperties_Facility[] facilities)
+        private static void CreateGuestBedDefs(ThingDef[] bedDefs, CompProperties_Facility[] facilities)
         {
             var sb = new StringBuilder("Created guest beds for the following beds: ");
             var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
@@ -97,7 +97,7 @@ namespace Hospitality
             }
         }
 
-        private void InjectComp(Type compType, Func<ThingDef, bool> qualifier)
+        private static void InjectComp(Type compType, Func<ThingDef, bool> qualifier)
         {
             var defs = DefDatabase<ThingDef>.AllDefsListForReading.Where(qualifier).ToList();
             defs.RemoveDuplicates();
@@ -114,7 +114,7 @@ namespace Hospitality
             }
         }
 
-        private void InjectTab(Type tabType, Func<ThingDef, bool> qualifier)
+        private static void InjectTab(Type tabType, Func<ThingDef, bool> qualifier)
         {
             var defs = DefDatabase<ThingDef>.AllDefs.Where(qualifier).ToList();
             defs.RemoveDuplicates();

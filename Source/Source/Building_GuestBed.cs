@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using HarmonyLib;
 using RimWorld;
@@ -10,14 +11,11 @@ namespace Hospitality
 {
     public class Building_GuestBed : Building_Bed
     {
-        private static readonly Color guestFieldColor = new Color(170/255f, 79/255f, 255/255f);
+        private static readonly Color sheetColorForGuests = new Color(89 / 255f, 55 / 255f, 121 / 255f);
 
-        private static readonly Color sheetColorForGuests = new Color(89/255f, 55/255f, 121/255f);
-
-        private static readonly List<IntVec3> guestField = new List<IntVec3>();
+        private int feeStep = 10;
 
         public int rentalFee;
-        private int feeStep = 10;
         private string silverLabel = " " + ThingDefOf.Silver.label;
 
         public string FeeString => rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);

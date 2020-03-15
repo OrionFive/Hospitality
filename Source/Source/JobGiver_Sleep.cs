@@ -66,7 +66,7 @@ namespace Hospitality
                 return new ThinkResult(new Job(JobDefOf.LayDown, compGuest.bed), this);
             }
 
-            Building_GuestBed bed = pawn.FindBedFor();
+            var bed = pawn.FindBedFor();
 
             if (bed != null)
             {
