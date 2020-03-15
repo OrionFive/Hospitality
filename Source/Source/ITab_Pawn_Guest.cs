@@ -147,10 +147,8 @@ namespace Hospitality
                 listingStandard.Slider(Mathf.Clamp(friendPercentage, 0, 100), 0, 100);
                 if (friendPercentage <= 99)
                 {
-                    var color = GUI.color;
-                    GUI.color = Color.red;
-                    listingStandard.Label("NotEnoughFriends".Translate(SelPawn.GetMinRecruitOpinion()).AdjustedFor(SelPawn));
-                    GUI.color = color;
+                    // Remove color from AdjustedFor and then Colorize
+                    listingStandard.Label(ColoredText.StripTags("NotEnoughFriends".Translate(SelPawn.GetMinRecruitOpinion()).AdjustedFor(SelPawn)).Colorize(Color.red));
                 }
                 else
                 {

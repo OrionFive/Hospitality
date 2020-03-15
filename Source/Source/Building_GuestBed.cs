@@ -57,7 +57,6 @@ namespace Hospitality
         {
             // Calculate stats
             Stats.lastCalculated = GenTicks.TicksGame;
-            Log.Message($"Updated stats of {Label} at {Stats.lastCalculated}.");
             try
             {
                 var owners = OwnersForReading.Count == 0 ? (string) "Nobody".Translate() : OwnersForReading.Select(o => (string) o.NameShortColored).ToCommaList(true);

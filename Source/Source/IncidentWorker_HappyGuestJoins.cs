@@ -12,20 +12,19 @@ namespace Hospitality
 
             Map map = (Map) parms.target;
 
-            return map.mapPawns.AllPawns.Any(IsHappyGuest);
+            return GuestUtility.GetAllGuests(map).Any(IsHappyGuest);
         }
 
         private static bool IsHappyGuest(Pawn pawn)
         {
-            return pawn.IsGuest() && pawn.GetVisitScore(out var score) && score >= 0.9f;
-
+            return  pawn.GetVisitScore(out var score) && score >= 0.9f;
         }
 
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
             var map = (Map) parms.target;
 
-            if (!map.mapPawns.AllPawns.Where(IsHappyGuest).TryMaxBy(GetScore, out var happiestGuest)) return false;
+            if (!GuestUtility.GetAllGuests(map).Where(IsHappyGuest).TryMaxBy(GetScore, out var happiestGuest)) return false;
 
             if (happiestGuest == null) return false;
 

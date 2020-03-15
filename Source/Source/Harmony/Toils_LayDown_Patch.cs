@@ -24,44 +24,44 @@ namespace Hospitality.Harmony
                 actor.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.SleptOnGround);
                 actor.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.SleptInCold);
                 actor.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.SleptInHeat);
-                if (actor.GetRoom(RegionType.Set_Passable).PsychologicallyOutdoors)
+                if (actor.GetRoom().PsychologicallyOutdoors)
                 {
-                    actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.SleptOutside, null);
+                    actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.SleptOutside);
                 }
                 if (building_Bed == null || building_Bed.CostListAdjusted().Count == 0)
                 {
-                    actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.SleptOnGround, null);
+                    actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.SleptOnGround);
                 }
-                if (actor.AmbientTemperature < actor.def.GetStatValueAbstract(StatDefOf.ComfyTemperatureMin, null))
+                if (actor.AmbientTemperature < actor.def.GetStatValueAbstract(StatDefOf.ComfyTemperatureMin))
                 {
-                    actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.SleptInCold, null);
+                    actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.SleptInCold);
                 }
-                if (actor.AmbientTemperature > actor.def.GetStatValueAbstract(StatDefOf.ComfyTemperatureMax, null))
+                if (actor.AmbientTemperature > actor.def.GetStatValueAbstract(StatDefOf.ComfyTemperatureMax))
                 {
-                    actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.SleptInHeat, null);
+                    actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.SleptInHeat);
                 }
                 if (building_Bed != null && AddedBedIsOwned(actor, building_Bed) && !building_Bed.ForPrisoners && !actor.story.traits.HasTrait(TraitDefOf.Ascetic))
                 {
                     ThoughtDef thoughtDef = null;
                     // ADDED:
-                    if (building_Bed.GetRoom(RegionType.Set_Passable).Role == BedUtility.roleDefGuestRoom)
+                    if (building_Bed.GetRoom().Role == BedUtility.roleDefGuestRoom)
                     {
                         thoughtDef = building_Bed.GetRoom().OnlyOneBed() ? ThoughtDefOf.SleptInBedroom : ThoughtDefOf.SleptInBarracks;
                     } ////
-                    else if (building_Bed.GetRoom(RegionType.Set_Passable).Role == RoomRoleDefOf.Bedroom)
+                    else if (building_Bed.GetRoom().Role == RoomRoleDefOf.Bedroom)
                     {
                         thoughtDef = ThoughtDefOf.SleptInBedroom;
                     }
-                    else if (building_Bed.GetRoom(RegionType.Set_Passable).Role == RoomRoleDefOf.Barracks)
+                    else if (building_Bed.GetRoom().Role == RoomRoleDefOf.Barracks)
                     {
                         thoughtDef = ThoughtDefOf.SleptInBarracks;
                     }
                     if (thoughtDef != null)
                     {
-                        int scoreStageIndex = RoomStatDefOf.Impressiveness.GetScoreStageIndex(building_Bed.GetRoom(RegionType.Set_Passable).GetStat(RoomStatDefOf.Impressiveness));
+                        int scoreStageIndex = RoomStatDefOf.Impressiveness.GetScoreStageIndex(building_Bed.GetRoom().GetStat(RoomStatDefOf.Impressiveness));
                         if (thoughtDef.stages[scoreStageIndex] != null)
                         {
-                            actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(thoughtDef, scoreStageIndex), null);
+                            actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(thoughtDef, scoreStageIndex));
                         }
                     }
                 }

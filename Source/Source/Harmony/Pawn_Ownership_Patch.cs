@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -16,6 +17,18 @@ namespace Hospitality.Harmony {
             {
                 ___pawn.GetComp<CompGuest>()?.ClearOwnership();
                 return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(Pawn_Ownership), "get_OwnedBed")]
+        public class get_OwnedBed
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(Pawn ___pawn, ref Building_Bed __result)
+            {
+                if (!___pawn.IsGuest(false)) return true;
+                __result = ___pawn.GetComp<CompGuest>()?.bed; 
+                return false;
             }
         }
     }

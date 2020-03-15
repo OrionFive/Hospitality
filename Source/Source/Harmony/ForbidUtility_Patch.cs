@@ -35,11 +35,6 @@ namespace Hospitality.Harmony
             {
                 return pawn.GetRoom() == null || !pawn.GetRoom().isPrisonCell;
             }
-
-            private static bool AddedFactionCheck(Pawn pawn)
-            {
-                return pawn.HostFaction == null || pawn.IsGuest();
-            }
         }
 
         /// <summary>
