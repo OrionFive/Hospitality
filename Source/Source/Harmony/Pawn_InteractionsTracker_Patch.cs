@@ -42,25 +42,24 @@ namespace Hospitality.Harmony
                 var collection = pawn.MapHeld.mapPawns.AllPawnsSpawned.Where(IsInteractable); // Added
                 workingList.Clear();
                 workingList.AddRange(collection);
-                workingList.Shuffle<Pawn>();
+                workingList.Shuffle();
                 List<InteractionDef> allDefsListForReading = DefDatabase<InteractionDef>.AllDefsListForReading;
-                for (int i = 0; i < workingList.Count; i++)
+                foreach (var p in workingList)
                 {
-                    Pawn p = workingList[i];
                     if (p != pawn && CanInteractNowWith(pawn, p) && InteractionUtility.CanReceiveRandomInteraction(p)
                         && !pawn.HostileTo(p))
                     {
-                        InteractionDef intDef;
+                        var p1 = p;
                         if (
                             allDefsListForReading.TryRandomElementByWeight(
-                                (InteractionDef x) => x.Worker.RandomSelectionWeight(pawn, p), out intDef))
+                                x => x.Worker.RandomSelectionWeight(pawn, p1), out var intDef))
                         {
                             if (__instance.TryInteractWith(p, intDef))
                             {
                                 __result = true;
                                 return false;
                             }
-                            Log.Error(pawn + " failed to interact with " + p);
+                            Log.Warning($"{pawn} failed to interact with {p}.");
                         }
                     }
                 }
