@@ -384,7 +384,10 @@ namespace Hospitality
 
                 // Money
                 //Log.Message("Goodwill: "+visitor.Faction.ColonyGoodwill);
-                var amountS = Mathf.RoundToInt(Rand.Gaussian(visitor.Faction.PlayerGoodwill, visitor.Faction.PlayerGoodwill)*2)+Rand.Range(0, 50);
+                var wealthBase = visitor.Faction.PlayerGoodwill;
+                var title = visitor.royalty?.MostSeniorTitle;
+                if (title != null) wealthBase += title.def.seniority/2;
+                var amountS = Mathf.RoundToInt(Rand.Gaussian(wealthBase, wealthBase)*2)+Rand.Range(0, 50);
                 if (amountS >= Rand.Range(10, 25))
                 {
                     var money = SpawnGroupUtility.CreateRandomItem(visitor, ThingDefOf.Silver);
@@ -401,7 +404,7 @@ namespace Hospitality
                 }
                 
                 // Items
-                float maxValue = (visitor.Faction.PlayerGoodwill + 10)*Rand.Range(5, 8);
+                float maxValue = (wealthBase + 25)*Rand.Range(5, 8);
                 float value = maxValue - totalValue;
                 int curCount = 0;
                 while (value > 100 && curCount < 200)
