@@ -19,7 +19,7 @@ namespace Hospitality
         {
             if (!pawn.IsGuest()) return 0;
             if (!pawn.MayBuy()) return 0;
-            var money = GetMoney(pawn);
+            var money = ItemUtility.GetMoney(pawn);
             //Log.Message(pawn.NameStringShort + " has " + money + " silver left.");
 
             return Mathf.InverseLerp(0, 25, money)*base.GetChance(pawn);
@@ -34,9 +34,9 @@ namespace Hospitality
         public override Job TryGiveJob(Pawn pawn)
         {
             var map = pawn.MapHeld;
-            var things = map.listerThings.ThingsInGroup(RequestGroup).Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
+            var things = map.listerThings.ThingsInGroup(RequestGroup).Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
             var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(pawn.IsInShoppingZone);
-            things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
+            things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
             if (things.Count == 0) return null;
 
             // Try some things
@@ -53,7 +53,7 @@ namespace Hospitality
                 //Log.Message(thing.Label + ": not interesting for " + pawn.NameStringShort);
                 int duration = Rand.Range(JobDriver_BuyItem.MinShoppingDuration, JobDriver_BuyItem.MaxShoppingDuration);
 
-                var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, map, 2, out var standTarget) && IsBuyableNow(pawn, thing);
+                var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, map, 2, out var standTarget) && ItemUtility.IsBuyableNow(pawn, thing);
                 if (canBrowse)
                 {
                     return new Job(jobDefBrowse, standTarget, thing) {expiryInterval = duration * 2};
@@ -73,13 +73,13 @@ namespace Hospitality
             var hpFactor = thing.def.useHitPoints?((float)thing.HitPoints/thing.MaxHitPoints):1;
             
             // Apparel
-            var appFactor = thing is Apparel apparel ? 1+ApparelScoreGain(pawn, apparel) : 0.8f; // Not apparel, less likey
+            var appFactor = thing is Apparel apparel ? 1 + ApparelScoreGain(pawn, apparel) : 0.8f; // Not apparel, less likey
             //Log.Message(thing.Label + " - apparel score: " + appFactor);
 
             var hungerFactor = GetHungerFactor(pawn);
 
             // Food
-            if(IsFood(thing) && pawn.RaceProps.CanEverEat(thing))
+            if(ItemUtility.IsFood(thing) && pawn.RaceProps.CanEverEat(thing))
             {
                 appFactor = FoodUtility.FoodOptimality(pawn, thing, FoodUtility.GetFinalIngestibleDef(thing), 0, true) / 300f; // 300 = optimality max
                 //Log.Message($"{pawn.LabelShort} looked at {thing.LabelShort} at {thing.Position} and scored it {appFactor}.");
@@ -89,7 +89,7 @@ namespace Hospitality
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.MeatRaw)) appFactor -= 0.5f;
             }
             // Other consumables
-            else if (IsIngestible(thing) && thing.def.ingestible.joy > 0)
+            else if (ItemUtility.IsIngestible(thing) && thing.def.ingestible.joy > 0)
             {
                 appFactor = 1 + thing.def.ingestible.joy*0.5f;
 
@@ -114,13 +114,13 @@ namespace Hospitality
                 appFactor = 1;
                 if (pawn.RaceProps.Humanlike && pawn.WorkTagIsDisabled(WorkTags.Violent)) return 0;
                 if (!pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)) return 0;
-                if (!AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEquip")) return 0;
+                if (!ItemUtility.AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEquip")) return 0;
             }
             // Shield belt
             if (thing is ShieldBelt)
             {
                 if (pawn.equipment.Primary?.def.IsRangedWeapon == true) return 0;
-                if (!AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEquip")) return 0;
+                if (!ItemUtility.AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEquip")) return 0;
             }
 
             // Quality of object
@@ -174,7 +174,8 @@ namespace Hospitality
         {
             if (ap is ShieldBelt && pawn.equipment.Primary?.def.IsWeaponUsingProjectiles == true)
                 return -1000f;
-            if (!AlienFrameworkAllowsIt(pawn.def, ap.def, "CanWear")) 
+            // Added
+            if (!ItemUtility.AlienFrameworkAllowsIt(pawn.def, ap.def, "CanWear")) 
                 return -1000;
             if (PawnApparelGenerator.IsHeadgear(ap.def)) return 0;
             float num = JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
@@ -195,96 +196,8 @@ namespace Hospitality
             return num;
         }
 
-        /// <summary>
-        /// methodName = "CanWear", "CanEat" or "CanEquip"
-        /// </summary>
-        public static bool AlienFrameworkAllowsIt(ThingDef raceDef, ThingDef thingDef, string methodName)
-        {
-            var method = Traverse.CreateWithType("RaceRestrictionSettings").Method(methodName, thingDef, raceDef);
-            if (!method.MethodExists()) return true; // Not using AlienFramework
-            return method.GetValue<bool>();
-        }
-
         protected virtual bool Qualifies(Thing thing, Pawn pawn)
         {
-            return true;
-        }
-
-        public static bool IsBuyableAtAll(Pawn pawn, Thing thing)
-        {
-            if (!IsBuyableNow(pawn, thing)) return false;
-            if (!pawn.IsInShoppingZone(thing))
-            {
-                //if (thing.GetRoom() == null) Log.Message(thing.Label + ": not in room");
-                //else Log.Message(thing.Label + ": in room " + thing.GetRoom().Role.LabelCap);
-                return false;
-            }
-            if (thing.def.isUnfinishedThing)
-            {
-                return false;
-            }
-            if (thing.def == ThingDefOf.Silver)
-            {
-                return false;
-            }
-            if (thing.def.tradeability == Tradeability.None)
-            {
-                return false;
-            }
-            //if (!thing.IsSociallyProper(pawn))
-            //{
-            //    Log.Message(thing.Label + ": is not proper for " + pawn.NameStringShort);
-            //    return false;
-            //}
-            var marketValue = thing.MarketValue * JobDriver_BuyItem.PriceFactor;
-            if (marketValue < 1)
-            {
-                return false;
-            }
-            if (marketValue > GetMoney(pawn))
-            {
-                return false;
-            }
-            if (BoughtByPlayer(pawn, thing))
-            {
-                return false;
-            }
-            //if (thing.IsInValidStorage()) Log.Message(thing.Label + " in storage ");
-            return true;
-        }
-
-        private static bool BoughtByPlayer(Pawn pawn, Thing thing)
-        {
-            var lord = pawn.GetLord();
-            return !(lord?.CurLordToil is LordToil_VisitPoint toil) || toil.BoughtOrSoldByPlayer(thing);
-        }
-
-        public static bool IsBuyableNow(Pawn pawn, Thing thing)
-        {
-            if (!thing.SpawnedOrAnyParentSpawned)
-            {
-                return false;
-            }
-            if (thing.ParentHolder is Pawn)
-            {
-                //Log.Message(thing.Label+": is inside pawn "+pawn.NameStringShort);
-                return false;
-            }
-            if (thing.IsForbidden(Faction.OfPlayer))
-            {
-                //Log.Message(thing.Label+": is forbidden for "+pawn.NameStringShort);
-                return false;
-            }
-            if (!pawn.HasReserved(thing) && !pawn.CanReserveAndReach(thing, PathEndMode.OnCell, Danger.None))
-            {
-                //Log.Message(thing.Label+": can't be reserved or reached by "+pawn.NameStringShort);
-                return false;
-            }
-            if (pawn.GetInventorySpaceFor(thing) < 1)
-            {
-                return false;
-            }
-
             return true;
         }
     }

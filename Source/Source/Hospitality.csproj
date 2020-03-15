@@ -88,9 +88,9 @@
     <Compile Include="Alert_GuestCantClaimBed.cs" />
     <Compile Include="Alert_GuestNotEnoughBeds.cs" />
     <Compile Include="Alert_GuestThought.cs" />
-    <Compile Include="BedUtility.cs" />
+    <Compile Include="Utilities\BedUtility.cs" />
     <Compile Include="ChoiceLetter_GuestJoinRequest.cs" />
-    <Compile Include="DefsUtility.cs" />
+    <Compile Include="Utilities\DefsUtility.cs" />
     <Compile Include="Harmony\AddictionUtility_Patch.cs" />
     <Compile Include="Harmony\Building_Bed_Patch.cs" />
     <Compile Include="Harmony\ExpectationsUtility_Patch.cs" />
@@ -111,7 +111,7 @@
     <Compile Include="Harmony\JoyGiver_Ingest_Patch.cs" />
     <Compile Include="Harmony\MinifiedThing_Patch.cs" />
     <Compile Include="Harmony\ModContentPack_Patch.cs" />
-    <Compile Include="GenericUtility.cs" />
+    <Compile Include="Utilities\GenericUtility.cs" />
     <Compile Include="Harmony\ITab_Pawn_Gear_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Guest_Patch.cs" />
     <Compile Include="Harmony\PawnUtility_Patch.cs" />
@@ -135,12 +135,12 @@
     <Compile Include="Harmony\WorkGiver_HunterHunt.cs" />
     <Compile Include="IncidentWorker_HappyGuestJoins.cs" />
     <Compile Include="IncidentWorker_VisitorGroupMax.cs" />
+    <Compile Include="Utilities\ItemUtility.cs" />
     <Compile Include="JobDriver_ClaimBed.cs" />
     <Compile Include="JobGiver_ClaimBed.cs" />
     <Compile Include="JobGiver_GotoGuestArea.cs" />
     <Compile Include="CompGuest.cs" />
     <Compile Include="CompProperties_Guest.cs" />
-    <Compile Include="Debugging.cs" />
     <Compile Include="EventAction.cs" />
     <Compile Include="EventAction_Pawns.cs" />
     <Compile Include="InteractionWorker_CharmGuestAttempt.cs" />
@@ -170,7 +170,7 @@
     <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacer.cs" />
     <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacerCruise.cs" />
     <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacerLuxury.cs" />
-    <Compile Include="SpawnGroupUtility.cs" />
+    <Compile Include="Utilities\SpawnGroupUtility.cs" />
     <Compile Include="StatWorker_ForcedRelationshipDamage.cs" />
     <Compile Include="ThinkNode_ConditionalShouldKeepLyingDown.cs" />
     <Compile Include="ThinkNode_ConditionalWantsToHelp.cs" />
@@ -181,7 +181,7 @@
     <Compile Include="Trigger_TicksPassedAndOkayToLeave.cs" />
     <Compile Include="Trigger_UrgentlyCold.cs" />
     <Compile Include="Building_GuestBed.cs" />
-    <Compile Include="GuestUtility.cs" />
+    <Compile Include="Utilities\GuestUtility.cs" />
     <Compile Include="IncidentWorker_VisitorGroup.cs" />
     <Compile Include="JobDriver_GuestBase.cs" />
     <Compile Include="JobDriver_GuestImproveRelationship.cs" />
@@ -201,6 +201,7 @@
     <Compile Include="ITab_Pawn_Guest.cs" />
     <Compile Include="Hospitality_SpecialInjector.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

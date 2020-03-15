@@ -29,7 +29,7 @@ namespace Hospitality
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
-            this.FailOn(() => !JoyGiver_BuyStuff.IsBuyableNow(pawn, Item));
+            this.FailOn(() => !ItemUtility.IsBuyableNow(pawn, Item));
             //AddEndCondition(() =>
             //{
             //    if (Deliveree.health.ShouldGetTreatment)
@@ -94,13 +94,13 @@ namespace Hospitality
             }
 
             int tookItems;
-            if (thing.def.IsApparel && thing is Apparel apparel && JoyGiver_BuyStuff.AlienFrameworkAllowsIt(toil.actor.def, apparel.def, "CanWear"))
+            if (thing.def.IsApparel && thing is Apparel apparel && ItemUtility.AlienFrameworkAllowsIt(toil.actor.def, apparel.def, "CanWear"))
             {
                 toil.actor.apparel.Wear(apparel);
                 tookItems = apparel.stackCount;
             }
             else if (thing.def.IsWeapon && thing is ThingWithComps equipment && equipment.def.IsWithinCategory(ThingCategoryDefOf.Weapons)
-                     && JoyGiver_BuyStuff.AlienFrameworkAllowsIt(toil.actor.def, thing.def, "CanEquip"))
+                     && ItemUtility.AlienFrameworkAllowsIt(toil.actor.def, thing.def, "CanEquip"))
             {
                 var primary = pawn.equipment.Primary;
                 if (equipment.def.equipmentType == EquipmentType.Primary && primary != null)

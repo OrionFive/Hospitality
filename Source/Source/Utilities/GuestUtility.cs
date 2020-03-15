@@ -325,47 +325,6 @@ namespace Hospitality
             pawn.needs.comfort.CurLevel = Rand.Range(0, 0.5f);
         }
 
-        public static void PocketHeadgear(this Pawn pawn)
-        {
-            if (pawn?.apparel?.WornApparel == null || pawn.inventory?.innerContainer == null) return;
-
-            var headgear = pawn.apparel.WornApparel.Where(CoversHead).ToArray();
-            foreach (var apparel in headgear)
-            {
-                if (pawn.GetInventorySpaceFor(apparel) < 1) continue;
-
-                if (pawn.apparel.TryDrop(apparel, out var droppedApp))
-                {
-                    bool success = pawn.inventory.innerContainer.TryAddOrTransfer(droppedApp.SplitOff(1));
-                    if(!success) pawn.apparel.Wear(droppedApp);
-                }
-            }
-        }
-
-        private static bool CoversHead(this Apparel a)
-        {
-            return a.def.apparel.bodyPartGroups.Any(
-                g =>
-                    g == BodyPartGroupDefOf.Eyes || g == BodyPartGroupDefOf.UpperHead
-                    || g == BodyPartGroupDefOf.FullHead);
-        }
-
-        public static void WearHeadgear(this Pawn pawn)
-        {
-            if (pawn?.apparel?.WornApparel == null || pawn.inventory?.innerContainer == null) return;
-
-            var container = pawn.inventory.innerContainer;
-            var headgear = container.OfType<Apparel>().Where(CoversHead).InRandomOrder().ToArray();
-            foreach (var apparel in headgear)
-            {
-                if (pawn.apparel.CanWearWithoutDroppingAnything(apparel.def))
-                {
-                    container.Remove(apparel);
-                    pawn.apparel.Wear(apparel);
-                }
-            }
-        }
-
         public static void FixTimetable(this Pawn pawn)
         {
             if (pawn.mindState == null) pawn.mindState = new Pawn_MindState(pawn);
@@ -593,41 +552,6 @@ namespace Hospitality
             if (guest.CurJob?.def.suspendable == false) return false;
 
             return true;
-        }
-
-        public static void TryGiveBackpack(this Pawn p)
-        {
-            var def = DefDatabase<ThingDef>.GetNamed("Apparel_Backpack", false);
-            if (def == null) return;
-
-            if (p.inventory.innerContainer.Contains(def)) return;
-
-            ThingDef stuff = GenStuff.RandomStuffFor(def);
-            var item = (Apparel)ThingMaker.MakeThing(def, stuff);
-            item.stackCount = 1;
-            p.apparel.Wear(item, false);
-        }
-
-        public static int GetInventorySpaceFor(this Pawn pawn, Thing current)
-        {
-            // Combat Realism
-            var inventory = pawn.GetInventory();
-            if (inventory == null) return current.stackCount;
-
-            object[] parameters = {current, 0, false, false};
-            var success = (bool)inventory
-                .GetType()
-                .GetMethod("CanFitInInventory", BindingFlags.Instance | BindingFlags.Public)
-                .Invoke(inventory, parameters);
-            if (!success) return 0;
-            var count = (int) parameters[1];
-
-            return count;
-        }
-
-        private static ThingComp GetInventory(this Pawn pawn)
-        {
-            return pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompInventory");
         }
 
         public static void Break(this Pawn pawn)
