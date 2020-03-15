@@ -314,6 +314,10 @@ namespace Hospitality
         {
             var newPawns = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false);
             Log.Message($"Created {newPawns.Count()} new pawns for {parms.faction.Name}.");
+            foreach (var pawn in newPawns)
+            {
+                Find.World.worldPawns.PassToWorld(pawn);
+            }
             return newPawns.Take(preferredAmount);
         }
 
