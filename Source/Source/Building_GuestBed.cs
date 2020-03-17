@@ -156,8 +156,11 @@ namespace Hospitality
             }
 
             // Gizmo for drawing guest room info
-            if (Stats.lastCalculated == 0 || Stats.room == null) UpdateStats();
-            yield return new Gizmo_GuestBedStats(this);
+            if (Find.Selector.SingleSelectedObject == this)
+            {
+                if (Stats.lastCalculated == 0 || Stats.room == null) UpdateStats();
+                yield return new Gizmo_GuestBedStats(this);
+            }
 
             // Add buttons to decrease / increase the fee
             yield return new Command_Action
