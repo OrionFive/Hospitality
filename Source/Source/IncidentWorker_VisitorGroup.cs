@@ -409,6 +409,7 @@ namespace Hospitality
                 
                 // Items
                 float maxValue = (wealthBase + 25)*Rand.Range(5, 8);
+                if (maxValue - totalValue <= 100) maxValue = totalValue + Rand.Range(25, 100); // At least bring some junk
                 float value = maxValue - totalValue;
                 int curCount = 0;
                 while (value > 100 && curCount < 200)

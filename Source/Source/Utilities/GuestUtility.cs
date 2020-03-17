@@ -313,7 +313,7 @@ namespace Hospitality
 
         public static IEnumerable<Pawn> GetAllGuests(Map map)
         {
-            return map.mapPawns.AllPawnsSpawned.Where(p => p.IsGuest());
+            return map.GetMapComponent().PresentGuests;
         }
 
         public static void AddNeedJoy(Pawn pawn)
