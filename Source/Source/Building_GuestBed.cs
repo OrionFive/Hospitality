@@ -234,6 +234,8 @@ namespace Hospitality
 
         public static void Swap(Building_Bed bed)
         {
+            bool forPrisoners = bed.ForPrisoners; // Store this, since it changes during spawn
+
             Building_Bed newBed;
             if (bed.IsGuestBed())
             {
@@ -247,7 +249,7 @@ namespace Hospitality
             newBed.SetFactionDirect(bed.Faction);
             var spawnedBed = (Building_Bed) GenSpawn.Spawn(newBed, bed.Position, bed.Map, bed.Rotation);
             spawnedBed.HitPoints = bed.HitPoints;
-            spawnedBed.ForPrisoners = bed.ForPrisoners;
+            spawnedBed.ForPrisoners = forPrisoners;
 
             var compQuality = spawnedBed.TryGetComp<CompQuality>();
 
