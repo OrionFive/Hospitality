@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 using Verse.AI;
 using static UnityEngine.Mathf;
+using Log = Verse.Log;
 
 namespace Hospitality
 {
@@ -93,9 +95,9 @@ namespace Hospitality
             return value;
         }
 
-        public static int StaticBedValue(Building_GuestBed bed, out Room room, out int quality, out int impressiveness, out int roomType)
+        public static int StaticBedValue(Building_GuestBed bed, [CanBeNull]out Room room, out int quality, out int impressiveness, out int roomType)
         {
-            room = bed.Map.regionAndRoomUpdater.Enabled ? bed.GetRoom() : null;
+            room = bed.Map != null && bed.Map.regionAndRoomUpdater.Enabled ? bed.GetRoom() : null;
 
             if (!bed.TryGetQuality(out QualityCategory category)) category = QualityCategory.Normal;
             quality = ((int) category - 2) * 25;
@@ -106,6 +108,7 @@ namespace Hospitality
 
         private static float GetTemperatureScore(Pawn guest, Room room)
         {
+            if (room == null) return 0;
             var optimalTemperature = GenTemperature.ComfortableTemperatureRange(guest.def);
             var pctTemperature = Abs(optimalTemperature.InverseLerpThroughRange(room.Temperature) - 0.5f) * 2; // 0-1
             return RoundToInt(Lerp(0, -200, pctTemperature - 0.75f) * 4); // -200 - 0

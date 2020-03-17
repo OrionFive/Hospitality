@@ -50,12 +50,12 @@ namespace Hospitality
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
+
             UpdateStats();
         }
 
         private void UpdateStats()
         {
-            // Calculate stats
             Stats.lastCalculated = GenTicks.TicksGame;
             try
             {
@@ -68,7 +68,7 @@ namespace Hospitality
             }
             catch (Exception e)
             {
-                Log.ErrorOnce(e.Message, 834763462);
+                Log.ErrorOnce($"Failed to calculate stats: {e.Message}\n{e.StackTrace}", 834763462);
             }
         }
 
