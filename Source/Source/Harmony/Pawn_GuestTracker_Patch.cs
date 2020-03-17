@@ -11,12 +11,10 @@ namespace Hospitality.Harmony
         public class SetGuestStatus
         {
             [HarmonyPrefix]
-            public static void Prefix(Pawn_GuestTracker __instance, ref bool prisoner)
+            public static void Prefix(ref bool prisoner, Pawn ___pawn)
             {
                 // Added
-                var pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-
-                if (pawn?.IsGuest() == true) prisoner = false;
+                if (___pawn?.IsGuest() == true) prisoner = false;
             }
         }
     }

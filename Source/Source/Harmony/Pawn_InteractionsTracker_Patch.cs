@@ -16,50 +16,47 @@ namespace Hospitality.Harmony
         public class TryInteractRandomly
         {
             [HarmonyPrefix]
-            public static bool Replacement(Pawn_InteractionsTracker __instance, ref bool __result)
+            public static bool Replacement(Pawn_InteractionsTracker __instance, ref bool __result, Pawn ___pawn, List<Pawn> ___workingList, int ___lastInteractionTime)
             {
                 // Added
-                var pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-                
-                if (!IsInteractable(pawn))
+                if (!IsInteractable(___pawn))
                 {
                     __result = false;
                     return false;
                 }
-                var workingList = Traverse.Create(__instance).Field("workingList").GetValue<List<Pawn>>(); // Had to add
 
-                if (InteractedTooRecentlyToInteract(__instance)) // Changed to own
+                if (InteractedTooRecentlyToInteract(___lastInteractionTime)) // Changed to own
                 {
                     __result = false;
                     return false;
                 }
                 // BASE
-                if (!InteractionUtility.CanInitiateRandomInteraction(pawn))
+                if (!InteractionUtility.CanInitiateRandomInteraction(___pawn))
                 {
                     __result = false;
                     return false;
                 }
-                var collection = pawn.MapHeld.mapPawns.AllPawnsSpawned.Where(IsInteractable); // Added
-                workingList.Clear();
-                workingList.AddRange(collection);
-                workingList.Shuffle();
+                var collection = ___pawn.MapHeld.mapPawns.AllPawnsSpawned.Where(IsInteractable); // Added
+                ___workingList.Clear();
+                ___workingList.AddRange(collection);
+                ___workingList.Shuffle();
                 List<InteractionDef> allDefsListForReading = DefDatabase<InteractionDef>.AllDefsListForReading;
-                foreach (var p in workingList)
+                foreach (var p in ___workingList)
                 {
-                    if (p != pawn && CanInteractNowWith(pawn, p) && InteractionUtility.CanReceiveRandomInteraction(p)
-                        && !pawn.HostileTo(p))
+                    if (p != ___pawn && CanInteractNowWith(___pawn, p) && InteractionUtility.CanReceiveRandomInteraction(p)
+                        && !___pawn.HostileTo(p))
                     {
                         var p1 = p;
                         if (
                             allDefsListForReading.TryRandomElementByWeight(
-                                x => x.Worker.RandomSelectionWeight(pawn, p1), out var intDef))
+                                x => x.Worker.RandomSelectionWeight(___pawn, p1), out var intDef))
                         {
                             if (__instance.TryInteractWith(p, intDef))
                             {
                                 __result = true;
                                 return false;
                             }
-                            Log.Warning($"{pawn} failed to interact with {p}.");
+                            Log.Warning($"{___pawn} failed to interact with {p}.");
                         }
                     }
                 }
@@ -83,10 +80,9 @@ namespace Hospitality.Harmony
             }
 
             // Added to change InteractIntervalAbsoluteMin
-            public static bool InteractedTooRecentlyToInteract(Pawn_InteractionsTracker tracker)
+            public static bool InteractedTooRecentlyToInteract(int ___lastInteractionTime)
             {
-                var lastInteractionTime = Traverse.Create(tracker).Field("lastInteractionTime").GetValue<int>();
-                return Find.TickManager.TicksGame < lastInteractionTime + GuestUtility.InteractIntervalAbsoluteMin;
+                return Find.TickManager.TicksGame < ___lastInteractionTime + GuestUtility.InteractIntervalAbsoluteMin;
             }
         }
     }

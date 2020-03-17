@@ -13,12 +13,11 @@ namespace Hospitality.Harmony {
         public class TryStartMentalState
         {
             [HarmonyPrefix]
-            public static bool Prefix(MentalStateHandler __instance)
+            public static bool Prefix(Pawn ___pawn)
             {
-                var pawn = Traverse.Create(__instance).Field<Pawn>("pawn").Value;
-                if (pawn != null && pawn.IsGuest() && !pawn.IsArrived())
+                if (___pawn != null && ___pawn.IsGuest() && !___pawn.IsArrived())
                 {
-                    Log.Message($"{pawn.LabelShort} was about to have a mental break. Cancelled, because guest is traveling.");
+                    Log.Message($"{___pawn.LabelShort} was about to have a mental break. Cancelled, because guest is traveling.");
                     return false;
                 }
 

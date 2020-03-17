@@ -13,7 +13,7 @@ namespace Hospitality.Harmony {
         public class CanReach
         {
             [HarmonyPostfix]
-            public static void Postfix(ref bool __result, ref Reachability __instance, LocalTargetInfo dest, PathEndMode peMode, TraverseParms traverseParams)
+            public static void Postfix(ref bool __result, LocalTargetInfo dest, TraverseParms traverseParams)
             {
                 if (!__result) return;
 

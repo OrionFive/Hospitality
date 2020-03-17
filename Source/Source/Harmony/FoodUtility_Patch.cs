@@ -13,7 +13,7 @@ namespace Hospitality.Harmony
         public class BestFoodSourceOnMap
         {
             [HarmonyPrefix]
-            public static bool Prefix(ref Thing __result, Pawn eater, bool desperate)
+            public static bool Prefix(Pawn eater, bool desperate)
             {
                 if (!eater.IsGuest()) return true;
                 return desperate;

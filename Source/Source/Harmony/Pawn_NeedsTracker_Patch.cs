@@ -17,11 +17,9 @@ namespace Hospitality.Harmony
             private static readonly NeedDef defSpace = DefDatabase<NeedDef>.GetNamed("RoomSize");
 
             [HarmonyPrefix]
-            public static bool Prefix(Pawn_NeedsTracker __instance, ref bool __result, NeedDef nd)
+            public static bool Prefix(ref bool __result, NeedDef nd, Pawn ___pawn)
             {
-                var pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-
-                if ((nd == NeedDefOf.Joy || nd == defComfort || nd == defBeauty || nd == defSpace) && pawn.IsGuest()) // ADDED
+                if ((nd == NeedDefOf.Joy || nd == defComfort || nd == defBeauty || nd == defSpace) && ___pawn.IsGuest()) // ADDED
                 {
                     __result = true;
                     return false;
