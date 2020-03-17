@@ -843,6 +843,7 @@ namespace Hospitality
 
         public static void CheckForRogueGuests(Map map)
         {
+            if (Settings.disableGuests) return;
             var pawns = map.mapPawns.AllPawnsSpawned.Where(p => p.GetPosture() == PawnPosture.Standing && !HealthAIUtility.ShouldSeekMedicalRest(p) && !p.health.hediffSet.HasNaturallyHealingInjury()).Where(GuestHasNoLord).ToArray();
 
             foreach (var pawn in pawns)
