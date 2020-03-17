@@ -38,7 +38,8 @@ namespace Hospitality.Harmony
 
             private static IEnumerable<Gizmo> Process(Building_Bed __instance, IEnumerable<Gizmo> __result)
             {
-                if (!__instance.ForPrisoners && !__instance.Medical && __instance.def.building.bed_humanlike)
+                var isPrisonCell = __instance.GetRoom()?.isPrisonCell == true;
+                if (!__instance.ForPrisoners && !__instance.Medical && __instance.def.building.bed_humanlike && !isPrisonCell)
                 {
                     yield return
                         new Command_Toggle
