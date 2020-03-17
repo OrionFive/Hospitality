@@ -23,7 +23,9 @@ namespace Hospitality {
 
                 if (pawn.apparel.TryDrop(apparel, out var droppedApp))
                 {
-                    bool success = pawn.inventory.innerContainer.TryAddOrTransfer(droppedApp.SplitOff(1));
+                    var item = droppedApp.SplitOff(1);
+                    pawn.inventory.TryAddItemNotForSale(item);
+                    bool success = pawn.inventory.innerContainer.Contains(item);
                     if (!success) pawn.apparel.Wear(droppedApp);
                 }
             }
