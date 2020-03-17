@@ -67,8 +67,8 @@
   <AreaNoShopping>Kein Einkauf</AreaNoShopping>
   <AreaToStayTooltip>Hier dürfen Gäste schlafen und sich aufhalten.</AreaToStayTooltip>
   <AreaToBuyTooltip>Gegenstände in dieser Zone dürfen gekauft werden. Muss innerhalb der Aufenthaltszone sein.</AreaToBuyTooltip>
-  <ConvincingLeft>Überzeugung nötig</ConvincingLeft>
-  <FriendsRequirement>Genug befreundet zum Rekrutieren: {0}/{1}</FriendsRequirement>
+  <FriendsRequirement>Genug Freunde zum Rekrutieren: {0}/{1}</FriendsRequirement>
+  <SeniorityRequirement>Genug königliche Freunde zum Rekrutieren: {0}/{1}</SeniorityRequirement>
   <RecruitmentPenalty>Beziehungsschaden bei Rekrutierung</RecruitmentPenalty>
   <ImproveRelationship>Versuche Sie zu unterhalten</ImproveRelationship>
   <MakeFriends>Versuche Freundschaften aufzubauen</MakeFriends>

@@ -24,37 +24,40 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(float y, float width,  object entry, Pawn selPawnForSocialInfo)
             {
-                if (selPawnForSocialInfo.IsGuest())
+                if (!selPawnForSocialInfo.IsGuest()) return true;
+
+                Pawn otherPawn = Traverse.Create(entry).Field<Pawn>("otherPawn").Value;
+                if (!otherPawn.IsColonist) return true;
+
+                var guest = selPawnForSocialInfo;
+
+                // We don't care about non-royal colonists
+                if (guest.royalty?.MostSeniorTitle != null && otherPawn.royalty?.MostSeniorTitle == null) return true;
+
+                //SocialCardUtility.CachedSocialTabEntry
+                if (_getRowHeight == null) _getRowHeight = AccessTools.Method(typeof(SocialCardUtility), "GetRowHeight");
+                float rowHeight = (float) _getRowHeight.Invoke(null, new[] {entry, width, selPawnForSocialInfo});
+                Rect rect = new Rect(0f, y, width, rowHeight);
+
+                float requiredOpinion = guest.GetMinRecruitOpinion();
+
+                float opinion = guest.relations.OpinionOf(otherPawn);
+                var related = guest.relations.RelatedPawns.Any(rel => rel == otherPawn);
+
+                float percent;
+                if (opinion > 0)
                 {
-                    Pawn otherPawn = Traverse.Create(entry).Field<Pawn>("otherPawn").Value;
-                    if (!otherPawn.IsColonist) return true;
-
-                    var guest = selPawnForSocialInfo;
-                    //SocialCardUtility.CachedSocialTabEntry
-                    if (_getRowHeight == null) _getRowHeight = AccessTools.Method(typeof(SocialCardUtility), "GetRowHeight");
-                    float rowHeight = (float) _getRowHeight.Invoke(null, new[] {entry, width, selPawnForSocialInfo});
-                    Rect rect = new Rect(0f, y, width, rowHeight);
-
-                    float requiredOpinion = guest.GetMinRecruitOpinion();
-
-                    float opinion = guest.relations.OpinionOf(otherPawn);
-                    var related = guest.relations.RelatedPawns.Any(rel => rel == otherPawn);
-
-                    float percent;
-                    if (opinion > 0)
-                    {
-                        percent = opinion / requiredOpinion;
-                        GUI.color = related ? HighlightColorFriendRelated : HighlightColorFriend;
-                    }
-                    else
-                    {
-                        percent = opinion / GuestUtility.MaxOpinionForEnemy;
-                        GUI.color = related ? HighlightColorEnemyRelated : HighlightColorEnemy;
-                    }
-                    rect.width *= percent;
-
-                    GUI.DrawTexture(rect, TexUI.HighlightTex);
+                    percent = opinion / requiredOpinion;
+                    GUI.color = related ? HighlightColorFriendRelated : HighlightColorFriend;
                 }
+                else
+                {
+                    percent = opinion / GuestUtility.MaxOpinionForEnemy;
+                    GUI.color = related ? HighlightColorEnemyRelated : HighlightColorEnemy;
+                }
+                rect.width *= percent;
+
+                GUI.DrawTexture(rect, TexUI.HighlightTex);
 
                 return true;
             }

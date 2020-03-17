@@ -117,6 +117,12 @@ namespace Hospitality
             return GetPawnsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => GetRelationValue(pawn, guest));
         }
 
+        public static int GetFriendsSeniorityInColony(this Pawn guest)
+        {
+            float requiredOpinion = GetMinRecruitOpinion(guest);
+            return GetPawnsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => pawn.royalty.MostSeniorTitle.def.seniority);
+        }
+
         private static int GetRelationValue(Pawn pawn, Pawn guest)
         {
             if (guest.relations.RelatedPawns.Any(rel => rel == pawn)) return 2;
@@ -149,6 +155,11 @@ namespace Hospitality
         public static int GetEnemiesInColony(this Pawn guest)
         {
             return GetPawnsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy).Sum(p => GetRelationValue(p, guest));
+        }
+
+        public static int GetRoyalEnemiesSeniorityInColony(this Pawn guest)
+        {
+            return GetPawnsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy).Sum(p => p.royalty.MostSeniorTitle.def.seniority);
         }
 
         public static int GetMinRecruitOpinion(this Pawn guest)
@@ -483,7 +494,9 @@ namespace Hospitality
             var opinion = target.relations.OpinionOf(recruiter);
             //Log.Message(String.Format("Opinion of {0} about {1}: {2}", target.NameStringShort,recruiter.NameStringShort, opinion));
             //Log.Message(String.Format("{0} + {1} = {2}", pleaseChance, opinion*0.01f, pleaseChance + opinion*0.01f));
-            return pleaseChance * 0.8f + opinion*0.01f;
+            var difficultyOffset = target.royalty?.MostSeniorTitle?.def.recruitmentDifficultyOffset ?? 0;
+            var difficultyFactor = target.royalty?.MostSeniorTitle?.def.recruitmentResistanceFactor ?? 1;
+            return pleaseChance / difficultyFactor * 0.8f + opinion*0.01f - difficultyOffset;
         }
 
         private static void GainSocialThought(Pawn initiator, Pawn target, ThoughtDef thoughtDef)
@@ -603,9 +616,9 @@ namespace Hospitality
             return area[s.Position];
         }
 
-        public static int FriendsRequired(Map mapHeld)
+        public static int FriendsRequired(Map map)
         {
-            var x = GetPawnsFromBase(mapHeld).Count();
+            var x = GetPawnsFromBase(map).Count();
             if (x <= 3) return 1;
             // Formula from: https://mycurvefit.com/share/5b359026-5f44-4ac4-88ed-9b364a242f7b
             var a = 0.887f;
@@ -615,12 +628,21 @@ namespace Hospitality
             return Mathf.RoundToInt(required);
         }
 
+        public static int RoyalFriendsSeniorityRequired(Pawn pawn)
+        {
+            var title = pawn.royalty?.MostSeniorTitle;
+            if (title == null) return 0;
+            return title.def.seniority;
+        }
+
         public static void EndorseColonists(Pawn recruiter, Pawn guest)
         {
             if (guest.relations == null) return;
             if (recruiter.relations == null) return;
 
-            var pawns = guest.MapHeld.mapPawns.FreeColonistsSpawned.Where(c=> c != recruiter && recruiter.relations.OpinionOf(c) > 0).ToArray();
+            var isRoyal = guest.royalty?.MostSeniorTitle != null;
+            // If guest is royal then only endorse royal pawns
+            var pawns = guest.MapHeld.mapPawns.FreeColonistsSpawned.Where(c => c != recruiter && recruiter.relations.OpinionOf(c) > 0 && !(isRoyal && c.royalty?.MostSeniorTitle == null)).ToArray();
             if (pawns.Length == 0) return;
 
             if (pawns.TryRandomElement(out var target))
