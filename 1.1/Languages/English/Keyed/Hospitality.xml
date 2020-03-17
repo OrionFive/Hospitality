@@ -113,7 +113,7 @@
   
   <!-- Alerts -->
   <AlertCantClaimBed>Guest can't claim bed</AlertCantClaimBed>
-  <AlertCantClaimBedDesc>These guests can't afford to claim a bed, which is making them sad:\n\n{0}\nProvide cheaper or free beds or gift the guests some silver.\nFactions with a better relationship will bring more silver.</AlertCantClaimBedDesc>
+  <AlertCantClaimBedDesc>These guests can't afford to claim a bed:\n\n{0}\nProvide cheaper or free beds or gift the guests some silver.\nFactions with a better relationship will bring more silver.</AlertCantClaimBedDesc>
   <AlertNotEnoughBeds>Not enough guest beds</AlertNotEnoughBeds>
   <AlertNotEnoughBedsDesc>There are not enough beds for the following pawns:\n\n{0}\nYou should provide more beds for guests.</AlertNotEnoughBedsDesc>
 

@@ -113,7 +113,7 @@
 
   <!-- Alerts -->
   <AlertCantClaimBed>Gast kann kein Bett reservieren</AlertCantClaimBed>
-  <AlertCantClaimBedDesc>Diese Gäste können es sich nicht leisten ein Bett zu reservieren und sind jetzt traurig:\n\n{0}\nBiete günstigere Betten an oder schenke ihnen etwas Silber.\nFraktionen mit einer besseren Beziehung bringen mehr Silber mit.</AlertCantClaimBedDesc>
+  <AlertCantClaimBedDesc>Diese Gäste können es sich nicht leisten ein Bett zu reservieren:\n\n{0}\nBiete günstigere Betten an oder schenke ihnen etwas Silber.\nFraktionen mit einer besseren Beziehung bringen mehr Silber mit.</AlertCantClaimBedDesc>
   <AlertNotEnoughBeds>Nicht genügend Gästebetten</AlertNotEnoughBeds>
   <AlertNotEnoughBedsDesc>Für diese Gäste sind keine Betten mehr verfügbar:\n\n{0}\nDu solltest weitere Betten für Gäste anbieten.</AlertNotEnoughBedsDesc>
 
