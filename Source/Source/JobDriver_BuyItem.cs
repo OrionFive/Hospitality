@@ -15,7 +15,7 @@ namespace Hospitality
         //Constants
         public const int MinShoppingDuration = 75;
         public const int MaxShoppingDuration = 300;
-        public static float PriceFactor = 0.7f;
+        public static float PriceFactor = 0.55f;
 
         //Properties
         protected Thing Item => job.targetA.Thing;
@@ -48,14 +48,14 @@ namespace Hospitality
                 yield return Toils_General.Wait(duration);
 
                 Toil takeThing = new Toil();
-                takeThing.initAction = () => TakeThing(takeThing);
+                takeThing.initAction = () => BuyThing(takeThing);
                 yield return takeThing.FailOnDespawnedNullOrForbidden(TargetIndex.A);
             }
 
             //yield return Toils_Jump.Jump(gotoToil); // shop some more
         }
 
-        private void TakeThing(Toil toil)
+        private void BuyThing(Toil toil)
         {
             Job curJob = toil.actor.jobs.curJob; 
             //Toils_Haul.ErrorCheckForCarry(toil.actor, Item);
