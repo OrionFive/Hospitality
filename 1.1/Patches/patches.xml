@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Patch>
+	<!-- Add peaceful groupmaker for empire -->
 	<Operation Class="PatchOperationFindMod">
 	  <mods>
 		<li>Royalty</li>
@@ -19,5 +20,27 @@
 		  </li>
         </value>
 	  </match>
+	</Operation>
+	
+	<!-- Massochists won't suffer from these, because wth -->
+	<Operation Class="PatchOperationConditional">
+		<!-- Do we already have nullifyingTraits? -->
+		<xpath>/Defs/ThoughtDef[defName = "AteWithoutTable" or defName = "SleptOutside" or defName = "SleptOnGround" or defName = "SleptInCold" or defName = "SleptInHeat"]/nullifyingTraits</xpath>
+		<!-- No? Add them fresh -->
+		<nomatch Class="PatchOperationAdd">
+			<xpath>/Defs/ThoughtDef[defName = "AteWithoutTable" or defName = "SleptOutside" or defName = "SleptOnGround" or defName = "SleptInCold" or defName = "SleptInHeat"]</xpath>
+			<value>
+				<nullifyingTraits>
+					<li>Masochist</li>
+				</nullifyingTraits>
+			</value>
+		</nomatch>
+		<!-- Yes? Add to them -->
+		<match Class="PatchOperationAdd">
+			<xpath>/Defs/ThoughtDef[defName = "AteWithoutTable" or defName = "SleptOutside" or defName = "SleptOnGround" or defName = "SleptInCold" or defName = "SleptInHeat"]/nullifyingTraits</xpath>
+			<value>
+				<li>Masochist</li>
+			</value>
+		</match>
 	</Operation>
 </Patch>
