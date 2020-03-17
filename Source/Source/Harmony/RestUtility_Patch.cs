@@ -13,7 +13,7 @@ namespace Hospitality.Harmony
         public class IsValidBedFor
         {
             [HarmonyPostfix]
-            public static void Postfix(Pawn sleeper, Thing bedThing, ref bool __result)
+            public static void Postfix(Pawn sleeper, Thing bedThing, ref bool __result, bool sleeperWillBePrisoner)
             {
                 if (!__result) return;
                 switch (bedThing) {
@@ -23,7 +23,10 @@ namespace Hospitality.Harmony
                         break;
                     // normal bed
                     case Building_Bed bed:
-                        if (sleeper.IsGuest()) __result = HealthAIUtility.ShouldSeekMedicalRest(sleeper) || sleeper.health.hediffSet.HasNaturallyHealingInjury();
+                        if (sleeper.IsGuest())
+                        {
+                            __result = HealthAIUtility.ShouldSeekMedicalRest(sleeper) || sleeper.health.hediffSet.HasNaturallyHealingInjury() || sleeperWillBePrisoner;
+                        }
                         break;
                 }
             }
