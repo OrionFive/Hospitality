@@ -272,7 +272,7 @@ namespace Hospitality
         {
             var map = (Map)parms.target;
 
-            var selection = GetPawnsToSpawn(parms);
+            var selection = GetPawnsToSpawn(parms).Distinct();
 
             foreach (var pawn in selection)
             {
