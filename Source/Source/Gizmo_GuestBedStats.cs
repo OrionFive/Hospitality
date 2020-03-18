@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -7,15 +9,15 @@ namespace Hospitality
     public class Gizmo_GuestBedStats : Gizmo
     {
         private static readonly Color GuestBedStatsColor = new Color(0.75f, 0.75f, 0.75f);
-        private Building_GuestBed building;
+        private Building_GuestBed bed;
 
-        public Gizmo_GuestBedStats(Building_GuestBed building)
+        public Gizmo_GuestBedStats(Building_GuestBed bed)
         {
-            this.building = building;
+            this.bed = bed;
             order = -100f;
         }
 
-        private Room Room => Gizmo_RoomStats.GetRoomToShowStatsFor(building);
+        private Room Room => Gizmo_RoomStats.GetRoomToShowStatsFor(bed);
 
         public override float GetWidth(float maxWidth)
         {
@@ -34,12 +36,12 @@ namespace Hospitality
             Rect rectInner = rectWindow.AtZero().ContractedBy(10f);
             Text.Font = GameFont.Small;
             Rect rectTitle = new Rect(rectInner.x, rectInner.y - 2f, rectInner.width, 100f);
-            var title = building.Stats.title;
+            var title = bed.Stats.title;
             Widgets.Label(rectTitle, title.Truncate(rectTitle.width));
             float y = (float) (rectInner.y + (double) Text.LineHeight + Text.SpaceBetweenLines + 7.0);
             GUI.color = GuestBedStatsColor;
             Text.Font = GameFont.Tiny;
-            IEnumerable<TaggedString> stats = building.Stats.textAsArray;
+            IEnumerable<TaggedString> stats = bed.Stats.textAsArray;
             foreach (var label in stats)
             {
                 Rect rectStat = new Rect(rectInner.x, y, rectInner.width, 100f);
@@ -54,12 +56,34 @@ namespace Hospitality
             GenUI.AbsorbClicksInRect(rectWindow);
             if (!Mouse.IsOver(rectWindow))
                 return new GizmoResult(GizmoState.Clear);
-            Rect windowRect = EnvironmentStatsDrawer.GetWindowRect(false, true);
+            Rect windowRect = BedStatsDrawer.GetWindowRect();
             Find.WindowStack.ImmediateWindow(74975, windowRect, WindowLayer.Super, () => {
-                float curY = 18f;
-                EnvironmentStatsDrawer.DoRoomInfo(room, ref curY, windowRect);
+                BedStatsDrawer.DoBedInfos(windowRect, bed);
             });
+
+            // Can't get this to work :(
+            //if (Widgets.ButtonInvisible(rectWindow))
+            //{
+            //    ProcessInput(Event.current);
+            //    return new GizmoResult(GizmoState.Interacted, Event.current);
+            //}
+
+            //if (Mouse.IsOver(rectWindow))
+            //{
+            //    TipSignal tip = new TipSignal(() => "ClickToLearnMore".Translate().Resolve(), (int) y * 37);
+            //    TooltipHandler.TipRegion(rectWindow, tip);
+            //}
             return new GizmoResult(GizmoState.Mouseover);
+        }
+
+        // Doesn't work. Never gets called :(
+        public override void ProcessInput(Event ev)
+        {
+            // TODO: Get the first title from the bed
+            Faction possibleFaction = Find.FactionManager.AllFactionsListForReading.First(f=>f.def.HasRoyalTitles);
+            RoyalTitleDef titleDef = possibleFaction.def.RoyalTitlesAllInSeniorityOrderForReading.First();
+            Log.Message($"{possibleFaction.GetCallLabel()} - {titleDef.LabelCap}");
+            Find.WindowStack.Add(new Dialog_InfoCard(titleDef, possibleFaction));
         }
     }
 }

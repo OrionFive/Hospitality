@@ -110,6 +110,7 @@
   <CommandBedDecreaseFeeLabel>-{0}</CommandBedDecreaseFeeLabel>
   <CommandBedDecreaseFeeDesc>Verringere die Gebühr um {0}. Gäste die dieses Bett mieten bekommen einen {1} Stimmungsabzug.</CommandBedDecreaseFeeDesc>
   <BedAttractiveness>Attraktivität: {0}</BedAttractiveness>
+  <BedSatisfiedTitles>Diese königlichen Titel akzeptieren dieses Bett:</BedSatisfiedTitles>
 
   <!-- Alerts -->
   <AlertCantClaimBed>Gast kann kein Bett reservieren</AlertCantClaimBed>

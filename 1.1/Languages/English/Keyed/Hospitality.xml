@@ -110,6 +110,7 @@
   <CommandBedDecreaseFeeLabel>-{0}</CommandBedDecreaseFeeLabel>
   <CommandBedDecreaseFeeDesc>Decrease the fee by {0}. Guests renting this bed will have a {1} mood effect.</CommandBedDecreaseFeeDesc>
   <BedAttractiveness>Attractiveness: {0}</BedAttractiveness>
+  <BedSatisfiedTitles>These royal titles will accept this bed:</BedSatisfiedTitles>
   
   <!-- Alerts -->
   <AlertCantClaimBed>Guest can't claim bed</AlertCantClaimBed>
