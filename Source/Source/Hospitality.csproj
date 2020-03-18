@@ -89,6 +89,8 @@
     <Compile Include="Alert_GuestNotEnoughBeds.cs" />
     <Compile Include="Alert_GuestThought.cs" />
     <Compile Include="Gizmo_GuestBedStats.cs" />
+    <Compile Include="Harmony\Pawn_TraderTracker_Patch.cs" />
+    <Compile Include="Harmony\QuestNode_GetPawn_Patch.cs" />
     <Compile Include="Utilities\BedUtility.cs" />
     <Compile Include="ChoiceLetter_GuestJoinRequest.cs" />
     <Compile Include="Utilities\DefsUtility.cs" />
@@ -111,7 +113,6 @@
     <Compile Include="Harmony\JobGiver_Work_Patch.cs" />
     <Compile Include="Harmony\JoyGiver_Ingest_Patch.cs" />
     <Compile Include="Harmony\MinifiedThing_Patch.cs" />
-    <Compile Include="Harmony\ModContentPack_Patch.cs" />
     <Compile Include="Utilities\GenericUtility.cs" />
     <Compile Include="Harmony\ITab_Pawn_Gear_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Guest_Patch.cs" />
