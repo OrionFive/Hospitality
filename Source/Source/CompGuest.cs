@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
@@ -138,11 +139,11 @@ namespace Hospitality
             return drugPolicy;
         }
 
-        public void ClaimBed(Building_GuestBed newBed)
+        public void ClaimBed([NotNull]Building_GuestBed newBed)
         {
             if (!newBed.AnyUnownedSleepingSlot) return;
 
-            var allOtherBeds = newBed.Map.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>().Where(b => b != newBed);
+            var allOtherBeds = newBed.Map.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>().Where(b => b != null && b != newBed);
 
             foreach (var otherBed in allOtherBeds)
             {

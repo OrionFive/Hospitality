@@ -13,6 +13,19 @@ namespace Hospitality
         {
             CheckChemicalDefs();
             CheckFactionDefs();
+            CheckBedDefs();
+        }
+
+        // All beds must be assignable to pawns
+        private static void CheckBedDefs()
+        {
+            foreach (var bedDef in DefDatabase<ThingDef>.AllDefsListForReading.Where(d=>d.thingClass.IsSubclassOf(typeof(Building_Bed))))
+            {
+                if (!bedDef.HasComp(typeof(CompAssignableToPawn_Bed)))
+                {
+                    LogMisconfiguration(bedDef, $"ThingDef {bedDef.defName} must have a 'CompAssignableToPawn_Bed' in comps.");
+                }
+            }
         }
 
         // Must have at least one pawn group maker of type "Peaceful", if ever non hostile
