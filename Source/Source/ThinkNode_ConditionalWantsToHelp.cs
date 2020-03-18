@@ -9,7 +9,9 @@ namespace Hospitality
         {
             if (Settings.disableWork) return false;
             if (pawn.needs?.mood == null) return false;
-            return pawn.needs.mood.CurLevel > 0.75f;
+            var isHappy = pawn.needs.mood.CurLevel > 0.9f;
+            if(isHappy) Log.Message($"{pawn.LabelShort} wants to help");
+            return isHappy;
         }
     }
 }
