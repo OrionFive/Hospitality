@@ -23,15 +23,6 @@ namespace Hospitality
             return ThinkResult.NoJob;
         }
 
-        private static bool IsOutsideArea(Job job, Area area)
-        {
-            if (area == null) return false;
-            if (job.targetA.IsValid && !area[job.targetA.Cell]) return true;
-            if (job.targetB.IsValid && !area[job.targetB.Cell]) return true;
-            if (job.targetC.IsValid && !area[job.targetC.Cell]) return true;
-            return false;
-        }
-
         private static bool IsForbidden(ThinkResult result)
         {
             bool forbidden = false;

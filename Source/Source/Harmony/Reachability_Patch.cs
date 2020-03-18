@@ -1,5 +1,4 @@
 using HarmonyLib;
-using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -17,11 +16,12 @@ namespace Hospitality.Harmony {
             {
                 if (!__result) return;
 
-                if (!traverseParams.pawn.IsGuest()) return;
-                if (!traverseParams.pawn.IsArrived()) return;
-
+                // Cheaper to check this before IsGuest
                 var area = traverseParams.pawn.GetGuestArea();
                 if (area == null) return;
+                if (!traverseParams.pawn.IsArrived()) return;
+                if (!traverseParams.pawn.IsGuest()) return;
+
                 if (!dest.IsValid || !area[dest.Cell]) __result = false;
 
                 //Log.Message($"Guest {traverseParams.pawn.LabelShort} tried to traverse to {dest.Cell}. This was {(__result ? "allowed" : "not allowed")}");

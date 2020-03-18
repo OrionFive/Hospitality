@@ -581,16 +581,12 @@ namespace Hospitality
 
         public static Area GetGuestArea(this Pawn p)
         {
-            var compGuest = p.GetComp<CompGuest>();
-
-            return compGuest?.GuestArea;
+            return p?.GetComp<CompGuest>()?.GuestArea;
         }
 
          public static Area GetShoppingArea(this Pawn p)
         {
-            var compGuest = p.GetComp<CompGuest>();
-
-            return compGuest?.ShoppingArea;
+            return p?.GetComp<CompGuest>()?.ShoppingArea;
         }
 
         public static bool Bought(this Pawn pawn, Thing thing)

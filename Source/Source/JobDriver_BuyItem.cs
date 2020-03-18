@@ -42,7 +42,9 @@ namespace Hospitality
                 Toil reserveTargetA = Toils_Reserve.Reserve(TargetIndex.A);
 
                 yield return reserveTargetA;
-                yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.A);
+                yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch)
+                    .FailOnDespawnedNullOrForbidden(TargetIndex.A)
+                    .FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
 
                 int duration = Rand.Range(MinShoppingDuration, MaxShoppingDuration);
                 yield return Toils_General.Wait(duration);

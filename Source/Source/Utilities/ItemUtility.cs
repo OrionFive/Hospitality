@@ -120,12 +120,6 @@ namespace Hospitality {
         public static bool IsBuyableAtAll(Pawn pawn, Thing thing)
         {
             if (!IsBuyableNow(pawn, thing)) return false;
-            if (!pawn.IsInShoppingZone(thing))
-            {
-                //if (thing.GetRoom() == null) Log.Message(thing.Label + ": not in room");
-                //else Log.Message(thing.Label + ": in room " + thing.GetRoom().Role.LabelCap);
-                return false;
-            }
 
             if (thing.def.isUnfinishedThing)
             {
@@ -192,7 +186,7 @@ namespace Hospitality {
                 return false;
             }
 
-            if (!pawn.HasReserved(thing) && !pawn.CanReserveAndReach(thing, PathEndMode.OnCell, Danger.None))
+            if (!pawn.HasReserved(thing) && !pawn.CanReserve(thing))
             {
                 //Log.Message(thing.Label+": can't be reserved or reached by "+pawn.NameStringShort);
                 return false;

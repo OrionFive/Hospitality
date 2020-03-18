@@ -28,9 +28,11 @@ namespace Hospitality
         public override Job TryGiveJob(Pawn pawn)
         {
             var map = pawn.MapHeld;
-            var things = map.listerThings.ThingsInGroup(RequestGroup).Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
-            var storage = map.listerBuildings.AllBuildingsColonistOfClass<Building_Storage>().Where(pawn.IsInShoppingZone);
-            things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
+            var shoppingArea = pawn.GetShoppingArea();
+            var things = shoppingArea.ActiveCells.SelectMany(cell=>map.thingGrid.ThingsListAtFast(cell)).Where(t=>t.def.EverHaulable
+            && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t)).ToList();
+            var storage = shoppingArea.ActiveCells.Select(cell=>map.edificeGrid[cell]).OfType<Building_Storage>();
+            things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t))));
             if (things.Count == 0) return null;
 
             // Try some things
@@ -184,7 +186,7 @@ namespace Hospitality
             return num;
         }
 
-        protected virtual bool Qualifies(Thing thing, Pawn pawn)
+        protected virtual bool Qualifies(Thing thing)
         {
             return true;
         }

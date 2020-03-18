@@ -293,7 +293,7 @@ namespace Hospitality
             var ammoCategory = DefDatabase<ThingCategoryDef>.GetNamedSilentFail("Ammo");
             if (ammoCategory != null && i.def.IsWithinCategory(ammoCategory)) return false;
 
-            return i.def != ThingDefOf.Silver && !i.IsMeal() && !pawn.Bought(i) && !BoughtOrSoldByPlayer(i);
+            return i.def != ThingDefOf.Silver && !i.IsMeal() && !pawn.Bought(i) && !BoughtOrSoldByPlayer(i) && !pawn.inventory.NotForSale(i);
         }
 
         private static string GetItemName(Thing item)

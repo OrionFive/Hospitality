@@ -26,7 +26,7 @@ namespace Hospitality
             return thing.def.IsNutritionGivingIngestible && thing.def.IsWithinCategory(ThingCategoryDefOf.Foods);
         }
 
-        protected override bool Qualifies(Thing thing, Pawn pawn)
+        protected override bool Qualifies(Thing thing)
         {
             return CanEat(thing);
         }
