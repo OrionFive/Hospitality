@@ -1,6 +1,7 @@
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Hospitality.Harmony
@@ -20,7 +21,8 @@ namespace Hospitality.Harmony
 
                 var canDo = !giver.ShouldSkip(pawn) && giver.MissingRequiredCapacity(pawn) == null && IsSkilledEnough(pawn, giver.def.workType);
                 if (!canDo) return false;
-                
+
+                if (IsNegotiating(giver)) return false;
                 if (Settings.disableArtAndCraft.Value && IsArtOrCraft(giver.def.workType.workTags)) return false;
                 if (Settings.disableOperations.Value && IsOperation(giver)) return false;
                 if (Settings.disableMedical.Value && IsOperation(giver) || IsMedical(giver)) return false;
@@ -31,11 +33,16 @@ namespace Hospitality.Harmony
                 float passionBonus = passion == Passion.Major ? 40 : passion == Passion.Minor ? 20 : 0;
 
                 var desireToHelp = pawn.Faction.GoodwillWith(Faction.OfPlayer) + passionBonus + score*100 + (giver.def.emergency ? 75 : 0);
-                //Log.Message(pawn.NameStringShort + ": help with "+giver.def.gerund+"? " + Mathf.RoundToInt(desireToHelp) + " >= " + Mathf.RoundToInt(100+Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*100));
+                //Log.Message($"{pawn.LabelShort}: help with {giver.def.gerund}? {desireToHelp:F0} >= {100 + Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436) * 100:F0}");
                 if (desireToHelp < 100 + Rand.ValueSeeded(pawn.thingIDNumber ^ 3436436)*100) return false;
 
                 __result = true;
                 return false;
+            }
+
+            private static bool IsNegotiating(WorkGiver giver)
+            {
+                return giver is WorkGiver_Diplomat || giver is WorkGiver_Recruiter;
             }
 
             private static bool IsArtOrCraft(WorkTags workTags)
