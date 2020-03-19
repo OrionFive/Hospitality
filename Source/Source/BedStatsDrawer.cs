@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -20,31 +19,9 @@ namespace Hospitality
 
         private const float IconSize = 20f;
 
-        private static int DisplayedRoomStatsCount
-        {
-            get
-            {
-                int num = 0;
-                List<RoomStatDef> allDefsListForReading = DefDatabase<RoomStatDef>.AllDefsListForReading;
-                foreach (var def in allDefsListForReading)
-                {
-                    if (!def.isHidden || DebugViewSettings.showAllRoomStats)
-                    {
-                        num++;
-                    }
-                }
-
-                return num;
-            }
-        }
-
         public static Rect GetWindowRect()
         {
-            Rect result = new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 416f, 2*LineHeight);
-
-            // Show room stats
-            result.height += LineHeight;
-            result.height += DisplayedRoomStatsCount * (LineHeight + SpaceBetweenLines);
+            Rect result = new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 416f, 200);
 
             result.x += DistFromMouse;
             result.y += DistFromMouse;
@@ -61,7 +38,7 @@ namespace Hospitality
             return result;
         }
 
-        public static void DoBedInfos(Rect windowRect, Building_Bed bed)
+        public static void DoBedInfos(Rect windowRect, Building_GuestBed bed)
         {
             Rect rect = new Rect(WindowPadding, 18, windowRect.width - 2*WindowPadding, 100f);
             GUI.color = Color.white;
@@ -70,34 +47,22 @@ namespace Hospitality
             var curY = rect.y;
             DrawTitles(rect, ref curY, bed);
             rect.y = curY;
+            Widgets.Label(rect, bed.Stats.textNextTitleReq);
         }
 
-        private static void DrawTitles(Rect rectTotal, ref float curY, Building_Bed bed)
+        private static void DrawTitles(Rect rectTotal, ref float curY, Building_GuestBed bed)
         {
-            List<Faction> factions = new List<Faction>();
-            List<RoyalTitleDef> titles = new List<RoyalTitleDef>();
-            foreach (var faction in Find.FactionManager.AllFactions.Where(f => f.def.HasRoyalTitles))
-            {
-                factions.Add(faction);
-                foreach (var titleDef in faction.def.RoyalTitlesAllInSeniorityOrderForReading)
-                {
-                    titles.Add(titleDef);
-                }
-            }
-            titles.RemoveDuplicates(); // TODO: cache this!
-            var distinctFactions = factions.GroupBy(f => f.def).Select(x => x.First()).ToArray(); // TODO: cache this!
-
             var stackElements = from titleDef in DefDatabase<RoyalTitleDef>.AllDefsListForReading
                 orderby titleDef.seniority
                 let titleLabel = titleDef.GetLabelCapForBothGenders()
-                let possibleFactions = distinctFactions.Where(f => f.def.RoyalTitlesAllInSeniorityOrderForReading.Contains(titleDef)).ToArray()
+                let possibleFactions = GuestUtility.DistinctFactions.Where(f => f.def.RoyalTitlesAllInSeniorityOrderForReading.Contains(titleDef)).ToArray()
+                let accepted = bed.Stats.metRoyalTitles.Contains(titleDef)
                 where possibleFactions.Length > 0
                 select new GenUI.AnonymousStackElement
                 {
                     drawer = delegate(Rect r) {
                         Color guiColor = GUI.color;
                         Rect rect = new Rect(r.x, r.y, r.width, r.height);
-                        bool accepted = titleDef.Awardable;
                         GUI.color = accepted ? CharacterCardUtility.StackElementBackground : StackElementBackgroundDisabled;
                         GUI.DrawTexture(rect, BaseContent.WhiteTex);
                         GUI.color = guiColor;

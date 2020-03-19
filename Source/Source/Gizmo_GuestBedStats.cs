@@ -79,7 +79,6 @@ namespace Hospitality
         // Doesn't work. Never gets called :(
         public override void ProcessInput(Event ev)
         {
-            // TODO: Get the first title from the bed
             Faction possibleFaction = Find.FactionManager.AllFactionsListForReading.First(f=>f.def.HasRoyalTitles);
             RoyalTitleDef titleDef = possibleFaction.def.RoyalTitlesAllInSeniorityOrderForReading.First();
             Log.Message($"{possibleFaction.GetCallLabel()} - {titleDef.LabelCap}");

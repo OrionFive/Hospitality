@@ -111,6 +111,8 @@
   <CommandBedDecreaseFeeDesc>Decrease the fee by {0}. Guests renting this bed will have a {1} mood effect.</CommandBedDecreaseFeeDesc>
   <BedAttractiveness>Attractiveness: {0}</BedAttractiveness>
   <BedSatisfiedTitles>These royal titles will accept this bed:</BedSatisfiedTitles>
+  <BedroomMustBeSingle>Only one bed</BedroomMustBeSingle>
+  <NextTitleRequirements>Requirements for the next title:\n- {0}</NextTitleRequirements>
   
   <!-- Alerts -->
   <AlertCantClaimBed>Guest can't claim bed</AlertCantClaimBed>

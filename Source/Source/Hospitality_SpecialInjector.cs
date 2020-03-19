@@ -77,6 +77,20 @@ namespace Hospitality
                 {
                     facility.linkableBuildings.Add(guestBedDef);
                 }
+
+                // Royalty
+                var titles = DefDatabase<RoyalTitleDef>.AllDefs;
+                foreach (var title in titles)
+                {
+                    if (title.bedroomRequirements == null) continue;
+                    foreach (var thingAnyOf in title.bedroomRequirements.OfType<RoomRequirement_ThingAnyOf>())
+                    {
+                        if (thingAnyOf.things.Contains(bedDef))
+                        {
+                            thingAnyOf.things.Add(guestBedDef);
+                        }
+                    }
+                }
             }
             Log.Message(sb.ToString().TrimEnd(' ', ','));
         }

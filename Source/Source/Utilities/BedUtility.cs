@@ -47,11 +47,11 @@ namespace Hospitality
 
             var fee = RoundToInt(money > 0 ? 125 * bed.rentalFee / money : 0); // 0 - 125
 
+            // Royalty requires single bed?
+            var royalExpectations = GetRoyalExpectations(bed, guest, room, out var title);
 
             // Shared
             var otherOwner = bed.OwnersForReading.FirstOrDefault(owner => owner != guest);
-            // Royalty requires single bed?
-            if (otherOwner != null && guest.royalty?.HighestTitleWithBedroomRequirements() != null) return -100;
             var otherPawnOpinion = otherOwner != null ? (guest.relations.OpinionOf(otherOwner) - 15) * 4 : 0;
 
             // Temperature
@@ -88,11 +88,33 @@ namespace Hospitality
                 //Log.Message($"{guest.LabelShort} is tired. {bed.LabelCap} is {distance} units far away.");
             }
 
-            var score = impressiveness + quality + roomType + temperature + otherPawnOpinion - distance;
+            var score = impressiveness + quality + roomType + temperature + otherPawnOpinion + royalExpectations - distance;
             var value = score - fee;
             //Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
             //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
             return value;
+        }
+
+        private static int GetRoyalExpectations(Building_GuestBed bed, Pawn guest, Room room, out RoyalTitle title)
+        {
+            var royalExpectations = 0;
+            title = guest.royalty?.HighestTitleWithBedroomRequirements();
+            if (title != null)
+            {
+                if (room == null) royalExpectations -= 75;
+                else
+                    foreach (Building_Bed containedBed in room.ContainedBeds)
+                    {
+                        if (containedBed != bed && containedBed.OwnersForReading.Any(p => p != guest && !p.RaceProps.Animal && !LovePartnerRelationUtility.LovePartnerRelationExists(p, guest)))
+                        {
+                            royalExpectations -= 100;
+                        }
+                    }
+
+                if (RoyalTitleUtility.BedroomSatisfiesRequirements(room, title)) royalExpectations += 100;
+            }
+
+            return royalExpectations;
         }
 
         public static int StaticBedValue(Building_GuestBed bed, [CanBeNull]out Room room, out int quality, out int impressiveness, out int roomType)

@@ -16,8 +16,9 @@ namespace Hospitality
 {
     internal static class GuestUtility
     {
-        public static DutyDef relaxDef = DefDatabase<DutyDef>.GetNamed("Relax");
+        public static readonly DutyDef relaxDef = DefDatabase<DutyDef>.GetNamed("Relax");
         private static readonly TraderKindDef traderKindDef = DefDatabase<TraderKindDef>.GetNamed("Guest");
+        private static readonly JobDef therapyJobDef = DefDatabase<JobDef>.GetNamedSilentFail("ReceiveTherapy");
 
         private static readonly string labelRecruitSuccess = "LetterLabelMessageRecruitSuccess".Translate(); // from core
         private static readonly string labelRecruitFactionAnger = "LetterLabelRecruitFactionAnger".Translate();
@@ -39,6 +40,32 @@ namespace Hospitality
 
         private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve
         { new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30) };
+
+        public static RoyalTitleDef[] AllTitles { get; private set; }
+        public static Faction[] DistinctFactions { get; private set; }
+
+        public const int InteractIntervalAbsoluteMin = 360; // changed from 120
+        public const int MaxOpinionForEnemy = -20;
+
+        /// <summary>
+        /// For things that need to be loaded at map start
+        /// </summary>
+        public static void Initialize()
+        {
+            List<Faction> factions = new List<Faction>();
+            List<RoyalTitleDef> titles = new List<RoyalTitleDef>();
+            foreach (var faction in Find.FactionManager.AllFactions.Where(f => f.def.HasRoyalTitles))
+            {
+                factions.Add(faction);
+                foreach (var titleDef in faction.def.RoyalTitlesAllInSeniorityOrderForReading)
+                {
+                    titles.Add(titleDef);
+                }
+            }
+            DistinctFactions = factions.GroupBy(f => f.def).Select(x => x.First()).ToArray();
+            AllTitles = titles.Distinct().ToArray();
+            //Log.Message($"Hospitality: Read {DistinctFactions.Length} factions with royal titles, {AllTitles.Length} royal titles.");
+        }
 
         public static bool IsRelaxing(this Pawn pawn)
         {
@@ -722,8 +749,7 @@ namespace Hospitality
             GainThought(guest, ThoughtDef.Named("GuestDismissiveAttitude"));
         }
 
-        public const int InteractIntervalAbsoluteMin = 360; // changed from 120
-        public const int MaxOpinionForEnemy = -20;
+
 
         public static void DoAllowedAreaSelectors(Rect rect, Pawn p, Func<Area, string> getLabel)
 		{
@@ -782,8 +808,6 @@ namespace Hospitality
 			Text.Anchor = TextAnchor.UpperLeft;
 			TooltipHandler.TipRegion(rect, text);
 		}
-
-        public static readonly JobDef therapyJobDef = DefDatabase<JobDef>.GetNamedSilentFail("ReceiveTherapy");
 
         // Compatibility fix to Therapy mod
         public static bool IsInTherapy(Pawn p)

@@ -65,11 +65,38 @@ namespace Hospitality
                 Stats.textAttractiveness = "BedAttractiveness".Translate(Stats.staticBedValue - rentalFee);
                 Stats.textFee = rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
                 Stats.textAsArray = new[] {Stats.textAttractiveness, Stats.textFee};
+                Stats.metRoyalTitles = GetMetRoyalTitles(Stats.room);
+                Stats.textNextTitleReq = GetNextTitleReq(Stats.room, Stats.metRoyalTitles);
             }
             catch (Exception e)
             {
                 Log.ErrorOnce($"Failed to calculate stats: {e.Message}\n{e.StackTrace}", 834763462);
             }
+        }
+
+        private string GetNextTitleReq(Room room, RoyalTitleDef[] metRoyalTitles)
+        {
+            if (room == null) return string.Empty;
+            if (GuestUtility.AllTitles.NullOrEmpty()) return string.Empty;
+            if (!IsSingleBedroom(room)) return "NextTitleRequirements".Translate("BedroomMustBeSingle".Translate());
+            foreach (var title in GuestUtility.AllTitles.Where(t=>!metRoyalTitles.Contains(t) && t.bedroomRequirements != null).OrderBy(t=>t.seniority))
+            {
+                return "NextTitleRequirements".Translate(title.bedroomRequirements.Where(req => !req.Met(room)).Select(req => req.Label(room)).ToCommaList(true));
+            }
+
+            return string.Empty;
+        }
+
+        private RoyalTitleDef[] GetMetRoyalTitles(Room room)
+        {
+            if (room == null) return Array.Empty<RoyalTitleDef>();
+
+            return GuestUtility.AllTitles.Where(t => t.bedroomRequirements.NullOrEmpty() || IsSingleBedroom(room) && t.bedroomRequirements.All(req => req.Met(room))).ToArray();
+        }
+
+        private bool IsSingleBedroom(Room room)
+        {
+            return !room.ContainedBeds.Any(containedBed => containedBed != this && containedBed.def.building.bed_humanlike);
         }
 
         public override void Draw()
@@ -289,6 +316,8 @@ namespace Hospitality
             public TaggedString title;
             public IEnumerable<TaggedString> textAsArray = new TaggedString[0];
             public int staticBedValue;
+            public RoyalTitleDef[] metRoyalTitles;
+            public TaggedString textNextTitleReq;
         }
     }
 }

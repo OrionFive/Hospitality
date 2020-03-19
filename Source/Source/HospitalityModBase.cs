@@ -54,6 +54,7 @@ namespace Hospitality
         {
             ToggleTabIfNeeded();
             foreach (var map in Find.Maps) map.GetMapComponent().Initialize();
+            GuestUtility.Initialize();
         }
 
         private static void ToggleTabIfNeeded()
