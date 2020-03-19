@@ -302,7 +302,7 @@ namespace Hospitality
 
         public bool TryClaimBed(Pawn pawn)
         {
-            CompAssignableToPawn.TryAssignPawn(pawn);
+            if (!pawn.ownership.ClaimBedIfNonMedical(this)) return false;
             UpdateStats();
             return CompAssignableToPawn.AssignedPawnsForReading.Contains(pawn);
         }

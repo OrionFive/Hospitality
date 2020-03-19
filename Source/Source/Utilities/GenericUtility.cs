@@ -201,7 +201,7 @@ namespace Hospitality
 
         public static bool OnlyOneBed(this Room room)
         {
-            return room.ContainedBeds.Count() <= 1;
+            return room.ContainedBeds.Count() == 1;
         }
 
         public static Hospitality_MapComponent GetMapComponent(this Map map)

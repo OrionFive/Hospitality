@@ -1,9 +1,9 @@
-using System;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace Hospitality.Harmony {
+namespace Hospitality.Harmony
+{
     /// <summary>
     /// So guests will properly unclaim their beds.
     /// </summary>
@@ -27,7 +27,7 @@ namespace Hospitality.Harmony {
             public static bool Prefix(Pawn ___pawn, ref Building_Bed __result)
             {
                 if (!___pawn.IsGuest(false)) return true;
-                __result = ___pawn.GetComp<CompGuest>()?.bed; 
+                __result = ___pawn.GetComp<CompGuest>()?.bed;
                 return false;
             }
         }
