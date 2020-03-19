@@ -472,6 +472,9 @@ namespace Hospitality
 
         public static void CreateLord(Faction faction, IntVec3 chillSpot, List<Pawn> pawns, Map map, bool showLetter, bool getUpsetWhenLost, int duration)
         {
+            // Make sure existing lords don't hold any of the pawns
+            RemovePawnsFromMapLords(pawns, map);
+
             var mapComp = map.GetMapComponent();
 
             var lordJob = new LordJob_VisitColony(faction, chillSpot, duration, getUpsetWhenLost);
@@ -516,6 +519,20 @@ namespace Hospitality
             {
                 PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref label, ref description, "LetterRelatedPawnsNeutralGroup".Translate(Faction.OfPlayer.def.pawnsPlural), true);
                 Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, pawns[0], faction);
+            }
+        }
+
+        private static void RemovePawnsFromMapLords(List<Pawn> pawns, Map map)
+        {
+            foreach (var pawn in pawns)
+            {
+                map.lordManager.lords.ForEach(lord => {
+                    if (lord.ownedPawns.Contains(pawn))
+                    {
+                        Log.Warning($"Existing lord still contains pawn {pawn.LabelShort}. Removing.");
+                        lord.Notify_PawnLost(pawn, PawnLostCondition.Undefined);
+                    }
+                });
             }
         }
 
