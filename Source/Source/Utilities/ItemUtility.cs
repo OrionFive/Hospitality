@@ -119,23 +119,13 @@ namespace Hospitality {
 
         public static bool IsBuyableAtAll(Pawn pawn, Thing thing)
         {
+            if (thing.def.isUnfinishedThing) return false;
+
+            if (thing.def == ThingDefOf.Silver) return false;
+
+            if (thing.def.tradeability == Tradeability.None) return false;
+
             if (!IsBuyableNow(pawn, thing)) return false;
-
-            if (thing.def.isUnfinishedThing)
-            {
-                return false;
-            }
-
-            if (thing.def == ThingDefOf.Silver)
-            {
-                return false;
-            }
-
-            if (thing.def.tradeability == Tradeability.None)
-            {
-                return false;
-            }
-
             //if (!thing.IsSociallyProper(pawn))
             //{
             //    Log.Message(thing.Label + ": is not proper for " + pawn.NameStringShort);

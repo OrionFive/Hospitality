@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
-using Verse.AI.Group;
 
 namespace Hospitality
 {
@@ -29,14 +27,14 @@ namespace Hospitality
         {
             var map = pawn.MapHeld;
             var shoppingArea = pawn.GetShoppingArea();
-            var things = shoppingArea.ActiveCells.SelectMany(cell=>map.thingGrid.ThingsListAtFast(cell)).Where(t=>t.def.EverHaulable
+            var things = shoppingArea.ActiveCells.SelectMany(cell=>map.thingGrid.ThingsListAtFast(cell)).Where(t=>t.def.EverHaulable && t.def.tradeability!=Tradeability.None
             && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t)).ToList();
             var storage = shoppingArea.ActiveCells.Select(cell=>map.edificeGrid[cell]).OfType<Building_Storage>();
             things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t))));
             if (things.Count == 0) return null;
 
             // Try some things
-            var selection = things.TakeRandom(5).ToArray();
+            var selection = things.TakeRandom(5).Where(t => pawn.CanReach(t.Position, PathEndMode.Touch, Danger.None, false, TraverseMode.PassDoors)).ToArray();
             Thing thing = null;
             if (selection.Length > 1)
                 thing = selection.MaxBy(t => Likey(pawn, t));
