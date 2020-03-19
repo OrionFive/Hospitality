@@ -158,6 +158,7 @@ namespace Hospitality
             // Added
             if (!ItemUtility.AlienFrameworkAllowsIt(pawn.def, ap.def, "CanWear")) 
                 return -1000;
+            if (pawn.story.traits.HasTrait(TraitDefOf.Nudist)) return -1000;
             //if (PawnApparelGenerator.IsHeadgear(ap.def)) return 0;
             float num = JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
             List<Apparel> wornApparel = pawn.apparel.WornApparel;
