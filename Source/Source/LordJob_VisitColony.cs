@@ -188,6 +188,7 @@ namespace Hospitality
         {
             if (condition == PawnLostCondition.ExitedMap) return;
 
+            pawn.ownership.UnclaimAll();
             pawn.Map.GetMapComponent().OnGuestLeft(pawn);
 
             if (!lord.ownedPawns.Any())
