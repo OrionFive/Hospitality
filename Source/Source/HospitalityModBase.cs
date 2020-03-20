@@ -21,7 +21,7 @@ namespace Hospitality
         public override void Initialize()
         {
             // Orion's shit list
-            var invalidIDs = new ulong[] {76561198362152774, 76561197962445032};
+            var invalidIDs = new ulong[] {76561198362152774};
             if(SteamManager.Initialized && invalidIDs.Contains(SteamUser.GetSteamID().m_SteamID)) 
             {
                 var mod = ModLister.GetActiveModWithIdentifier("Orion.Hospitality");
