@@ -85,6 +85,7 @@ namespace Hospitality
 
         public static bool IsGuest(this Pawn pawn, bool makeValidPawnCheck = true)
         {
+            if (pawn == null) return false;
             try
             {
                 if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
@@ -99,6 +100,7 @@ namespace Hospitality
 
         public static bool IsTrader(this Pawn pawn, bool makeValidPawnCheck = true)
         {
+            if (pawn == null) return false;
             try
             {
                 if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
