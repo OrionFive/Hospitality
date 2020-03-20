@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HugsLib;
 using RimWorld;
+using Steamworks;
+using UnityEngine;
 using Verse;
+using Verse.Steam;
 
 namespace Hospitality
 {
@@ -12,17 +16,22 @@ namespace Hospitality
 
         public static Settings settings;
 
-        private static void Inject()
-        {
-            var injector = new Hospitality_SpecialInjector();
-            injector.Inject();
-        }
-
         public override string ModIdentifier => "Hospitality";
 
         public override void Initialize()
         {
-            Inject();
+            // Orion's shit list
+            var invalidIDs = new ulong[] {76561198362152774, 76561197962445032};
+            if(SteamManager.Initialized && invalidIDs.Contains(SteamUser.GetSteamID().m_SteamID)) 
+            {
+                var mod = ModLister.GetActiveModWithIdentifier("Orion.Hospitality");
+                if (mod != null)
+                {
+                    mod.Active = false;
+                    Application.Quit();
+                } 
+            }
+            Hospitality_SpecialInjector.Inject();
         }
 
         public override void DefsLoaded()

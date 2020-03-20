@@ -9,9 +9,9 @@ using Verse;
 namespace Hospitality
 {
 
-    public sealed class Hospitality_SpecialInjector
+    public static class Hospitality_SpecialInjector
     {
-        public void Inject()
+        public static void Inject()
         {
             InjectTab(typeof(ITab_Pawn_Guest), def => def.race?.Humanlike == true);
 
