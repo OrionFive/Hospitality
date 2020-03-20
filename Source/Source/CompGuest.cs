@@ -147,7 +147,7 @@ namespace Hospitality
 
             foreach (var otherBed in allOtherBeds)
             {
-                if (otherBed.OwnersForReading.Contains(Pawn)) Log.Warning($"{Pawn.LabelShort} already owns {otherBed.Label}!");
+                if (otherBed.OwnersForReading != null && otherBed.OwnersForReading.Contains(Pawn)) Log.Warning($"{Pawn.LabelShort} already owns {otherBed.Label}!");
             }
 
             Pawn.ownership.UnclaimBed();
