@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using RimWorld;
 using Verse;
@@ -11,9 +12,16 @@ namespace Hospitality
         /// </summary>
         public static void CheckForInvalidDefs()
         {
-            CheckChemicalDefs();
-            CheckFactionDefs();
-            CheckBedDefs();
+            try
+            {
+                CheckChemicalDefs();
+                CheckFactionDefs();
+                CheckBedDefs();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{e.Message}\n{e.StackTrace}");
+            }
         }
 
         // All beds must be assignable to pawns
