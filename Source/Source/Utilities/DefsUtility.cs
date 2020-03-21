@@ -19,6 +19,10 @@ namespace Hospitality
         // All beds must be assignable to pawns
         private static void CheckBedDefs()
         {
+            foreach (var thingDef in DefDatabase<ThingDef>.AllDefsListForReading.Where(d=>d.thingClass == null))
+            {
+                LogMisconfiguration(thingDef, $"ThingDef {thingDef.defName} has a null thingClass.");
+            }
             foreach (var bedDef in DefDatabase<ThingDef>.AllDefsListForReading.Where(d=>d.thingClass.IsSubclassOf(typeof(Building_Bed))))
             {
                 if (!bedDef.HasComp(typeof(CompAssignableToPawn_Bed)))
@@ -51,7 +55,7 @@ namespace Hospitality
         private static void LogMisconfiguration(Def def, string message)
         {
             //var commaList = LoadedModManager.RunningModsListForReading.Where(m => m.AllDefs.Contains(def)).Select(m => m.Name).ToCommaList(true);
-            var modName = def.modContentPack == null ? "unknown mod" : def.modContentPack.Name;
+            var modName = def.modContentPack == null ? "an unknown mod" : def.modContentPack.Name;
             Log.ErrorOnce($"{message} This is a misconfiguration in {modName}.", def.shortHash + 83747646);
         }
     }
