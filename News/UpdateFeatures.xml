@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-	<HugsLib.UpdateFeatureDef Abstract="true" Name="UpdateFeatureBase">
-		<modNameReadable>Hospitality</modNameReadable>
-		<modIdentifier>Hospitality</modIdentifier>
-		<linkUrl>https://www.patreon.com/orionmods</linkUrl>
-		<!-- <linkUrl>https://extra-nice.net/help-with-skirmish/</linkUrl> -->
-	</HugsLib.UpdateFeatureDef>
-	
 	<!-- <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
 		<defName>Hospitality_1_0_17</defName>
 		<assemblyVersion>1.0.17</assemblyVersion>
 		<content>- New: Added setting for minimum group size|- New: Traveling guests will never have mental breaks|- New: Guest tab shows the amount of guests and beds|- Fix: Guests now only get entertained when they're inside of the guest area|- Fix: Returning visitors get their needs reset|img:images/Skirmish|caption:As you may know, I'm working hard on my own game. We've just updated the free version and I need YOUR opinion! Click the link above to check it out. Thanks!</content>
 	</HugsLib.UpdateFeatureDef> -->
 
-	<HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+	<HugsLib.UpdateFeatureDef>
+		<modNameReadable>Hospitality</modNameReadable>
+		<modIdentifier>Hospitality</modIdentifier>
+		<linkUrl>https://www.patreon.com/orionmods</linkUrl>
+		<!-- <linkUrl>https://extra-nice.net/help-with-skirmish/</linkUrl> -->
 		<defName>Hospitality_1_1_1</defName>
 		<assemblyVersion>1.1.1</assemblyVersion>
 		<content>
