@@ -29,9 +29,9 @@ namespace Hospitality
         {
             foreach (var thingDef in DefDatabase<ThingDef>.AllDefsListForReading.Where(d=>d.thingClass == null))
             {
-                LogMisconfiguration(thingDef, $"ThingDef {thingDef.defName} has a null thingClass.");
+                LogMisconfiguration(thingDef, $"ThingDef {thingDef.defName} has no thingClass.");
             }
-            foreach (var bedDef in DefDatabase<ThingDef>.AllDefsListForReading.Where(d=>d.thingClass.IsSubclassOf(typeof(Building_Bed))))
+            foreach (var bedDef in DefDatabase<ThingDef>.AllDefsListForReading.Where(d=>d.thingClass != null && d.thingClass.IsSubclassOf(typeof(Building_Bed))))
             {
                 if (!bedDef.HasComp(typeof(CompAssignableToPawn_Bed)))
                 {
@@ -64,7 +64,7 @@ namespace Hospitality
         {
             //var commaList = LoadedModManager.RunningModsListForReading.Where(m => m.AllDefs.Contains(def)).Select(m => m.Name).ToCommaList(true);
             var modName = def.modContentPack == null ? "an unknown mod" : def.modContentPack.Name;
-            Log.ErrorOnce($"{message} This is a misconfiguration in {modName}.", def.shortHash + 83747646);
+            Log.ErrorOnce($"{message} This is a misconfiguration in {modName}.", def.shortHash + 83747646, true);
         }
     }
 }

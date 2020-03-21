@@ -36,6 +36,7 @@ namespace Hospitality
 
         public override void DefsLoaded()
         {
+            if (!ModIsActive) return;
             settings = new Settings(Settings);
             DefsUtility.CheckForInvalidDefs();
         }
