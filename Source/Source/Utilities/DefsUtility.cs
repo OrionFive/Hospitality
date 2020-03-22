@@ -63,8 +63,16 @@ namespace Hospitality
         private static void LogMisconfiguration(Def def, string message)
         {
             //var commaList = LoadedModManager.RunningModsListForReading.Where(m => m.AllDefs.Contains(def)).Select(m => m.Name).ToCommaList(true);
-            var modName = def.modContentPack == null ? "an unknown mod" : def.modContentPack.Name;
-            Log.ErrorOnce($"{message} This is a misconfiguration in {modName}.", def.shortHash + 83747646, true);
+            if (def.modContentPack == null)
+            {
+                Log.Warning($"{message} This is a misconfiguration in another mod, but the mod name could not be identified (likely a generated def).");
+                
+            }
+            else
+            {
+                var modName = def.modContentPack.Name;
+                Log.Warning($"{message} This is a misconfiguration in {modName}.");
+            }
         }
     }
 }
