@@ -56,6 +56,7 @@ namespace Hospitality
                 return null;
             }
 
+            //Log.Message($"{pawn.NameShortColored} is going to buy {thing.LabelShort} at {thing.Position}.");
             return new Job(jobDefBuy, thing);
         }
 
@@ -64,7 +65,7 @@ namespace Hospitality
             if (thing == null) return 0;
 
             // Health of object
-            var hpFactor = thing.def.useHitPoints?((float)thing.HitPoints/thing.MaxHitPoints):1;
+            var hpFactor = thing.def.useHitPoints?(float)thing.HitPoints/thing.MaxHitPoints:1;
             
             // Apparel
             var appFactor = thing is Apparel apparel ? 1 + ApparelScoreGain(pawn, apparel) : 0.8f; // Not apparel, less likey
@@ -138,8 +139,9 @@ namespace Hospitality
                 //Log.Message(thing.Label + " - techlevel: " + thing.def.techLevel + " = " + tFactor);
             }
             var rFactor = Rand.RangeSeeded(0.5f, 1.7f, pawn.thingIDNumber*60509 + thing.thingIDNumber*33151);
-            //Log.Message(thing.Label + " - score: " + hpFactor*hpFactor*qFactor*tFactor*appFactor);
-            return Mathf.Max(0, hpFactor*hpFactor*qFactor*qFactor*tFactor*appFactor*rFactor); // 0 = don't buy
+            //if(hpFactor*hpFactor*qFactor*qFactor*tFactor*appFactor > 0.5) 
+            //    Log.Message($"{thing.LabelShort.Colorize(Color.yellow)} - score: {hpFactor * hpFactor * qFactor * qFactor * tFactor * appFactor}, random: {rFactor}");
+            return Mathf.Max(0, hpFactor*hpFactor*qFactor*qFactor*tFactor*appFactor*rFactor); // <= 0.5 = don't buy
         }
 
         private static float GetHungerFactor(Pawn pawn)

@@ -43,11 +43,10 @@ namespace Hospitality
 
                 yield return reserveTargetA;
                 yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch)
-                    .FailOnDespawnedNullOrForbidden(TargetIndex.A)
-                    .FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
+                    .FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
                 int duration = Rand.Range(MinShoppingDuration, MaxShoppingDuration);
-                yield return Toils_General.Wait(duration);
+                yield return Toils_General.Wait(duration).FailOnCannotTouch(TargetIndex.A, PathEndMode.ClosestTouch);
 
                 Toil takeThing = new Toil();
                 takeThing.initAction = () => BuyThing(takeThing);

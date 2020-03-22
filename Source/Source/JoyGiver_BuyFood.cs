@@ -28,7 +28,7 @@ namespace Hospitality
 
         protected override bool Qualifies(Thing thing)
         {
-            return CanEat(thing);
+            return base.Qualifies(thing) && CanEat(thing);
         }
     }
 }
