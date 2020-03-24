@@ -49,7 +49,9 @@ namespace Hospitality.Harmony
                             icon = ContentFinder<Texture2D>.Get("UI/Commands/AsGuest"),
                             isActive = __instance.IsGuestBed,
                             toggleAction = () => Building_GuestBed.Swap(__instance),
-                            hotKey = KeyBindingDefOf.Misc4
+                            hotKey = KeyBindingDefOf.Misc4,
+                            disabled = __instance.GetComp<CompAssignableToPawn_Bed>() == null,
+                            disabledReason = "This bed type is not assignable to pawns."
                         };
                 }
                 foreach (var gizmo in __result)
