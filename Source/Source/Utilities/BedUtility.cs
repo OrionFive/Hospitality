@@ -51,8 +51,7 @@ namespace Hospitality
             var royalExpectations = GetRoyalExpectations(bed, guest, room, out var title);
 
             // Shared
-            var otherOwner = bed.OwnersForReading.FirstOrDefault(owner => owner != guest);
-            var otherPawnOpinion = otherOwner != null ? (guest.relations.OpinionOf(otherOwner) - 15) * 4 : 0;
+            int otherPawnOpinion = OtherPawnOpinion(bed, guest); // -150 - 0
 
             // Temperature
             var temperature = GetTemperatureScore(guest, room); // -200 - 0
@@ -95,6 +94,16 @@ namespace Hospitality
             return value;
         }
 
+        private static int OtherPawnOpinion(Building_GuestBed bed, Pawn guest)
+        {
+            if (!BedClaimedByStranger(bed, guest)) return 0;
+
+            // Take opinion of other into account
+            var otherOwner = bed.OwnersForReading.FirstOrDefault(owner => owner != guest);
+            var opinion = otherOwner != null ? (guest.relations.OpinionOf(otherOwner) - 15) * 4 : 0;
+            return -150 + opinion;
+        }
+
         private static int GetRoyalExpectations(Building_GuestBed bed, Pawn guest, Room room, out RoyalTitle title)
         {
             var royalExpectations = 0;
@@ -103,9 +112,9 @@ namespace Hospitality
             {
                 if (room == null) royalExpectations -= 75;
                 else
-                    foreach (Building_Bed containedBed in room.ContainedBeds)
+                    foreach (Building_Bed roomBeds in room.ContainedBeds)
                     {
-                        if (containedBed != bed && containedBed.OwnersForReading.Any(p => p != guest && !p.RaceProps.Animal && !LovePartnerRelationUtility.LovePartnerRelationExists(p, guest)))
+                        if (roomBeds != bed && BedClaimedByStranger(roomBeds, guest))
                         {
                             royalExpectations -= 100;
                         }
@@ -115,6 +124,11 @@ namespace Hospitality
             }
 
             return royalExpectations;
+        }
+
+        private static bool BedClaimedByStranger(Building_Bed bed, Pawn guest)
+        {
+            return bed.OwnersForReading.Any(p => p != guest && !p.RaceProps.Animal && !LovePartnerRelationUtility.LovePartnerRelationExists(p, guest));
         }
 
         public static int StaticBedValue(Building_GuestBed bed, [CanBeNull]out Room room, out int quality, out int impressiveness, out int roomType)
