@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--suppress ALL -->
+<LanguageData>
+	
+	<GuestDiplomacy.label>improve relationship</GuestDiplomacy.label>
+	<GuestDiplomacy.logRulesInitiator.rulesStrings>
+		<li>r_logentry->[INITIATOR_nameDef]和[RECIPIENT_nameDef]進行了外交對話, 談論關於[TalkTopicLight].</li>
+		<li>r_logentry->[INITIATOR_nameDef]和[RECIPIENT_nameDef]談論了[subject]相關的政治議題.</li>
+		<li>r_logentry->[INITIATOR_nameDef] [complimented] [RECIPIENT_nameDef]的[PersonalCharacteristic].</li>
+		<li>r_logentry->[INITIATOR_nameDef] [complimented] [RECIPIENT_nameDef]的陣營.</li>
+		<li>r_logentry->[INITIATOR_nameDef] [complimented]和[RECIPIENT_factionName]之間的關係.</li>
+		<li>r_logentry->[INITIATOR_nameDef] 問候了 [RECIPIENT_nameDef] 的 [PersonFamily].</li>
+		<li>r_logentry->[INITIATOR_nameDef] tried to bond with [RECIPIENT_nameDef] about their shared [opinion].</li>
+
+		<li>opinion->support of [ConceptPositive]</li>
+		<li>opinion->disgust for [ConceptNegative]</li>
+		<li>opinion->fear of [ConceptNegative]</li>
+		<li>opinion->opinion about [ConceptAny]</li>
+		<li>opinion->longing for [ConceptPositive]</li>
+		<li>complimented->praised</li>
+        <li>complimented->commended</li>
+        <li>complimented->lauded</li>
+        <li>complimented->applauded</li>
+        <li>complimented->celebrated</li>
+	</GuestDiplomacy.logRulesInitiator.rulesStrings>
+
+	<CharmGuestAttempt.label>charm attempt</CharmGuestAttempt.label>
+ 	<CharmGuestAttempt.logRulesInitiator.rulesStrings>
+        <li>r_logentry->[INITIATOR_nameDef] [saidwords] [RECIPIENT_nameDef].</li>
+        <li>r_logentry->[INITIATOR_nameDef]告訴[RECIPIENT_nameDef]所有關於在[INITIATOR_factionName]的[ConceptPositive].</li>
+        <li>r_logentry->[INITIATOR_nameDef]告訴[RECIPIENT_nameDef]關於其他殖民者的[adjwords]事情.</li>
+        <li>r_logentry->[INITIATOR_nameDef]把[RECIPIENT_nameDef]介紹給其他殖民者.</li>
+        <li>saidwords->said [adjwords] words to</li>
+        <li>saidwords->expressed [ConceptPositive] towards</li>
+        <li>saidwords->made [adjwords] gestures towards</li>
+		<li>adjwords->intriguing</li>
+		<li>adjwords->kind</li>
+		<li>adjwords->inviting</li>
+		<li>adjwords->friendly</li>
+		<li>adjwords->charming</li>
+	</CharmGuestAttempt.logRulesInitiator.rulesStrings>
+
+</LanguageData>
