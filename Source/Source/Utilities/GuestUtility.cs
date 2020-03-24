@@ -221,8 +221,15 @@ namespace Hospitality
             return talker.MapHeld == talkee.MapHeld
                 && InteractionUtility.CanInitiateInteraction(talker)
                 && InteractionUtility.CanReceiveInteraction(talkee)
-                   && (talker.Position - talkee.Position).LengthHorizontalSquared <= 36.0
-                   && GenSight.LineOfSight(talker.Position, talkee.Position, talker.MapHeld, true);
+                   && CanSee(talker, talkee);
+        }
+
+        private static bool CanSee(Pawn talker, Pawn talkee)
+        {
+            var distance = (talker.Position - talkee.Position).LengthHorizontalSquared;
+            if (distance <= 2) return true;
+            if (distance > 36) return false;
+            return GenSight.LineOfSight(talker.Position, talkee.Position, talker.MapHeld, true);
         }
 
         public static bool IsArrived(this Pawn guest)

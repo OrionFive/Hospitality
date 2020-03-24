@@ -9,11 +9,7 @@ namespace Hospitality
     {
         public static Toil GotoGuest(Pawn pawn, Pawn talkee, bool mayBeSleeping = false)
         {
-            var toil = new Toil
-            {
-                initAction = () => pawn.pather.StartPath(talkee, PathEndMode.Touch),
-                defaultCompleteMode = ToilCompleteMode.PatherArrival
-            };
+            var toil = Toils_Interpersonal.GotoInteractablePosition(TargetIndex.A);
             toil.AddFailCondition(() => !GuestUtility.ViableGuestTarget(talkee, mayBeSleeping));
             return toil;
         }
