@@ -25,8 +25,8 @@
 	<GuestDismissiveAttitude.stages.tired_of_talking.label>說話累了</GuestDismissiveAttitude.stages.tired_of_talking.label>
 	<GuestDismissiveAttitude.stages.tired_of_talking.description>我已經無話可說了. 離我遠一點.</GuestDismissiveAttitude.stages.tired_of_talking.description>
 	
-	<GuestCantAffordBed.stages.cant_afford_a_bed.label>買不起床位</GuestCantAffordBed.stages.cant_afford_a_bed.label>
-	<GuestCantAffordBed.stages.cant_afford_a_bed.description>我買不起一張床位.</GuestCantAffordBed.stages.cant_afford_a_bed.description>
+	<GuestCantAffordBed.stages.cant_afford_a_bed.label>負擔不起床位</GuestCantAffordBed.stages.cant_afford_a_bed.label>
+	<GuestCantAffordBed.stages.cant_afford_a_bed.description>我負擔不起一張床位.</GuestCantAffordBed.stages.cant_afford_a_bed.description>
 	
 	<GuestBedCount.stages.no_guest_beds.label>沒有客床</GuestBedCount.stages.no_guest_beds.label>
 	<GuestBedCount.stages.no_guest_beds.description>這裡甚至沒有客床.</GuestBedCount.stages.no_guest_beds.description>
