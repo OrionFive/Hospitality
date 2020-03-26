@@ -12,16 +12,16 @@
 		<li>r_logentry->[INITIATOR_nameDef] 問候了 [RECIPIENT_nameDef] 的 [PersonFamily].</li>
 		<li>r_logentry->[INITIATOR_nameDef] tried to bond with [RECIPIENT_nameDef] about their shared [opinion].</li>
 
-		<li>opinion->support of [ConceptPositive]</li>
-		<li>opinion->disgust for [ConceptNegative]</li>
-		<li>opinion->fear of [ConceptNegative]</li>
-		<li>opinion->opinion about [ConceptAny]</li>
-		<li>opinion->longing for [ConceptPositive]</li>
-		<li>complimented->praised</li>
-        <li>complimented->commended</li>
-        <li>complimented->lauded</li>
-        <li>complimented->applauded</li>
-        <li>complimented->celebrated</li>
+		<li>opinion->支持[ConceptPositive]</li>
+		<li>opinion->厭惡[ConceptNegative]</li>
+		<li>opinion->害怕[ConceptNegative]</li>
+		<li>opinion->對[ConceptAny]有意見</li>
+		<li>opinion->渴望[ConceptPositive]</li>
+		<li>complimented->讚揚</li>
+        <li>complimented->表揚</li>
+        <li>complimented->稱讚</li>
+        <li>complimented->鼓掌</li>
+        <li>complimented->知名</li>
 	</GuestDiplomacy.logRulesInitiator.rulesStrings>
 
 	<CharmGuestAttempt.label>charm attempt</CharmGuestAttempt.label>
@@ -30,14 +30,14 @@
         <li>r_logentry->[INITIATOR_nameDef]告訴[RECIPIENT_nameDef]所有關於在[INITIATOR_factionName]的[ConceptPositive].</li>
         <li>r_logentry->[INITIATOR_nameDef]告訴[RECIPIENT_nameDef]關於其他殖民者的[adjwords]事情.</li>
         <li>r_logentry->[INITIATOR_nameDef]把[RECIPIENT_nameDef]介紹給其他殖民者.</li>
-        <li>saidwords->said [adjwords] words to</li>
-        <li>saidwords->expressed [ConceptPositive] towards</li>
-        <li>saidwords->made [adjwords] gestures towards</li>
-		<li>adjwords->intriguing</li>
-		<li>adjwords->kind</li>
-		<li>adjwords->inviting</li>
-		<li>adjwords->friendly</li>
-		<li>adjwords->charming</li>
+        <li>saidwords->說 [adjwords] 話對</li>
+        <li>saidwords->表達 [ConceptPositive] 對於</li>
+        <li>saidwords->比 [adjwords] 手勢, 對於</li>
+		<li>adjwords->有趣的</li>
+		<li>adjwords->善良</li>
+		<li>adjwords->邀請</li>
+		<li>adjwords->友善</li>
+		<li>adjwords->迷人</li>
 	</CharmGuestAttempt.logRulesInitiator.rulesStrings>
 
 </LanguageData>
