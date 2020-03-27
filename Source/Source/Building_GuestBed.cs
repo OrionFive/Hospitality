@@ -59,7 +59,7 @@ namespace Hospitality
             Stats.lastCalculated = GenTicks.TicksGame;
             try
             {
-                var owners = OwnersForReading.Count == 0 ? (string) "Nobody".Translate() : OwnersForReading.Select(o => (string) o.NameShortColored).ToCommaList(true);
+                var owners = this.Owners().Count == 0 ? (string) "Nobody".Translate() : this.Owners().Select(o => (string) o.NameShortColored).ToCommaList(true);
                 Stats.title = $"{def.LabelCap} ({owners})";
                 Stats.staticBedValue = BedUtility.StaticBedValue(this, out Stats.room, out _, out _, out _);
                 Stats.textAttractiveness = "BedAttractiveness".Translate(Stats.staticBedValue - rentalFee);
@@ -109,7 +109,7 @@ namespace Hospitality
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             // Creating copy for iteration, since list changes during loop
-            foreach (var owner in OwnersForReading.ToArray())
+            foreach (var owner in this.Owners().ToArray())
             {
                 owner.ownership.UnclaimBed();
             }
@@ -126,19 +126,20 @@ namespace Hospitality
             stringBuilder.Append(InspectStringPartsFromComps());
 
             stringBuilder.AppendLine();
-            if (!OwnersForReading.Any())
+            var owners = this.Owners();
+            if (!owners.Any())
             {
                 stringBuilder.Append($"{"Owner".Translate()}: {"Nobody".Translate()}");
             }
-            else if (OwnersForReading.Count == 1)
+            else if (owners.Count == 1)
             {
-                stringBuilder.Append($"{"Owner".Translate()}: {OwnersForReading[0].LabelShortCap}");
+                stringBuilder.Append($"{"Owner".Translate()}: {owners[0].LabelShortCap}");
             }
             else
             {
                 stringBuilder.Append("Owners".Translate() + ": ");
                 bool notFirst = false;
-                foreach (var owner in OwnersForReading)
+                foreach (var owner in owners)
                 {
                     if (notFirst)
                     {
@@ -236,23 +237,24 @@ namespace Hospitality
             {
                 Color defaultThingLabelColor = GenMapUI.DefaultThingLabelColor;
 
-                if (!OwnersForReading.Any())
+                var owners = this.Owners();
+                if (!owners.Any())
                 {
                     GenMapUI.DrawThingLabel(this, rentalFee + silverLabel, defaultThingLabelColor);
                 }
-                else if (OwnersForReading.Count == 1)
+                else if (owners.Count == 1)
                 {
-                    if (OwnersForReading[0].InBed() && OwnersForReading[0].CurrentBed() == this) return;
-                    GenMapUI.DrawThingLabel(this, OwnersForReading[0].LabelShort, defaultThingLabelColor);
+                    if (owners[0].InBed() && owners[0].CurrentBed() == this) return;
+                    GenMapUI.DrawThingLabel(this, owners[0].LabelShort, defaultThingLabelColor);
                 }
                 else
                 {
-                    for (int index = 0; index < OwnersForReading.Count; ++index)
+                    for (int index = 0; index < owners.Count; ++index)
                     {
-                        if (!OwnersForReading[index].InBed() || OwnersForReading[index].CurrentBed() != this || !(OwnersForReading[index].Position == GetSleepingSlotPos(index)))
+                        if (!owners[index].InBed() || owners[index].CurrentBed() != this || !(owners[index].Position == GetSleepingSlotPos(index)))
                         {
                             var pos = Traverse.Create(this).Method("GetMultiOwnersLabelScreenPosFor", index).GetValue<Vector3>();
-                            GenMapUI.DrawThingLabel(pos, OwnersForReading[index].LabelShort, defaultThingLabelColor);
+                            GenMapUI.DrawThingLabel(pos, owners[index].LabelShort, defaultThingLabelColor);
                         }
                     }
                 }

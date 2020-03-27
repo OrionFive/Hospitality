@@ -31,7 +31,7 @@ namespace Hospitality.Harmony
                 {
                     if (containedBed.def.building.bed_humanlike)
                     {
-                        foreach (var owner in containedBed.OwnersForReading)
+                        foreach (var owner in containedBed.Owners())
                         {
                             if (pawn == null)
                             {

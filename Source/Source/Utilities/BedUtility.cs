@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -26,6 +27,14 @@ namespace Hospitality
             return SelectBest(beds, guest, money);
         }
 
+        [NotNull]
+        public static IReadOnlyList<Pawn> Owners([CanBeNull]this Building_Bed bed)
+        {
+            var comp = bed?.CompAssignableToPawn;
+            if (comp == null) return Array.Empty<Pawn>();
+            if (comp.AssignedPawnsForReading == null) return Array.Empty<Pawn>();
+            return bed.CompAssignableToPawn.AssignedPawnsForReading;
+        }
         private static IEnumerable<Building_GuestBed> FindAvailableBeds(Pawn guest, int money)
         {
             return guest.MapHeld.GetGuestBeds(guest.GetGuestArea()).Where(bed => 
@@ -99,7 +108,7 @@ namespace Hospitality
             if (!BedClaimedByStranger(bed, guest)) return 0;
 
             // Take opinion of other into account
-            var otherOwner = bed.OwnersForReading.FirstOrDefault(owner => owner != guest);
+            var otherOwner = bed.Owners().FirstOrDefault(owner => owner != guest);
             var opinion = otherOwner != null ? (guest.relations.OpinionOf(otherOwner) - 15) * 4 : 0;
             return -150 + opinion;
         }
@@ -128,7 +137,7 @@ namespace Hospitality
 
         private static bool BedClaimedByStranger(Building_Bed bed, Pawn guest)
         {
-            return bed.OwnersForReading.Any(p => p != guest && !p.RaceProps.Animal && !LovePartnerRelationUtility.LovePartnerRelationExists(p, guest));
+            return bed.Owners().Any(p => p != guest && !p.RaceProps.Animal && !LovePartnerRelationUtility.LovePartnerRelationExists(p, guest));
         }
 
         public static int StaticBedValue(Building_GuestBed bed, [CanBeNull]out Room room, out int quality, out int impressiveness, out int roomType)

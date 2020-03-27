@@ -44,7 +44,7 @@ namespace Hospitality
 
         private Pawn Pawn => (Pawn) parent;
 
-        public bool HasBed => bed != null && bed.Spawned && bed.OwnersForReading.Contains(Pawn);
+        public bool HasBed => bed != null && bed.Spawned && bed.Owners().Contains(Pawn);
         
 
         public Area GuestArea
@@ -88,7 +88,7 @@ namespace Hospitality
                 // Can't save lord (IExposable), so we just gotta find it each time
                 lord = Pawn.GetLord();
                 // Bed doesn't store owners
-                if(bed != null && !bed.OwnersForReading.Contains(Pawn)) bed.CompAssignableToPawn.TryAssignPawn(Pawn);
+                if(bed != null && !bed.Owners().Contains(Pawn)) bed.CompAssignableToPawn.TryAssignPawn(Pawn);
             }
         }
 
@@ -147,7 +147,7 @@ namespace Hospitality
 
             foreach (var otherBed in allOtherBeds)
             {
-                if (otherBed.OwnersForReading != null && otherBed.OwnersForReading.Contains(Pawn)) Log.Warning($"{Pawn.LabelShort} already owns {otherBed.Label}!");
+                if (otherBed.Owners() != null && otherBed.Owners().Contains(Pawn)) Log.Warning($"{Pawn.LabelShort} already owns {otherBed.Label}!");
             }
 
             Pawn.ownership.UnclaimBed();
