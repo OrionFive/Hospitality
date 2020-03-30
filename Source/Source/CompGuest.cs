@@ -127,6 +127,7 @@ namespace Hospitality
         {
             arrived = false;
             Pawn.ownership.UnclaimBed();
+            lord = null;
         }
 
         public DrugPolicy GetDrugPolicy(Pawn pawn)

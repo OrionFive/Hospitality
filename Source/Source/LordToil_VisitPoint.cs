@@ -131,7 +131,7 @@ namespace Hospitality
 
             if (nonRescuedPawns.Any() && !hostile)
             {
-                var avgScore = nonRescuedPawns.Average(pawn => GetVisitScore(pawn));
+                var avgScore = nonRescuedPawns.Average(GetVisitScore);
 
                 DisplayLeaveMessage(avgScore, lord.faction, lord.ownedPawns.Count, lord.Map, sentAway);
             }

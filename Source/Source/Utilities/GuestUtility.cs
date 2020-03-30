@@ -480,6 +480,8 @@ namespace Hospitality
         {
             guest.Map.GetMapComponent().OnGuestLeft(guest);
 
+            guest.TryGetComp<CompGuest>()?.Leave();
+
             // Clear mind
             guest.pather.StopDead();
 
