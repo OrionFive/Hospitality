@@ -156,9 +156,11 @@ namespace Hospitality
         public static float ApparelScoreGain(Pawn pawn, Apparel ap)
         {
             if (ap is ShieldBelt && pawn.equipment.Primary?.def.IsWeaponUsingProjectiles == true)
-                return -1000f;
+                return -1000;
             // Added
             if (!ItemUtility.AlienFrameworkAllowsIt(pawn.def, ap.def, "CanWear")) 
+                return -1000;
+            if (!ApparelUtility.HasPartsToWear(pawn, ap.def))
                 return -1000;
             if (pawn.story.traits.HasTrait(TraitDefOf.Nudist)) return -1000;
             //if (PawnApparelGenerator.IsHeadgear(ap.def)) return 0;
