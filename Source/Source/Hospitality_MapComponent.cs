@@ -16,6 +16,7 @@ namespace Hospitality
         public bool refuseGuestsUntilWeHaveBeds;
         private int nextQueueInspection;
         private int nextRogueGuestCheck;
+        private int nextGuestListCheck;
 
         public override void ExposeData()
         {
@@ -41,12 +42,13 @@ namespace Hospitality
             map.components.Add(this);
             defaultAreaRestriction = map.areaManager.Home;
             
-            Initialize();
+            RefreshGuestListTotal();
         }
 
-        public void Initialize()
+        public void RefreshGuestListTotal()
         {
-            foreach (var pawn in map.mapPawns.AllPawnsSpawned.Where(p=>p.IsGuest())) OnGuestArrived(pawn);
+            PresentGuests.Clear();
+            PresentGuests.AddRange(map.mapPawns.AllPawnsSpawned.Where(p => p.IsGuest() && p.IsArrived()).Distinct().ToList());
         }
 
         public List<Pawn> PresentGuests { get; } = new List<Pawn>();
@@ -79,6 +81,13 @@ namespace Hospitality
             {
                 nextRogueGuestCheck = GenTicks.TicksGame + GenDate.TicksPerHour;
                 GuestUtility.CheckForRogueGuests(map);
+            }
+
+            if (GenTicks.TicksGame > nextGuestListCheck)
+            {
+                nextGuestListCheck = GenTicks.TicksGame + GenDate.TicksPerDay / 4;
+                PresentGuests.Clear();
+                RefreshGuestListTotal();
             }
         }
 

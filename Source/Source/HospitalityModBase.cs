@@ -63,7 +63,7 @@ namespace Hospitality
         public override void WorldLoaded()
         {
             ToggleTabIfNeeded();
-            foreach (var map in Find.Maps) map.GetMapComponent().Initialize();
+            foreach (var map in Find.Maps) map.GetMapComponent().RefreshGuestListTotal();
             GuestUtility.Initialize();
         }
 
