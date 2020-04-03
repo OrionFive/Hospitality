@@ -298,27 +298,47 @@ namespace Hospitality
             var totalAmount = GetGroupSize();
             int knownPawnAmount = Mathf.RoundToInt(totalAmount * ChanceToKnowEachPawn);
             
-            var options = SpawnGroupUtility.GetKnownPawns(parms).InRandomOrder().Take(knownPawnAmount).ToList();
+            var options = SpawnGroupUtility.GetKnownPawns(parms).RandomlyUsingTitleAsChance().InRandomOrder().Take(knownPawnAmount).ToList();
 
             if (options.Count < totalAmount)
             {
-                // Create some new people
-                int missing = totalAmount - options.Count;
-                var newPawns = GenerateNewPawns(parms, missing);
-                options.AddRange(newPawns);
+                try
+                {
+                    // Create some new people
+                    int missing = totalAmount - options.Count;
+                    var newPawns = GenerateNewPawns(parms, missing);
+                    options.AddRange(newPawns);
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Failed to create new pawns for faction {parms.faction?.Name}.\n{e.Message}\n{e.StackTrace}");
+                }
             }
             return options;
         }
 
         protected virtual IEnumerable<Pawn> GenerateNewPawns(IncidentParms parms, int preferredAmount)
         {
-            var newPawns = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false);
-            Log.Message($"Created {newPawns.Count()} new pawns for {parms.faction.Name}.");
-            foreach (var pawn in newPawns)
+            int i = 0;
+            while(i < preferredAmount)
             {
-                Find.World.worldPawns.PassToWorld(pawn);
+                var newPawns = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false).ToArray();
+                Log.Message($"Created {newPawns.Length} new pawns for {parms.faction.Name}.");
+                foreach (var pawn in newPawns)
+                {
+                    Find.World.worldPawns.PassToWorld(pawn);
+                }
+
+                foreach (var pawn in newPawns.RandomlyUsingTitleAsChance())
+                {
+                    yield return pawn;
+                    i++;
+                    if (i >= preferredAmount) yield break;
+                }
+
+                // To avoid infinite loop
+                if (!newPawns.Any()) i++;
             }
-            return newPawns.Take(preferredAmount);
         }
 
         protected virtual int GetGroupSize()

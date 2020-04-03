@@ -946,5 +946,20 @@ namespace Hospitality
             PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, actAsIfSpawned);
             pawn.trader.traderKind = traderKindDef;
         }
+
+        public static IEnumerable<Pawn> RandomlyUsingTitleAsChance(this IEnumerable<Pawn> pawns)
+        {
+            foreach (var pawn in pawns)
+            {
+                if (pawn == null) continue;
+                var title = pawn.royalty?.MostSeniorTitle?.def;
+                if (title == null) yield return pawn;
+                else
+                {
+                    var chance = 10 * title.commonality / title.seniority; // 0-1
+                    if (Rand.Chance(chance)) yield return pawn;
+                }
+            }
+        }
     }
 }
