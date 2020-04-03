@@ -123,11 +123,11 @@ namespace Hospitality
             arrived = true;
         }
 
-        public void Leave()
+        public void Leave(bool clearLord)
         {
             arrived = false;
             Pawn.ownership.UnclaimBed();
-            lord = null;
+            if(clearLord) lord = null;
         }
 
         public DrugPolicy GetDrugPolicy(Pawn pawn)

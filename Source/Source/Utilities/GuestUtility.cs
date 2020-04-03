@@ -274,7 +274,7 @@ namespace Hospitality
             }
             catch(Exception e)
             {
-                Log.Error($"Failed to pocket headgear:\n{e.Message}");
+                Log.Error($"Failed to pocket headgear:\n{e.Message}\n{e.StackTrace}");
             }
 
             // Save trader info
@@ -323,7 +323,7 @@ namespace Hospitality
 
             pawn.guest?.SetGuestStatus(null);
 
-            pawn.GetComp<CompGuest>()?.Leave();
+            pawn.GetComp<CompGuest>()?.Leave(false);
 
             //var reservationManager = pawn.MapHeld.reservationManager;
             //var allReservedThings = reservationManager.AllReservedThings().ToArray();
@@ -491,7 +491,7 @@ namespace Hospitality
         {
             guest.Map.GetMapComponent().OnGuestLeft(guest);
 
-            guest.TryGetComp<CompGuest>()?.Leave();
+            guest.TryGetComp<CompGuest>()?.Leave(true);
 
             // Clear mind
             guest.pather.StopDead();
