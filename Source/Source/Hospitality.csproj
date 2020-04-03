@@ -97,6 +97,7 @@
     <Compile Include="Harmony\Pawn_TraderTracker_Patch.cs" />
     <Compile Include="Harmony\QuestNode_GetPawn_Patch.cs" />
     <Compile Include="Harmony\Room_Patch.cs" />
+    <Compile Include="Harmony\WorldPawns_Patch.cs" />
     <Compile Include="Utilities\BedUtility.cs" />
     <Compile Include="ChoiceLetter_GuestJoinRequest.cs" />
     <Compile Include="Utilities\DefsUtility.cs" />

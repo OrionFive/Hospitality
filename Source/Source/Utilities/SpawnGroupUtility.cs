@@ -151,5 +151,21 @@ namespace Hospitality
 
             return validGuest;
         }
+
+        public static IEnumerable<Pawn> RandomlyUsingTitleAsChance(this IEnumerable<Pawn> pawns)
+        {
+            foreach (var pawn in pawns)
+            {
+                if (pawn == null) continue;
+                var title = pawn.royalty?.MostSeniorTitle?.def;
+                if (title == null) yield return pawn;
+                else
+                {
+                    var chance = 10 * title.commonality / title.seniority; // 0-1
+                    Log.Message($"{pawn.NameShortColored} has a chance of {chance:F2} of showing up.");
+                    if (Rand.Chance(chance)) yield return pawn;
+                }
+            }
+        }
     }
 }
