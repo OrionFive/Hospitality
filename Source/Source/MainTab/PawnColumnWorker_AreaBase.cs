@@ -64,7 +64,7 @@ namespace Hospitality.MainTab
 
             // Using own method
             Area areaRestriction = GetArea(pawn);
-            return (areaRestriction == null) ? -2147483647 : areaRestriction.ID;
+            return areaRestriction?.ID ?? -2147483647;
         }
 
         // Added

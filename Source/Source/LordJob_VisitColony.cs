@@ -118,17 +118,17 @@ namespace Hospitality
             // Take wounded
             LordToil toilTakeWounded = new LordToil_TakeWoundedGuest();
             graphExit.AddToil(toilTakeWounded);
-            // Exit from cold
-            LordToil_ExitMap toilExitCold = new LordToil_ExitMap();
-            graphArrive.AddToil(toilExitCold);
+            // Exit (TODO: Remove for 1.2)
+            LordToil_ExitMap toilExitMap = new LordToil_ExitMap();
+            graphArrive.AddToil(toilExitMap);
             // Arrived
             Transition t1 = new Transition(toilArriving, toilVisiting);
             t1.triggers.Add(new Trigger_Memo("TravelArrived"));
             graphArrive.transitions.Add(t1);
             // Too cold / hot
-            Transition t6 = new Transition(toilArriving, toilExitCold);
+            Transition t6 = new Transition(toilArriving, toilExit);
             t6.AddTrigger(new Trigger_PawnExperiencingDangerousTemperatures());
-            t6.AddPreAction(new TransitionAction_Message("MessageVisitorsDangerousTemperature".Translate(faction.def.pawnsPlural.CapitalizeFirst(), faction.Name)));
+            t6.AddPreAction(new TransitionAction_Message("MessageVisitorsDangerousTemperature".Translate(faction?.def.pawnsPlural.CapitalizeFirst(), faction?.Name)));
             t6.AddPreAction(new TransitionAction_EnsureHaveExitDestination());
             t6.AddPostAction(new TransitionAction_EndAllJobs());
             graphArrive.AddTransition(t6);
@@ -141,7 +141,7 @@ namespace Hospitality
             // Leave if became angry
             Transition t4 = new Transition(toilArriving, toilExit);
             t4.triggers.Add(new Trigger_BecamePlayerEnemy());
-            t4.triggers.Add(new Trigger_VisitorsAngeredMax(IncidentWorker_VisitorGroup.MaxAngerAmount(faction.PlayerGoodwill)));
+            t4.triggers.Add(new Trigger_VisitorsAngeredMax(IncidentWorker_VisitorGroup.MaxAngerAmount((int)faction?.PlayerGoodwill)));
             t4.postActions.Add(new TransitionAction_WakeAll());
             t4.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
             graphArrive.transitions.Add(t4);
@@ -149,22 +149,22 @@ namespace Hospitality
             Transition t5 = new Transition(toilVisiting, toilExit);
             t5.triggers.Add(new Trigger_TicksPassedAndOkayToLeave(stayDuration));
             t5.triggers.Add(new Trigger_SentAway());
-            t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction.Name)));
+            t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction?.Name)));
             t5.postActions.Add(new TransitionAction_WakeAll());
             t5.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
             graphArrive.transitions.Add(t5);
             // Leave if sent away
-            Transition t7 = new Transition(toilArriving, toilExitCold);
+            Transition t7 = new Transition(toilArriving, toilExit);
             t7.triggers.Add(new Trigger_SentAway());
-            t7.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction.Name)));
-            t7.postActions.Add(new TransitionAction_WakeAll());
-            t7.postActions.Add(new TransitionAction_Custom(() => StopPawns(lord.ownedPawns)));
-            t7.preActions.Add(new TransitionAction_Custom(() => LordToil_VisitPoint.DisplayLeaveMessage(Mathf.InverseLerp(-100, 100, faction.PlayerGoodwill), faction, lord.ownedPawns.Count, Map, true)));
+            t7.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction?.Name)));
+            t7.preActions.Add(new TransitionAction_WakeAll());
+            t7.preActions.Add(new TransitionAction_Custom(() => StopPawns(lord.ownedPawns)));
+            t7.preActions.Add(new TransitionAction_Custom(() => LordToil_VisitPoint.DisplayLeaveMessage(Mathf.InverseLerp(-100, 100, (int) faction?.PlayerGoodwill), faction, lord?.ownedPawns?.Count??0, Map, true)));
             graphArrive.transitions.Add(t7);
             // Take wounded guest when arriving
             Transition t8 = new Transition(toilArriving, toilTakeWounded);
             t8.AddTrigger(new Trigger_WoundedGuestPresent());
-            t8.AddPreAction(new TransitionAction_Message("MessageVisitorsTakingWounded".Translate(faction.def.pawnsPlural.CapitalizeFirst(), faction.Name)));
+            t8.AddPreAction(new TransitionAction_Message("MessageVisitorsTakingWounded".Translate(faction?.def.pawnsPlural.CapitalizeFirst(), faction?.Name)));
             graphArrive.AddTransition(t8);
             // Take wounded guest when leaving - couldn't get this to work
             //Transition t9 = new Transition(toilExit, toilTakeWounded);
