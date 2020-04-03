@@ -15,7 +15,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(Pawn eater, bool desperate)
             {
-                if (!eater.IsGuest()) return true;
+                if (!eater.IsArrivedGuest()) return true;
                 return desperate;
             }
         }

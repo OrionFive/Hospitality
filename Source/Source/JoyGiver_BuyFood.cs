@@ -10,7 +10,7 @@ namespace Hospitality
 
         public override float GetChance(Pawn pawn)
         {
-            if (!pawn.IsGuest()) return 0;
+            if (!pawn.IsArrivedGuest()) return 0;
 
             var carriedFood = pawn.inventory.innerContainer.Count(CanEat);
             var needFood = pawn.needs.TryGetNeed<Need_Food>();

@@ -15,8 +15,7 @@ namespace Hospitality.Harmony {
             {
                 if (!__result) return;
 
-                if (!pawn.IsGuest()) return;
-                if (!pawn.IsArrived()) return;
+                if (!pawn.IsArrivedGuest()) return;
 
                 var area = pawn.GetGuestArea();
                 if (area == null) return;

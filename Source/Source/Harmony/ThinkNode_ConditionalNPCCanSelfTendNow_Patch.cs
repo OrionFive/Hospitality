@@ -16,7 +16,7 @@ namespace Hospitality.Harmony
             public static void Postfix(ref bool __result, Pawn pawn)
             {
                 if (!__result) return;
-                if (pawn.IsGuest()) __result = false;
+                if (pawn.IsArrivedGuest()) __result = false;
             }
         }
     }

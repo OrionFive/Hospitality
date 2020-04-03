@@ -48,7 +48,7 @@ namespace Hospitality
         public void RefreshGuestListTotal()
         {
             PresentGuests.Clear();
-            PresentGuests.AddRange(map.mapPawns.AllPawnsSpawned.Where(p => p.IsGuest() && p.IsArrived()).Distinct().ToList());
+            PresentGuests.AddRange(map.mapPawns.AllPawnsSpawned.Where(p => p.IsArrivedGuest()).Distinct().ToList());
         }
 
         public List<Pawn> PresentGuests { get; } = new List<Pawn>();

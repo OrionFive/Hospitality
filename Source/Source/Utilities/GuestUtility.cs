@@ -83,13 +83,23 @@ namespace Hospitality
             return guestComp?.ShoppingArea != null;
         }
 
+        public static bool IsArrivedGuest(this Pawn pawn, bool makeValidPawnCheck = true)
+        {
+            return IsGuestInternal(pawn, true, makeValidPawnCheck);
+        }
+
         public static bool IsGuest(this Pawn pawn, bool makeValidPawnCheck = true)
+        {
+            return IsGuestInternal(pawn, false, makeValidPawnCheck);
+        }
+
+        private static bool IsGuestInternal(this Pawn pawn, bool makeArrivedCheck, bool makeValidPawnCheck = true)
         {
             if (pawn == null) return false;
             try
             {
                 if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
-                return pawn.IsInVisitState();
+                return pawn.IsInVisitState(makeArrivedCheck);
             }
             catch(Exception e)
             {
@@ -123,7 +133,7 @@ namespace Hospitality
             if (pawn.Dead) return false;
             if (pawn.RaceProps?.Humanlike != true) return false;
             if (pawn.guest == null) return false;
-            if (pawn.guest.HostFaction != Faction.OfPlayer && pawn.Map.ParentFaction != Faction.OfPlayer) return false;
+            if (pawn.guest.HostFaction != null && pawn.guest.HostFaction != Faction.OfPlayer && pawn.Map.ParentFaction != Faction.OfPlayer) return false;
             if (pawn.Faction == null) return false;
             if (pawn.IsPrisonerOfColony || pawn.Faction.IsPlayer) return false;
             if (pawn.HostileTo(Faction.OfPlayer)) return false;
@@ -241,7 +251,7 @@ namespace Hospitality
         
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
-            return guest.IsGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && guest.IsArrived() && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest);
+            return guest.IsArrivedGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest);
         }
 
         private static bool IsEating(Pawn guest)
@@ -323,10 +333,11 @@ namespace Hospitality
             //}
         }
 
-        private static bool IsInVisitState(this Pawn pawn)
+        private static bool IsInVisitState(this Pawn pawn, bool makeArrivedCheck)
         {
             var compGuest = pawn?.GetComp<CompGuest>();
             if (compGuest == null) return false;
+            if (makeArrivedCheck && pawn.guest?.HostFaction != Faction.OfPlayer) return false;
             var lord = compGuest.lord;
             //if (!pawn.Map.lordManager.lords.Contains(lord)) return false; // invalid lord
             var job = lord?.LordJob;

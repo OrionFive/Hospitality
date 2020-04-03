@@ -51,7 +51,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(Thing t, bool value)
             {
-                if (value && currentToilWorker.IsGuest())
+                if (value && currentToilWorker.IsArrivedGuest())
                 {
                     return false;
                 }
@@ -70,8 +70,7 @@ namespace Hospitality.Harmony
             public static void Postfix(IntVec3 c, Pawn forPawn, ref bool __result)
             {
                 if (!__result) return; // Not ok anyway, moving on
-                if (!forPawn.IsGuest()) return;
-                if (!forPawn.IsArrived()) return;
+                if (!forPawn.IsArrivedGuest()) return;
 
                 var area = forPawn.GetGuestArea();
                 if (area == null) return;
