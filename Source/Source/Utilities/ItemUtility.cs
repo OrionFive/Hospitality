@@ -16,6 +16,7 @@ namespace Hospitality {
             var headgear = pawn.apparel.WornApparel.Where(CoversHead).ToArray();
             foreach (var apparel in headgear)
             {
+                if (apparel == null) continue;
                 // Don't drop headgear that is required by title
                 if (IsRequiredByRoyalty(pawn, apparel.def)) continue;
 
@@ -23,10 +24,13 @@ namespace Hospitality {
 
                 if (pawn.apparel.TryDrop(apparel, out var droppedApp))
                 {
-                    var item = droppedApp.SplitOff(1);
-                    pawn.inventory.TryAddItemNotForSale(item);
-                    bool success = pawn.inventory.innerContainer.Contains(item);
-                    if (!success) pawn.apparel.Wear(droppedApp);
+                    var item = droppedApp?.SplitOff(1);
+                    if (item != null)
+                    {
+                        pawn.inventory.TryAddItemNotForSale(item);
+                        bool success = pawn.inventory.innerContainer.Contains(item);
+                        if (!success) pawn.apparel.Wear(droppedApp);
+                    }
                 }
             }
         }
