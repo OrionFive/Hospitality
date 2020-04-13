@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using RimWorld;
-using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 
@@ -116,7 +114,7 @@ namespace Hospitality
             // Leave map
             LordToil toilLeaveMap = graphExit.lordToils[1];
             // Take wounded
-            LordToil toilTakeWounded = new LordToil_TakeWoundedGuest();
+            LordToil toilTakeWounded = new LordToil_TakeWoundedGuest {lord = lord}; // This fixes the issue of missing lord when showing leave message
             graphExit.AddToil(toilTakeWounded);
             // Exit (TODO: Remove for 1.2)
             LordToil_ExitMap toilExitMap = new LordToil_ExitMap();
@@ -141,7 +139,7 @@ namespace Hospitality
             // Leave if became angry
             Transition t4 = new Transition(toilArriving, toilExit);
             t4.triggers.Add(new Trigger_BecamePlayerEnemy());
-            t4.triggers.Add(new Trigger_VisitorsAngeredMax(IncidentWorker_VisitorGroup.MaxAngerAmount((int)faction?.PlayerGoodwill)));
+            t4.triggers.Add(new Trigger_VisitorsAngeredMax(IncidentWorker_VisitorGroup.MaxAngerAmount(faction?.PlayerGoodwill??0)));
             t4.postActions.Add(new TransitionAction_WakeAll());
             t4.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
             graphArrive.transitions.Add(t4);
@@ -158,8 +156,7 @@ namespace Hospitality
             t7.triggers.Add(new Trigger_SentAway());
             t7.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction?.Name)));
             t7.preActions.Add(new TransitionAction_WakeAll());
-            t7.preActions.Add(new TransitionAction_Custom(() => StopPawns(lord.ownedPawns)));
-            t7.preActions.Add(new TransitionAction_Custom(() => LordToil_VisitPoint.DisplayLeaveMessage(Mathf.InverseLerp(-100, 100, (int) faction?.PlayerGoodwill), faction, lord?.ownedPawns?.Count??0, Map, true)));
+            t7.preActions.Add(new TransitionAction_SendAway());
             graphArrive.transitions.Add(t7);
             // Take wounded guest when arriving
             Transition t8 = new Transition(toilArriving, toilTakeWounded);
@@ -173,15 +170,6 @@ namespace Hospitality
             //graphExit.AddTransition(t9);
 
             return graphArrive;
-        }
-
-        private static void StopPawns(IEnumerable<Pawn> pawns)
-        {
-            foreach (var pawn in pawns)
-            {
-                pawn.pather.StopDead();
-                pawn.ClearMind();
-            }
         }
 
         public override void Notify_PawnLost(Pawn pawn, PawnLostCondition condition)
