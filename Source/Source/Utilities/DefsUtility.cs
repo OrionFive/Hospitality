@@ -17,6 +17,7 @@ namespace Hospitality
                 CheckChemicalDefs();
                 CheckFactionDefs();
                 CheckBedDefs();
+                CheckRoyalTitleDefs();
             }
             catch (Exception e)
             {
@@ -57,6 +58,22 @@ namespace Hospitality
             foreach (var def in DefDatabase<ChemicalDef>.AllDefsListForReading.Where(x => x.addictionHediff == null))
             {
                 LogMisconfiguration(def, $"The ChemicalDef {def.defName} has no addictionHediff. Remove the ChemicalDef or add an addiction hediff. Otherwise this will cause random groups and raids to not spawn.");
+            }
+        }
+
+        private static void CheckRoyalTitleDefs()
+        {
+            foreach (var faction in DefDatabase<FactionDef>.AllDefsListForReading.Where(def=>def.HasRoyalTitles))
+
+            foreach (var title in faction.RoyalTitlesAllInSeniorityOrderForReading)
+            {
+                if (!title.bedroomRequirements.NullOrEmpty())
+                    if (title.bedroomRequirements.Any(req => req == null))
+                        LogMisconfiguration(title, $"Bedroom requirement of title '{title.defName}' is null.");
+
+                if (!title.requiredApparel.NullOrEmpty())
+                    if (title.requiredApparel.Any(req => req == null))
+                        LogMisconfiguration(title, $"Apparel requirement of title '{title.defName}' is null.");
             }
         }
 
