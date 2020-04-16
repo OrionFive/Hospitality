@@ -63,7 +63,7 @@ namespace Hospitality
             int otherPawnOpinion = OtherPawnOpinion(bed, guest); // -150 - 0
 
             // Temperature
-            var temperature = GetTemperatureScore(guest, room); // -200 - 0
+            var temperature = GetTemperatureScore(guest, room, bed); // -200 - 0
 
             // Traits
             if (guest.story.traits.HasTrait(TraitDefOf.Greedy))
@@ -161,7 +161,7 @@ namespace Hospitality
             return RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness));
         }
 
-        private static float GetTemperatureScore(Pawn guest, Room room)
+        private static float GetTemperatureScore(Pawn guest, Room room, Building_Bed bed)
         {
             if (room == null) return 0;
             var optimalTemperature = GenTemperature.ComfortableTemperatureRange(guest.def);
