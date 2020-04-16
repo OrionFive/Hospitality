@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
@@ -38,7 +39,15 @@ namespace Hospitality {
         public static bool IsRequiredByRoyalty(Pawn pawn, ThingDef apparelDef)
         {
             if (pawn.royalty == null) return false;
-            return pawn.royalty.AllTitlesForReading.Any(title => title.def.requiredApparel.Exists(req => req.ApparelMeetsRequirement(apparelDef)));
+            try
+            {
+                return pawn.royalty.AllTitlesForReading.Any(title => title.def.requiredApparel.Exists(req => req.ApparelMeetsRequirement(apparelDef)));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed to read royalty titles or their required apparel. This means you are using a mod that changes these and broke them.\n{e.Message}\n{e.StackTrace}");
+                return false;
+            }
         }
 
         private static bool CoversHead(this Apparel a)
