@@ -27,8 +27,6 @@ namespace Hospitality
         private LordToilData_CustomTravel Data => data as LordToilData_CustomTravel;
         public override IntVec3 FlagLoc => Data.dest;
 
-        public LordToil_CustomTravel() {}
-
         public LordToil_CustomTravel(IntVec3 dest, float percentRequired = 1, float distance = 10)
         {
             data = new LordToilData_CustomTravel {dest = dest, destAssigned = true, percentRequired = percentRequired, distance = distance};

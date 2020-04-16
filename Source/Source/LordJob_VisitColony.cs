@@ -120,54 +120,70 @@ namespace Hospitality
             LordToil_ExitMap toilExitMap = new LordToil_ExitMap();
             graphArrive.AddToil(toilExitMap);
             // Arrived
-            Transition t1 = new Transition(toilArriving, toilVisiting);
-            t1.triggers.Add(new Trigger_Memo("TravelArrived"));
-            graphArrive.transitions.Add(t1);
+            {
+                Transition t1 = new Transition(toilArriving, toilVisiting);
+                t1.triggers.Add(new Trigger_Memo("TravelArrived"));
+                graphArrive.transitions.Add(t1);
+            }
             // Too cold / hot
-            Transition t6 = new Transition(toilArriving, toilExit);
-            t6.AddTrigger(new Trigger_PawnExperiencingDangerousTemperatures());
-            t6.AddPreAction(new TransitionAction_Message("MessageVisitorsDangerousTemperature".Translate(faction?.def.pawnsPlural.CapitalizeFirst(), faction?.Name)));
-            t6.AddPreAction(new TransitionAction_EnsureHaveExitDestination());
-            t6.AddPostAction(new TransitionAction_EndAllJobs());
-            graphArrive.AddTransition(t6);
+            {
+                Transition t6 = new Transition(toilArriving, toilExit);
+                t6.AddTrigger(new Trigger_PawnExperiencingDangerousTemperatures());
+                t6.AddPreAction(new TransitionAction_Message("MessageVisitorsDangerousTemperature".Translate(faction?.def.pawnsPlural.CapitalizeFirst(), faction?.Name)));
+                t6.AddPreAction(new TransitionAction_EnsureHaveExitDestination());
+                t6.AddPostAction(new TransitionAction_EndAllJobs());
+                graphArrive.AddTransition(t6);
+            }
             // Became enemy while arriving
-            Transition t3 = new Transition(toilVisiting, toilLeaveMap);
-            t3.triggers.Add(new Trigger_BecamePlayerEnemy());
-            t3.postActions.Add(new TransitionAction_WakeAll());
-            t3.preActions.Add(new TransitionAction_SetDefendLocalGroup());
-            graphArrive.transitions.Add(t3);
+            {
+                Transition t3 = new Transition(toilVisiting, toilLeaveMap);
+                t3.triggers.Add(new Trigger_BecamePlayerEnemy());
+                t3.preActions.Add(new TransitionAction_SetDefendLocalGroup());
+                t3.postActions.Add(new TransitionAction_WakeAll());
+                graphArrive.transitions.Add(t3);
+            }
             // Leave if became angry
-            Transition t4 = new Transition(toilArriving, toilExit);
-            t4.triggers.Add(new Trigger_BecamePlayerEnemy());
-            t4.triggers.Add(new Trigger_VisitorsAngeredMax(IncidentWorker_VisitorGroup.MaxAngerAmount(faction?.PlayerGoodwill??0)));
-            t4.postActions.Add(new TransitionAction_WakeAll());
-            t4.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
-            graphArrive.transitions.Add(t4);
+            {
+                Transition t4 = new Transition(toilArriving, toilExit);
+                t4.triggers.Add(new Trigger_BecamePlayerEnemy());
+                t4.triggers.Add(new Trigger_VisitorsAngeredMax(IncidentWorker_VisitorGroup.MaxAngerAmount(faction?.PlayerGoodwill ?? 0)));
+                t4.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
+                t4.postActions.Add(new TransitionAction_WakeAll());
+                graphArrive.transitions.Add(t4);
+            }
             // Leave if stayed long enough
-            Transition t5 = new Transition(toilVisiting, toilExit);
-            t5.triggers.Add(new Trigger_TicksPassedAndOkayToLeave(stayDuration));
-            t5.triggers.Add(new Trigger_SentAway());
-            t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction?.Name)));
-            t5.postActions.Add(new TransitionAction_WakeAll());
-            t5.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
-            graphArrive.transitions.Add(t5);
-            // Leave if sent away
-            Transition t7 = new Transition(toilArriving, toilExit);
-            t7.triggers.Add(new Trigger_SentAway());
-            t7.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction?.Name)));
-            t7.preActions.Add(new TransitionAction_WakeAll());
-            t7.preActions.Add(new TransitionAction_SendAway());
-            graphArrive.transitions.Add(t7);
+            {
+                Transition t5 = new Transition(toilVisiting, toilExit);
+                t5.triggers.Add(new Trigger_TicksPassedAndOkayToLeave(stayDuration));
+                t5.triggers.Add(new Trigger_SentAway()); // Sent away during stay
+                t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction?.Name)));
+                t5.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
+                t5.postActions.Add(new TransitionAction_WakeAll());
+                graphArrive.transitions.Add(t5);
+            }
+            // Leave if sent away (before fully arriving!)
+            {
+                Transition t7 = new Transition(toilArriving, toilExit);
+                t7.triggers.Add(new Trigger_SentAway());
+                t7.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction?.Name)));
+                t7.preActions.Add(new TransitionAction_WakeAll());
+                t7.preActions.Add(new TransitionAction_SendAway());
+                graphArrive.transitions.Add(t7);
+            }
             // Take wounded guest when arriving
-            Transition t8 = new Transition(toilArriving, toilTakeWounded);
-            t8.AddTrigger(new Trigger_WoundedGuestPresent());
-            t8.AddPreAction(new TransitionAction_Message("MessageVisitorsTakingWounded".Translate(faction?.def.pawnsPlural.CapitalizeFirst(), faction?.Name)));
-            graphArrive.AddTransition(t8);
+            {
+                Transition t8 = new Transition(toilArriving, toilTakeWounded);
+                t8.AddTrigger(new Trigger_WoundedGuestPresent());
+                t8.AddPreAction(new TransitionAction_Message("MessageVisitorsTakingWounded".Translate(faction?.def.pawnsPlural.CapitalizeFirst(), faction?.Name)));
+                graphArrive.AddTransition(t8);
+            }
             // Take wounded guest when leaving - couldn't get this to work
+            //{
             //Transition t9 = new Transition(toilExit, toilTakeWounded);
             //t9.AddTrigger(new Trigger_WoundedGuestPresent());
             //t9.AddPreAction(new TransitionAction_Message("MessageVisitorsTakingWounded".Translate(faction.def.pawnsPlural.CapitalizeFirst(), faction.Name)));
             //graphExit.AddTransition(t9);
+            //}
 
             return graphArrive;
         }

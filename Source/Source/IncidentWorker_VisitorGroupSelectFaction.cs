@@ -21,6 +21,7 @@ namespace Hospitality
             {
                 if (faction.IsPlayer) continue;
                 if (faction.HostileTo(Faction.OfPlayer)) continue;
+                if (faction.def.pawnGroupMakers == null) continue;
                 if (!faction.def.pawnGroupMakers.Any(m => m?.kindDef == PawnGroupKindDefOf.Peaceful)) continue;
                 list.Add(new DebugMenuOption($"{faction.Name} ({faction.PlayerGoodwill})", DebugMenuOptionMode.Action, delegate {
                     parms.faction = faction;
