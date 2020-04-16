@@ -21,7 +21,7 @@ namespace Hospitality
             }
             catch (Exception e)
             {
-                Log.Error($"{e.Message}\n{e.StackTrace}");
+                Log.Error($"{e}");
             }
         }
 

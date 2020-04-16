@@ -246,7 +246,7 @@ namespace Hospitality
             {
                 var faction = parms.faction?.Name;
                 var factionType = parms.faction?.def.label;
-                Log.Error($"Hospitality: Something failed when setting up visitors from faction {faction}({factionType}):\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"Hospitality: Something failed when setting up visitors from faction {faction} ({factionType}):\n{e}");
                 foreach (var visitor in visitors)
                 {
                     if (visitor?.Spawned == true)
@@ -283,7 +283,7 @@ namespace Hospitality
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Hospitality: Failed to spawn pawn {pawn?.Label}:\n{e.Message}\n{e.StackTrace}");
+                    Log.Error($"Hospitality: Failed to spawn pawn {pawn?.Label}:\n{e}");
                     if (pawn.Spawned)
                     {
                         pawn.DeSpawn();
@@ -311,7 +311,7 @@ namespace Hospitality
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Failed to create new pawns for faction {parms.faction?.Name}.\n{e.Message}\n{e.StackTrace}");
+                    Log.Error($"Failed to create new pawns for faction {parms.faction?.Name}.\n{e}");
                 }
             }
             return options;

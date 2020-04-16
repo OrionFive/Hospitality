@@ -45,7 +45,7 @@ namespace Hospitality {
             }
             catch (Exception e)
             {
-                Log.Error($"Failed to read royalty titles or their required apparel. This means you are using a mod that changes these and broke them.\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"Failed to read royalty titles or their required apparel. This means you are using a mod that changes these and broke them.\n{e}");
                 return false;
             }
         }

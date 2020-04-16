@@ -64,7 +64,7 @@ namespace Hospitality
             }
             catch (Exception e)
             {
-                Log.Error($"Exception: {e.Message}\n{e.StackTrace}");
+                Log.Error($"Exception: {e}");
                 Log.Error($"Message failed ({message})");
             }
         }

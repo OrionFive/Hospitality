@@ -274,7 +274,7 @@ namespace Hospitality
             }
             catch(Exception e)
             {
-                Log.Error($"Failed to pocket headgear:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"Failed to pocket headgear:\n{e}");
             }
 
             // Save trader info

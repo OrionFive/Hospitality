@@ -70,7 +70,7 @@ namespace Hospitality
             }
             catch (Exception e)
             {
-                Log.ErrorOnce($"Failed to calculate stats: {e.Message}\n{e.StackTrace}", 834763462);
+                Log.ErrorOnce($"Failed to calculate stats: {e}", 834763462);
             }
         }
 
@@ -98,7 +98,7 @@ namespace Hospitality
             }
             catch (Exception e)
             {
-                Log.Error($"Failed to read royalty titles or their bedroom requirements. This means you are using a mod that changes these and broke them.\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"Failed to read royalty titles or their bedroom requirements. This means you are using a mod that changes these and broke them.\n{e}");
             }
 
             return Array.Empty<RoyalTitleDef>();
