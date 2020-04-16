@@ -140,15 +140,25 @@ namespace Hospitality
             return bed.Owners().Any(p => p != guest && !p.RaceProps.Animal && !LovePartnerRelationUtility.LovePartnerRelationExists(p, guest));
         }
 
-        public static int StaticBedValue(Building_GuestBed bed, [CanBeNull]out Room room, out int quality, out int impressiveness, out int roomType)
+        public static int StaticBedValue(Building_GuestBed bed, [CanBeNull]out Room room, out int quality, out int impressiveness, out int roomTypeScore)
         {
             room = bed.Map != null && bed.Map.regionAndRoomUpdater.Enabled ? bed.GetRoom() : null;
 
+            quality = GetBedQuality(bed);
+            impressiveness = room != null ? GetRoomImpressiveness(room) : 0;
+            roomTypeScore = GetRoomTypeScore(room) * 2;
+            return quality + impressiveness + roomTypeScore;
+        }
+
+        private static int GetBedQuality(Building_Bed bed)
+        {
             if (!bed.TryGetQuality(out QualityCategory category)) category = QualityCategory.Normal;
-            quality = ((int) category - 2) * 25;
-            impressiveness = room != null ? RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness)) : 0;
-            roomType = GetRoomTypeScore(room) * 2;
-            return quality + impressiveness + roomType;
+            return ((int) category - 2) * 25;
+        }
+
+        private static int GetRoomImpressiveness(Room room)
+        {
+            return RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness));
         }
 
         private static float GetTemperatureScore(Pawn guest, Room room)
