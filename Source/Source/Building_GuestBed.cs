@@ -89,9 +89,19 @@ namespace Hospitality
 
         private RoyalTitleDef[] GetMetRoyalTitles(Room room)
         {
-            if (room == null) return Array.Empty<RoyalTitleDef>();
+            try
+            {
+                if (room != null)
+                {
+                    return GuestUtility.AllTitles.Where(t => t.bedroomRequirements.NullOrEmpty() || IsSingleBedroom(room) && t.bedroomRequirements.All(req => req.Met(room))).ToArray();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed to read royalty titles or their bedroom requirements. This means you are using a mod that changes these and broke them.\n{e.Message}\n{e.StackTrace}");
+            }
 
-            return GuestUtility.AllTitles.Where(t => t.bedroomRequirements.NullOrEmpty() || IsSingleBedroom(room) && t.bedroomRequirements.All(req => req.Met(room))).ToArray();
+            return Array.Empty<RoyalTitleDef>();
         }
 
         private bool IsSingleBedroom(Room room)
