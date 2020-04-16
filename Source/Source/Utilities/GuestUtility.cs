@@ -672,7 +672,7 @@ namespace Hospitality
         public static int RoyalFriendsSeniorityRequired(Pawn pawn)
         {
             var title = pawn.royalty?.MostSeniorTitle;
-            if (title == null) return 0;
+            if (title == null) return 100;
             return title.def.seniority;
         }
 
