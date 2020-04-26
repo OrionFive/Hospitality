@@ -13,6 +13,7 @@ namespace Hospitality
         public static SettingHandle<int> minGuestWorkSkill;
         public static SettingHandle<int> minGuestGroupSize;
         public static SettingHandle<int> maxGuestGroupSize;
+        public static SettingHandle<int> maxIncidentsPer3Days;
         public static SettingHandle<bool> disableGuests;
         public static SettingHandle<bool> disableWork;
         public static SettingHandle<bool> disableGifts;
@@ -35,6 +36,7 @@ namespace Hospitality
             minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, WorkSkillLimits);
             minGuestGroupSize = settings.GetHandle("minGuestGroupSize", "MinGuestGroupSize".Translate(), "MinGuestGroupSizeDesc".Translate(), 1, GroupSizeLimitsMin);
             maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), DefaultMaxGroupSize, GroupSizeLimitsMax);
+            maxIncidentsPer3Days = settings.GetHandle("maxIncidentsPer3Days", "MaxIncidentsPer3Days".Translate(), "MaxIncidentsPer3DaysDesc".Translate(), 5, MaxIncidentsPer3DaysLimitsMin);
             disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
             disableGuestsTab = settings.GetHandle("disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false);
             enableBuyNotification = settings.GetHandle("enableBuyNotification", "EnableBuyNotification".Translate(), "EnableBuyNotificationDesc".Translate(), false);
@@ -77,6 +79,7 @@ namespace Hospitality
 
         // Make sure that it still works when referenced settings are null!
         private static SettingHandle.ValueIsValid WorkSkillLimits { get { return AtLeast(() => disableLimits?.Value != false ? 0 : 6); } }
+        private static SettingHandle.ValueIsValid MaxIncidentsPer3DaysLimitsMin { get { return AtLeast(() => 1); } }
         private static SettingHandle.ValueIsValid GroupSizeLimitsMin { get { return Between(() => 1, () => maxGuestGroupSize?.Value ?? DefaultMaxGroupSize); } }
         private static SettingHandle.ValueIsValid GroupSizeLimitsMax { get { return AtLeast(() => Mathf.Max(minGuestGroupSize?.Value ?? 0, disableLimits?.Value != false ? 1 : 8)); } }
 

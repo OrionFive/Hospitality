@@ -80,7 +80,7 @@ namespace Hospitality
 
         internal static void CheckTooManyIncidentsAtOnce(IncidentQueue incidentQueue)
         {
-            const int maxIncidents = 6;
+            var maxIncidents = Settings.maxIncidentsPer3Days+1;
             const int rangeOfDays = 3;
 
             if (incidentQueue.Count < maxIncidents) return;
@@ -106,7 +106,8 @@ namespace Hospitality
             IncidentQueue backupQueue = new IncidentQueue();
 
             bool skip = true;
-            int amount = incidentQueue.Count;
+            int amount = 0;
+            int newAmount = 0;
             
             // Copy and thin 
             foreach (QueuedIncident incident in incidentQueue)
@@ -116,7 +117,12 @@ namespace Hospitality
                 else
                 {
                     // Before, copy every second incident
-                    if (!skip) backupQueue.Add(incident);
+                    amount++;
+                    if (!skip)
+                    {
+                        backupQueue.Add(incident);
+                        newAmount++;
+                    }
                     skip = !skip;
                 }
             }
@@ -127,7 +133,7 @@ namespace Hospitality
                 incidentQueue.Add(incident);
             }
 
-            Log.Message($"Reduced {amount} visits to {incidentQueue.Count}, by cancelling every 2nd within the next {rangeOfDays} days.");
+            Log.Message($"Reduced {amount} visits to {newAmount}, by cancelling every 2nd within the next {rangeOfDays} days.");
         }
 
         internal static void FillIncidentQueue(Map map)
