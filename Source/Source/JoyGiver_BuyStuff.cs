@@ -97,6 +97,8 @@ namespace Hospitality
                 if(hungerFactor > 0) appFactor -= hungerFactor;
             }
 
+            if (EquipmentUtility.IsBiocoded(thing) && !EquipmentUtility.IsBiocodedFor(thing, pawn)) return 0;
+
             // Weapon
             if (thing.def.IsRangedWeapon)
             {
