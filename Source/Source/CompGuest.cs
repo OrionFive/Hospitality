@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using JetBrains.Annotations;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 
@@ -121,6 +122,7 @@ namespace Hospitality
         public void Arrive()
         {
             arrived = true;
+            lastBedCheckTick = GenTicks.TicksGame; // Don't check right away
         }
 
         public void Leave(bool clearLord)
