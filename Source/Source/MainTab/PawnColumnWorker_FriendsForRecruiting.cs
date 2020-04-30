@@ -56,11 +56,16 @@ namespace Hospitality.MainTab
 
         private int GetValueToCompare(Pawn pawn)
         {
+            // Can't use cache here
+
             // Changed check
             if (!pawn.IsGuest())
             {
                 return -2147483648;
             }
+
+            friendsShortCache = pawn.GetFriendsInColony();
+            friendsRequiredShortCache = GuestUtility.FriendsRequired(pawn.MapHeld) + pawn.GetEnemiesInColony();
 
             if (friendsRequiredShortCache == 0) return -2147483648;
             return (int)(100f * friendsShortCache / friendsRequiredShortCache);

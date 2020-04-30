@@ -2,6 +2,7 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using static System.String;
 
 namespace Hospitality.MainTab
 {
@@ -34,6 +35,11 @@ namespace Hospitality.MainTab
             Text.Anchor = TextAnchor.UpperLeft;
             GUI.color = Color.white;
             Text.Font = GameFont.Small;
+        }
+
+        public override int Compare(Pawn a, Pawn b)
+        {
+            return CompareOrdinal(a.Name.ToStringShort, b.Name.ToStringShort);
         }
     }
 }

@@ -23,9 +23,10 @@ namespace Hospitality.MainTab
             return GetValueToCompare(a).CompareTo(GetValueToCompare(b));
         }
 
-        private int GetValueToCompare(Pawn pawn)
+        private static int GetValueToCompare(Pawn pawn)
         {
-            return (int) (score*100);
+            // Can't use cache
+            return pawn.GetVisitScore(out float s) ? (int) (s * 100) : 0;
         }
     }
 }
