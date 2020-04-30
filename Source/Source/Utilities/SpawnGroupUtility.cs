@@ -162,7 +162,7 @@ namespace Hospitality
                 else
                 {
                     var chance = 10 * title.commonality / title.seniority; // 0-1
-                    Log.Message($"{pawn.NameShortColored} has a chance of {chance:F2} of showing up.");
+                    Log.Message($"{pawn.NameShortColored} has a chance of {chance:P2} of showing up.");
                     if (Rand.Chance(chance)) yield return pawn;
                 }
             }

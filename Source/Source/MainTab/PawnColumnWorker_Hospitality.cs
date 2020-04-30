@@ -20,7 +20,7 @@ namespace Hospitality.MainTab
 
         public override int Compare(Pawn a, Pawn b)
         {
-            return GetValueToCompare(a).CompareTo(GetValueToCompare(b));
+            return -GetValueToCompare(a).CompareTo(GetValueToCompare(b));
         }
 
         private static int GetValueToCompare(Pawn pawn)

@@ -9,7 +9,7 @@ namespace Hospitality.MainTab
     {
         private static PawnTableDef pawnTableDef;
 
-        protected override PawnTableDef PawnTableDef => pawnTableDef ?? (pawnTableDef = DefDatabase<PawnTableDef>.GetNamed("Guests"));
+        protected override PawnTableDef PawnTableDef => pawnTableDef ??= DefDatabase<PawnTableDef>.GetNamed("Guests");
 
         protected override IEnumerable<Pawn> Pawns => Find.CurrentMap.GetMapComponent().PresentGuests;
 
