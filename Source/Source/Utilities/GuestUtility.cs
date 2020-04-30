@@ -266,8 +266,6 @@ namespace Hospitality
 
         public static void Arrive(this Pawn pawn)
         {
-            pawn.Map.GetMapComponent().OnGuestArrived(pawn);
-
             try
             {
                 pawn.PocketHeadgear();
@@ -308,8 +306,6 @@ namespace Hospitality
 
         public static void Leave(this Pawn pawn)
         {
-            pawn.Map.GetMapComponent().OnGuestLeft(pawn);
-
             try
             {
                 pawn.WearHeadgear();
@@ -489,8 +485,6 @@ namespace Hospitality
 
         public static void Adopt(this Pawn guest)
         {
-            guest.Map.GetMapComponent().OnGuestLeft(guest);
-
             guest.TryGetComp<CompGuest>()?.Leave(true);
 
             // Clear mind
@@ -941,6 +935,18 @@ namespace Hospitality
             pawn.mindState.wantsToTradeWithColony = true;
             PawnComponentsUtility.AddAndRemoveDynamicComponents(pawn, actAsIfSpawned);
             pawn.trader.traderKind = traderKindDef;
+        }
+
+        public static void OnLordLeft(Lord lord)
+        {
+            lord.Map?.GetMapComponent()?.OnLordLeft(lord);
+            MainTabWindowUtility.NotifyAllPawnTables_PawnsChanged();
+        }
+
+        public static void OnLordArrived(Lord lord)
+        {
+            lord.Map?.GetMapComponent()?.OnLordArrived(lord);
+            MainTabWindowUtility.NotifyAllPawnTables_PawnsChanged();
         }
     }
 }

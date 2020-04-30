@@ -19,7 +19,7 @@ namespace Hospitality.MainTab
 
             if (Time.unscaledTime > lastTimeCached + 2 || Find.CurrentMap != currentMap)
             {
-                guestCountCached = Find.CurrentMap.GetMapComponent().PresentGuests.Count;
+                guestCountCached = Find.CurrentMap.GetMapComponent().PresentGuests.Count();
                 bedCountCached = Find.CurrentMap.GetGuestBeds().Sum(bed => bed.SleepingSlotsCount);
                 lastTimeCached = Time.unscaledTime;
                 currentMap = Find.CurrentMap;

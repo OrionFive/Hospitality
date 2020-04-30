@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
+using Verse.AI.Group;
 
 namespace Hospitality
 {
@@ -17,6 +18,9 @@ namespace Hospitality
         private int nextQueueInspection;
         private int nextRogueGuestCheck;
         private int nextGuestListCheck;
+
+        public List<Lord> PresentLords { get; } = new List<Lord>();
+        public IEnumerable<Pawn> PresentGuests => PresentLords.SelectMany(lord => lord.ownedPawns);
 
         public override void ExposeData()
         {
@@ -47,20 +51,18 @@ namespace Hospitality
 
         public void RefreshGuestListTotal()
         {
-            PresentGuests.Clear();
-            PresentGuests.AddRange(map.mapPawns.AllPawnsSpawned.Where(p => p.IsArrivedGuest()).Distinct().ToList());
+            PresentLords.Clear();
+            PresentLords.AddRange(map.lordManager.lords.Where(l => l.CurLordToil?.GetType() == typeof(LordToil_VisitPoint)));
         }
 
-        public List<Pawn> PresentGuests { get; } = new List<Pawn>();
-
-        public void OnGuestArrived(Pawn pawn)
+        public void OnLordArrived(Lord lord)
         {
-            PresentGuests.AddDistinct(pawn);
+            PresentLords.AddDistinct(lord);
         }
 
-        public void OnGuestLeft(Pawn pawn)
+        public void OnLordLeft(Lord lord)
         {
-            PresentGuests.Remove(pawn);
+            PresentLords.Remove(lord);
         }
 
         public override void MapComponentTick()
@@ -86,7 +88,7 @@ namespace Hospitality
             if (GenTicks.TicksGame > nextGuestListCheck)
             {
                 nextGuestListCheck = GenTicks.TicksGame + GenDate.TicksPerDay / 4;
-                PresentGuests.Clear();
+                PresentLords.Clear();
                 RefreshGuestListTotal();
             }
         }
