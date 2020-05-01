@@ -54,7 +54,9 @@ namespace Hospitality
             GUI.EndGroup();
             Text.WordWrap = true;
             GenUI.AbsorbClicksInRect(rectWindow);
-            if (!Mouse.IsOver(rectWindow))
+
+            // Royal title info box
+            if (!Mouse.IsOver(rectWindow) || !ModLister.RoyaltyInstalled)
                 return new GizmoResult(GizmoState.Clear);
             Rect windowRect = BedStatsDrawer.GetWindowRect();
             Find.WindowStack.ImmediateWindow(74975, windowRect, WindowLayer.Super, () => {

@@ -65,8 +65,12 @@ namespace Hospitality
                 Stats.textAttractiveness = "BedAttractiveness".Translate(Stats.staticBedValue - rentalFee);
                 Stats.textFee = rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
                 Stats.textAsArray = new[] {Stats.textAttractiveness, Stats.textFee};
-                Stats.metRoyalTitles = GetMetRoyalTitles(Stats.room);
-                Stats.textNextTitleReq = GetNextTitleReq(Stats.room, Stats.metRoyalTitles);
+
+                if (ModLister.RoyaltyInstalled)
+                {
+                    Stats.metRoyalTitles = GetMetRoyalTitles(Stats.room);
+                    Stats.textNextTitleReq = GetNextTitleReq(Stats.room, Stats.metRoyalTitles);
+                }
             }
             catch (Exception e)
             {
