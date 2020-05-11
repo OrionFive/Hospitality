@@ -19,7 +19,7 @@
 	<GuestPleasedRelationship.stages.charmed_by_colonist.description>Такие приятные люди!</GuestPleasedRelationship.stages.charmed_by_colonist.description>
 	
 	<EndorsedByRecruiter.stages.endorsed_by_recruiter.label>похвала от переговорщика</EndorsedByRecruiter.stages.endorsed_by_recruiter.label>
-	<EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>похвала меня</EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>
+	<EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>меня похвалили</EndorsedByRecruiter.stages.endorsed_by_recruiter.labelSocial>
 	<EndorsedByRecruiter.stages.endorsed_by_recruiter.description>Этот переговорщик сказал мне много приятных вещей.</EndorsedByRecruiter.stages.endorsed_by_recruiter.description>
 	
 	<GuestDismissiveAttitude.stages.tired_of_talking.label>усталость от болтовни</GuestDismissiveAttitude.stages.tired_of_talking.label>
