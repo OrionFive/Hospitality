@@ -58,7 +58,7 @@
   <InviteGuests>Пригласить в гости</InviteGuests>
   <GuestsCantBeHostile>не могут быть враждебны</GuestsCantBeHostile>
   <GuestsDontWantToCome>не заинтересованы в посещении</GuestsDontWantToCome>
-  <GuestsAlreadyComing>уже в пути к вам и прибудут к вам через {0}</GuestsAlreadyComing>
+  <GuestsAlreadyComing>уже в пути к вам и прибудут через {0}</GuestsAlreadyComing>
   <GuestsOnTheirWay>Они отправляют сваю делегацию. Ожидайте их через {0}.</GuestsOnTheirWay>
   
   <!-- Pawn Tab -->
