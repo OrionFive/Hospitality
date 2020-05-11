@@ -29,7 +29,7 @@
 	<GuestCantAffordBed.stages.cant_afford_a_bed.description>Я не могу позволить себе кровать в этом месте.</GuestCantAffordBed.stages.cant_afford_a_bed.description>
 	
 	<GuestBedCount.stages.no_guest_beds.label>нет гостевых кроватей</GuestBedCount.stages.no_guest_beds.label>
-	<GuestBedCount.stages.no_guest_beds.description>Здесь даже нет гостевых кроватей.</GuestBedCount.stages.no_guest_beds.description>
+	<GuestBedCount.stages.no_guest_beds.description>Здесь даже негде прилечь.</GuestBedCount.stages.no_guest_beds.description>
 	<GuestBedCount.stages.not_enough_guest_beds.label>не хватает кроватей</GuestBedCount.stages.not_enough_guest_beds.label>
 	<GuestBedCount.stages.not_enough_guest_beds.description>Для гостей нужно больше кроватей.</GuestBedCount.stages.not_enough_guest_beds.description>
 	<GuestBedCount.stages.enough_beds.label>хватает кроватей</GuestBedCount.stages.enough_beds.label>
