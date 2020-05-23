@@ -17,7 +17,7 @@ namespace Hospitality.Harmony
             {
                 if (___pawn.Faction == Faction.OfPlayer) return;
 
-                var compGuest = ___pawn.GetComp<CompGuest>();
+                var compGuest = ___pawn.CompGuest();
                 if (compGuest != null) compGuest.rescued = true;
             }
         }

@@ -45,7 +45,7 @@ namespace Hospitality
 
         public void JoinLate(Pawn pawn)
         {
-            pawn.GetComp<CompGuest>().lord = lord;
+            pawn.CompGuest().lord = lord;
             if (lord.ownedPawns.Contains(pawn)) return;
             lord.AddPawn(pawn);
             if(!Data.visitorMoods.ContainsKey(pawn.thingIDNumber))
@@ -111,7 +111,7 @@ namespace Hospitality
 
             foreach (var pawn in pawns)
             {
-                var compGuest = pawn.GetComp<CompGuest>();
+                var compGuest = pawn.CompGuest();
                 if(compGuest != null)
                 {
                     if (compGuest.sentAway)
@@ -130,7 +130,7 @@ namespace Hospitality
             }
 
             // Rescued pawns don't factor in here. If the group is only rescued pawns, we want no message
-            var nonRescuedPawns = lord.ownedPawns.Where(p => p.GetComp<CompGuest>()?.rescued != true).ToArray();
+            var nonRescuedPawns = lord.ownedPawns.Where(p => p.CompGuest()?.rescued != true).ToArray();
 
             if (nonRescuedPawns.Any() && !hostile)
             {

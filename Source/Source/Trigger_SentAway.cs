@@ -17,7 +17,7 @@ namespace Hospitality
         private static bool SentAway(Pawn pawn)
         {
             if (pawn?.health?.hediffSet == null) return false;
-            return pawn.GetComp<CompGuest>()?.sentAway == true;
+            return pawn.CompGuest()?.sentAway == true;
         }
     }
 }

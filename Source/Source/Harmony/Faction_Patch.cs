@@ -18,7 +18,7 @@ namespace Hospitality.Harmony
                 if (member.Faction == Faction.OfPlayer) return true;
                 if (PawnUtility.IsTravelingInTransportPodWorldObject(member)) return false; // Fired in pod? Don't trigger
 
-                var compGuest = member.GetComp<CompGuest>();
+                var compGuest = member.CompGuest();
 
                 if (compGuest == null || !compGuest.rescued || member.guest == null || PawnUtility.IsTravelingInTransportPodWorldObject(member)) return true;
 

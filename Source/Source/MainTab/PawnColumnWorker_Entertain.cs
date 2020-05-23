@@ -11,7 +11,7 @@ namespace Hospitality.MainTab
 
         protected override void SetValue(Pawn pawn, bool value)
         {
-            var compGuest = pawn.GetComp<CompGuest>();
+            var compGuest = pawn.CompGuest();
             if (compGuest != null) compGuest.entertain = value;
         }
     }

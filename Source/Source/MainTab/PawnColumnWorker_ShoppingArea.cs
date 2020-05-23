@@ -8,13 +8,13 @@ namespace Hospitality.MainTab
     {
         protected override Area GetArea(Pawn pawn)
         {
-            var comp = pawn.GetComp<CompGuest>();
+            var comp = pawn.CompGuest();
             return comp?.ShoppingArea;
         }
 
         protected override void SetArea(Pawn pawn, Area area)
         {
-            var comp = pawn.GetComp<CompGuest>();
+            var comp = pawn.CompGuest();
             if (comp != null) comp.ShoppingArea = area;
         }
 

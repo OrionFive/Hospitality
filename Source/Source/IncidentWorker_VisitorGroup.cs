@@ -503,7 +503,7 @@ namespace Hospitality
 
             // Set default interaction
             pawns.ForEach(delegate(Pawn p) {
-                var compGuest = p.GetComp<CompGuest>();
+                var compGuest = p.CompGuest();
                 if (compGuest != null)
                 {
                     compGuest.ResetForGuest(lord);

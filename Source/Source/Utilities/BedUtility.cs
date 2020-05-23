@@ -191,7 +191,7 @@ namespace Hospitality
 
         public static Building_Bed GetGuestBed(Pawn pawn)
         {
-            var compGuest = pawn.GetComp<CompGuest>();
+            var compGuest = pawn.CompGuest();
             return compGuest?.bed;
         }
 

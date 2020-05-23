@@ -106,6 +106,7 @@
     <Compile Include="TransitionAction_SendAway.cs" />
     <Compile Include="Utilities\BedUtility.cs" />
     <Compile Include="ChoiceLetter_GuestJoinRequest.cs" />
+    <Compile Include="Utilities\CompUtility.cs" />
     <Compile Include="Utilities\DefsUtility.cs" />
     <Compile Include="Harmony\AddictionUtility_Patch.cs" />
     <Compile Include="Harmony\Building_Bed_Patch.cs" />
@@ -134,7 +135,6 @@
     <Compile Include="Harmony\Pawn_InteractionsTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_NeedsTracker_Patch.cs" />
     <Compile Include="Harmony\Pawn_Ownership_Patch.cs" />
-    <Compile Include="Harmony\Pawn_Patch.cs" />
     <Compile Include="Harmony\Pawn_RelationsTracker_Patch.cs" />
     <Compile Include="Harmony\Reachability_Patch.cs" />
     <Compile Include="Harmony\ReservationManager_Patch.cs" />

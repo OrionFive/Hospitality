@@ -38,7 +38,7 @@ namespace Hospitality.MainTab
 
         private static bool MayRecruitAtAll(Pawn pawn)
         {
-            var comp = pawn.GetComp<CompGuest>();
+            var comp = pawn.CompGuest();
             var mayRecruitAtAll = !pawn.InMentalState && comp.arrived;
             return mayRecruitAtAll;
         }

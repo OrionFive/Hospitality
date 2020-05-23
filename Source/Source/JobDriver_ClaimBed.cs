@@ -56,7 +56,7 @@ namespace Hospitality
                         return;
                     }
 
-                    var compGuest = actor.GetComp<CompGuest>();
+                    var compGuest = actor.CompGuest();
                     if (compGuest.HasBed) Log.Error($"{actor.LabelShort} already has a bed ({compGuest.bed.Label})");
 
                     compGuest.ClaimBed(newBed);

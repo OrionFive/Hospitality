@@ -74,7 +74,7 @@ namespace Hospitality
 
             listingStandard.ColumnWidth = size.x - 20;
 
-            var comp = SelPawn.GetComp<CompGuest>();
+            var comp = SelPawn.CompGuest();
             // If the lord is not on the map it's invalid!
             if (comp?.lord != null && comp.lord.ownedPawns.Contains(SelPawn) && SelPawn.Map.lordManager.lords.Contains(comp.lord))
             {
@@ -187,7 +187,7 @@ namespace Hospitality
         {
             foreach (var pawn in SelPawn.GetLord().ownedPawns)
             {
-                pawn.GetComp<CompGuest>().GuestArea = area;
+                pawn.CompGuest().GuestArea = area;
             }
         }
 
@@ -195,7 +195,7 @@ namespace Hospitality
         {
             foreach (var pawn in SelPawn.GetLord().ownedPawns)
             {
-                pawn.GetComp<CompGuest>().ShoppingArea = area;
+                pawn.CompGuest().ShoppingArea = area;
             }
         }
 
@@ -252,7 +252,7 @@ namespace Hospitality
 
             foreach (var pawn in lord.ownedPawns)
             {
-                var compGuest = pawn.GetComp<CompGuest>();
+                var compGuest = pawn.CompGuest();
                 if (compGuest == null)
                 {
                     Log.Warning(pawn.LabelShortCap + " has no compGuest.");
@@ -270,10 +270,10 @@ namespace Hospitality
 
             var mapComp = map.GetMapComponent();
 
-            if (pawn.GetComp<CompGuest>() != null)
+            if (pawn.CompGuest() != null)
             {
-                mapComp.defaultEntertain = pawn.GetComp<CompGuest>().entertain;
-                mapComp.defaultMakeFriends = pawn.GetComp<CompGuest>().makeFriends;
+                mapComp.defaultEntertain = pawn.CompGuest().entertain;
+                mapComp.defaultMakeFriends = pawn.CompGuest().makeFriends;
             }
             
             mapComp.defaultAreaRestriction = pawn.GetGuestArea();
@@ -282,7 +282,7 @@ namespace Hospitality
             var guests = GuestUtility.GetAllGuests(map);
             foreach (var guest in guests)
             {
-                var comp = guest.GetComp<CompGuest>();
+                var comp = guest.CompGuest();
                 if (comp != null)
                 {
                     comp.entertain = mapComp.defaultEntertain;

@@ -19,7 +19,7 @@ namespace Hospitality {
             }
             if (!pawn.IsArrivedGuest()) return ThoughtState.Inactive;
 
-            var compGuest = pawn.GetComp<CompGuest>();
+            var compGuest = pawn.CompGuest();
             if (compGuest == null) return ThoughtState.Inactive;
             if(!compGuest.arrived) return ThoughtState.Inactive;
 

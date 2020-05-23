@@ -79,7 +79,7 @@ namespace Hospitality
 
         public static bool MayBuy(this Pawn pawn)
         {
-            var guestComp = pawn.GetComp<CompGuest>();
+            var guestComp = pawn.CompGuest();
             return guestComp?.ShoppingArea != null;
         }
 
@@ -216,13 +216,13 @@ namespace Hospitality
 
         public static bool ImproveRelationship(this Pawn guest)
         {
-            var guestComp = guest.GetComp<CompGuest>();
+            var guestComp = guest.CompGuest();
             return guestComp?.entertain == true;
         }
 
         public static bool MakeFriends(this Pawn guest)
         {
-            var guestComp = guest.GetComp<CompGuest>();
+            var guestComp = guest.CompGuest();
             return guestComp?.makeFriends == true;
         }
 
@@ -244,7 +244,7 @@ namespace Hospitality
 
         public static bool IsArrived(this Pawn guest)
         {
-            var guestComp = guest.GetComp<CompGuest>();
+            var guestComp = guest.CompGuest();
             if (guestComp == null) return false;
             return guestComp.arrived;
         }
@@ -289,7 +289,7 @@ namespace Hospitality
                 pawn.trader.traderKind = traderKindDef;
             }
 
-            pawn.GetComp<CompGuest>()?.Arrive();
+            pawn.CompGuest()?.Arrive();
         }
 
         public static bool GetVisitScore(this Pawn pawn, out float score)
@@ -319,7 +319,7 @@ namespace Hospitality
 
             pawn.guest?.SetGuestStatus(null);
 
-            pawn.GetComp<CompGuest>()?.Leave(false);
+            pawn.CompGuest()?.Leave(false);
 
             //var reservationManager = pawn.MapHeld.reservationManager;
             //var allReservedThings = reservationManager.AllReservedThings().ToArray();
@@ -331,7 +331,7 @@ namespace Hospitality
 
         private static bool IsInVisitState(this Pawn pawn, bool makeArrivedCheck)
         {
-            var compGuest = pawn?.GetComp<CompGuest>();
+            var compGuest = pawn.CompGuest();
             if (compGuest == null) return false;
             if (makeArrivedCheck && pawn.guest?.HostFaction != Faction.OfPlayer) return false;
             var lord = compGuest.lord;
@@ -342,7 +342,7 @@ namespace Hospitality
 
         private static bool IsInTraderState(this Pawn pawn)
         {
-            var compGuest = pawn?.GetComp<CompGuest>();
+            var compGuest = pawn.CompGuest();
             var lord = compGuest?.lord;
             //if (!pawn.Map.lordManager.lords.Contains(lord)) return false; // invalid lord
             var job = lord?.LordJob;
@@ -395,7 +395,7 @@ namespace Hospitality
             //if (pawn.drugs == null) 
             pawn.drugs = new Pawn_DrugPolicyTracker(pawn)
             {
-                CurrentPolicy = pawn.GetComp<CompGuest>().GetDrugPolicy(pawn)
+                CurrentPolicy = pawn.CompGuest().GetDrugPolicy(pawn)
             };
         }
 
@@ -620,17 +620,17 @@ namespace Hospitality
 
         public static Area GetGuestArea(this Pawn p)
         {
-            return p?.GetComp<CompGuest>()?.GuestArea;
+            return p?.CompGuest()?.GuestArea;
         }
 
          public static Area GetShoppingArea(this Pawn p)
         {
-            return p?.GetComp<CompGuest>()?.ShoppingArea;
+            return p?.CompGuest()?.ShoppingArea;
         }
 
         public static bool Bought(this Pawn pawn, Thing thing)
         {
-            var comp = pawn.GetComp<CompGuest>();
+            var comp = pawn.CompGuest();
             if (comp == null) return false;
 
             //Log.Message(pawn.NameStringShort+": bought "+thing.Label + "? " + (comp.boughtItems.Contains(thing.thingIDNumber) ? "Yes" : "No"));
@@ -696,7 +696,7 @@ namespace Hospitality
             pleaseChance = AdjustPleaseChance(pleaseChance, recruiter, guest);
             pleaseChance = Mathf.Clamp01(pleaseChance);
 
-            var failedCharms = guest.GetComp<CompGuest>().failedCharms;
+            var failedCharms = guest.CompGuest().failedCharms;
 
             if (Rand.Value > pleaseChance)
             {
@@ -908,7 +908,7 @@ namespace Hospitality
             if (!IsValidPawn(pawn)) return false;
             if (IsInTraderState(pawn)) return false;
 
-            var comp = pawn.GetComp<CompGuest>();
+            var comp = pawn.CompGuest();
             if (comp == null) return false;
 
             var mapLord = pawn.GetLord(); // Expensive :(
@@ -920,7 +920,7 @@ namespace Hospitality
         {
             if (lord.ownedPawns.Contains(pawn))
             {
-                pawn.GetComp<CompGuest>().lord = lord;
+                pawn.CompGuest().lord = lord;
                 return;
             }
             if (!(lord.CurLordToil is LordToil_VisitPoint lordToil)) return;

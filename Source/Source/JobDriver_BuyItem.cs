@@ -120,7 +120,7 @@ namespace Hospitality
                 tookItems = inventory.TryAdd(thing, count);
             }
 
-            var comp = toil.actor.GetComp<CompGuest>();
+            var comp = toil.actor.CompGuest();
             if (tookItems > 0 && comp != null)
             {
                 inventory.TryDrop(silver, toil.actor.Position, map, ThingPlaceMode.Near, price, out silver);

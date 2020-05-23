@@ -7,7 +7,7 @@ namespace Hospitality
     {
         protected override Job TryGiveJob(Pawn guest)
         {
-            var guestComp = guest.GetComp<CompGuest>();
+            var guestComp = guest.CompGuest();
             if (guestComp == null) return null;
             if (guestComp.HasBed) return null;
 

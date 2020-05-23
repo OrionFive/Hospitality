@@ -15,7 +15,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(Pawn ___pawn)
             {
-                ___pawn.GetComp<CompGuest>()?.ClearOwnership();
+                ___pawn.CompGuest()?.ClearOwnership();
                 return true;
             }
         }
@@ -27,7 +27,7 @@ namespace Hospitality.Harmony
             public static bool Prefix(Pawn ___pawn, ref Building_Bed __result)
             {
                 if (!___pawn.IsGuest(false)) return true;
-                __result = ___pawn.GetComp<CompGuest>()?.bed;
+                __result = ___pawn.CompGuest()?.bed;
                 return false;
             }
         }

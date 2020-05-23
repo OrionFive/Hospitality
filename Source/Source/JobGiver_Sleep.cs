@@ -60,7 +60,7 @@ namespace Hospitality
                 return ThinkResult.NoJob;
             }
 
-            var compGuest = pawn.GetComp<CompGuest>();
+            var compGuest = pawn.CompGuest();
             if (compGuest != null && compGuest.HasBed)
             {
                 return new ThinkResult(new Job(JobDefOf.LayDown, compGuest.bed), this);
