@@ -28,9 +28,9 @@ namespace Hospitality
             var map = pawn.MapHeld;
             var shoppingArea = pawn.GetShoppingArea();
             var things = shoppingArea.ActiveCells.SelectMany(cell=>map.thingGrid.ThingsListAtFast(cell)).Where(t=>t.def.EverHaulable && t.def.tradeability!=Tradeability.None
-            && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t)).ToList();
+            && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
             var storage = shoppingArea.ActiveCells.Select(cell=>map.edificeGrid[cell]).OfType<Building_Storage>();
-            things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t))));
+            things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
             if (things.Count == 0) return null;
 
             // Try some things
@@ -191,7 +191,7 @@ namespace Hospitality
             return num;
         }
 
-        protected virtual bool Qualifies(Thing thing)
+        protected virtual bool Qualifies(Thing thing, Pawn pawn)
         {
             return true;
         }

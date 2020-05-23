@@ -12,7 +12,7 @@ namespace Hospitality
         {
             if (!pawn.IsArrivedGuest()) return 0;
 
-            var carriedFood = pawn.inventory.innerContainer.Count(CanEat);
+            var carriedFood = pawn.inventory.innerContainer.Count(thing => CanEat(thing, pawn));
             var needFood = pawn.needs.TryGetNeed<Need_Food>();
             var hungerFactor = 1 - needFood?.CurLevelPercentage ?? 1;
             var carriedFactor = carriedFood == 0 ? 1 : carriedFood == 1 ? 0.25f : 0.05f;
@@ -21,14 +21,14 @@ namespace Hospitality
             return base.GetChance(pawn)*hungerFactor*carriedFactor;
         }
 
-        private static bool CanEat(Thing thing)
+        private static bool CanEat(Thing thing, Pawn pawn)
         {
-            return thing.def.IsNutritionGivingIngestible && thing.def.IsWithinCategory(ThingCategoryDefOf.Foods);
+            return thing.def.IsNutritionGivingIngestible && thing.def.IsWithinCategory(ThingCategoryDefOf.Foods) && ItemUtility.AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEat");
         }
 
-        protected override bool Qualifies(Thing thing)
+        protected override bool Qualifies(Thing thing, Pawn pawn)
         {
-            return base.Qualifies(thing) && CanEat(thing);
+            return base.Qualifies(thing, pawn) && CanEat(thing, pawn);
         }
     }
 }

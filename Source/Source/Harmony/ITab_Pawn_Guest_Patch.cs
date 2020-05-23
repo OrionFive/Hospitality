@@ -9,11 +9,16 @@ namespace Hospitality.Harmony
         [HarmonyPatch("IsVisible", MethodType.Getter)]
         public static class IsVisible
         {
+            private static Traverse selPawnProperty;
+
             // Added so guests will not show vanilla guest tab
             [HarmonyPostfix]
             public static void Postfix(RimWorld.ITab_Pawn_Guest __instance, ref bool __result)
             {
-                var selPawn = Traverse.Create(__instance).Property("SelPawn").GetValue<Pawn>();
+                if(selPawnProperty == null)
+                    selPawnProperty = Traverse.Create(__instance).Property("SelPawn");
+
+                var selPawn = selPawnProperty.GetValue<Pawn>();
                 __result &= !selPawn.IsGuest();
             }
         }

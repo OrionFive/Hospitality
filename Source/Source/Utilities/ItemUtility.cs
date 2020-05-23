@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
@@ -10,6 +11,8 @@ using Verse.AI.Group;
 namespace Hospitality {
     internal static class ItemUtility
     {
+        private static Dictionary<string, MethodInfo> alienFrameworkMethods = new Dictionary<string, MethodInfo>();
+
         public static void PocketHeadgear(this Pawn pawn)
         {
             if (pawn?.apparel?.WornApparel == null || pawn.inventory?.innerContainer == null) return;
@@ -125,9 +128,14 @@ namespace Hospitality {
         /// </summary>
         public static bool AlienFrameworkAllowsIt(ThingDef raceDef, ThingDef thingDef, string methodName)
         {
-            var method = Traverse.CreateWithType("RaceRestrictionSettings").Method(methodName, thingDef, raceDef);
-            if (!method.MethodExists()) return true; // Not using AlienFramework
-            return method.GetValue<bool>();
+            if (!alienFrameworkMethods.TryGetValue(methodName, out var method))
+            {
+                method = AccessTools.Method("RaceRestrictionSettings:" + methodName, new[] {typeof(ThingDef), typeof(ThingDef)});
+                if (method == null) Log.Error($"Alien Framework does not have a method '{methodName}'.");
+                alienFrameworkMethods.Add(methodName, method); // we add it as null if not found, so it will return true
+            }
+
+            return method == null || (bool) method.Invoke(null, new object[] {thingDef, raceDef});
         }
 
         public static bool IsBuyableAtAll(Pawn pawn, Thing thing)
