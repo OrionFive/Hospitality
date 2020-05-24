@@ -1,14 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
-using Verse.AI.Group;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 using Verse.Sound;
 using static System.String;
 
@@ -16,6 +16,8 @@ namespace Hospitality
 {
     internal static class GuestUtility
     {
+        public const int InteractIntervalAbsoluteMin = 360; // changed from 120
+        public const int MaxOpinionForEnemy = -20;
         public static readonly DutyDef relaxDef = DefDatabase<DutyDef>.GetNamed("Relax");
         private static readonly TraderKindDef traderKindDef = DefDatabase<TraderKindDef>.GetNamed("Guest");
         private static readonly JobDef therapyJobDef = DefDatabase<JobDef>.GetNamedSilentFail("ReceiveTherapy");
@@ -38,14 +40,10 @@ namespace Hospitality
         private static readonly StatDef statForcedRecruitRelationshipDamage = StatDef.Named("ForcedRecruitRelationshipDamage");
         private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
 
-        private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve
-        { new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30) };
+        private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve {new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30)};
 
         public static RoyalTitleDef[] AllTitles { get; private set; }
         public static Faction[] DistinctFactions { get; private set; }
-
-        public const int InteractIntervalAbsoluteMin = 360; // changed from 120
-        public const int MaxOpinionForEnemy = -20;
 
         /// <summary>
         /// For things that need to be loaded at map start
@@ -62,6 +60,7 @@ namespace Hospitality
                     titles.Add(titleDef);
                 }
             }
+
             DistinctFactions = factions.GroupBy(f => f.def).Select(x => x.First()).ToArray();
             AllTitles = titles.Distinct().ToArray();
             //Log.Message($"Hospitality: Read {DistinctFactions.Length} factions with royal titles, {AllTitles.Length} royal titles.");
@@ -101,7 +100,7 @@ namespace Hospitality
                 if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
                 return pawn.IsInVisitState(makeArrivedCheck);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Warning(pawn.Name.ToStringShort + ": \n" + e.Message);
                 return false;
@@ -116,7 +115,7 @@ namespace Hospitality
                 if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
                 return pawn.IsInTraderState();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Warning(e.Message);
                 return false;
@@ -159,7 +158,8 @@ namespace Hospitality
         public static int GetFriendsSeniorityInColony(this Pawn guest)
         {
             float requiredOpinion = GetMinRecruitOpinion(guest);
-            return GetPawnsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => pawn.royalty.MostSeniorTitle.def.seniority);
+            return GetPawnsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion)
+                .Sum(pawn => pawn.royalty.MostSeniorTitle.def.seniority);
         }
 
         private static int GetRelationValue(Pawn pawn, Pawn guest)
@@ -198,7 +198,8 @@ namespace Hospitality
 
         public static int GetRoyalEnemiesSeniorityInColony(this Pawn guest)
         {
-            return GetPawnsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy).Sum(p => p.royalty.MostSeniorTitle.def.seniority);
+            return GetPawnsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy)
+                .Sum(p => p.royalty.MostSeniorTitle.def.seniority);
         }
 
         public static int GetMinRecruitOpinion(this Pawn guest)
@@ -228,10 +229,7 @@ namespace Hospitality
 
         public static bool CanTalkTo(this Pawn talker, Pawn talkee)
         {
-            return talker.MapHeld == talkee.MapHeld
-                && InteractionUtility.CanInitiateInteraction(talker)
-                && InteractionUtility.CanReceiveInteraction(talkee)
-                   && CanSee(talker, talkee);
+            return talker.MapHeld == talkee.MapHeld && InteractionUtility.CanInitiateInteraction(talker) && InteractionUtility.CanReceiveInteraction(talkee) && CanSee(talker, talkee);
         }
 
         private static bool CanSee(Pawn talker, Pawn talkee)
@@ -248,7 +246,7 @@ namespace Hospitality
             if (guestComp == null) return false;
             return guestComp.arrived;
         }
-        
+
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
             return guest.IsArrivedGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest);
@@ -270,7 +268,7 @@ namespace Hospitality
             {
                 pawn.PocketHeadgear();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Error($"Failed to pocket headgear:\n{e}");
             }
@@ -300,6 +298,7 @@ namespace Hospitality
                 score = lordToil.GetVisitScore(pawn);
                 return true;
             }
+
             score = 0;
             return false;
         }
@@ -310,7 +309,7 @@ namespace Hospitality
             {
                 pawn.WearHeadgear();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Error($"Failed to wear headgear:\n{e.Message}");
             }
@@ -363,9 +362,10 @@ namespace Hospitality
         {
             if (pawn.needs.joy == null)
             {
-                var addNeed = typeof (Pawn_NeedsTracker).GetMethod("AddNeed", BindingFlags.Instance | BindingFlags.NonPublic);
-                addNeed.Invoke(pawn.needs, new object[] { DefDatabase<NeedDef>.GetNamed("Joy") });
+                var addNeed = typeof(Pawn_NeedsTracker).GetMethod("AddNeed", BindingFlags.Instance | BindingFlags.NonPublic);
+                addNeed.Invoke(pawn.needs, new object[] {DefDatabase<NeedDef>.GetNamed("Joy")});
             }
+
             pawn.needs.joy.CurLevel = Rand.Range(0, 0.5f);
         }
 
@@ -373,9 +373,10 @@ namespace Hospitality
         {
             if (pawn.needs.comfort == null)
             {
-                var addNeed = typeof (Pawn_NeedsTracker).GetMethod("AddNeed", BindingFlags.Instance | BindingFlags.NonPublic);
-                addNeed.Invoke(pawn.needs, new object[] { DefDatabase<NeedDef>.GetNamed("Comfort") });
+                var addNeed = typeof(Pawn_NeedsTracker).GetMethod("AddNeed", BindingFlags.Instance | BindingFlags.NonPublic);
+                addNeed.Invoke(pawn.needs, new object[] {DefDatabase<NeedDef>.GetNamed("Comfort")});
             }
+
             pawn.needs.comfort.CurLevel = Rand.Range(0, 0.5f);
         }
 
@@ -393,10 +394,7 @@ namespace Hospitality
         public static void FixDrugPolicy(this Pawn pawn)
         {
             //if (pawn.drugs == null) 
-            pawn.drugs = new Pawn_DrugPolicyTracker(pawn)
-            {
-                CurrentPolicy = pawn.CompGuest().GetDrugPolicy(pawn)
-            };
+            pawn.drugs = new Pawn_DrugPolicyTracker(pawn) {CurrentPolicy = pawn.CompGuest().GetDrugPolicy(pawn)};
         }
 
         public static void TryImproveFriendship(this Pawn guest, Pawn recruiter, List<RulePackDef> extraSentencePacks)
@@ -430,7 +428,7 @@ namespace Hospitality
         {
             PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("RecruitGuest"), KnowledgeAmount.Total);
 
-            if(forced)
+            if (forced)
                 GainThought(guest, ThoughtDef.Named("GuestRecruitmentForced"));
 
             Find.LetterStack.ReceiveLetter(labelRecruitSuccess, (forced ? txtForcedRecruit : txtRecruitSuccess).Translate(guest), LetterDefOf.PositiveEvent, guest, guest.Faction);
@@ -477,8 +475,10 @@ namespace Hospitality
                         }
                     }
                 }
+
                 guest.Adopt();
             }
+
             var taleParams = new object[] {guest.MapHeld.mapPawns.FreeColonistsSpawned.RandomElement(), guest};
             TaleRecorder.RecordTale(TaleDef.Named("Recruited"), taleParams);
         }
@@ -510,6 +510,7 @@ namespace Hospitality
                     var randomOther = lord.ownedPawns.Where(p => p != guest).RandomElement();
                     guest.inventory.innerContainer.TryTransferToContainer(item, randomOther.inventory.innerContainer);
                 }
+
                 // Equipment
                 for (int i = guest.equipment.AllEquipmentListForReading.Count - 1; i >= 0; i--)
                 {
@@ -518,6 +519,7 @@ namespace Hospitality
                     guest.equipment.TryTransferEquipmentToContainer(item, randomOther.inventory.innerContainer);
                 }
             }
+
             guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
 
             guest.ownership.UnclaimBed();
@@ -539,7 +541,7 @@ namespace Hospitality
             //Log.Message(String.Format("{0} + {1} = {2}", pleaseChance, opinion*0.01f, pleaseChance + opinion*0.01f));
             var difficultyOffset = target.royalty?.MostSeniorTitle?.def.recruitmentDifficultyOffset ?? 0;
             var difficultyFactor = target.royalty?.MostSeniorTitle?.def.recruitmentResistanceFactor ?? 1;
-            return pleaseChance / difficultyFactor * 0.8f + opinion*0.01f - difficultyOffset;
+            return pleaseChance / difficultyFactor * 0.8f + opinion * 0.01f - difficultyOffset;
         }
 
         private static void GainSocialThought(Pawn initiator, Pawn target, ThoughtDef thoughtDef)
@@ -552,6 +554,7 @@ namespace Hospitality
             {
                 thoughtSocialMemory.opinionOffset *= impact;
             }
+
             target.needs.mood.thoughts.memories.TryGainMemory(thoughtMemory, initiator);
         }
 
@@ -612,7 +615,7 @@ namespace Hospitality
 
             pawn.guest?.SetGuestStatus(null);
             bool canFlee = pawn.Map.reachability.CanReachMapEdge(pawn.PositionHeld, TraverseParms.For(TraverseMode.NoPassClosedDoors));
-            
+
             var mentalState = canFlee ? MentalStateDefOf.PanicFlee : MentalStateDefOf.ManhunterPermanent;
 
             pawn.mindState.mentalStateHandler.TryStartMentalState(mentalState);
@@ -623,7 +626,7 @@ namespace Hospitality
             return p?.CompGuest()?.GuestArea;
         }
 
-         public static Area GetShoppingArea(this Pawn p)
+        public static Area GetShoppingArea(this Pawn p)
         {
             return p?.CompGuest()?.ShoppingArea;
         }
@@ -716,9 +719,7 @@ namespace Hospitality
 
                 if (amount >= 3)
                 {
-                    Messages.Message(
-                        "RecruitAngerMultiple".Translate(recruiter.Name.ToStringShort, guest.Name.ToStringShort, amount),
-                        guest, MessageTypeDefOf.NegativeEvent);
+                    Messages.Message("RecruitAngerMultiple".Translate(recruiter.Name.ToStringShort, guest.Name.ToStringShort, amount), guest, MessageTypeDefOf.NegativeEvent);
                 }
 
                 extraSentencePacks.Add(RulePackDef.Named("Sentence_CharmAttemptRejected"));
@@ -727,7 +728,7 @@ namespace Hospitality
                     GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestOffendedRelationship"));
                 }
 
-                MoteMaker.ThrowText((recruiter.DrawPos + guest.DrawPos) / 2f, recruiter.Map, "TextMote_CharmFail".Translate()+multiplierText, 8f);
+                MoteMaker.ThrowText((recruiter.DrawPos + guest.DrawPos) / 2f, recruiter.Map, "TextMote_CharmFail".Translate() + multiplierText, 8f);
             }
             else
             {
@@ -740,14 +741,14 @@ namespace Hospitality
                 // Multiplier is for what the focus is on
                 for (int i = 0; i < multiplier; i++)
                 {
-                    if(focusOnRecruiting)
+                    if (focusOnRecruiting)
                         EndorseColonists(recruiter, guest);
                     else
                         GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestPleasedRelationship"));
                 }
-                
+
                 // And then one more of the other
-                multiplier++; 
+                multiplier++;
                 if (focusOnRecruiting)
                     GainSocialThought(recruiter, guest, ThoughtDef.Named("GuestPleasedRelationship"));
                 else
@@ -758,68 +759,71 @@ namespace Hospitality
                 string multiplierText = multiplier > 1 ? " x" + multiplier : Empty;
                 MoteMaker.ThrowText((recruiter.DrawPos + guest.DrawPos) / 2f, recruiter.Map, "TextMote_CharmSuccess".Translate() + multiplierText, 8f);
             }
+
             GainThought(guest, ThoughtDef.Named("GuestDismissiveAttitude"));
         }
 
-
-
         public static void DoAllowedAreaSelectors(Rect rect, Pawn p, Func<Area, string> getLabel)
-		{
-			if (Find.CurrentMap == null)
-			{
-				return;
-			}
+        {
+            if (Find.CurrentMap == null)
+            {
+                return;
+            }
+
             var areas = GetAreas().ToArray();
             int num = areas.Length + 1;
             float num2 = rect.width / num;
-			Text.WordWrap = false;
-			Text.Font = GameFont.Tiny;
-			Rect rect2 = new Rect(rect.x, rect.y, num2, rect.height);
-			DoAreaSelector(rect2, p, null, getLabel);
-			int num3 = 1;
-			foreach (Area a in areas)
-			{
-			    float num4 = num3*num2;
-			    Rect rect3 = new Rect(rect.x + num4, rect.y, num2, rect.height);
-			    DoAreaSelector(rect3, p, a, getLabel);
-			    num3++;
-			}
+            Text.WordWrap = false;
+            Text.Font = GameFont.Tiny;
+            Rect rect2 = new Rect(rect.x, rect.y, num2, rect.height);
+            DoAreaSelector(rect2, p, null, getLabel);
+            int num3 = 1;
+            foreach (Area a in areas)
+            {
+                float num4 = num3 * num2;
+                Rect rect3 = new Rect(rect.x + num4, rect.y, num2, rect.height);
+                DoAreaSelector(rect3, p, a, getLabel);
+                num3++;
+            }
+
             Text.WordWrap = true;
-			Text.Font = GameFont.Small;
-		}
+            Text.Font = GameFont.Small;
+        }
 
         public static IEnumerable<Area> GetAreas()
         {
-            return Find.CurrentMap.areaManager.AllAreas.Where(a=>a.AssignableAsAllowed());
+            return Find.CurrentMap.areaManager.AllAreas.Where(a => a.AssignableAsAllowed());
         }
 
         // From RimWorld.AreaAllowedGUI, modified
         private static void DoAreaSelector(Rect rect, Pawn p, Area area, Func<Area, string> getLabel)
-		{
-			rect = rect.ContractedBy(1f);
-			GUI.DrawTexture(rect, area == null ? BaseContent.GreyTex : area.ColorTexture);
-			Text.Anchor = TextAnchor.MiddleLeft;
-			string text = getLabel(area);
-			Rect rect2 = rect;
-			rect2.xMin += 3f;
-			rect2.yMin += 2f;
-			Widgets.Label(rect2, text);
-			if (p.playerSettings.AreaRestriction == area)
-			{
-				Widgets.DrawBox(rect, 2);
-			}
-			if (Mouse.IsOver(rect))
-			{
-			    area?.MarkForDraw();
-			    if (Input.GetMouseButton(0) && p.playerSettings.AreaRestriction != area)
-				{
-					p.playerSettings.AreaRestriction = area;
-					SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
-				}
-			}
-			Text.Anchor = TextAnchor.UpperLeft;
-			TooltipHandler.TipRegion(rect, text);
-		}
+        {
+            rect = rect.ContractedBy(1f);
+            GUI.DrawTexture(rect, area == null ? BaseContent.GreyTex : area.ColorTexture);
+            Text.Anchor = TextAnchor.MiddleLeft;
+            string text = getLabel(area);
+            Rect rect2 = rect;
+            rect2.xMin += 3f;
+            rect2.yMin += 2f;
+            Widgets.Label(rect2, text);
+            if (p.playerSettings.AreaRestriction == area)
+            {
+                Widgets.DrawBox(rect, 2);
+            }
+
+            if (Mouse.IsOver(rect))
+            {
+                area?.MarkForDraw();
+                if (Input.GetMouseButton(0) && p.playerSettings.AreaRestriction != area)
+                {
+                    p.playerSettings.AreaRestriction = area;
+                    SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
+                }
+            }
+
+            Text.Anchor = TextAnchor.UpperLeft;
+            TooltipHandler.TipRegion(rect, text);
+        }
 
         // Compatibility fix to Therapy mod
         public static bool IsInTherapy(Pawn p)
@@ -876,7 +880,8 @@ namespace Hospitality
         public static void CheckForRogueGuests(Map map)
         {
             if (Settings.disableGuests) return;
-            var pawns = map.mapPawns.AllPawnsSpawned.Where(p => p.CurJobDef == JobDefOf.Wait_Wander || p.CurJobDef == JobDefOf.GotoWander && !HealthAIUtility.ShouldSeekMedicalRest(p) && !p.health.hediffSet.HasNaturallyHealingInjury()).Where(GuestHasNoLord).ToArray();
+            var pawns = map.mapPawns.AllPawnsSpawned.Where(p => p.CurJobDef == JobDefOf.Wait_Wander || p.CurJobDef == JobDefOf.GotoWander && !HealthAIUtility.ShouldSeekMedicalRest(p) && !p.health.hediffSet.HasNaturallyHealingInjury())
+                .Where(GuestHasNoLord).ToArray();
 
             foreach (var pawn in pawns)
             {
@@ -898,8 +903,9 @@ namespace Hospitality
         private static void CreateLordForPawn([NotNull] Pawn pawn)
         {
             Log.Message($"Creating a temporary lord for {pawn.Label} of faction {(pawn.Faction != null ? pawn.Faction.Name : "null")}.");
-            Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), LetterDefOf.NeutralEvent, pawn, pawn.Faction);
-            var duration = (int)(Rand.Range(0.5f, 1f) * GenDate.TicksPerDay);
+            Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}),
+                LetterDefOf.NeutralEvent, pawn, pawn.Faction);
+            var duration = (int) (Rand.Range(0.5f, 1f) * GenDate.TicksPerDay);
             IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false, duration);
         }
 
@@ -923,10 +929,12 @@ namespace Hospitality
                 pawn.CompGuest().lord = lord;
                 return;
             }
+
             if (!(lord.CurLordToil is LordToil_VisitPoint lordToil)) return;
 
             Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
-            Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), LetterDefOf.NeutralEvent, pawn, pawn.Faction);
+            Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}),
+                LetterDefOf.NeutralEvent, pawn, pawn.Faction);
             lordToil.JoinLate(pawn);
         }
 
