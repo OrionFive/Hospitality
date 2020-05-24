@@ -182,18 +182,10 @@ namespace Hospitality
             PlanNewVisit(map, travelDays, faction);
         }
 
-        public static void DoAreaRestriction(Pawn pawn, Rect rect, Area area, Action<Area> setArea, Func<Area, string> getLabel)
+        public static void DoAreaRestriction(Rect rect, Area area, Action<Area> setArea, Func<Area, string> getLabel)
         {
-            // Needed for GUI
-            if (pawn.playerSettings == null)
-            {
-                pawn.playerSettings = new Pawn_PlayerSettings(pawn) {AreaRestriction = area};
-            }
-
-            pawn.playerSettings.AreaRestriction = area;
-            GuestUtility.DoAllowedAreaSelectors(rect, pawn, getLabel);
-            var newArea = pawn.playerSettings.AreaRestriction;
-            pawn.playerSettings.AreaRestriction = null;
+            var newArea = area;
+            GuestUtility.DoAllowedAreaSelectors(rect, getLabel, ref newArea);
             Text.Anchor = TextAnchor.UpperLeft;
 
             if (newArea != area) setArea(newArea);

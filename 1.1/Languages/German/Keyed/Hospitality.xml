@@ -95,6 +95,7 @@
   
   <!-- Main Tab -->
   <BedsFilled>Betten in Gebrauch: {0}/{1}</BedsFilled>
+  <ManageDefaults>Standardwerte...</ManageDefaults>
 
   <!-- Infos -->
   <StatsReport_MissingFriends>Fehlende Freunde</StatsReport_MissingFriends>

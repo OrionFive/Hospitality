@@ -101,6 +101,7 @@
     <Compile Include="Harmony\Room_Patch.cs" />
     <Compile Include="Harmony\WorldPawns_Patch.cs" />
     <Compile Include="IncidentWorker_VisitorGroupSelectFaction.cs" />
+    <Compile Include="MainTab\Dialog_ManageDefaults.cs" />
     <Compile Include="MainTab\MainTabUtility.cs" />
     <Compile Include="TransitionAction_MessageDebug.cs" />
     <Compile Include="TransitionAction_SendAway.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Harmony\JobGiver_Work_Patch.cs" />
     <Compile Include="Harmony\JoyGiver_Ingest_Patch.cs" />
     <Compile Include="Harmony\MinifiedThing_Patch.cs" />
+    <Compile Include="Utilities\DialogUtility.cs" />
     <Compile Include="Utilities\GenericUtility.cs" />
     <Compile Include="Harmony\ITab_Pawn_Gear_Patch.cs" />
     <Compile Include="Harmony\ITab_Pawn_Guest_Patch.cs" />

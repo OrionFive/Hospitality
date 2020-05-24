@@ -359,8 +359,8 @@ namespace Hospitality
         {
             if(map == null) throw new NullReferenceException("map is null!");
             if(map.reachability == null) throw new NullReferenceException("map.reachability is null!");
-            if(guestArea == null) Log.Error($"guestArea of {pawn.LabelShort} is null!");
-            if(guestArea.Map != map) throw new ArgumentException($"The map of the guest area of {pawn.LabelShort} does not match the current map!");
+            // guestArea = null? Everywhere!
+            if(guestArea != null && guestArea.Map != map) throw new ArgumentException($"The map of the guest area of {pawn.LabelShort} does not match the current map!");
 
             var cells = new List<IntVec3>();
             GetSpotAddGuestArea(map, guestArea, cells);

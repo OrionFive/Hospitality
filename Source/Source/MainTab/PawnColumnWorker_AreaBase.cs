@@ -47,7 +47,7 @@ namespace Hospitality.MainTab
         }
 
         // Added
-        protected abstract void DrawTopArea(Rect rect2);
+        protected abstract void DrawTopArea(Rect rect);
 
         public override int Compare(Pawn a, Pawn b)
         {

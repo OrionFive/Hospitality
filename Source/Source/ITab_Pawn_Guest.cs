@@ -21,8 +21,8 @@ namespace Hospitality
         private static readonly string txtRecruitTooltip = "RecruitTooltip".Translate();
         private static readonly string txtForceRecruitTooltip = "ForceRecruitTooltip".Translate();
         private static readonly string txtSendAwayTooltip = "SendAwayTooltip".Translate();
-        private static readonly string txtImproveTooltip = "ImproveTooltip".Translate();
-        private static readonly string txtMakeFriendsTooltip = "TryRecruitTooltip".Translate();
+        internal static readonly string txtImproveTooltip = "ImproveTooltip".Translate();
+        internal static readonly string txtMakeFriendsTooltip = "TryRecruitTooltip".Translate();
 
         protected static readonly Vector2 buttonSize = new Vector2(120f, 30f);
         private static Listing_Standard listingStandard = new Listing_Standard();
@@ -86,15 +86,15 @@ namespace Hospitality
                 var rectBuyLabel = listingStandard.GetRect(Text.CalcHeight(labelBuy, listingStandard.ColumnWidth));
                 var rectBuy = listingStandard.GetRect(24);
 
-                LabelWithTooltip(labelStay, "AreaToStayTooltip".Translate(), rectStayLabel);
-                GenericUtility.DoAreaRestriction(SelPawn, rectStay, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
-                LabelWithTooltip(labelBuy, "AreaToBuyTooltip".Translate(), rectBuyLabel);
-                GenericUtility.DoAreaRestriction(SelPawn, rectBuy, comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel);
+                DialogUtility.LabelWithTooltip(labelStay, "AreaToStayTooltip".Translate(), rectStayLabel);
+                GenericUtility.DoAreaRestriction(rectStay, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area);
+                DialogUtility.LabelWithTooltip(labelBuy, "AreaToBuyTooltip".Translate(), rectBuyLabel);
+                GenericUtility.DoAreaRestriction(rectBuy, comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel);
 
                 var rectImproveRelationship = listingStandard.GetRect(Text.LineHeight);
-                CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, txtImproveTooltip);
+                DialogUtility.CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, txtImproveTooltip);
                 var rectMakeFriends = listingStandard.GetRect(Text.LineHeight);
-                CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref tryMakeFriends, rectMakeFriends, false, txtMakeFriendsTooltip);
+                DialogUtility.CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref tryMakeFriends, rectMakeFriends, false, txtMakeFriendsTooltip);
 
                 comp.entertain = tryImprove;
                 comp.makeFriends = tryMakeFriends;
@@ -168,21 +168,6 @@ namespace Hospitality
         private int RequiredFriends => GuestUtility.FriendsRequired(SelPawn.MapHeld) + SelPawn.GetEnemiesInColony();
         private int RequiredSeniority => GuestUtility.RoyalFriendsSeniorityRequired(SelPawn) + SelPawn.GetRoyalEnemiesSeniorityInColony();
 
-        private static void LabelWithTooltip(string label, string tooltip, Rect rect)
-        {
-            Widgets.Label(rect, label);
-            DoTooltip(rect, tooltip);
-        }
-
-        private static void DoTooltip(Rect rect, string tooltip)
-        {
-            if (!tooltip.NullOrEmpty())
-            {
-                if (Mouse.IsOver(rect)) Widgets.DrawHighlight(rect);
-                TooltipHandler.TipRegion(rect, tooltip);
-            }
-        }
-
         private void SetAreaRestriction(Area area)
         {
             foreach (var pawn in SelPawn.GetLord().ownedPawns)
@@ -197,18 +182,6 @@ namespace Hospitality
             {
                 pawn.CompGuest().ShoppingArea = area;
             }
-        }
-
-        public void CheckboxLabeled(Listing_Standard listing, string label, ref bool checkOn, Rect rect, bool disabled = false, string tooltip = null)
-        {
-            if (!tooltip.NullOrEmpty())
-            {
-                if (Mouse.IsOver(rect))
-                    Widgets.DrawHighlight(rect);
-                TooltipHandler.TipRegion(rect, tooltip);
-            }
-            Widgets.CheckboxLabeled(rect, label, ref checkOn, disabled);
-            listing.Gap(listing.verticalSpacing);
         }
 
         private static void DrawButton(Action action, string text, Rect rect, string tooltip =  null)

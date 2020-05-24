@@ -4,7 +4,7 @@ using Verse;
 
 namespace Hospitality.MainTab
 {
-    class PawnColumnWorker_AccommodationArea : PawnColumnWorker_AreaBase
+    internal class PawnColumnWorker_AccommodationArea : PawnColumnWorker_AreaBase
     {
         protected override Area GetArea(Pawn pawn)
         {
@@ -18,11 +18,11 @@ namespace Hospitality.MainTab
             if (comp != null) comp.GuestArea = area;
         }
 
-        protected override void DrawTopArea(Rect rect2)
+        protected override void DrawTopArea(Rect rect)
         {
-            if (Widgets.ButtonText(rect2, "ManageAreas".Translate(), true, false, true))
+            if (Widgets.ButtonText(rect, "ManageDefaults".Translate(), true, false))
             {
-                Find.WindowStack.Add(new Dialog_ManageAreas(Find.CurrentMap));
+                Find.WindowStack.Add(new Dialog_ManageDefaults(Find.CurrentMap));
             }
         }
     }

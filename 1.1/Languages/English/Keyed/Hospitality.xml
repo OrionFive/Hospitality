@@ -95,6 +95,7 @@
 
   <!-- Main Tab -->
   <BedsFilled>Beds in use: {0}/{1}</BedsFilled>
+  <ManageDefaults>Manage defaults...</ManageDefaults>
   
   <!-- Infos -->
   <StatsReport_MissingFriends>Missing friends</StatsReport_MissingFriends>

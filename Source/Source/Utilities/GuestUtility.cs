@@ -763,7 +763,7 @@ namespace Hospitality
             GainThought(guest, ThoughtDef.Named("GuestDismissiveAttitude"));
         }
 
-        public static void DoAllowedAreaSelectors(Rect rect, Pawn p, Func<Area, string> getLabel)
+        public static void DoAllowedAreaSelectors(Rect rect, Func<Area, string> getLabel, ref Area currentArea)
         {
             if (Find.CurrentMap == null)
             {
@@ -776,13 +776,13 @@ namespace Hospitality
             Text.WordWrap = false;
             Text.Font = GameFont.Tiny;
             Rect rect2 = new Rect(rect.x, rect.y, num2, rect.height);
-            DoAreaSelector(rect2, p, null, getLabel);
+            DoAreaSelector(rect2, null, getLabel, ref currentArea);
             int num3 = 1;
             foreach (Area a in areas)
             {
                 float num4 = num3 * num2;
                 Rect rect3 = new Rect(rect.x + num4, rect.y, num2, rect.height);
-                DoAreaSelector(rect3, p, a, getLabel);
+                DoAreaSelector(rect3, a, getLabel, ref currentArea);
                 num3++;
             }
 
@@ -796,7 +796,7 @@ namespace Hospitality
         }
 
         // From RimWorld.AreaAllowedGUI, modified
-        private static void DoAreaSelector(Rect rect, Pawn p, Area area, Func<Area, string> getLabel)
+        private static void DoAreaSelector(Rect rect, Area area, Func<Area, string> getLabel, ref Area currentArea)
         {
             rect = rect.ContractedBy(1f);
             GUI.DrawTexture(rect, area == null ? BaseContent.GreyTex : area.ColorTexture);
@@ -806,7 +806,7 @@ namespace Hospitality
             rect2.xMin += 3f;
             rect2.yMin += 2f;
             Widgets.Label(rect2, text);
-            if (p.playerSettings.AreaRestriction == area)
+            if (currentArea == area)
             {
                 Widgets.DrawBox(rect, 2);
             }
@@ -814,9 +814,9 @@ namespace Hospitality
             if (Mouse.IsOver(rect))
             {
                 area?.MarkForDraw();
-                if (Input.GetMouseButton(0) && p.playerSettings.AreaRestriction != area)
+                if (Input.GetMouseButton(0) && currentArea != area)
                 {
-                    p.playerSettings.AreaRestriction = area;
+                    currentArea = area;
                     SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
                 }
             }
