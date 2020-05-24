@@ -12,7 +12,6 @@ namespace Hospitality.MainTab
     {
         private static readonly Texture2D Icon = ContentFinder<Texture2D>.Get("UI/Tab/Relationship");
         private static Dictionary<int, RelationInfo> relationCache = new Dictionary<int, RelationInfo>();
-        private static int lastFrame;
         private bool mayDrawLordGroups;
 
         private class RelationInfo

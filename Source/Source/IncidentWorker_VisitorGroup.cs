@@ -230,11 +230,12 @@ namespace Hospitality
 
                 if (visitors == null || visitors.Count == 0) return false;
 
-                var spot = GetSpot(map, visitors.First().GetGuestArea(), visitors.First().Position);
+                var area = visitors.First().GetGuestArea() ?? map.GetMapComponent().defaultAreaRestriction;
+                var spot = GetSpot(map, area, visitors.First());
 
                 if (!spot.IsValid)
                 {
-                    throw new Exception("Visitors failed to find a valid travel target.");
+                    throw new Exception($"Visitors from {parms.faction.Name} failed to find a valid travel target from {visitors.First()?.Position} to guest area {area?.Label}.");
                 }
 
                 GiveItems(visitors);
@@ -354,27 +355,38 @@ namespace Hospitality
         private static float OptimalAmount => 1 + Mathf.Clamp(GenDate.YearsPassedFloat, 0f, 5f);
         protected virtual float ChanceToKnowEachPawn => 0.75f;
 
-        private static IntVec3 GetSpot(Map map, Area guestArea, IntVec3 startPos)
+        private static IntVec3 GetSpot(Map map, Area guestArea, Pawn pawn)
         {
             if(map == null) throw new NullReferenceException("map is null!");
             if(map.reachability == null) throw new NullReferenceException("map.reachability is null!");
+            if(guestArea == null) Log.Error($"guestArea of {pawn.LabelShort} is null!");
+            if(guestArea.Map != map) throw new ArgumentException($"The map of the guest area of {pawn.LabelShort} does not match the current map!");
 
             var cells = new List<IntVec3>();
             GetSpotAddGuestArea(map, guestArea, cells);
 
             GetSpotAddDropSpots(map, cells);
 
+            return CheckCanReach(pawn, cells);
+        }
+
+        private static IntVec3 CheckCanReach(Pawn pawn, IEnumerable<IntVec3> cells)
+        {
+            var map = pawn.Map;
+            var unroofedOption = IntVec3.Invalid;
+
             // Prefer roofed
             foreach (var cell in cells.InRandomOrder())
             {
-                if (cell.IsValid && cell.Roofed(map) && map.reachability.CanReach(startPos, cell, PathEndMode.OnCell, TraverseMode.PassDoors)) return cell;
+                if (cell.IsValid && pawn.CanReach(cell, PathEndMode.OnCell, Danger.Deadly))
+                {
+                    if(cell.Roofed(map)) return cell;
+                    if(!unroofedOption.IsValid) unroofedOption = cell;
+                }
             }
+
             // Otherwise not roofed
-            foreach (var cell in cells.InRandomOrder())
-            {
-                if (cell.IsValid && map.reachability.CanReach(startPos, cell, PathEndMode.OnCell, TraverseMode.PassDoors)) return cell;
-            }
-            return IntVec3.Invalid;
+            return unroofedOption;
         }
 
         private static void GetSpotAddDropSpots(Map map, List<IntVec3> cells)
