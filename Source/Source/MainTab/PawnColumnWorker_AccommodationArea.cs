@@ -20,6 +20,8 @@ namespace Hospitality.MainTab
 
         protected override void DrawTopArea(Rect rect)
         {
+            rect.width -= 10;
+            rect.x += 5;
             if (Widgets.ButtonText(rect, "ManageDefaults".Translate(), true, false))
             {
                 Find.WindowStack.Add(new Dialog_ManageDefaults(Find.CurrentMap));

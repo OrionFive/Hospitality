@@ -154,12 +154,14 @@ namespace Hospitality
                 return true;
             }
 
-            if (Settings.disableGuests || map.mapPawns.ColonistCount == 0)
+            if (Settings.disableGuests || map.mapPawns.ColonistCount == 0 || !map.GetMapComponent().guestsAreWelcome)
             {
                 if(Settings.disableGuests)
                     Log.Message($"Guest group arrived, but guests are disabled in the options.");
                 else if(map.mapPawns.ColonistCount == 0)
                     Log.Message($"Guest group arrived, but there are no remaining colonists on the map.");
+                else if(!map.GetMapComponent().guestsAreWelcome)
+                    Log.Message($"Guest group arrived, but the player disabled guests for this map.");
 
                 GenericUtility.PlanNewVisit(map, Rand.Range(5f, 25f), parms.faction);
             }

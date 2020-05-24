@@ -12,6 +12,7 @@ namespace Hospitality
         private IncidentQueue incidentQueue = new IncidentQueue();
         public bool defaultEntertain;
         public bool defaultMakeFriends;
+        public bool guestsAreWelcome = true;
         public Area defaultAreaRestriction;
         public Area defaultAreaShopping;
         public bool refuseGuestsUntilWeHaveBeds;
@@ -26,6 +27,7 @@ namespace Hospitality
         {
             Scribe_Values.Look(ref defaultEntertain, "defaultEntertain");
             Scribe_Values.Look(ref defaultMakeFriends, "defaultMakeFriends");
+            Scribe_Values.Look(ref guestsAreWelcome, "guestsAreWelcome", true);
             Scribe_References.Look(ref defaultAreaRestriction, "defaultAreaRestriction");
             Scribe_References.Look(ref defaultAreaShopping, "defaultAreaShopping");
             Scribe_Deep.Look(ref incidentQueue, "incidentQueue");

@@ -96,6 +96,8 @@
   <!-- Main Tab -->
   <BedsFilled>Beds in use: {0}/{1}</BedsFilled>
   <ManageDefaults>Manage defaults...</ManageDefaults>
+  <GuestsWelcome>Allow new guests</GuestsWelcome>
+  <GuestsWelcomeTooltip>If you turn this off, no new guest groups will arrive at this colony.</GuestsWelcomeTooltip>
   
   <!-- Infos -->
   <StatsReport_MissingFriends>Missing friends</StatsReport_MissingFriends>

@@ -96,6 +96,8 @@
   <!-- Main Tab -->
   <BedsFilled>Betten in Gebrauch: {0}/{1}</BedsFilled>
   <ManageDefaults>Standardwerte...</ManageDefaults>
+  <GuestsWelcome>Neue Gäste zulassen</GuestsWelcome>
+  <GuestsWelcomeTooltip>Wenn du dies deaktivierst, werden keine neuen Gästegruppen mehr zu dieser Kolonie kommen.</GuestsWelcomeTooltip>
 
   <!-- Infos -->
   <StatsReport_MissingFriends>Fehlende Freunde</StatsReport_MissingFriends>

@@ -42,6 +42,11 @@ namespace Hospitality.MainTab
             var rectMakeFriends = listingStandard.GetRect(Text.LineHeight);
             DialogUtility.CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref comp.defaultMakeFriends, rectMakeFriends, false, ITab_Pawn_Guest.txtMakeFriendsTooltip);
 
+            listingStandard.GapLine(24);
+
+            var rectGuestsAreWelcome = listingStandard.GetRect(Text.LineHeight);
+            DialogUtility.CheckboxLabeled(listingStandard, "GuestsWelcome".Translate(), ref comp.guestsAreWelcome, rectGuestsAreWelcome, false, "GuestsWelcomeTooltip".Translate());
+
             listingStandard.End();
         }
     }
