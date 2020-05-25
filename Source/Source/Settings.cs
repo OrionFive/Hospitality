@@ -22,6 +22,7 @@ namespace Hospitality
         public static SettingHandle<bool> disableOperations;
         public static SettingHandle<bool> disableMedical;
         public static SettingHandle<bool> disableGuestsTab;
+        public static SettingHandle<bool> useIcon;
         public static SettingHandle<bool> enableBuyNotification;
         public static SettingHandle<bool> enableRecruitNotification;
 
@@ -39,6 +40,7 @@ namespace Hospitality
             maxIncidentsPer3Days = settings.GetHandle("maxIncidentsPer3Days", "MaxIncidentsPer3Days".Translate(), "MaxIncidentsPer3DaysDesc".Translate(), 5, MaxIncidentsPer3DaysLimitsMin);
             disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
             disableGuestsTab = settings.GetHandle("disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false);
+            useIcon = settings.GetHandle("useIcon", "UseIcon".Translate(), "UseIconDesc".Translate(), false);
             enableBuyNotification = settings.GetHandle("enableBuyNotification", "EnableBuyNotification".Translate(), "EnableBuyNotificationDesc".Translate(), false);
             enableRecruitNotification = settings.GetHandle("enableRecruitNotification", "EnableRecruitNotification".Translate(), "EnableRecruitNotificationDesc".Translate(), true);
 

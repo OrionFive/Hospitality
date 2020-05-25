@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using HugsLib;
 using RimWorld;
 using Steamworks;
@@ -38,6 +39,7 @@ namespace Hospitality
         {
             if (!ModIsActive) return;
             settings = new Settings(Settings);
+            UpdateMainButtonIcon();
             DefsUtility.CheckForInvalidDefs();
         }
 
@@ -58,18 +60,26 @@ namespace Hospitality
         public override void SettingsChanged()
         {
             ToggleTabIfNeeded();
+            UpdateMainButtonIcon();
         }
 
         public override void WorldLoaded()
         {
             ToggleTabIfNeeded();
             foreach (var map in Find.Maps) map.GetMapComponent().RefreshGuestListTotal();
-            GuestUtility.Initialize();
+            GuestUtility.Initialize();            
         }
 
         private static void ToggleTabIfNeeded()
         {
             DefDatabase<MainButtonDef>.GetNamed("Guests").buttonVisible = !Hospitality.Settings.disableGuestsTab;
+        }
+
+        private static void UpdateMainButtonIcon()
+        {
+            var mainButtonDef = DefDatabase<MainButtonDef>.GetNamed("Guests");
+            mainButtonDef.iconPath = Hospitality.Settings.useIcon ? "UI/Buttons/MainButtons/IconHospitality" : null;
+            if(mainButtonDef.iconPath == null) AccessTools.Field(typeof(MainButtonDef), "icon").SetValue(mainButtonDef, null);
         }
     }
 }

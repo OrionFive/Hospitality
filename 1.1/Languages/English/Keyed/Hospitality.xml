@@ -152,5 +152,7 @@
   <EnableBuyNotificationDesc>Receive a message when a guest buys something. Can be reviewed in the message history.</EnableBuyNotificationDesc>
   <EnableRecruitNotification>Enable enough friends notification</EnableRecruitNotification>
   <EnableRecruitNotificationDesc>Receive a message when a guest has enough friends to be recruited.</EnableRecruitNotificationDesc>
+  <UseIcon>Show guest tab icon</UseIcon>
+  <UseIconDesc>Show an icon on the guests tab instead of text</UseIconDesc>
   
 </LanguageData>
