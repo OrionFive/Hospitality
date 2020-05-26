@@ -130,8 +130,9 @@ namespace Hospitality {
         {
             if (!alienFrameworkMethods.TryGetValue(methodName, out var method))
             {
+                var type = AccessTools.TypeByName("AlienRace:RaceRestrictionSettings");
                 method = AccessTools.Method("RaceRestrictionSettings:" + methodName, new[] {typeof(ThingDef), typeof(ThingDef)});
-                if (method == null) Log.Error($"Alien Framework does not have a method '{methodName}'.");
+                if (type != null && method == null) Log.Error($"Alien Framework does not have a method '{methodName}'.");
                 alienFrameworkMethods.Add(methodName, method); // we add it as null if not found, so it will return true
             }
 
