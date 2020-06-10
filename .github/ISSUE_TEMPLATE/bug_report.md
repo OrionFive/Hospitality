@@ -12,10 +12,10 @@ What happened?
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. Go to '...'
+1. Select '...'
 2. Click on '....'
-3. Scroll down to '....'
-4. See error
+3. Open '....'
+4. This happens
 
 **Console log**
 Press Ctrl-F12 after the issue has occurred. You will get a link. Put it here.
@@ -28,3 +28,5 @@ Paste it here
 
 **Screenshots**
 If you think it helps, add screenshots to help explain the problem.
+
+Fixing bugs takes a lot of time. Please consider [becoming a patron](https://www.patreon.com/orionmods) to support development.
