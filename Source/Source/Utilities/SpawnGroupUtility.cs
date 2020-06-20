@@ -92,7 +92,8 @@ namespace Hospitality
                                               && d.thingClass != typeof(MinifiedThing) 
                                               && d.tradeability != Tradeability.None 
                                               && d.GetCompProperties<CompProperties_Hatcher>() == null
-                                              && !d.WillRotSoon();
+                                              && !d.WillRotSoon()
+                                              && (d.thingSetMakerTags == null || !d.thingSetMakerTags.Contains("NotForGuests"));
 
                 itemsCache = DefDatabase<ThingDef>.AllDefs.Where(Qualifies).ToArray();
             }

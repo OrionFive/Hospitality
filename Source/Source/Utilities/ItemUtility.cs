@@ -147,6 +147,8 @@ namespace Hospitality {
 
             if (thing.def.tradeability == Tradeability.None) return false;
 
+            if (thing.def.thingSetMakerTags != null && thing.def.thingSetMakerTags.Contains("NotForGuests")) return false;
+
             if (!IsBuyableNow(pawn, thing)) return false;
             //if (!thing.IsSociallyProper(pawn))
             //{
