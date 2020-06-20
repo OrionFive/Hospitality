@@ -956,5 +956,17 @@ namespace Hospitality
             lord.Map?.GetMapComponent()?.OnLordArrived(lord);
             MainTabWindowUtility.NotifyAllPawnTables_PawnsChanged();
         }
+
+        private static readonly HediffDef hediffDeathAcidifier = DefDatabase<HediffDef>.GetNamedSilentFail("DeathAcidifier");
+
+        public static bool MayRecruitAtAll(this Pawn pawn)
+        {
+            return hediffDeathAcidifier == null || !pawn.health.hediffSet.HasHediff(hediffDeathAcidifier);
+        }
+
+        public static bool MayRecruitRightNow(this Pawn pawn)
+        {
+            return !pawn.InMentalState && pawn.CompGuest().arrived;
+        }
     }
 }
