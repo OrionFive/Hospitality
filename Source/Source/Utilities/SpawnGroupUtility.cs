@@ -161,7 +161,7 @@ namespace Hospitality
                 if (title == null) yield return pawn;
                 else
                 {
-                    var chance = 10 * title.commonality / title.seniority; // 0-1
+                    var chance = 25 * title.commonality / (title.seniority+100); // 0-1; seniority can be 0!
                     Log.Message($"{pawn.NameShortColored} has a chance of {chance:P2} of showing up.");
                     if (Rand.Chance(chance)) yield return pawn;
                 }
