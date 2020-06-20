@@ -44,7 +44,7 @@ namespace Hospitality {
             if (pawn.royalty == null) return false;
             try
             {
-                return pawn.royalty.AllTitlesForReading.Any(title => title.def.requiredApparel.Exists(req => req.ApparelMeetsRequirement(apparelDef)));
+                return pawn.royalty.AllTitlesForReading.Any(title => title.def.requiredApparel != null && title.def.requiredApparel.Exists(req => req.ApparelMeetsRequirement(apparelDef)));
             }
             catch (Exception e)
             {
