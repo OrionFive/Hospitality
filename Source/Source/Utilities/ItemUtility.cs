@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -126,13 +127,17 @@ namespace Hospitality {
         /// <summary>
         /// methodName = "CanWear", "CanEat" or "CanEquip"
         /// </summary>
-        public static bool AlienFrameworkAllowsIt(ThingDef raceDef, ThingDef thingDef, string methodName)
+        public static bool AlienFrameworkAllowsIt(ThingDef raceDef, ThingDef thingDef, [NotNull] string methodName)
         {
             if (!alienFrameworkMethods.TryGetValue(methodName, out var method))
             {
-                var type = AccessTools.TypeByName("AlienRace:RaceRestrictionSettings");
-                method = AccessTools.Method("RaceRestrictionSettings:" + methodName, new[] {typeof(ThingDef), typeof(ThingDef)});
-                if (type != null && method == null) Log.Error($"Alien Framework does not have a method '{methodName}'.");
+                var type = GenTypes.GetTypeInAnyAssembly("AlienRace.RaceRestrictionSettings");
+                if (type != null)
+                {
+                    method = type.GetMethod(methodName, new[] {typeof(ThingDef), typeof(ThingDef)});
+                    if (method == null) Log.Error($"Alien Framework does not have a method '{methodName}'.");
+                }
+
                 alienFrameworkMethods.Add(methodName, method); // we add it as null if not found, so it will return true
             }
 
