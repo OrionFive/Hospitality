@@ -137,10 +137,13 @@ namespace Hospitality
         public override string GetInspectString()
         {
             var stringBuilder = new StringBuilder();
-            //stringBuilder.Append(base.GetInspectString());
-            stringBuilder.Append(InspectStringPartsFromComps());
 
-            stringBuilder.AppendLine();
+            var fromComps = InspectStringPartsFromComps();
+            if (!string.IsNullOrWhiteSpace(fromComps))
+            {
+                stringBuilder.AppendLine(fromComps);
+            }
+
             var owners = this.Owners();
             if (!owners.Any())
             {
