@@ -61,8 +61,9 @@ namespace Hospitality
             {
                 var owners = this.Owners().Count == 0 ? (string) "Nobody".Translate() : this.Owners().Select(o => (string) o.NameShortColored).ToCommaList(true);
                 Stats.title = $"{def.LabelCap} ({owners})";
-                Stats.staticBedValue = BedUtility.StaticBedValue(this, out Stats.room, out _, out _, out _);
-                Stats.textAttractiveness = "BedAttractiveness".Translate(Stats.staticBedValue - rentalFee);
+                Stats.staticBedValue = BedUtility.StaticBedValue(this, out Stats.room, out _, out _, out _, out _);
+                var attractiveness = Mathf.CeilToInt(BedUtility.scoreFactor * Stats.staticBedValue - rentalFee);
+                Stats.textAttractiveness = "BedAttractiveness".Translate(attractiveness);
                 Stats.textFee = rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
                 Stats.textAsArray = new[] {Stats.textAttractiveness, Stats.textFee};
 

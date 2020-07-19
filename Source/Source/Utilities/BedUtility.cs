@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 using static UnityEngine.Mathf;
@@ -51,9 +52,9 @@ namespace Hospitality
 
         private static float BedValue(Building_GuestBed bed, Pawn guest, int money)
         {
-            StaticBedValue(bed, out var room, out var quality, out var impressiveness, out var roomType);
+            StaticBedValue(bed, out var room, out var quality, out var impressiveness, out var roomType, out var comfort);
 
-            var fee = RoundToInt(money > 0 ? 125 * bed.rentalFee / money : 0); // 0 - 125
+            var fee = RoundToInt(money > 0 ? 250 * (bed.rentalFee / money) : 0); // 0 - 250
 
             // Royalty requires single bed?
             var royalExpectations = GetRoyalExpectations(bed, guest, room, out var title);
@@ -78,6 +79,7 @@ namespace Hospitality
             {
                 impressiveness *= -1;
                 roomType = 75; // We don't care, so always max
+                comfort = 100; // We don't care, so always max
             }
 
             if (guest.story.traits.HasTrait(TraitDef.Named("Jealous")))
@@ -95,8 +97,8 @@ namespace Hospitality
                 //Log.Message($"{guest.LabelShort} is tired. {bed.LabelCap} is {distance} units far away.");
             }
 
-            var score = impressiveness + quality + roomType + temperature + otherPawnOpinion + royalExpectations - distance;
-            var value = score - fee;
+            var score = impressiveness + quality + comfort + roomType + temperature + otherPawnOpinion + royalExpectations - distance;
+            var value = CeilToInt(scoreFactor * score - fee);
             //Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
             //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
             return value;
@@ -139,14 +141,20 @@ namespace Hospitality
             return bed.Owners().Any(p => p != guest && !p.RaceProps.Animal && !LovePartnerRelationUtility.LovePartnerRelationExists(p, guest));
         }
 
-        public static int StaticBedValue(Building_GuestBed bed, [CanBeNull]out Room room, out int quality, out int impressiveness, out int roomTypeScore)
+        public static int StaticBedValue(Building_GuestBed bed, [CanBeNull]out Room room, out int quality, out int impressiveness, out int roomTypeScore, out int comfort)
         {
             room = bed.Map != null && bed.Map.regionAndRoomUpdater.Enabled ? bed.GetRoom() : null;
 
             quality = GetBedQuality(bed);
             impressiveness = room != null ? GetRoomImpressiveness(room) : 0;
             roomTypeScore = GetRoomTypeScore(room) * 2;
-            return quality + impressiveness + roomTypeScore;
+            comfort = RoundToInt(100*GetBedComfort(bed));
+            return quality + impressiveness + roomTypeScore + comfort;
+        }
+
+        private static float GetBedComfort(Building_GuestBed bed)
+        {
+            return bed.GetStatValue(StatDefOf.Comfort);
         }
 
         private static int GetBedQuality(Building_Bed bed)
@@ -195,5 +203,6 @@ namespace Hospitality
         }
 
         public static bool IsGuestBed(this Building_Bed bed) => bed is Building_GuestBed;
+        public const float scoreFactor = 0.5f; // factor for displayed value
     }
 }
