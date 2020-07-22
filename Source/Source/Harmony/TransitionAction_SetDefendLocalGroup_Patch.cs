@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class TransitionAction_SetDefendLocalGroup_Patch
     {
-        [HarmonyPatch(typeof(TransitionAction_SetDefendLocalGroup), "DoAction")]
+        [HarmonyPatch(typeof(TransitionAction_SetDefendLocalGroup), nameof(TransitionAction_SetDefendLocalGroup.DoAction))]
         public class DoAction
         {
             [HarmonyPrefix]

@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class AddictionUtility_Patch
     {
-        [HarmonyPatch(typeof (AddictionUtility), "CanBingeOnNow")]
+        [HarmonyPatch(typeof (AddictionUtility), nameof(AddictionUtility.CanBingeOnNow))]
         public class CanBingeOnNow
         {
             [HarmonyPrefix]

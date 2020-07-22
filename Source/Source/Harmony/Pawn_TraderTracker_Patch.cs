@@ -7,7 +7,7 @@ namespace Hospitality.Harmony
     public static class Pawn_TraderTracker_Patch
     {
         [HarmonyPatch(typeof(Pawn_TraderTracker))]
-        [HarmonyPatch("CanTradeNow", MethodType.Getter)]
+        [HarmonyPatch(nameof(Pawn_TraderTracker.CanTradeNow), MethodType.Getter)]
         public static class CanTradeNow
         {
             // Added so guests will always trade, even if they have no goods

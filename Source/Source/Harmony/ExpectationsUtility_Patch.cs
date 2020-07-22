@@ -10,7 +10,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class ExpectationsUtility_Patch
     {
-        [HarmonyPatch(typeof(ExpectationsUtility), "CurrentExpectationFor", typeof(Pawn))]
+        [HarmonyPatch(typeof(ExpectationsUtility), nameof(ExpectationsUtility.CurrentExpectationFor), typeof(Pawn))]
         public class CurrentExpectationForPawn
         {
             [HarmonyPostfix]

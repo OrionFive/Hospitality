@@ -19,7 +19,7 @@ namespace Hospitality.Harmony
             [UsedImplicitly]
             public static MethodBase TargetMethod()
             {
-                return AccessTools.Method(typeof(Pawn_ApparelTracker), "TryDrop", new[] {typeof(Apparel), typeof(Apparel).MakeByRefType(), typeof(IntVec3), typeof(bool)});
+                return AccessTools.Method(typeof(Pawn_ApparelTracker), nameof(Pawn_ApparelTracker.TryDrop), new[] {typeof(Apparel), typeof(Apparel).MakeByRefType(), typeof(IntVec3), typeof(bool)});
             }
 
             [HarmonyPrefix]

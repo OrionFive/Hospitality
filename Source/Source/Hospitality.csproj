@@ -148,7 +148,7 @@
     <Compile Include="Harmony\TransitionAction_EnsureHaveExitDestination_Patch.cs" />
     <Compile Include="Harmony\TransitionAction_SetDefendLocalGroup_Patch.cs" />
     <Compile Include="Harmony\Building_Door_Patch.cs" />
-    <Compile Include="Harmony\WorkGiver_HunterHunt.cs" />
+    <Compile Include="Harmony\WorkGiver_HunterHunt_Patch.cs" />
     <Compile Include="IncidentWorker_HappyGuestJoins.cs" />
     <Compile Include="IncidentWorker_VisitorGroupMax.cs" />
     <Compile Include="Utilities\ItemUtility.cs" />

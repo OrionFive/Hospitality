@@ -6,7 +6,7 @@ namespace Hospitality.Harmony
     public static class ITab_Pawn_Guest_Patch
     {
         [HarmonyPatch(typeof(RimWorld.ITab_Pawn_Guest))]
-        [HarmonyPatch("IsVisible", MethodType.Getter)]
+        [HarmonyPatch(nameof(ITab_Pawn_Guest.IsVisible), MethodType.Getter)]
         public static class IsVisible
         {
             private static Traverse selPawnProperty;

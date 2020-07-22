@@ -11,7 +11,7 @@ namespace Hospitality.Harmony
         public class InterfaceDrop
         {
             [HarmonyPrefix]
-            public static bool Prefix(ITab_Pawn_Gear __instance, Thing t)
+            public static bool Prefix(ITab_Pawn_Gear __instance)
             {
                 var SelPawnForGear = Traverse.Create(__instance).Property("SelPawnForGear").GetValue<Pawn>();
 

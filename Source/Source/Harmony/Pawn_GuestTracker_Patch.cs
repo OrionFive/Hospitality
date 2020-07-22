@@ -7,7 +7,7 @@ namespace Hospitality.Harmony
     internal static class Pawn_GuestTracker_Patch
     {
         // Detoured so guests don't become prisoners
-        [HarmonyPatch(typeof(Pawn_GuestTracker), "SetGuestStatus")]
+        [HarmonyPatch(typeof(Pawn_GuestTracker), nameof(Pawn_GuestTracker.SetGuestStatus))]
         public class SetGuestStatus
         {
             [HarmonyPrefix]

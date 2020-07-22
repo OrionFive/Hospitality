@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public static class GatheringsUtility_Patch
     {
-        [HarmonyPatch(typeof(GatheringsUtility), "ShouldGuestKeepAttendingGathering")]
+        [HarmonyPatch(typeof(GatheringsUtility), nameof(GatheringsUtility.ShouldGuestKeepAttendingGathering))]
         public class ShouldGuestKeepAttendingGathering
         {
             [HarmonyPrefix]

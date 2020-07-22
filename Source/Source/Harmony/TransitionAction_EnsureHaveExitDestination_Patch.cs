@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class TransitionAction_EnsureHaveExitDestination_Patch
     {
-        [HarmonyPatch(typeof(TransitionAction_EnsureHaveExitDestination), "DoAction")]
+        [HarmonyPatch(typeof(TransitionAction_EnsureHaveExitDestination), nameof(TransitionAction_EnsureHaveExitDestination.DoAction))]
         public class DoAction
         {
             [HarmonyPrefix]

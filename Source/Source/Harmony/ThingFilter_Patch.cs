@@ -8,7 +8,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class ThingFilter_Patch
     {
-        [HarmonyPatch(typeof(ThingFilter), "Allows", typeof(ThingDef))]
+        [HarmonyPatch(typeof(ThingFilter), nameof(ThingFilter.Allows), typeof(ThingDef))]
         public class Allows
         {
             [HarmonyPrefix]

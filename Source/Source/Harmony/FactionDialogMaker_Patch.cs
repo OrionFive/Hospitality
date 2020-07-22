@@ -6,7 +6,7 @@ namespace Hospitality.Harmony
 {
     public class FactionDialogMaker_Patch
     {
-        [HarmonyPatch(typeof(FactionDialogMaker), "FactionDialogFor")]
+        [HarmonyPatch(typeof(FactionDialogMaker),nameof(FactionDialogMaker.FactionDialogFor))]
         public class FactionDialogFor
         {
             [HarmonyPostfix]

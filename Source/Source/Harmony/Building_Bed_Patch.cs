@@ -12,7 +12,7 @@ namespace Hospitality.Harmony
         /// When the room is made for prisoners, guest beds also switch to prisoner beds
         /// </summary>
         [HarmonyPatch(typeof(Building_Bed))]
-        [HarmonyPatch("ForPrisoners", MethodType.Setter)]
+        [HarmonyPatch(nameof(Building_Bed.ForPrisoners), MethodType.Setter)]
         public class ForPrisoners
         {
             [HarmonyPostfix]
@@ -27,7 +27,7 @@ namespace Hospitality.Harmony
             }
         }
 
-        [HarmonyPatch(typeof(Building_Bed), "GetGizmos")]
+        [HarmonyPatch(typeof(Building_Bed), nameof(Building_Bed.GetGizmos))]
         public class GetGizmos
         {
             [HarmonyPostfix]

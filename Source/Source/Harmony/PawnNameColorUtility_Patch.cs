@@ -8,7 +8,7 @@ namespace Hospitality.Harmony {
     /// </summary>
     public class PawnNameColorUtility_Patch
     {
-        [HarmonyPatch(typeof(PawnNameColorUtility), "PawnNameColorOf")]
+        [HarmonyPatch(typeof(PawnNameColorUtility), nameof(PawnNameColorUtility.PawnNameColorOf))]
         public class PawnNameColorOf
         {
             [HarmonyPrefix]

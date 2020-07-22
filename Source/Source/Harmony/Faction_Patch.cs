@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class Faction_Patch
     {
-        [HarmonyPatch(typeof(Faction), "Notify_MemberExitedMap")]
+        [HarmonyPatch(typeof(Faction), nameof(Faction.Notify_MemberExitedMap))]
         public class Notify_MemberExitedMap
         {
             [HarmonyPrefix]

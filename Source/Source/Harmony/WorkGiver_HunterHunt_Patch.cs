@@ -1,13 +1,14 @@
 using HarmonyLib;
+using RimWorld;
 using Verse;
 
 namespace Hospitality.Harmony {
     /// <summary>
     /// Don't let guests hunt outside their zone
     /// </summary>
-    public class WorkGiver_HunterHunt
+    public class WorkGiver_HunterHunt_Patch
     {
-        [HarmonyPatch(typeof(RimWorld.WorkGiver_HunterHunt), "HasJobOnThing", typeof(Pawn), typeof(Thing), typeof(bool))]
+        [HarmonyPatch(typeof(WorkGiver_HunterHunt), nameof(WorkGiver_HunterHunt.HasJobOnThing), typeof(Pawn), typeof(Thing), typeof(bool))]
         public class HasJobOnThing
         {
             [HarmonyPostfix]

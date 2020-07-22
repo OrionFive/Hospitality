@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// So guests will care
         /// </summary>
-        [HarmonyPatch(typeof(ForbidUtility), "CaresAboutForbidden")]
+        [HarmonyPatch(typeof(ForbidUtility), nameof(ForbidUtility.CaresAboutForbidden))]
         public class CaresAboutForbidden
         {
             [HarmonyPrefix]
@@ -49,7 +49,7 @@ namespace Hospitality.Harmony
         public class SetForbidden
         {
             [HarmonyPrefix]
-            public static bool Prefix(Thing t, bool value)
+            public static bool Prefix(bool value)
             {
                 if (value && currentToilWorker.IsArrivedGuest())
                 {

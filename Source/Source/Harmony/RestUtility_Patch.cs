@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     internal static class RestUtility_Patch
     {
-        [HarmonyPatch(typeof(RestUtility), "IsValidBedFor")]
+        [HarmonyPatch(typeof(RestUtility), nameof(RestUtility.IsValidBedFor))]
         public class IsValidBedFor
         {
             [HarmonyPostfix]

@@ -8,7 +8,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class JobDriver_Patch
     {
-        [HarmonyPatch(typeof(JobDriver), "DriverTick")]
+        [HarmonyPatch(typeof(JobDriver), nameof(JobDriver.DriverTick))]
         public class DriverTick
         {
             [HarmonyPrefix]

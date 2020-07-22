@@ -16,7 +16,7 @@ namespace Hospitality
         private int feeStep = 10;
 
         public int rentalFee;
-        private string silverLabel = " " + ThingDefOf.Silver.label;
+        private readonly string silverLabel = " " + ThingDefOf.Silver.label;
 
         public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
 

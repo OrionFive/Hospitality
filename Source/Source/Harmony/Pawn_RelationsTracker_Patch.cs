@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     internal static class Pawn_RelationsTracker_Patch
     {
-        [HarmonyPatch(typeof(Pawn_RelationsTracker), "Notify_RescuedBy")]
+        [HarmonyPatch(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.Notify_RescuedBy))]
         public class Notify_RescuedBy
         {
             [HarmonyPrefix]

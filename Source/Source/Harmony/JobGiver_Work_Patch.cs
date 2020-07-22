@@ -86,7 +86,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Make sure they have workSettings.priorities before they attempt to do work
         /// </summary>
-        [HarmonyPatch(typeof(JobGiver_Work), "TryIssueJobPackage")]
+        [HarmonyPatch(typeof(JobGiver_Work), nameof(JobGiver_Work.TryIssueJobPackage))]
         public class TryIssueJobPackage
         {
             private static FieldInfo _fieldPriorities = typeof(Pawn_WorkSettings).GetField("priorities", BindingFlags.NonPublic | BindingFlags.Instance);

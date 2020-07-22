@@ -8,7 +8,7 @@ namespace Hospitality.Harmony {
     /// </summary>
     public class OverlayDrawer_Patch
     {
-        [HarmonyPatch(typeof(OverlayDrawer), "DrawOverlay")]
+        [HarmonyPatch(typeof(OverlayDrawer), nameof(OverlayDrawer.DrawOverlay))]
         public class DrawOverlay
         {
             [HarmonyPrefix]

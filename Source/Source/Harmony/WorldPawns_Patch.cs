@@ -11,7 +11,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Remove the pawn from CompUtility
         /// </summary>
-        [HarmonyPatch(typeof(Pawn), "DeSpawn")]
+        [HarmonyPatch(typeof(Pawn), nameof(Pawn.DeSpawn))]
         public class DeSpawn
         {
             [HarmonyPostfix]
@@ -21,7 +21,7 @@ namespace Hospitality.Harmony
             }
         }
 
-        [HarmonyPatch(typeof(Pawn), "GiveSoldThingToPlayer")]
+        [HarmonyPatch(typeof(Pawn), nameof(Pawn.GiveSoldThingToPlayer))]
         public class GiveSoldThingToPlayer
         {
             [HarmonyPrefix]
@@ -38,7 +38,7 @@ namespace Hospitality.Harmony
         }
 
 
-        [HarmonyPatch(typeof(Pawn), "GiveSoldThingToTrader")]
+        [HarmonyPatch(typeof(Pawn), nameof(Pawn.GiveSoldThingToTrader))]
         public class GiveSoldThingToTrader
         {
             [HarmonyPrefix]
@@ -58,7 +58,7 @@ namespace Hospitality.Harmony
         /// Suppress "Pawn destination reservation manager failed to clean up properly" error, that doesn't seem to cause further problems.
         /// The error is due to guests doing work, apparently? Or the new JobGiver_StandAndBeSociallyActive
         /// </summary>
-        [HarmonyPatch(typeof(Pawn), "VerifyReservations")]
+        [HarmonyPatch(typeof(Pawn), nameof(Pawn.VerifyReservations))]
         public class VerifyReservations
         {
             [HarmonyPrefix]
@@ -92,7 +92,7 @@ namespace Hospitality.Harmony
             }
         }
 
-        [HarmonyPatch(typeof(Pawn), "SetFaction")]
+        [HarmonyPatch(typeof(Pawn), nameof(Pawn.SetFaction))]
         public class SetFaction
         {
             [HarmonyPrefix]

@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// So guests will care
         /// </summary>
-        [HarmonyPatch(typeof(FoodUtility), "BestFoodSourceOnMap")]
+        [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.BestFoodSourceOnMap))]
         public class BestFoodSourceOnMap
         {
             [HarmonyPrefix]

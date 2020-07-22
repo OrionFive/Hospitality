@@ -8,7 +8,7 @@ namespace Hospitality.Harmony {
     /// </summary>
     public class Reachability_Patch
     {
-        [HarmonyPatch(typeof(Reachability), "CanReach", typeof(IntVec3), typeof(LocalTargetInfo), typeof(PathEndMode), typeof(TraverseParms))]
+        [HarmonyPatch(typeof(Reachability), nameof(Reachability.CanReach), typeof(IntVec3), typeof(LocalTargetInfo), typeof(PathEndMode), typeof(TraverseParms))]
         public class CanReach
         {
             [HarmonyPostfix]

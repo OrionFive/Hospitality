@@ -8,7 +8,7 @@ namespace Hospitality.Harmony {
     /// </summary>
     public class MentalStateHandler_Patch
     {
-        [HarmonyPatch(typeof(MentalStateHandler), "TryStartMentalState")]
+        [HarmonyPatch(typeof(MentalStateHandler), nameof(MentalStateHandler.TryStartMentalState))]
 
         public class TryStartMentalState
         {

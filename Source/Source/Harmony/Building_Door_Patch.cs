@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class Building_Door_Patch
     {
-        [HarmonyPatch(typeof(Building_Door), "PawnCanOpen")]
+        [HarmonyPatch(typeof(Building_Door), nameof(Building_Door.PawnCanOpen))]
         public class PawnCanOpen
         {
             [HarmonyPrefix]

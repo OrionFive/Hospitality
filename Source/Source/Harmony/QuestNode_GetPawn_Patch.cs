@@ -46,7 +46,7 @@ namespace Hospitality.Harmony {
                         return false;
                     }
 
-                    return ((int) x.def.techLevel >= (int) __instance.minTechLevel.GetValue(slate)) ? true : false;
+                    return (int) x.def.techLevel >= (int) __instance.minTechLevel.GetValue(slate);
                 }).TryRandomElement(out faction);
             }
         }

@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class PawnUtility_Patch
     {
-        [HarmonyPatch(typeof (PawnUtility), "ShouldSendNotificationAbout")]
+        [HarmonyPatch(typeof (PawnUtility), nameof(PawnUtility.ShouldSendNotificationAbout))]
         public class ShouldSendNotificationAbout
         {
             [HarmonyPostfix]

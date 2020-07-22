@@ -67,7 +67,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Show "Colony" in social tab for player pawns
         /// </summary>
-        [HarmonyPatch(typeof(SocialCardUtility), "GetPawnSituationLabel")]
+        [HarmonyPatch(typeof(SocialCardUtility), nameof(SocialCardUtility.GetPawnSituationLabel))]
         public class GetPawnSituationLabel
         {
             [HarmonyPrefix]

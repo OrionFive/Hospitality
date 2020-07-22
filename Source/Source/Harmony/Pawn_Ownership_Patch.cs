@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     internal static class Pawn_Ownership_Patch
     {
-        [HarmonyPatch(typeof(Pawn_Ownership), "UnclaimBed")]
+        [HarmonyPatch(typeof(Pawn_Ownership), nameof(Pawn_Ownership.UnclaimBed))]
         public class UnclaimBed
         {
             [HarmonyPrefix]
@@ -20,8 +20,9 @@ namespace Hospitality.Harmony
             }
         }
 
-        [HarmonyPatch(typeof(Pawn_Ownership), "get_OwnedBed")]
-        public class get_OwnedBed
+        [HarmonyPatch(typeof(Pawn_Ownership))]
+        [HarmonyPatch(nameof(Pawn_Ownership.OwnedBed), MethodType.Getter)]
+        public class OwnedBed
         {
             [HarmonyPrefix]
             public static bool Prefix(Pawn ___pawn, ref Building_Bed __result)

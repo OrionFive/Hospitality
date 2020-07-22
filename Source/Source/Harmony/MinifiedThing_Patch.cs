@@ -7,7 +7,7 @@ namespace Hospitality.Harmony
 {
     public class MinifiedThing_Patch
     {
-        [HarmonyPatch(typeof(MinifiedThing), "DrawAt")]
+        [HarmonyPatch(typeof(MinifiedThing), nameof(MinifiedThing.DrawAt))]
         public class DrawAt
         {
             [HarmonyPrefix]

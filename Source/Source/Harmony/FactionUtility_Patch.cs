@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class FactionUtility_Patch
     {
-        [HarmonyPatch(typeof(FactionUtility), "IsPoliticallyProper")]
+        [HarmonyPatch(typeof(FactionUtility), nameof(FactionUtility.IsPoliticallyProper))]
         public class IsPoliticallyProper
         {
             [HarmonyPostfix]

@@ -7,7 +7,7 @@ namespace Hospitality.Harmony
 {
     internal static class Room_Patch
     {
-        [HarmonyPatch(typeof(Room), "Owners")]
+        [HarmonyPatch(typeof(Room), nameof(Room.Owners))]
         [HarmonyPatch(MethodType.Getter)]
         public class Owners
         {
