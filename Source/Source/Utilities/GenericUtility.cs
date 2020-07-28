@@ -66,7 +66,9 @@ namespace Hospitality
             foreach (var settlement in Find.WorldObjects.SettlementBases)
             {
                 if (settlement.Faction != faction) continue;
-                int travelTicks = CaravanArrivalTimeEstimator.EstimatedTicksToArrive(map.Tile, settlement.Tile, null);
+                const int ticksPerTile = 3300;
+                var distance = Find.WorldGrid.TraversalDistanceBetween(map.Tile, settlement.Tile);
+                int travelTicks = ticksPerTile * distance;
                 if (travelTicks <= 0) continue;
                 if (travelTicks < minTicks) minTicks = travelTicks;
             }
