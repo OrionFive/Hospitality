@@ -841,6 +841,7 @@ namespace Hospitality
         {
             // Check if we should get upset
             if (lord?.LordJob is LordJob_VisitColony job && !job.getUpsetWhenLost) return;
+            Log.Message($"Lord lost entire group. LordJob = {lord?.LordJob?.GetType().Name}");
 
             const int penalty = -10;
             //Log.Message("Lost group");
@@ -961,7 +962,11 @@ namespace Hospitality
 
         public static bool MayRecruitAtAll(this Pawn pawn)
         {
-            return hediffDeathAcidifier == null || !pawn.health.hediffSet.HasHediff(hediffDeathAcidifier);
+            // Guests with acidifier can't be recruited, unless they have a relationship
+            var tooValuableToRecruit = hediffDeathAcidifier != null 
+                               && pawn.health.hediffSet.HasHediff(hediffDeathAcidifier)
+                               && !RelationUtility.GetRelationInfo(pawn).hasRelationship;
+            return !tooValuableToRecruit;
         }
 
         public static bool MayRecruitRightNow(this Pawn pawn)

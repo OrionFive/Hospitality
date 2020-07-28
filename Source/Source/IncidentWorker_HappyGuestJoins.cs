@@ -18,6 +18,7 @@ namespace Hospitality
         private static bool IsHappyGuest(Pawn pawn)
         {
             if (pawn.royalty?.MostSeniorTitle != null) return false; // no royals
+            if (!pawn.MayRecruitAtAll()) return false;
 
             return  pawn.GetVisitScore(out var score) && score >= 0.9f;
         }
