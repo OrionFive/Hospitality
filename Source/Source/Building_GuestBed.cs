@@ -243,7 +243,7 @@ namespace Hospitality
             if (buildCopy != null) yield return buildCopy;
         }
 
-        private void AdjustFee(int amount)
+        internal void AdjustFee(int amount)
         {
             rentalFee += amount;
             if (rentalFee < 0) rentalFee = 0;

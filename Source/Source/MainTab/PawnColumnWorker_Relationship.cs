@@ -26,6 +26,15 @@ namespace Hospitality.MainTab
         {
             base.DoCell(rect, pawn, table);
 
+            // As this is the first column shown we can watch from here
+            // Move accordingly
+            if (Multiplayer.IsRunning) {
+                var compGuest = pawn.CompGuest();
+                if (compGuest != null) {
+                    Multiplayer.guestFields?.Watch(compGuest);
+                }
+            }
+
             // Only run once
             if (!mayDrawLordGroups) return;
             mayDrawLordGroups = false;

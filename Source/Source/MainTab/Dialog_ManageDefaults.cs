@@ -21,10 +21,14 @@ namespace Hospitality.MainTab
 
         public override void DoWindowContents(Rect inRect)
         {
+            Multiplayer.WatchBegin();
             var listingStandard = new Listing_Standard {ColumnWidth = inRect.width};
             listingStandard.Begin(inRect);
 
             var comp = map.GetMapComponent();
+
+            Multiplayer.mapFields?.Watch(comp);
+
             string labelStay = "AreaToStay".Translate();
             string labelBuy = "AreaToBuy".Translate();
             var rectStayLabel = listingStandard.GetRect(Text.CalcHeight(labelStay, listingStandard.ColumnWidth));
@@ -48,6 +52,7 @@ namespace Hospitality.MainTab
             DialogUtility.CheckboxLabeled(listingStandard, "GuestsWelcome".Translate(), ref comp.guestsAreWelcome, rectGuestsAreWelcome, false, "GuestsWelcomeTooltip".Translate());
 
             listingStandard.End();
+            Multiplayer.WatchEnd();
         }
     }
 }
