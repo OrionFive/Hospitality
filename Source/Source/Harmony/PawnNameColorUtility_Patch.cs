@@ -2,7 +2,8 @@ using HarmonyLib;
 using UnityEngine;
 using Verse;
 
-namespace Hospitality.Harmony {
+namespace Hospitality.Harmony 
+{
     /// <summary>
     /// Guests use their faction color for their name labels
     /// </summary>

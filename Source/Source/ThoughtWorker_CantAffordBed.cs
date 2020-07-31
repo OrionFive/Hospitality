@@ -2,7 +2,8 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace Hospitality {
+namespace Hospitality 
+{
     /// <summary>
     /// Loaded via xml. Added so are upset when they can't afford a bed.
     /// </summary>

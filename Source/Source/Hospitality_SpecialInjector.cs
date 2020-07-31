@@ -8,7 +8,6 @@ using Verse;
 
 namespace Hospitality
 {
-
     public static class Hospitality_SpecialInjector
     {
         public static void Inject()

@@ -2,7 +2,8 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace Hospitality.Harmony {
+namespace Hospitality.Harmony 
+{
     /// <summary>
     /// Don't let guests hunt outside their zone
     /// </summary>

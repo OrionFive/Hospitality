@@ -2,7 +2,8 @@ using HarmonyLib;
 using Verse;
 using Verse.AI;
 
-namespace Hospitality.Harmony {
+namespace Hospitality.Harmony 
+{
     /// <summary>
     /// Make sure things outside the guest zone are not reachable for guests
     /// </summary>
