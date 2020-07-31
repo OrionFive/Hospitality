@@ -18,8 +18,8 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\1.1\Assemblies\</OutputPath>
-    <DefineConstants>NoCCL;UNITY_ASSERTIONS</DefineConstants>
+    <OutputPath>..\..\1.2\Assemblies\</OutputPath>
+    <DefineConstants>UNITY_ASSERTIONS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
@@ -30,8 +30,9 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\1.1\Assemblies\</OutputPath>
-    <DefineConstants>NoCCL</DefineConstants>
+    <OutputPath>..\..\1.2\Assemblies\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
