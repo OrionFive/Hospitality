@@ -79,6 +79,7 @@
   <SendAway>Send away...</SendAway>
   <SendAwayQuestion>Are you sure you want to send the visitors from {FACTION_name} away?\nIf you send them away immediately after appearing, this will have no effect on relations.</SendAwayQuestion>
   <Recruit>Recruit...</Recruit>
+  <CantRecruit>This guest can not be recruited (right now).</CantRecruit>
   <RecruitQuestion>You can recruit {PAWN_nameDef} now.\n\nBecause {PAWN_pronoun} has enough friends, this only costs you {0} points of relationship with {PAWN_possessive} faction.{1}\n\n\nAre you sure you want to recruit {PAWN_objective}?</RecruitQuestion>
   <ForceRecruit>Force recruit...</ForceRecruit>
   <ForceRecruitQuestion>You can recruit {PAWN_nameDef} immediately.\n\nBecause {PAWN_pronoun} doesn't have enough friends yet to join you on {PAWN_possessive} own accord, this costs you {0} points of relationship with {PAWN_possessive} faction. This will be less if {PAWN_pronoun} has more friends. {1}\n\n\nAre you sure you don't want to wait?</ForceRecruitQuestion>

@@ -1,5 +1,6 @@
 using RimWorld;
 using System;
+using Unity.Collections;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
@@ -15,6 +16,7 @@ namespace Hospitality
         private static readonly string txtMakeDefault = "MakeDefault".Translate();
         private static readonly string txtForceRecruit = "ForceRecruit".Translate();
         private static readonly string txtRecruit = "Recruit".Translate();
+        private static readonly string txtCantRecruit = "CantRecruit".Translate();
         private static readonly string txtSendAway = "SendAway".Translate();
         private static readonly string txtSendAwayQuestion = "SendAwayQuestion";
         private static readonly string txtMakeDefaultTooltip = "MakeDefaultTooltip".Translate();
@@ -26,6 +28,7 @@ namespace Hospitality
 
         protected static readonly Vector2 buttonSize = new Vector2(120f, 30f);
         private static Listing_Standard listingStandard = new Listing_Standard();
+        private static readonly Color DisabledOptionColor = new Color(0.5f, 0.5f, 0.5f);
 
         public ITab_Pawn_Guest()
         {
@@ -103,19 +106,25 @@ namespace Hospitality
 
                 var rectSetDefault = new Rect(rect.xMax - buttonSize.x - 10, 160, buttonSize.x, buttonSize.y);
                 var rectSendHome = new Rect(rect.xMin - 10, 160, buttonSize.x, buttonSize.y);
-                DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, rectSetDefault, false, txtMakeDefaultTooltip);
-                DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, false, txtSendAwayTooltip);
+                DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, rectSetDefault, txtMakeDefaultTooltip);
+                DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
 
                 var rectRecruitButton = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
                 if (friends >= friendsRequired)
                 {
                     var disabled = !SelPawn.MayRecruitAtAll() || !SelPawn.MayRecruitRightNow();
-                    DrawButton(() => RecruitDialog(SelPawn, false), txtRecruit, rectRecruitButton, disabled, txtRecruitTooltip);
+                    if(disabled)
+                        DrawButtonDisabled(txtRecruit, rectRecruitButton, txtCantRecruit);
+                    else
+                        DrawButton(() => RecruitDialog(SelPawn, false), txtRecruit, rectRecruitButton, txtRecruitTooltip);
                 }
                 else if (!isRoyal)
                 {
                     var disabled = !SelPawn.MayRecruitAtAll() || !SelPawn.MayRecruitRightNow();
-                    DrawButton(() => RecruitDialog(SelPawn, true), txtForceRecruit, rectRecruitButton, disabled, txtForceRecruitTooltip);
+                    if(disabled)
+                        DrawButtonDisabled(txtRecruit, rectRecruitButton, txtCantRecruit);
+                    else
+                        DrawButton(() => RecruitDialog(SelPawn, true), txtForceRecruit, rectRecruitButton, txtForceRecruitTooltip);
                 }
 
                 // Highlight defaults
@@ -182,17 +191,33 @@ namespace Hospitality
             }
         }
 
-        private static void DrawButton(Action action, string text, Rect rect, bool disabled, string tooltip = null)
+        private static void DrawButton(Action action, string text, Rect rect, string tooltip = null)
         {
             if (!tooltip.NullOrEmpty())
             {
                 TooltipHandler.TipRegion(rect, tooltip);
             }
-            if (Widgets.ButtonText(rect, text, !disabled, !disabled))
+
+            Color textColor = Widgets.NormalOptionColor;
+            if (Widgets.ButtonText(rect, text, true, true, textColor))
             {
                 SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
 
                 action();
+            }
+        }
+
+        private static void DrawButtonDisabled(string text, Rect rect, string textDenied = null, string tooltip = null)
+        {
+            if (!tooltip.NullOrEmpty())
+            {
+                TooltipHandler.TipRegion(rect, tooltip);
+            }
+
+            Color textColor = DisabledOptionColor;
+            if(Widgets.ButtonText(rect, text, true, false, textColor, false))
+            {
+                Messages.Message(tooltip, MessageTypeDefOf.RejectInput);
             }
         }
 

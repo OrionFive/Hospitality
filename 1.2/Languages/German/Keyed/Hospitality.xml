@@ -79,6 +79,7 @@
   <SendAway>Wegschicken...</SendAway>
   <SendAwayQuestion>Bist du sicher die Besucher von {FACTION_name} wegzuschicken?\nWenn du sie sofort nach dem Erscheinen wegschickst, hat dies keine Auswirkungen auf die Beziehungen.</SendAwayQuestion>
   <Recruit>Rekrutieren...</Recruit>
+  <CantRecruit>Diesen Gast kannst du (in diesem Moment) nicht rekrutieren.</CantRecruit>
   <RecruitQuestion>Du kannst {PAWN_nameDef} jetzt rekrutieren.\n\nWeil {PAWN_pronoun} ausreichend Freunde hat, kostet dich dies nur {0} Beziehungspunkte mit {PAWN_possessive}er Fraktion.{1}\n\n\nBist du sicher, dass du {PAWN_objective} rekrutieren möchtest?</RecruitQuestion>
   <ForceRecruit>Rekrutierung erzwingen...</ForceRecruit>
   <ForceRecruitQuestion>Du kannst {PAWN_nameDef} sofort rekruitieren.\n\nDa {PAWN_pronoun} jedoch noch nicht genügend Freunde hat um sich dir freiwillig anzuschließen, kostet dies {0} Beziehungspunte mit {PAWN_possessive}er Fraktion. Es werden weniger Punkte, wenn {PAWN_pronoun} mehr Freunde hat.{1}\n\n\nBist du sicher, dass du nicht noch warten möchtest?</ForceRecruitQuestion>
