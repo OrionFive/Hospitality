@@ -40,6 +40,13 @@ namespace Hospitality
         {
             base.ExposeData();
             Scribe_Values.Look(ref rentalFee, "rentalFee");
+
+            // Remove owners that weren't properly cleared
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+                foreach (var pawn in CompAssignableToPawn.AssignedPawnsForReading.ToArray())
+                {
+                    if (pawn == null || !pawn.Spawned || pawn.Dead) CompAssignableToPawn.TryUnassignPawn(pawn);
+                }
         }
 
         public override void TickLong()
