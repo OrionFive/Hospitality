@@ -42,9 +42,10 @@ namespace Hospitality
             Scribe_Values.Look(ref rentalFee, "rentalFee");
 
             // Remove owners that weren't properly cleared
-            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            if (Scribe.mode == LoadSaveMode.Saving)
                 foreach (var pawn in CompAssignableToPawn.AssignedPawnsForReading.ToArray())
                 {
+                    //Log.Message($"Bed at {Position} has owner {pawn?.NameShortColored}. Spawned = {pawn?.Spawned} Dead = {pawn?.Dead}");
                     if (pawn == null || !pawn.Spawned || pawn.Dead) CompAssignableToPawn.TryUnassignPawn(pawn);
                 }
         }

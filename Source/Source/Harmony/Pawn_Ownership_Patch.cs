@@ -15,6 +15,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(Pawn ___pawn)
             {
+                //Log.Message($"{___pawn?.NameShortColored}: UnclaimBed. bed = {___pawn?.CompGuest()?.bed?.Position}");
                 ___pawn.CompGuest()?.ClearOwnership();
                 return true;
             }

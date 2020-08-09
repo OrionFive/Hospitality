@@ -86,7 +86,17 @@ namespace Hospitality
                 // Can't save lord (IExposable), so we just gotta find it each time
                 lord = Pawn.GetLord();
                 // Bed doesn't store owners
-                if(bed != null && !bed.Owners().Contains(Pawn)) bed.CompAssignableToPawn.TryAssignPawn(Pawn);
+                if (bed != null && !bed.Owners().Contains(Pawn))
+                {
+                    Log.Message($"Assigned {Pawn.NameShortColored} to bed {bed.Position}.");
+                    bed.CompAssignableToPawn.TryAssignPawn(Pawn);
+                }
+
+                if (bed != null && Pawn.ownership.OwnedBed != bed)
+                {
+                    Log.Message($"Assigned bed {bed.Position} to {Pawn.NameShortColored}.");
+                    AccessTools.Field(typeof(Pawn_Ownership), "intOwnedBed").SetValue(Pawn.ownership, bed);
+                }
             }
         }
 
@@ -155,7 +165,7 @@ namespace Hospitality
             if(newBed.TryClaimBed(Pawn))
             {
                 bed = newBed;
-                //Log.Message($"{Pawn.LabelShort} proudly claims {newBed.Label}!");
+                //Log.Message($"{Pawn.LabelShort} proudly claims {newBed.Label}! bed: {bed.Owners().Select(p=>p?.Name.ToStringShort).ToCommaList()} pawn: {Pawn.ownership.OwnedBed?.Position}");
             }
         }
     }
