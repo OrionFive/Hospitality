@@ -40,19 +40,17 @@ namespace Hospitality
         {
             base.ExposeData();
             Scribe_Values.Look(ref rentalFee, "rentalFee");
-
-            // Remove owners that weren't properly cleared
-            if (Scribe.mode == LoadSaveMode.Saving)
-                foreach (var pawn in CompAssignableToPawn.AssignedPawnsForReading.ToArray())
-                {
-                    //Log.Message($"Bed at {Position} has owner {pawn?.NameShortColored}. Spawned = {pawn?.Spawned} Dead = {pawn?.Dead}");
-                    if (pawn == null || !pawn.Spawned || pawn.Dead) CompAssignableToPawn.TryUnassignPawn(pawn);
-                }
         }
 
         public override void TickLong()
         {
             UpdateStats();
+
+            // Remove owners that weren't properly cleared
+            foreach (var pawn in CompAssignableToPawn.AssignedPawnsForReading.ToArray())
+            {
+                if (pawn == null || !pawn.Spawned || pawn.Dead) CompAssignableToPawn.TryUnassignPawn(pawn);
+            }
         }
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
