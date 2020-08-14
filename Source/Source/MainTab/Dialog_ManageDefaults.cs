@@ -21,7 +21,9 @@ namespace Hospitality.MainTab
 
         public override void DoWindowContents(Rect inRect)
         {
-            Multiplayer.WatchBegin();
+            if (Multiplayer.IsRunning)
+                Multiplayer.WatchBegin();
+
             var listingStandard = new Listing_Standard {ColumnWidth = inRect.width};
             listingStandard.Begin(inRect);
 
@@ -52,7 +54,9 @@ namespace Hospitality.MainTab
             DialogUtility.CheckboxLabeled(listingStandard, "GuestsWelcome".Translate(), ref comp.guestsAreWelcome, rectGuestsAreWelcome, false, "GuestsWelcomeTooltip".Translate());
 
             listingStandard.End();
-            Multiplayer.WatchEnd();
+
+            if (Multiplayer.IsRunning)
+                Multiplayer.WatchEnd();
         }
     }
 }

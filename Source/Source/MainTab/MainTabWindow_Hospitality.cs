@@ -22,9 +22,13 @@ namespace Hospitality.MainTab
 
         public override void DoWindowContents(Rect rect)
         {
-            Multiplayer.WatchBegin();
+            if (Multiplayer.IsRunning)
+                Multiplayer.WatchBegin();
+
             base.DoWindowContents(rect);
-            Multiplayer.WatchEnd();
+
+            if (Multiplayer.IsRunning)
+                Multiplayer.WatchEnd();
         }
     }
 }
