@@ -4,5 +4,6 @@
     <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Hospitality\.git</exclude>
     <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Hospitality\Source\.idea</exclude>
     <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Hospitality\Source\.vs</exclude>
+    <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Hospitality\Source\packages</exclude>
   </Excluded>
 </Configuration>
