@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace Hospitality.MainTab
@@ -17,6 +18,13 @@ namespace Hospitality.MainTab
         {
             base.PostOpen();
             Find.World.renderer.wantedMode = WorldRenderMode.None;
+        }
+
+        public override void DoWindowContents(Rect rect)
+        {
+            Multiplayer.WatchBegin();
+            base.DoWindowContents(rect);
+            Multiplayer.WatchEnd();
         }
     }
 }
