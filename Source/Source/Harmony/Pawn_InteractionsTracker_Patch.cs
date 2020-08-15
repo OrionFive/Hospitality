@@ -49,10 +49,11 @@ namespace Hospitality.Harmony
                         var p1 = p;
                         if (
                             allDefsListForReading.TryRandomElementByWeight(
-                                x => x.Worker.RandomSelectionWeight(___pawn, p1), out var intDef))
+                                x => !CanInteractNowWith(___pawn, p, x) ? 0f : x.Worker.RandomSelectionWeight(___pawn, p), out var result))
                         {
-                            if (__instance.TryInteractWith(p, intDef))
+                            if (__instance.TryInteractWith(p, result))
                             {
+                                ___workingList.Clear();
                                 __result = true;
                                 return false;
                             }
@@ -60,6 +61,7 @@ namespace Hospitality.Harmony
                         }
                     }
                 }
+                ___workingList.Clear();
                 __result = false;
                 return false;
             }
@@ -69,14 +71,30 @@ namespace Hospitality.Harmony
                 return pawn?.Downed == false && pawn.RaceProps.Humanlike && pawn.relations != null && pawn.story?.traits != null;
             }
 
-            private static bool CanInteractNowWith(Pawn pawn, Pawn recipient) 
+            private static bool CanInteractNowWith(Pawn pawn, Pawn recipient,  InteractionDef interactionDef = null) 
             {
-                return recipient.Spawned
-                       && ((pawn.Position - recipient.Position).LengthHorizontalSquared <= 36.0
-                           && InteractionUtility.CanInitiateInteraction(pawn)
-                           && (InteractionUtility.CanReceiveInteraction(recipient)
-                           && pawn.CanReserve(recipient) && recipient.CanReserve(pawn) // Added
-                               && GenSight.LineOfSight(pawn.Position, recipient.Position, pawn.MapHeld, true)));
+                if (!recipient.Spawned)
+                {
+                    return false;
+                }
+                if (!InteractionUtility.IsGoodPositionForInteraction(pawn, recipient))
+                {
+                    return false;
+                }
+                if (!InteractionUtility.CanInitiateInteraction(pawn, interactionDef) || !InteractionUtility.CanReceiveInteraction(recipient, interactionDef))
+                {
+                    return false;
+                }
+                // Added
+                if (!pawn.CanReserve(recipient) || !recipient.CanReserve(pawn))
+                {
+                    return false;
+                }
+                if (!GenSight.LineOfSight(pawn.Position, recipient.Position, pawn.MapHeld, true))
+                {
+                    return false;
+                }
+                return true;
             }
 
             // Added to change InteractIntervalAbsoluteMin
