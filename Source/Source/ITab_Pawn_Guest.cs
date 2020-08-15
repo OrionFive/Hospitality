@@ -41,7 +41,9 @@ namespace Hospitality
 
         protected override void FillTab()
         {
-            Multiplayer.WatchBegin();
+            if (Multiplayer.IsRunning)
+                Multiplayer.WatchBegin();
+
             Text.Font = GameFont.Small;
             Rect rect = new Rect(0f, 20f, size.x, size.y - 20).ContractedBy(10f);
             listingStandard.Begin(rect);
@@ -56,7 +58,9 @@ namespace Hospitality
                 }
             }
             listingStandard.End();
-            Multiplayer.WatchEnd();
+
+            if (Multiplayer.IsRunning)
+                Multiplayer.WatchEnd();
         }
 
         private void FillTabTrader()
