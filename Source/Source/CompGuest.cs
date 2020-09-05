@@ -32,6 +32,8 @@ namespace Hospitality
         public Building_GuestBed bed;
         public int lastBedCheckTick;
 
+        private bool postLoaded;
+
         public void ResetForGuest(Lord lord)
         {
             boughtItems.Clear();
@@ -85,18 +87,20 @@ namespace Hospitality
             {
                 // Can't save lord (IExposable), so we just gotta find it each time
                 lord = Pawn.GetLord();
+
                 // Bed doesn't store owners
                 if (bed != null && !bed.Owners().Contains(Pawn))
                 {
-                    Log.Message($"Assigned {Pawn.NameShortColored} to bed {bed.Position}.");
+                    // Log.Message($"Assigned {Pawn.NameShortColored} to bed {bed.Position}.");
                     bed.CompAssignableToPawn.TryAssignPawn(Pawn);
                 }
 
                 if (bed != null && Pawn.ownership.OwnedBed != bed)
                 {
-                    Log.Message($"Assigned bed {bed.Position} to {Pawn.NameShortColored}.");
+                    // Log.Message($"Assigned bed {bed.Position} to {Pawn.NameShortColored}.");
                     AccessTools.Field(typeof(Pawn_Ownership), "intOwnedBed").SetValue(Pawn.ownership, bed);
                 }
+                postLoaded = true;
             }
         }
 
@@ -105,6 +109,9 @@ namespace Hospitality
         /// </summary>
         internal void ClearOwnership()
         {
+            // Pawn_Ownership will try to unclaim the bed if it postLoads before this component
+            if (!postLoaded) return;
+
             // Calling this method directly crashes the game (infinite loop, somehow). So here's a copy.
             Action<CompAssignableToPawn> TryUnassignPawn = comp => {
                 var assignedPawns = Traverse.Create(comp).Field<List<Pawn>>("assignedPawns").Value;
