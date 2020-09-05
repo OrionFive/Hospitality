@@ -44,21 +44,30 @@ namespace Hospitality
             listing.Gap(listing.verticalSpacing);
         }
 
-        public static void DrawRecruitButton(Rect rect, bool hasEnoughFriends, bool isRoyal, Pawn pawn)
+        public static void DrawRecruitButton(Rect rect, Pawn pawn, bool hasEnoughFriends, bool isRoyal, bool willOnlyJoinByForce)
         {
-            var disabled = !pawn.MayRecruitAtAll() || !pawn.MayRecruitRightNow();
-            if (hasEnoughFriends)
+            var disabled = !pawn.MayRecruitRightNow();
+            if (willOnlyJoinByForce && !isRoyal)
             {
+                // Not royal, has acidifier - can only force recruit
+                if (disabled) DrawButtonDisabled(txtRecruit, rect, txtCantRecruit);
+                else DrawButton(() => ITab_Pawn_Guest.RecruitDialog(pawn, true), txtForceRecruit, rect, txtForceRecruitTooltip);
+            }
+            else if (hasEnoughFriends && !willOnlyJoinByForce)
+            {
+                // Enough friends, royal or not - can recruit
                 if (disabled) DrawButtonDisabled(txtRecruit, rect, txtCantRecruit);
                 else DrawButton(() => ITab_Pawn_Guest.RecruitDialog(pawn, false), txtRecruit, rect, txtRecruitTooltip);
             }
             else if (!isRoyal)
             {
+                // Not enough friends, not royal - can force recruit
                 if (disabled) DrawButtonDisabled(txtRecruit, rect, txtCantRecruit);
                 else DrawButton(() => ITab_Pawn_Guest.RecruitDialog(pawn, true), txtForceRecruit, rect, txtForceRecruitTooltip);
             }
             else
             {
+                // Not enough friends, royal - can not recruit
                 DrawButtonDisabled(txtRecruit, rect, disabled ? txtCantRecruit : txtCantForce);
             }
         }

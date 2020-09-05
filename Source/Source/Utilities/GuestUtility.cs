@@ -224,7 +224,6 @@ namespace Hospitality
         public static bool MakeFriends(this Pawn guest)
         {
             var guestComp = guest.CompGuest();
-            if (!guestComp.mayRecruitAtAll) return false;
             return guestComp?.makeFriends == true;
         }
 
@@ -436,6 +435,11 @@ namespace Hospitality
 
             AngerFactionMembers(guest);
             RecruitingSuccess(guest, recruitPenalty);
+
+            if (guest.HasDeathAcidifier())
+            {
+                guest.TryTriggerDeathAcidifier();
+            }
         }
 
         private static void RecruitingSuccess(Pawn guest, int recruitPenalty)
@@ -961,13 +965,26 @@ namespace Hospitality
 
         private static readonly HediffDef hediffDeathAcidifier = DefDatabase<HediffDef>.GetNamedSilentFail("DeathAcidifier");
 
-        public static bool MayRecruitAtAll(this Pawn pawn)
+        public static bool HasDeathAcidifier(this Pawn pawn)
         {
-            // Guests with acidifier can't be recruited, unless they have a relationship
-            var tooValuableToRecruit = hediffDeathAcidifier != null 
-                               && pawn.health.hediffSet.HasHediff(hediffDeathAcidifier)
-                               && !RelationUtility.GetRelationInfo(pawn).hasRelationship;
-            return !tooValuableToRecruit;
+            // Guests with acidifier will trigger it when recruited
+            return hediffDeathAcidifier != null && pawn.health.hediffSet.HasHediff(hediffDeathAcidifier);
+        }
+
+        public static void TryTriggerDeathAcidifier(this Pawn pawn)
+        {
+            if (hediffDeathAcidifier != null)
+            {
+                var acidifier = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDeathAcidifier);
+                acidifier.Notify_PawnDied();
+                if(!pawn.Dead) acidifier.Notify_PawnKilled();
+            }
+        }
+
+        public static bool WillOnlyJoinByForce(this Pawn pawn)
+        {
+            // Has acidifier? Then needs force to join, unless has relationship
+            return HasDeathAcidifier(pawn) && !RelationUtility.GetRelationInfo(pawn).hasRelationship;
         }
 
         public static bool MayRecruitRightNow(this Pawn pawn)

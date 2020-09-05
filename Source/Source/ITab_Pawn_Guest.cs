@@ -20,7 +20,6 @@ namespace Hospitality
 
         protected static readonly Vector2 buttonSize = new Vector2(120f, 30f);
         private static Listing_Standard listingStandard = new Listing_Standard();
-        private static readonly Color DisabledOptionColor = new Color(0.5f, 0.5f, 0.5f);
 
         public ITab_Pawn_Guest()
         {
@@ -75,7 +74,7 @@ namespace Hospitality
             listingStandard.ColumnWidth = size.x - 20;
 
             var comp = SelPawn.CompGuest();
-            var mayRecruitAtAll = comp.mayRecruitAtAll;
+            var willOnlyJoinByForce = comp.WillOnlyJoinByForce;
 
             Multiplayer.guestFields?.Watch(comp);
 
@@ -99,10 +98,7 @@ namespace Hospitality
                 DialogUtility.CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, txtImproveTooltip);
                 
                 var rectMakeFriends = listingStandard.GetRect(Text.LineHeight);
-                if (mayRecruitAtAll)
-                {
-                    DialogUtility.CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref tryMakeFriends, rectMakeFriends, false, txtMakeFriendsTooltip);
-                }
+                DialogUtility.CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref tryMakeFriends, rectMakeFriends, false, txtMakeFriendsTooltip);
 
                 comp.entertain = tryImprove;
                 comp.makeFriends = tryMakeFriends;
@@ -115,7 +111,7 @@ namespace Hospitality
                 DialogUtility.DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
 
                 var rectRecruitButton = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
-                DialogUtility.DrawRecruitButton(rectRecruitButton, friends >= friendsRequired, isRoyal, SelPawn);
+                DialogUtility.DrawRecruitButton(rectRecruitButton, SelPawn, friends >= friendsRequired, isRoyal, willOnlyJoinByForce);
 
                 // Highlight defaults
                 if (Mouse.IsOver(rectSetDefault))
@@ -125,23 +121,19 @@ namespace Hospitality
                     Widgets.DrawHighlight(rectBuy);
                     Widgets.DrawHighlight(rectBuyLabel);
                     Widgets.DrawHighlight(rectImproveRelationship);
-                    if(mayRecruitAtAll)
-                        Widgets.DrawHighlight(rectMakeFriends);
+                    Widgets.DrawHighlight(rectMakeFriends);
                 }
             }
 
             if (SelPawn.Faction != null)
             {
-                if (mayRecruitAtAll)
-                {
-                    listingStandard.Label(txtRecruitmentPenalty.Translate(SelPawn.RecruitPenalty().ToString("##0"), SelPawn.ForcedRecruitPenalty().ToString("##0")));
-                }
+                listingStandard.Label(txtRecruitmentPenalty.Translate(SelPawn.RecruitPenalty().ToString("##0"), SelPawn.ForcedRecruitPenalty().ToString("##0")));
                 listingStandard.Label(txtFactionGoodwill + ": " + SelPawn.Faction.PlayerGoodwill.ToString("##0"));
             }
 
             listingStandard.Gap();
 
-            if (mayRecruitAtAll)
+            if (!willOnlyJoinByForce)
             {
                 if (isRoyal)
                     listingStandard.Label($"{"SeniorityRequirement".Translate(friends / 100, friendsRequired / 100)}:");
@@ -151,9 +143,13 @@ namespace Hospitality
                 listingStandard.Slider(Mathf.Clamp(friendPercentage, 0, 100), 0, 100);
             }
 
-            if (!mayRecruitAtAll)
+            if (isRoyal && willOnlyJoinByForce)
             {
-                listingStandard.Label(ColoredText.StripTags("CanNeverBeRecruited".Translate().AdjustedFor(SelPawn)).Colorize(Color.red));
+                listingStandard.Label(ColoredText.StripTags("CanNeverRecruit".Translate().AdjustedFor(SelPawn)).Colorize(Color.red));
+            }
+            if (willOnlyJoinByForce)
+            {
+                listingStandard.Label(ColoredText.StripTags("OnlyJoinsByForce".Translate().AdjustedFor(SelPawn)).Colorize(Color.red));
             }
             else if (friendPercentage <= 99)
             {
@@ -195,12 +191,25 @@ namespace Hospitality
         public static void RecruitDialog(Pawn pawn, bool forced)
         {
             var penalty = forced ? pawn.ForcedRecruitPenalty() : pawn.RecruitPenalty();
+            var hostileWarning = GetHostileWarning(pawn, penalty);
+            var acidifierWarning = GetAcidifierWarning(pawn);
+
+            var text = (forced ? "ForceRecruitQuestion" : "RecruitQuestion").Translate(penalty.ToString("##0"), hostileWarning, acidifierWarning, new NamedArgument(pawn, "PAWN"));
+            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => GuestUtility.Recruit(pawn, penalty, forced)));
+        }
+
+        private static string GetHostileWarning(Pawn pawn, int penalty)
+        {
             int finalGoodwill = Mathf.Clamp(pawn.Faction.PlayerGoodwill - penalty, -100, 100);
 
-            var warning = finalGoodwill <= DiplomacyTuning.BecomeHostileThreshold ? "ForceRecruitWarning".Translate() : TaggedString.Empty;
+            var text = finalGoodwill <= DiplomacyTuning.BecomeHostileThreshold ? "ForceRecruitWarning".Translate() : TaggedString.Empty;
+            return ColoredText.Colorize(text, ColoredText.FactionColor_Hostile);
+        }
 
-            var text = (forced ? "ForceRecruitQuestion" : "RecruitQuestion").Translate(penalty.ToString("##0"), ColoredText.Colorize(warning, ColoredText.FactionColor_Hostile), new NamedArgument(pawn, "PAWN"));
-            Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(text, () => GuestUtility.Recruit(pawn, penalty, forced)));
+        private static string GetAcidifierWarning(Pawn pawn)
+        {
+            var text = pawn.HasDeathAcidifier() ? "ForceAcidifierWarning".Translate(new NamedArgument(pawn, "PAWN")) : TaggedString.Empty;
+            return ColoredText.Colorize(text, ColoredText.FactionColor_Hostile);
         }
 
         private static void SendHomeDialog(Lord lord)

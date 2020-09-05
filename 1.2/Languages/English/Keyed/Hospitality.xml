@@ -68,7 +68,7 @@
   <AreaToStayTooltip>This is where guests may sleep and hang out.</AreaToStayTooltip>
   <AreaToBuyTooltip>Guests may buy items in this zone. Has to be inside the area of accommodation.</AreaToBuyTooltip>
   <FriendsRequirement>Enough friends to recruit: {0}/{1}</FriendsRequirement>
-  <SeniorityRequirement>Enough royal friends to recruit: {0}/{1}</SeniorityRequirement>
+  <SeniorityRequirement>Enough royal friend ranks to recruit: {0}/{1}</SeniorityRequirement>
   <RecruitmentPenalty>Relationship damage when recruited: {0} ({1} forced)</RecruitmentPenalty>
   <ImproveRelationship>Try to entertain</ImproveRelationship>
   <MakeFriends>Try to create friendships</MakeFriends>
@@ -83,11 +83,13 @@
   <CantForceRecruit>This guest can not be recruited by force.</CantForceRecruit>
   <RecruitQuestion>You can recruit {PAWN_nameDef} now.\n\nBecause {PAWN_pronoun} has enough friends, this only costs you {0} points of relationship with {PAWN_possessive} faction.{1}\n\n\nAre you sure you want to recruit {PAWN_objective}?</RecruitQuestion>
   <ForceRecruit>Force recruit...</ForceRecruit>
-  <ForceRecruitQuestion>You can recruit {PAWN_nameDef} immediately.\n\nBecause {PAWN_pronoun} doesn't have enough friends yet to join you on {PAWN_possessive} own accord, this costs you {0} points of relationship with {PAWN_possessive} faction. This will be less if {PAWN_pronoun} has more friends. {1}\n\n\nAre you sure you don't want to wait?</ForceRecruitQuestion>
+  <ForceRecruitQuestion>You can recruit {PAWN_nameDef} immediately.\n\nBecause {PAWN_pronoun} doesn't have enough friends yet to join you on {PAWN_possessive} own accord, this costs you {0} points of relationship with {PAWN_possessive} faction. This will be less if {PAWN_pronoun} has more friends. {1}{2}\n\n\nAre you sure?</ForceRecruitQuestion>
   <ForceRecruitWarning>\n\nThis will cause them to become hostile immediately.</ForceRecruitWarning>
+  <ForceAcidifierWarning>\n\nThey will trigger {PAWN_possessive} death acidifier.</ForceAcidifierWarning>
   <NotEnoughFriends>[PAWN_nameDef] does not like enough of your colonists (opinion > {0}).</NotEnoughFriends>
   <CanNowBeRecruited>[PAWN_nameDef] can now be recruited.</CanNowBeRecruited>
-  <CanNeverBeRecruited>[PAWN_nameDef] can not be recruited.</CantForceRecruit>
+  <OnlyJoinsByForce>[PAWN_nameDef] will only join by force.</OnlyJoinsByForce>
+  <CanNeverRecruit>[PAWN_nameDef] can not be recruited.</CanNeverRecruit>
   <IsATrader>[PAWN_nameDef] is part of a trading caravan and not a guest.</IsATrader>
   <ImproveTooltip>Your diplomats will try to temporarily improve the guest's mood. Good diplomats are more effective at this. Bad diplomats can anger the guest.</ImproveTooltip>
   <TryRecruitTooltip>Your diplomats will try to befriend the guest with your other colonists. Good diplomats are more effective at this. Bad diplomats can anger the guest. When the guest has enough friends, he will join your colony.</TryRecruitTooltip>
