@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -296,6 +297,7 @@ namespace Hospitality
             }
         }
 
+        [NotNull]
         protected IEnumerable<Pawn> GetPawnsToSpawn(IncidentParms parms)
         {
             var totalAmount = GetGroupSize();

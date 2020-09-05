@@ -147,10 +147,12 @@ namespace Hospitality
         private static bool ValidGuest(Pawn pawn, Faction faction)
         {
             var validGuest = !pawn.Discarded && !pawn.Dead && !pawn.Spawned && !pawn.NonHumanlikeOrWildMan() && !pawn.Downed && pawn.Faction == faction;
+            if (!validGuest) return false;
             // Leader only comes when relations are good
             if (faction.leader == pawn && faction.PlayerGoodwill < 80) return false;
+            if (QuestUtility.IsReservedByQuestOrQuestBeingGenerated(pawn)) return false;
 
-            return validGuest;
+            return true;
         }
 
         public static IEnumerable<Pawn> RandomlyUsingTitleAsChance(this IEnumerable<Pawn> pawns)
