@@ -34,7 +34,7 @@ namespace Hospitality
             }
             foreach (var bedDef in DefDatabase<ThingDef>.AllDefsListForReading.Where(d=>d.thingClass != null && d.thingClass.IsSubclassOf(typeof(Building_Bed))))
             {
-                if (!bedDef.HasComp(typeof(CompAssignableToPawn_Bed)))
+                if (!bedDef.HasAssignableCompFrom(typeof(CompAssignableToPawn_Bed)))
                 {
                     LogMisconfiguration(bedDef, $"ThingDef {bedDef.defName} must have a 'CompAssignableToPawn_Bed' in comps.");
                 }
