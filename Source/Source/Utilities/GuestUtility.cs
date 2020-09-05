@@ -224,6 +224,7 @@ namespace Hospitality
         public static bool MakeFriends(this Pawn guest)
         {
             var guestComp = guest.CompGuest();
+            if (!guestComp.mayRecruitAtAll) return false;
             return guestComp?.makeFriends == true;
         }
 

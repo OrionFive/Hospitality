@@ -15,6 +15,7 @@ namespace Hospitality
 
         public bool entertain;
         public bool makeFriends;
+        public bool mayRecruitAtAll;
 
         public bool arrived;
         public bool sentAway;
@@ -131,6 +132,7 @@ namespace Hospitality
         {
             base.PostSpawnSetup(respawningAfterLoad);
             lord = Pawn.GetLord();
+            mayRecruitAtAll = Pawn.MayRecruitAtAll();
         }
 
         public void Arrive()

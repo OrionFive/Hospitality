@@ -1,10 +1,7 @@
 using RimWorld;
-using System;
-using Unity.Collections;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
-using Verse.Sound;
 
 namespace Hospitality
 {
@@ -14,14 +11,9 @@ namespace Hospitality
         private static readonly string txtFactionGoodwill = "FactionGoodwill".Translate();
         private static readonly string txtHospitality = "Hospitality".Translate();
         private static readonly string txtMakeDefault = "MakeDefault".Translate();
-        private static readonly string txtForceRecruit = "ForceRecruit".Translate();
-        private static readonly string txtRecruit = "Recruit".Translate();
-        private static readonly string txtCantRecruit = "CantRecruit".Translate();
         private static readonly string txtSendAway = "SendAway".Translate();
         private static readonly string txtSendAwayQuestion = "SendAwayQuestion";
         private static readonly string txtMakeDefaultTooltip = "MakeDefaultTooltip".Translate();
-        private static readonly string txtRecruitTooltip = "RecruitTooltip".Translate();
-        private static readonly string txtForceRecruitTooltip = "ForceRecruitTooltip".Translate();
         private static readonly string txtSendAwayTooltip = "SendAwayTooltip".Translate();
         internal static readonly string txtImproveTooltip = "ImproveTooltip".Translate();
         internal static readonly string txtMakeFriendsTooltip = "TryRecruitTooltip".Translate();
@@ -77,13 +69,13 @@ namespace Hospitality
             var friendsRequired = isRoyal ? RequiredSeniority : RequiredFriends;
             var friendPercentage = 100f*friends/friendsRequired;
 
-            
             var tryImprove = SelPawn.ImproveRelationship();
             var tryMakeFriends = SelPawn.MakeFriends();
 
             listingStandard.ColumnWidth = size.x - 20;
 
             var comp = SelPawn.CompGuest();
+            var mayRecruitAtAll = comp.mayRecruitAtAll;
 
             Multiplayer.guestFields?.Watch(comp);
 
@@ -105,8 +97,12 @@ namespace Hospitality
 
                 var rectImproveRelationship = listingStandard.GetRect(Text.LineHeight);
                 DialogUtility.CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, txtImproveTooltip);
+                
                 var rectMakeFriends = listingStandard.GetRect(Text.LineHeight);
-                DialogUtility.CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref tryMakeFriends, rectMakeFriends, false, txtMakeFriendsTooltip);
+                if (mayRecruitAtAll)
+                {
+                    DialogUtility.CheckboxLabeled(listingStandard, "MakeFriends".Translate(), ref tryMakeFriends, rectMakeFriends, false, txtMakeFriendsTooltip);
+                }
 
                 comp.entertain = tryImprove;
                 comp.makeFriends = tryMakeFriends;
@@ -115,26 +111,11 @@ namespace Hospitality
 
                 var rectSetDefault = new Rect(rect.xMax - buttonSize.x - 10, 160, buttonSize.x, buttonSize.y);
                 var rectSendHome = new Rect(rect.xMin - 10, 160, buttonSize.x, buttonSize.y);
-                DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, rectSetDefault, txtMakeDefaultTooltip);
-                DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
+                DialogUtility.DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, rectSetDefault, txtMakeDefaultTooltip);
+                DialogUtility.DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
 
                 var rectRecruitButton = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
-                if (friends >= friendsRequired)
-                {
-                    var disabled = !SelPawn.MayRecruitAtAll() || !SelPawn.MayRecruitRightNow();
-                    if(disabled)
-                        DrawButtonDisabled(txtRecruit, rectRecruitButton, txtCantRecruit);
-                    else
-                        DrawButton(() => RecruitDialog(SelPawn, false), txtRecruit, rectRecruitButton, txtRecruitTooltip);
-                }
-                else if (!isRoyal)
-                {
-                    var disabled = !SelPawn.MayRecruitAtAll() || !SelPawn.MayRecruitRightNow();
-                    if(disabled)
-                        DrawButtonDisabled(txtRecruit, rectRecruitButton, txtCantRecruit);
-                    else
-                        DrawButton(() => RecruitDialog(SelPawn, true), txtForceRecruit, rectRecruitButton, txtForceRecruitTooltip);
-                }
+                DialogUtility.DrawRecruitButton(rectRecruitButton, friends >= friendsRequired, isRoyal, SelPawn);
 
                 // Highlight defaults
                 if (Mouse.IsOver(rectSetDefault))
@@ -144,25 +125,37 @@ namespace Hospitality
                     Widgets.DrawHighlight(rectBuy);
                     Widgets.DrawHighlight(rectBuyLabel);
                     Widgets.DrawHighlight(rectImproveRelationship);
-                    Widgets.DrawHighlight(rectMakeFriends);
+                    if(mayRecruitAtAll)
+                        Widgets.DrawHighlight(rectMakeFriends);
                 }
             }
 
             if (SelPawn.Faction != null)
             {
-                listingStandard.Label(txtRecruitmentPenalty.Translate(SelPawn.RecruitPenalty().ToString("##0"), SelPawn.ForcedRecruitPenalty().ToString("##0")));
+                if (mayRecruitAtAll)
+                {
+                    listingStandard.Label(txtRecruitmentPenalty.Translate(SelPawn.RecruitPenalty().ToString("##0"), SelPawn.ForcedRecruitPenalty().ToString("##0")));
+                }
                 listingStandard.Label(txtFactionGoodwill + ": " + SelPawn.Faction.PlayerGoodwill.ToString("##0"));
             }
 
             listingStandard.Gap();
 
-            if (isRoyal)
-                listingStandard.Label($"{"SeniorityRequirement".Translate(friends / 100, friendsRequired / 100)}:");
-            else
-                listingStandard.Label($"{"FriendsRequirement".Translate(friends, friendsRequired)}:");
+            if (mayRecruitAtAll)
+            {
+                if (isRoyal)
+                    listingStandard.Label($"{"SeniorityRequirement".Translate(friends / 100, friendsRequired / 100)}:");
+                else
+                    listingStandard.Label($"{"FriendsRequirement".Translate(friends, friendsRequired)}:");
 
-            listingStandard.Slider(Mathf.Clamp(friendPercentage, 0, 100), 0, 100);
-            if (friendPercentage <= 99)
+                listingStandard.Slider(Mathf.Clamp(friendPercentage, 0, 100), 0, 100);
+            }
+
+            if (!mayRecruitAtAll)
+            {
+                listingStandard.Label(ColoredText.StripTags("CanNeverBeRecruited".Translate().AdjustedFor(SelPawn)).Colorize(Color.red));
+            }
+            else if (friendPercentage <= 99)
             {
                 // Remove color from AdjustedFor and then Colorize
                 listingStandard.Label(ColoredText.StripTags("NotEnoughFriends".Translate(SelPawn.GetMinRecruitOpinion()).AdjustedFor(SelPawn)).Colorize(Color.red));
@@ -171,7 +164,6 @@ namespace Hospitality
             {
                 listingStandard.Label("CanNowBeRecruited".Translate().AdjustedFor(SelPawn));
             }
-
 
             // Will only have score while "checked in", becomes 0 again when guest leaves
             if (SelPawn.GetVisitScore(out var score))
@@ -197,36 +189,6 @@ namespace Hospitality
             foreach (var pawn in SelPawn.GetLord().ownedPawns)
             {
                 pawn.CompGuest().ShoppingArea = area;
-            }
-        }
-
-        private static void DrawButton(Action action, string text, Rect rect, string tooltip = null)
-        {
-            if (!tooltip.NullOrEmpty())
-            {
-                TooltipHandler.TipRegion(rect, tooltip);
-            }
-
-            Color textColor = Widgets.NormalOptionColor;
-            if (Widgets.ButtonText(rect, text, true, true, textColor))
-            {
-                SoundDefOf.Designate_DragStandard_Changed.PlayOneShotOnCamera();
-
-                action();
-            }
-        }
-
-        private static void DrawButtonDisabled(string text, Rect rect, string textDenied = null, string tooltip = null)
-        {
-            if (!tooltip.NullOrEmpty())
-            {
-                TooltipHandler.TipRegion(rect, tooltip);
-            }
-
-            Color textColor = DisabledOptionColor;
-            if(Widgets.ButtonText(rect, text, true, false, textColor, false))
-            {
-                Messages.Message(tooltip, MessageTypeDefOf.RejectInput);
             }
         }
 
