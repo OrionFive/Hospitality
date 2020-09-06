@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Verse;
 using Verse.AI;
 
 namespace Hospitality.Harmony
@@ -12,9 +13,9 @@ namespace Hospitality.Harmony
         public class DriverTick
         {
             [HarmonyPrefix]
-            public static void Prefix(JobDriver __instance)
+            public static void Prefix(Pawn ___pawn)
             {
-                ForbidUtility_Patch.currentToilWorker = __instance.pawn;
+                ForbidUtility_Patch.currentToilWorker = ___pawn;
             }
         }
     }

@@ -62,7 +62,7 @@ namespace Hospitality
         {
             if (travelDaysCache.TryGetValue(faction, out var minTicks)) return minTicks / (float)GenDate.TicksPerDay;
 
-            minTicks = Int32.MaxValue;
+            minTicks = int.MaxValue;
             foreach (var settlement in Find.WorldObjects.SettlementBases)
             {
                 if (settlement.Faction != faction) continue;
@@ -72,7 +72,7 @@ namespace Hospitality
                 if (travelTicks <= 0) continue;
                 if (travelTicks < minTicks) minTicks = travelTicks;
             }
-            if (minTicks == Int32.MaxValue) return NoBasesLeft;
+            if (minTicks == int.MaxValue) return NoBasesLeft;
 
             travelDaysCache.Add(faction, minTicks);
 
