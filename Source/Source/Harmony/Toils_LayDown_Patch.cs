@@ -40,29 +40,31 @@ namespace Hospitality.Harmony
                 {
                     actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.SleptInHeat);
                 }
-                if (building_Bed != null && AddedBedIsOwned(actor, building_Bed) && !building_Bed.ForPrisoners && !actor.story.traits.HasTrait(TraitDefOf.Ascetic))
+
+                if (building_Bed == null || !AddedBedIsOwned(actor, building_Bed) || building_Bed.ForPrisoners || actor.story.traits.HasTrait(TraitDefOf.Ascetic))
                 {
-                    ThoughtDef thoughtDef = null;
-                    // ADDED:
-                    if (building_Bed.GetRoom().Role == BedUtility.roleDefGuestRoom)
+                    return false;
+                }
+                ThoughtDef thoughtDef = null;
+                // ADDED:
+                if (building_Bed.GetRoom().Role == BedUtility.roleDefGuestRoom)
+                {
+                    thoughtDef = building_Bed.GetRoom().OnlyOneBed() ? ThoughtDefOf.SleptInBedroom : ThoughtDefOf.SleptInBarracks;
+                } ////
+                else if (building_Bed.GetRoom().Role == RoomRoleDefOf.Bedroom)
+                {
+                    thoughtDef = ThoughtDefOf.SleptInBedroom;
+                }
+                else if (building_Bed.GetRoom().Role == RoomRoleDefOf.Barracks)
+                {
+                    thoughtDef = ThoughtDefOf.SleptInBarracks;
+                }
+                if (thoughtDef != null)
+                {
+                    int scoreStageIndex = RoomStatDefOf.Impressiveness.GetScoreStageIndex(building_Bed.GetRoom().GetStat(RoomStatDefOf.Impressiveness));
+                    if (thoughtDef.stages[scoreStageIndex] != null)
                     {
-                        thoughtDef = building_Bed.GetRoom().OnlyOneBed() ? ThoughtDefOf.SleptInBedroom : ThoughtDefOf.SleptInBarracks;
-                    } ////
-                    else if (building_Bed.GetRoom().Role == RoomRoleDefOf.Bedroom)
-                    {
-                        thoughtDef = ThoughtDefOf.SleptInBedroom;
-                    }
-                    else if (building_Bed.GetRoom().Role == RoomRoleDefOf.Barracks)
-                    {
-                        thoughtDef = ThoughtDefOf.SleptInBarracks;
-                    }
-                    if (thoughtDef != null)
-                    {
-                        int scoreStageIndex = RoomStatDefOf.Impressiveness.GetScoreStageIndex(building_Bed.GetRoom().GetStat(RoomStatDefOf.Impressiveness));
-                        if (thoughtDef.stages[scoreStageIndex] != null)
-                        {
-                            actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(thoughtDef, scoreStageIndex));
-                        }
+                        actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(thoughtDef, scoreStageIndex));
                     }
                 }
                 return false;
