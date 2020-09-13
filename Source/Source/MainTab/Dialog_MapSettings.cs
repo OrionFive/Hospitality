@@ -3,11 +3,11 @@ using Verse;
 
 namespace Hospitality.MainTab
 {
-    public class Dialog_ManageDefaults : Window
+    public class Dialog_MapSettings : Window
     {
         private Map map;
 
-        public Dialog_ManageDefaults(Map map)
+        public Dialog_MapSettings(Map map)
         {
             this.map = map;
             forcePause = true;

@@ -104,7 +104,7 @@
     <Compile Include="Harmony\Room_Patch.cs" />
     <Compile Include="Harmony\WorldPawns_Patch.cs" />
     <Compile Include="IncidentWorker_VisitorGroupSelectFaction.cs" />
-    <Compile Include="MainTab\Dialog_ManageDefaults.cs" />
+    <Compile Include="MainTab\Dialog_MapSettings.cs" />
     <Compile Include="MainTab\MainTabUtility.cs" />
     <Compile Include="TransitionAction_MessageDebug.cs" />
     <Compile Include="TransitionAction_SendAway.cs" />

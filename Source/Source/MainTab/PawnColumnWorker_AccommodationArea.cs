@@ -21,9 +21,9 @@ namespace Hospitality.MainTab
         {
             rect.width -= 10;
             rect.x += 5;
-            if (Widgets.ButtonText(rect, "ManageDefaults".Translate(), true, false))
+            if (Widgets.ButtonText(rect, "MapSettings".Translate(), true, false))
             {
-                Find.WindowStack.Add(new Dialog_ManageDefaults(Find.CurrentMap));
+                Find.WindowStack.Add(new Dialog_MapSettings(Find.CurrentMap));
             }
         }
     }
