@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using RimWorld;
+using System.Reflection;
+using System.Reflection.Emit;
 using Verse;
 
 namespace Hospitality.Harmony
@@ -12,28 +16,51 @@ namespace Hospitality.Harmony
         [HarmonyPatch(typeof(ForbidUtility), nameof(ForbidUtility.CaresAboutForbidden))]
         public class CaresAboutForbidden
         {
-            [HarmonyPrefix]
-            public static bool Replacement(ref bool __result, Pawn pawn, bool cellTarget)
-            {
-                // I have split up the original check to make some sense of it. Still doesn't make any sense.
-                __result = CrazyRimWorldCheck(pawn) && !pawn.InMentalState && (!cellTarget || !ThinkNode_ConditionalShouldFollowMaster.ShouldFollowMaster(pawn));
-                return false;
-            }
+            private static MethodInfo get_Map = AccessTools.Method(typeof(Thing), "get_Map");
+            private static MethodInfo get_IsPlayerHome = AccessTools.Method(typeof(Map), "get_IsPlayerHome");
 
-            private static bool CrazyRimWorldCheck(Pawn pawn)
+            /*
+            IL_001D: ldarg.0
+            IL_001E: callvirt  instance class Verse.Map Verse.Thing::get_Map()
+            IL_0023: callvirt  instance bool Verse.Map::get_IsPlayerHome()
+            IL_0028: brtrue.s  IL_0059 
+            */
+            
+            [HarmonyTranspiler]
+            public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> source)
             {
-                // Guests need this in PlayerHome
-                return (pawn.HostFaction == null || pawn.HostFaction == Faction.OfPlayer && pawn.Spawned /*&& !pawn.Map.IsPlayerHome*/ && NotInPrison(pawn) && NotFleeingPrisoner(pawn));
-            }
+                var list = source.ToList();
+                int idx = 0;
 
-            private static bool NotFleeingPrisoner(Pawn pawn)
-            {
-                return !pawn.IsPrisoner || pawn.guest.PrisonerIsSecure;
-            }
+                for (int i = 0; i < list.Count - 4; i++)
+                {
+                    var inst = list[i];
 
-            private static bool NotInPrison(Pawn pawn)
-            {
-                return pawn.GetRoom() == null || !pawn.GetRoom().isPrisonCell;
+                    if (inst.opcode != OpCodes.Ldarg_0) continue;
+
+                    // Need to make sure that our next two instructions are calls
+                    var firstMethod = list[i + 1];
+                    var secondMethod = list[i + 2];
+
+                    if (firstMethod.opcode != OpCodes.Callvirt || secondMethod.opcode != OpCodes.Callvirt) continue;
+
+                    // Make sure the following opcode is the branch we expect
+                    var branch = list[i + 3];
+
+                    if (branch.opcode != OpCodes.Brtrue_S) continue;
+
+                    // Make sure our methods are calling the right things
+
+                    if (firstMethod.operand as MethodInfo != get_Map) continue;
+                    if (secondMethod.operand as MethodInfo != get_IsPlayerHome) continue;
+
+                    idx = i;
+                    break;
+                }
+
+                list.RemoveRange(idx, 4);
+
+                return list;
             }
         }
 
