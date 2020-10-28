@@ -12,7 +12,7 @@ namespace Hospitality
             return Settings.maxGuestGroupSize;
         }
 
-        protected override bool CanFireNowSub(IncidentParms parms)
+        public override bool CanFireNowSub(IncidentParms parms)
         {
             return false;
         }

@@ -6,7 +6,7 @@ namespace Hospitality
 {
     public class IncidentWorker_HappyGuestJoins : IncidentWorker
     {
-        protected override bool CanFireNowSub(IncidentParms parms)
+        public override bool CanFireNowSub(IncidentParms parms)
         {
             if (!base.CanFireNowSub(parms)) return false;
 
@@ -23,7 +23,7 @@ namespace Hospitality
             return  pawn.GetVisitScore(out var score) && score >= 0.9f;
         }
 
-        protected override bool TryExecuteWorker(IncidentParms parms)
+        public override bool TryExecuteWorker(IncidentParms parms)
         {
             var map = (Map) parms.target;
 

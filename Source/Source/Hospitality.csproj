@@ -49,12 +49,12 @@
     <Reference Include="0MultiplayerAPI">
       <HintPath>..\packages\RimWorld.MultiplayerAPI.0.2.0\lib\net472\0MultiplayerAPI.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp_publicized">
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HugsLib">

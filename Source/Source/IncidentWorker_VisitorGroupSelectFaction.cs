@@ -9,12 +9,12 @@ namespace Hospitality
     /// </summary>
     public class IncidentWorker_VisitorGroupSelectFaction : IncidentWorker_VisitorGroup
     {
-        protected override bool CanFireNowSub(IncidentParms parms)
+        public override bool CanFireNowSub(IncidentParms parms)
         {
             return false;
         }
 
-        protected override bool TryExecuteWorker(IncidentParms parms)
+        public override bool TryExecuteWorker(IncidentParms parms)
         {
             var list = new List<DebugMenuOption>();
             foreach (var faction in Find.FactionManager.AllFactions)

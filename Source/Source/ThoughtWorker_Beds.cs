@@ -10,7 +10,7 @@ namespace Hospitality
     /// </summary>
     public class ThoughtWorker_Beds : ThoughtWorker
     {
-        protected override ThoughtState CurrentStateInternal(Pawn pawn)
+        public override ThoughtState CurrentStateInternal(Pawn pawn)
         {
             try
             {

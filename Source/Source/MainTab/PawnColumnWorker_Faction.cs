@@ -25,7 +25,7 @@ namespace Hospitality.MainTab
             base.DoCell(rect, pawn, table);
         }
 
-        protected override string GetTextFor(Pawn pawn)
+        public override string GetTextFor(Pawn pawn)
         {
             if (pawn.Faction == null) return string.Empty;
             return pawn.Faction.Name;

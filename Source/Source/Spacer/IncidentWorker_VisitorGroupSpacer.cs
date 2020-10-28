@@ -8,7 +8,7 @@ namespace Hospitality.Spacer
     {
         protected override float ChanceToKnowEachPawn => 0.15f;
 
-        protected override bool CanFireNowSub(IncidentParms parms)
+        public override bool CanFireNowSub(IncidentParms parms)
         {
             return false; // TODO: Remove when ready for random events
         }

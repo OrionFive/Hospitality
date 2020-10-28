@@ -9,7 +9,7 @@ namespace Hospitality
     /// </summary>
     public class ThoughtWorker_CantAffordBed : ThoughtWorker
     {
-        protected override ThoughtState CurrentStateInternal(Pawn pawn)
+        public override ThoughtState CurrentStateInternal(Pawn pawn)
         {
             if (pawn == null) return ThoughtState.Inactive;
             if (pawn.thingIDNumber == 0) return ThoughtState.Inactive; // What do you know!!!
