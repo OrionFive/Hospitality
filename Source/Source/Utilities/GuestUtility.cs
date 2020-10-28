@@ -84,7 +84,10 @@ namespace Hospitality
 
         public static bool IsArrivedGuest(this Pawn pawn, bool makeValidPawnCheck = true)
         {
-            return IsGuestInternal(pawn, true, makeValidPawnCheck);
+            if (pawn == null || pawn.mapIndexOrState < 0) return false;
+            if (GuestCacher.CachedComponents[pawn.mapIndexOrState].presentGuests.Count == 0) return false;
+
+            return GuestCacher.CachedComponents[pawn.mapIndexOrState].presentGuests.Contains(pawn);
         }
 
         public static bool IsGuest(this Pawn pawn, bool makeValidPawnCheck = true)

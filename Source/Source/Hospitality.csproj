@@ -154,6 +154,7 @@
     <Compile Include="Harmony\WorkGiver_HunterHunt_Patch.cs" />
     <Compile Include="IncidentWorker_HappyGuestJoins.cs" />
     <Compile Include="IncidentWorker_VisitorGroupMax.cs" />
+    <Compile Include="Utilities\GuestCacher.cs" />
     <Compile Include="Utilities\ItemUtility.cs" />
     <Compile Include="JobDriver_ClaimBed.cs" />
     <Compile Include="JobGiver_ClaimBed.cs" />

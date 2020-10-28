@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -21,7 +22,8 @@ namespace Hospitality
         private int nextGuestListCheck;
 
         public List<Lord> PresentLords { get; } = new List<Lord>();
-        public IEnumerable<Pawn> PresentGuests => PresentLords.SelectMany(lord => lord.ownedPawns);
+        public HashSet<Pawn> presentGuests = new HashSet<Pawn>();
+        public IEnumerable<Pawn> PresentGuests => presentGuests;
 
         public override void ExposeData()
         {
@@ -38,33 +40,46 @@ namespace Hospitality
         }
 
         [UsedImplicitly]
-        public Hospitality_MapComponent(Map map) : base(map) {}
-
-        public Hospitality_MapComponent(bool forReal, Map map) : base(map)
+        public Hospitality_MapComponent(Map map) : base(map)
         {
-            // Multi-Threading killed the elegant solution
-            if (!forReal) return;
-
             map.components.Add(this);
             defaultAreaRestriction = map.areaManager.Home;
             
             RefreshGuestListTotal();
         }
 
+        public override void FinalizeInit()
+        {
+            GuestCacher.CachedComponents ??= new Hospitality_MapComponent[6];
+
+            if (GuestCacher.CachedComponents.Length < Find.Maps.Count)
+            {
+                Array.Resize(ref GuestCacher.CachedComponents, Find.Maps.Count + 6); // This does Array.Copy for us.
+            }   
+
+            GuestCacher.CachedComponents[this.map.Index] = this;
+        }
+
         public void RefreshGuestListTotal()
         {
             PresentLords.Clear();
             PresentLords.AddRange(map.lordManager.lords.Where(l => l.CurLordToil?.GetType() == typeof(LordToil_VisitPoint)));
+
+            presentGuests = PresentLords.SelectMany(l => l.ownedPawns).ToHashSet();
         }
 
         public void OnLordArrived(Lord lord)
         {
             PresentLords.AddDistinct(lord);
+
+            presentGuests = PresentLords.SelectMany(l => l.ownedPawns).ToHashSet();
         }
 
         public void OnLordLeft(Lord lord)
         {
             PresentLords.Remove(lord);
+
+            presentGuests = PresentLords.SelectMany(l => l.ownedPawns).ToHashSet();
         }
 
         public override void MapComponentTick()
@@ -72,7 +87,7 @@ namespace Hospitality
             base.MapComponentTick();
 
             if (incidentQueue == null) incidentQueue = new IncidentQueue();
-            if(incidentQueue.Count <= 1) GenericUtility.FillIncidentQueue(map);
+            if (incidentQueue.Count <= 1) GenericUtility.FillIncidentQueue(map);
             incidentQueue.IncidentQueueTick();
 
             if (GenTicks.TicksGame > nextQueueInspection)
