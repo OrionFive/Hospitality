@@ -67,7 +67,9 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Set by JobDriver_Patch and stores who is doing a toil right now, in which case we don't want to forbid things.
         /// </summary>
+#pragma warning disable 649 // Its set via reflection.
         public static Pawn currentToilWorker;
+#pragma warning restore 649
 
         /// <summary>
         /// Things dropped by guests are never forbidden

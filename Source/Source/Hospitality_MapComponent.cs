@@ -39,10 +39,8 @@ namespace Hospitality
             if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
         }
 
-        [UsedImplicitly]
         public Hospitality_MapComponent(Map map) : base(map)
         {
-            map.components.Add(this);
             defaultAreaRestriction = map.areaManager.Home;
             
             RefreshGuestListTotal();
@@ -50,8 +48,6 @@ namespace Hospitality
 
         public override void FinalizeInit()
         {
-            GuestCacher.CachedComponents ??= new Hospitality_MapComponent[6];
-
             if (GuestCacher.CachedComponents.Length < Find.Maps.Count)
             {
                 Array.Resize(ref GuestCacher.CachedComponents, Find.Maps.Count + 6); // This does Array.Copy for us.

@@ -7,7 +7,7 @@ namespace Hospitality
     {
         public override bool ActivateOn(Lord lord, TriggerSignal signal)
         {
-            if (signal.type == TriggerSignalType.Tick)
+            if (signal.type == TriggerSignalType.Tick && Find.TickManager.TicksAbs % 250 == 0)
             {
                 return lord?.ownedPawns.Any(SentAway) == true;
             }

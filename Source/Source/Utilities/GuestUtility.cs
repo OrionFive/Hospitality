@@ -84,30 +84,14 @@ namespace Hospitality
 
         public static bool IsArrivedGuest(this Pawn pawn, bool makeValidPawnCheck = true)
         {
-            if (pawn == null || pawn.mapIndexOrState < 0) return false;
-            if (GuestCacher.CachedComponents[pawn.mapIndexOrState].presentGuests.Count == 0) return false;
-
-            return GuestCacher.CachedComponents[pawn.mapIndexOrState].presentGuests.Contains(pawn);
+            return IsGuest(pawn, makeValidPawnCheck) && pawn.CompGuest().arrived; // The compguest should exist if the second condition is being evaluated.
         }
 
         public static bool IsGuest(this Pawn pawn, bool makeValidPawnCheck = true)
         {
-            return IsGuestInternal(pawn, false, makeValidPawnCheck);
-        }
+            if (pawn == null || pawn.mapIndexOrState < 0 || GuestCacher.CachedComponents[pawn.mapIndexOrState] == null) return false;
 
-        private static bool IsGuestInternal(this Pawn pawn, bool makeArrivedCheck, bool makeValidPawnCheck = true)
-        {
-            if (pawn == null) return false;
-            try
-            {
-                if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
-                return pawn.IsInVisitState(makeArrivedCheck);
-            }
-            catch (Exception e)
-            {
-                Log.Warning(pawn.Name.ToStringShort + ": \n" + e.Message);
-                return false;
-            }
+            return GuestCacher.CachedComponents[pawn.mapIndexOrState].presentGuests.Contains(pawn);
         }
 
         public static bool IsTrader(this Pawn pawn, bool makeValidPawnCheck = true)

@@ -144,6 +144,7 @@ namespace Hospitality
         {
             arrived = false;
             Pawn.ownership.UnclaimBed();
+            
             if(clearLord) lord = null;
         }
 
