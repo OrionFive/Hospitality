@@ -17,10 +17,10 @@ namespace Hospitality.Harmony
             {
                 if (!__result) return;
 
-                // Cheaper to check this before IsGuest
-                var area = traverseParams.pawn.GetGuestArea();
+                if (!traverseParams.pawn.IsArrivedGuest(out var guestComp)) return;
+
+                var area = guestComp.GuestArea;
                 if (area == null) return;
-                if (!traverseParams.pawn.IsArrivedGuest()) return;
 
                 if (!dest.IsValid || !area[dest.Cell]) __result = false;
 

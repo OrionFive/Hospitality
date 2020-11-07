@@ -28,7 +28,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(Pawn ___pawn, ref Building_Bed __result)
             {
-                if (!___pawn.IsGuest(false)) return true;
+                if (!___pawn.IsGuest()) return true;
                 __result = ___pawn.CompGuest()?.bed;
                 return false;
             }

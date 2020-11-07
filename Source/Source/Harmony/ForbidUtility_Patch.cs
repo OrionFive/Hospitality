@@ -80,7 +80,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(bool value)
             {
-                if (value && currentToilWorker.IsArrivedGuest())
+                if (value && currentToilWorker.IsArrivedGuest(out _))
                 {
                     return false;
                 }
@@ -95,13 +95,19 @@ namespace Hospitality.Harmony
         [HarmonyPatch(typeof(ForbidUtility), "InAllowedArea")]
         public class InAllowedArea
         {
+            // Thinktank
+            // How does vanilla do this for animals, can this be done some other way?
+            // Could maybe build a hashset of intvec3 for each pawn for a quick check?
+            // Would transpiling the original method allow for improved performance?
+
             [HarmonyPostfix]
-            public static void Postfix(IntVec3 c, Pawn forPawn, ref bool __result)
+            public static void Postfix(IntVec3 c, Pawn forPawn, ref bool __result) 
             {
                 if (!__result) return; // Not ok anyway, moving on
-                if (!forPawn.IsArrivedGuest()) return;
+                if (GuestCacher.CachedComponents[forPawn.mapIndexOrState].presentGuests.Count == 0) return;
+                if (!forPawn.IsArrivedGuest(out var guestComp)) return;
 
-                var area = forPawn.GetGuestArea();
+                var area = guestComp.GuestArea;
                 if (area == null) return;
                 if (!c.IsValid || !area[c]) __result = false;
             }

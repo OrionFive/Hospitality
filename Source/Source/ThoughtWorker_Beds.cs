@@ -21,9 +21,8 @@ namespace Hospitality
                 {
                     return ThoughtState.Inactive;
                 }
-                if (!pawn.IsArrivedGuest()) return ThoughtState.Inactive;
+                if (!pawn.IsArrivedGuest(out var compGuest)) return ThoughtState.Inactive;
 
-                var compGuest = pawn.CompGuest();
                 if (compGuest == null) return ThoughtState.Inactive;
                 if (!compGuest.arrived) return ThoughtState.Inactive;
                 if (compGuest.rescued) return ThoughtState.Inactive;

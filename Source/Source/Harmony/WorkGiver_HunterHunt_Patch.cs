@@ -16,10 +16,9 @@ namespace Hospitality.Harmony
             public static void Postfix(ref bool __result, Pawn pawn, Thing t)
             {
                 if (!__result) return;
+                if (!pawn.IsArrivedGuest(out var guestComp)) return;
 
-                if (!pawn.IsArrivedGuest()) return;
-
-                var area = pawn.GetGuestArea();
+                var area = guestComp.GuestArea;
                 if (area == null) return;
                 if (!t.Position.IsValid || !area[t.Position]) __result = false;
 

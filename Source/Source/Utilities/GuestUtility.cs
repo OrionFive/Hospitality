@@ -82,12 +82,18 @@ namespace Hospitality
             return guestComp?.ShoppingArea != null;
         }
 
-        public static bool IsArrivedGuest(this Pawn pawn, bool makeValidPawnCheck = true)
+        // If this method returns false `comp` *CAN* be null.
+        public static bool IsArrivedGuest(this Pawn pawn, out CompGuest comp)
         {
-            return IsGuest(pawn, makeValidPawnCheck) && pawn.CompGuest().arrived; // The compguest should exist if the second condition is being evaluated.
+            comp = null;
+            if (!IsGuest(pawn)) return false;
+
+            comp = pawn.CompGuest();
+
+            return comp.arrived;
         }
 
-        public static bool IsGuest(this Pawn pawn, bool makeValidPawnCheck = true)
+        public static bool IsGuest(this Pawn pawn)
         {
             if (pawn == null || pawn.mapIndexOrState < 0 || GuestCacher.CachedComponents[pawn.mapIndexOrState] == null) return false;
 
@@ -236,7 +242,7 @@ namespace Hospitality
 
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
-            return guest.IsArrivedGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest);
+            return guest.IsArrivedGuest(out _) && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest);
         }
 
         private static bool IsEating(Pawn guest)
