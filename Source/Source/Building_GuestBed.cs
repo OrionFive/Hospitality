@@ -98,7 +98,7 @@ namespace Hospitality
             return string.Empty;
         }
 
-        private RoyalTitleDef[] GetMetRoyalTitles(Room room)
+        private RoyalTitleDef[] GetMetRoyalTitles(Room room) // This causes the slowdown when there are lots of guest beds. Pref to cache these values. ~30ms per call
         {
             try
             {

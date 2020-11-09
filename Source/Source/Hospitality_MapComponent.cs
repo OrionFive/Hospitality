@@ -59,7 +59,8 @@ namespace Hospitality
         public void RefreshGuestListTotal()
         {
             PresentLords.Clear();
-            PresentLords.AddRange(map.lordManager.lords.Where(l => l.CurLordToil?.GetType() == typeof(LordToil_VisitPoint)));
+            // We look for the job of our lord to determine whether it is a guest group or not.
+            PresentLords.AddRange(map.lordManager.lords.Where(l => l.curJob.GetType() == typeof(LordJob_VisitColony)));
 
             presentGuests = PresentLords.SelectMany(l => l.ownedPawns).ToHashSet();
         }

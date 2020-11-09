@@ -8,6 +8,6 @@ namespace Hospitality
 {
     public static class GuestCacher
     {
-        internal static Hospitality_MapComponent[] CachedComponents = new Hospitality_MapComponent[6];
+        internal static Hospitality_MapComponent[] CachedComponents = new Hospitality_MapComponent[12];
     }
 }

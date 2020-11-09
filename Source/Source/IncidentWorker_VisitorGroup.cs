@@ -245,6 +245,9 @@ namespace Hospitality
 
                 var stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
                 CreateLord(parms.faction, spot, visitors, map, true, true, stayDuration);
+
+                // Update our mapcomponents guests.
+                map.GetMapComponent().RefreshGuestListTotal();                
             }
             catch (Exception e)
             {
@@ -328,6 +331,7 @@ namespace Hospitality
             while(i < preferredAmount)
             {
                 var newPawns = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false).ToArray();
+                
                 Log.Message($"Created {newPawns.Length} new pawns for {parms.faction.Name}.");
                 foreach (var pawn in newPawns)
                 {

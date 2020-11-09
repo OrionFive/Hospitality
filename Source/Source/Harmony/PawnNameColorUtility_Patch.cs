@@ -14,9 +14,8 @@ namespace Hospitality.Harmony
         public class PawnNameColorOf
         {
             [HarmonyPrefix]
-            public static bool Prefix(ref Color __result, Pawn pawn) // Todo: Cache this. Prefix Pawn.set_Faction to refresh cache.
+            public static bool Prefix(ref Color __result, Pawn pawn)
             {
-                if (pawn == null) return true;
                 if (!pawn.IsGuest() || pawn.IsTrader(false)) return true;
                 if (pawn.Faction == null) return true;
 
