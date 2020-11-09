@@ -42,7 +42,19 @@ namespace Hospitality
 
         private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve {new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30)};
 
-        public static RoyalTitleDef[] AllTitles { get; private set; }
+        private static RoyalTitleDef[] titleDefs = null;
+        public static RoyalTitleDef[] AllTitles 
+        {
+            get
+            {
+                if (titleDefs == null)
+                {
+                    Initialize();
+                }
+                return titleDefs;
+            }
+            private set => titleDefs = value;
+        }
         public static Faction[] DistinctFactions { get; private set; }
 
         /// <summary>
