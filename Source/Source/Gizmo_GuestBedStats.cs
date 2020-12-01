@@ -60,6 +60,7 @@ namespace Hospitality
                 return new GizmoResult(GizmoState.Clear);
             Rect windowRect = BedStatsDrawer.GetWindowRect();
             Find.WindowStack.ImmediateWindow(74975, windowRect, WindowLayer.Super, () => {
+                bed.UpdateRoyaltyStats();
                 BedStatsDrawer.DoBedInfos(windowRect, bed);
             });
 
