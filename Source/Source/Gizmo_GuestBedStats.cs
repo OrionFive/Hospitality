@@ -60,6 +60,8 @@ namespace Hospitality
                 return new GizmoResult(GizmoState.Clear);
             Rect windowRect = BedStatsDrawer.GetWindowRect();
             Find.WindowStack.ImmediateWindow(74975, windowRect, WindowLayer.Super, () => {
+                // This is only going to have one instance, even if multiple beds are selected, thus it will only calculate
+                // the stats for one bed at a given time, and this is cached to only update once per second
                 bed.UpdateRoyaltyStats();
                 BedStatsDrawer.DoBedInfos(windowRect, bed);
             });

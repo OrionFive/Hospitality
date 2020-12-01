@@ -21,7 +21,6 @@ namespace Hospitality
         public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
 
         public int previousRoyaltyUpdate = 0;
-        public const int CACHE_REFRESH_TICKS = 200;
 
         public override Color DrawColor
         {
