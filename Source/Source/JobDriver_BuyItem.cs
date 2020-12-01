@@ -95,7 +95,7 @@ namespace Hospitality
             }
 
             int tookItems;
-            if (thing.def.IsApparel && thing is Apparel apparel && !ApparelUtility.HasPartsToWear(pawn, apparel.def) && ItemUtility.AlienFrameworkAllowsIt(toil.actor.def, apparel.def, "CanWear"))
+            if (thing.def.IsApparel && thing is Apparel apparel && ApparelUtility.HasPartsToWear(pawn, apparel.def) && ItemUtility.AlienFrameworkAllowsIt(toil.actor.def, apparel.def, "CanWear"))
             {
                 toil.actor.apparel.Wear(apparel);
                 tookItems = apparel.stackCount;
