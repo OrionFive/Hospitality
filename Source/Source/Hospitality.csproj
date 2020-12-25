@@ -106,6 +106,7 @@
     <Compile Include="IncidentWorker_VisitorGroupSelectFaction.cs" />
     <Compile Include="MainTab\Dialog_MapSettings.cs" />
     <Compile Include="MainTab\MainTabUtility.cs" />
+    <Compile Include="TransitionAction_EnsureHaveNearbyExitDestination.cs" />
     <Compile Include="TransitionAction_MessageDebug.cs" />
     <Compile Include="TransitionAction_SendAway.cs" />
     <Compile Include="Utilities\BedUtility.cs" />

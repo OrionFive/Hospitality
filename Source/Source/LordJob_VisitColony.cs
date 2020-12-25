@@ -69,7 +69,7 @@ namespace Hospitality
                 Transition t6 = new Transition(toilArriving, toilExit);
                 t6.AddTrigger(new Trigger_PawnExperiencingDangerousTemperatures());
                 t6.AddPreAction(new TransitionAction_Message("MessageVisitorsDangerousTemperature".Translate(faction?.def.pawnsPlural.CapitalizeFirst(), faction?.Name)));
-                t6.AddPreAction(new TransitionAction_EnsureHaveExitDestination());
+                t6.AddPreAction(new TransitionAction_EnsureHaveNearbyExitDestination());
                 t6.AddPostAction(new TransitionAction_EndAllJobs());
                 graphArrive.AddTransition(t6);
             }
@@ -86,7 +86,7 @@ namespace Hospitality
                 Transition t4 = new Transition(toilArriving, toilExit);
                 t4.triggers.Add(new Trigger_BecamePlayerEnemy());
                 t4.triggers.Add(new Trigger_VisitorsAngeredMax(IncidentWorker_VisitorGroup.MaxAngerAmount(faction?.PlayerGoodwill ?? 0)));
-                t4.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
+                t4.preActions.Add(new TransitionAction_EnsureHaveNearbyExitDestination());
                 t4.postActions.Add(new TransitionAction_WakeAll());
                 graphArrive.transitions.Add(t4);
             }
@@ -96,7 +96,7 @@ namespace Hospitality
                 t5.triggers.Add(new Trigger_TicksPassedAndOkayToLeave(stayDuration));
                 t5.triggers.Add(new Trigger_SentAway()); // Sent away during stay
                 t5.preActions.Add(new TransitionAction_Message("VisitorsLeaving".Translate(faction?.Name)));
-                t5.preActions.Add(new TransitionAction_EnsureHaveExitDestination());
+                t5.preActions.Add(new TransitionAction_EnsureHaveNearbyExitDestination());
                 t5.postActions.Add(new TransitionAction_WakeAll());
                 graphArrive.transitions.Add(t5);
             }
