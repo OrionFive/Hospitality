@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using HarmonyLib;
+using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
@@ -92,6 +96,10 @@ namespace Hospitality.Harmony
             }
         }
 
+        /// <summary>
+        /// Make sure guests recruit pawns to the player's faction, not their own.
+        /// Also, turn off the rescued flag when recruiting.
+        /// </summary>
         [HarmonyPatch(typeof(Pawn), nameof(Pawn.SetFaction))]
         public class SetFaction
         {
