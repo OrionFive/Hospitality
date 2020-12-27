@@ -528,7 +528,9 @@ namespace Hospitality
             guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
 
             guest.ownership.UnclaimBed();
+            var faction = guest.Faction;
             guest.SetFaction(Faction.OfPlayer);
+            if (PawnUtility.IsFactionLeader(guest)) Log.Warning($"{guest.NameShortColored}: Is still faction leader of {faction?.GetCallLabel()}.");
 
             guest.mindState.exitMapAfterTick = -99999;
             guest.MapHeld.mapPawns.UpdateRegistryForPawn(guest);
