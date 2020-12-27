@@ -48,7 +48,7 @@ namespace Hospitality
             var fields = typeof(ThingDef).GetFields(BindingFlags.Public | BindingFlags.Instance);
             foreach (var bedDef in bedDefs)
             {
-                if (bedDef.comps == null || !bedDef.comps.Any(c => c.compClass == typeof(CompAssignableToPawn_Bed)))
+                if (bedDef.comps == null || !bedDef.comps.Any(c => typeof(CompAssignableToPawn_Bed).IsAssignableFrom(c.compClass)))
                 {
                     string mod = bedDef.modContentPack != null ? bedDef.modContentPack.Name : "an unknown mod";
                     Log.Warning($"Not creating guest beds for {bedDef.label} from {mod}. It does not have a CompAssignableToPawn_Bed.");

@@ -50,7 +50,7 @@ namespace Hospitality.Harmony
                             isActive = __instance.IsGuestBed,
                             toggleAction = () => Building_GuestBed.Swap(__instance),
                             hotKey = KeyBindingDefOf.Misc4,
-                            disabled = __instance.GetComp<CompAssignableToPawn_Bed>() == null,
+                            disabled = !__instance.def.HasAssignableCompFrom(typeof(CompAssignableToPawn_Bed)),
                             disabledReason = "This bed type is not assignable to pawns."
                         };
                 }
