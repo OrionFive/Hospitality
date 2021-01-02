@@ -249,7 +249,12 @@ namespace Hospitality
 
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
-            return guest.IsArrivedGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest);
+            return guest.IsArrivedGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest) &&!CantBeInterrupted(guest);
+        }
+
+        private static bool CantBeInterrupted(Pawn guest)
+        {
+            return guest.CurJob?.def.casualInterruptible == false;
         }
 
         private static bool IsEating(Pawn guest)
