@@ -90,7 +90,8 @@ namespace Hospitality
                                               && d.EverStorable(true) 
                                               && d.alwaysHaulable 
                                               && d.thingClass != typeof(MinifiedThing) 
-                                              && d.tradeability != Tradeability.None 
+                                              && !d.thingClass.IsSubclassOf(typeof(MinifiedThing))
+                                              && d.tradeability != Tradeability.None
                                               && d.GetCompProperties<CompProperties_Hatcher>() == null
                                               && !d.WillRotSoon()
                                               && (d.thingSetMakerTags == null || !d.thingSetMakerTags.Contains("NotForGuests"));
