@@ -2,7 +2,7 @@
 <!--suppress ALL -->
 <LanguageData>
 	
-	<Faction.label>фракция</Faction.label>
+	<hospitality_Faction.label>фракция</hospitality_Faction.label>
 	<AccommodationArea.label>доступная область</AccommodationArea.label>
 	<ShoppingArea.label>область покупок</ShoppingArea.label>
 	
