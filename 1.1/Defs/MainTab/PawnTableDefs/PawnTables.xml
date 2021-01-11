@@ -7,7 +7,7 @@
     <columns>
       <li>GuestRelationship</li>
       <li>LabelCustom</li>
-	  <li>Faction</li>
+	  <li>Hospitality_Faction</li>
       <li>GapTiny</li>
 	  <li>AccommodationArea</li>
 	  <li>ShoppingArea</li>
