@@ -3,16 +3,16 @@
   <identifier>Hospitality</identifier>
   <version>1.2.07</version>
   <dependencies>
-    <li>HugsLib</li>
+    <li>UnlimitedHugs.HugsLib</li>
   </dependencies>
   <incompatibleWith />
   <loadBefore>
   </loadBefore>
   <loadAfter>
-    <li>JecsTools</li>
-    <li>HumanoidAlienRaces2.0</li>
-    <li>HugsLib</li>
-    <li>Royalty</li>
+    <li>erdelf.HumanoidAlienRaces</li>
+	<li>Ludeon.RimWorld</li>
+	<li>Ludeon.RimWorld.Royalty</li>
+    <li>UnlimitedHugs.HugsLib</li>
   </loadAfter>
   <!-- <suggests> -->
     <!-- <li>ExpansionMod &gt;= 1.5</li> -->
