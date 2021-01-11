@@ -6,7 +6,7 @@
     <workerClass>Hospitality.MainTab.PawnTable_Guests</workerClass>
     <columns>
       <li>GuestRelationship</li>
-      <li>LabelCustom</li>
+      <li>Hospitality_LabelCustom</li>
 	  <li>Hospitality_Faction</li>
       <li>GapTiny</li>
 	  <li>AccommodationArea</li>

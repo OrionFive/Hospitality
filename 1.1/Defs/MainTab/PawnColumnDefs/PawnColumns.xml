@@ -7,7 +7,7 @@
   </PawnColumnDef>
 
   <PawnColumnDef>
-    <defName>LabelCustom</defName>
+    <defName>Hospitality_LabelCustom</defName>
     <workerClass>Hospitality.MainTab.PawnColumnWorker_LabelCustom</workerClass>
     <sortable>true</sortable>
   </PawnColumnDef>
