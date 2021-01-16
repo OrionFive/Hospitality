@@ -22,14 +22,14 @@ namespace Hospitality.Harmony
 			[HarmonyTranspiler]    
 			public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> source)
 			{
-				Log.Message($"Hospitality patching: {dropAndForbidMethod?.FullDescription()} >> {dropAndForbidReplacement?.FullDescription()}");
+				//Log.Message($"Hospitality patching: {dropAndForbidMethod?.FullDescription()} >> {dropAndForbidReplacement?.FullDescription()}");
 				foreach (var instruction in source)
 				{
 					//IL_00d3: callvirt instance void Verse.Pawn::DropAndForbidEverything(bool)
 					if (instruction.opcode == OpCodes.Callvirt && instruction.operand.Equals(dropAndForbidMethod))
 					{
 					    var replacement = instruction.Clone(dropAndForbidReplacement);
-					    Log.Message($"Replaced instruction {instruction.operand} with {replacement.operand}.");
+					    //Log.Message($"Replaced instruction {instruction.operand} with {replacement.operand}.");
 					    yield return replacement;
 					}
 					else yield return instruction;
