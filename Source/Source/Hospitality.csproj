@@ -100,7 +100,7 @@
     <Compile Include="Alert_GuestThought.cs" />
     <Compile Include="BedStatsDrawer.cs" />
     <Compile Include="Gizmo_GuestBedStats.cs" />
-    <Compile Include="Harmony\Pawn_HealthTracker_Patch.cs" />
+    <Compile Include="Harmony\NoLittering_Patch.cs" />
     <Compile Include="Harmony\Pawn_TraderTracker_Patch.cs" />
     <Compile Include="Harmony\Room_Patch.cs" />
     <Compile Include="Harmony\Pawn_Patch.cs" />
