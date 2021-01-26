@@ -288,7 +288,7 @@ namespace Hospitality
                     {
                         if (!owners[index].InBed() || owners[index].CurrentBed() != this || !(owners[index].Position == GetSleepingSlotPos(index)))
                         {
-                            var pos = Traverse.Create(this).Method("GetMultiOwnersLabelScreenPosFor", index).GetValue<Vector3>();
+                            var pos = this.GetMultiOwnersLabelScreenPosFor(index); 
                             GenMapUI.DrawThingLabel(pos, owners[index].LabelShort, defaultThingLabelColor);
                         }
                     }
