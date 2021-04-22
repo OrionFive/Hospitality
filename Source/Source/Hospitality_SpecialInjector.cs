@@ -59,6 +59,7 @@ namespace Hospitality
                 // Copy fields
                 foreach (var field in fields)
                 {
+                    if (field.Name == "designationCategory") continue;
                     field.SetValue(guestBedDef, field.GetValue(bedDef));
                 }
 
