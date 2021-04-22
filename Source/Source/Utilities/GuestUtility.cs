@@ -399,7 +399,7 @@ namespace Hospitality
         public static void FixDrugPolicy(this Pawn pawn)
         {
             //if (pawn.drugs == null) 
-            pawn.drugs = new Pawn_DrugPolicyTracker(pawn) {CurrentPolicy = pawn.CompGuest().GetDrugPolicy(pawn)};
+            pawn.drugs = new Pawn_DrugPolicyTracker(pawn) {CurrentPolicy = pawn.Map.GetMapComponent().GetDrugPolicy()};
         }
 
         public static void TryImproveFriendship(this Pawn guest, Pawn recruiter, List<RulePackDef> extraSentencePacks)
