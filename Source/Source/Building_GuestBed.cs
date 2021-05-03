@@ -165,6 +165,7 @@ namespace Hospitality
                 bool notFirst = false;
                 foreach (var owner in owners)
                 {
+                    if (owner == null) continue; // should already be filtered by this.Owners
                     if (notFirst)
                     {
                         stringBuilder.Append(", ");

@@ -32,7 +32,7 @@ namespace Hospitality
             var comp = bed?.CompAssignableToPawn;
             if (comp == null) return Array.Empty<Pawn>();
             if (comp.AssignedPawnsForReading == null) return Array.Empty<Pawn>();
-            return bed.CompAssignableToPawn.AssignedPawnsForReading;
+            return bed.CompAssignableToPawn.AssignedPawnsForReading.Where(p=>p!=null).ToArray();
         }
         private static IEnumerable<Building_GuestBed> FindAvailableBeds(Pawn guest, int money)
         {
