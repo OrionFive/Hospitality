@@ -50,7 +50,7 @@
     </Reference>
     <Reference Include="0MultiplayerAPI, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RimWorld.MultiplayerAPI.0.3.0\lib\net472\0MultiplayerAPI.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
