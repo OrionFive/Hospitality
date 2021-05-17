@@ -77,5 +77,44 @@ namespace Hospitality.Harmony
                 if (!c.IsValid || !area[c]) __result = false;
             }
         }
+
+        /// <summary>
+        /// Check if it is politically proper. This only applies in some cases, so turn the flag on/off before and after.
+        /// </summary>
+        [HarmonyPatch(typeof(ForbidUtility), nameof(ForbidUtility.IsForbidden), typeof(Thing), typeof(Pawn))]
+        public class IsForbidden
+        {
+            public static bool checkPoliticallyProper;
+
+            [HarmonyPostfix]
+            public static void Postfix(Thing t, Pawn pawn, ref bool __result)
+            {
+                if (!checkPoliticallyProper) return;
+                if (__result || !pawn.IsGuest()) return;
+                // Not forbidden, but also not proper? Then forbid
+                if(!t.IsPoliticallyProper(pawn)) __result = true;
+            }
+        }
+
+        /// <summary>
+        /// Make sure guests don't use the player's drugs
+        /// </summary>
+        [HarmonyPatch(typeof(JoyGiver_SocialRelax), "TryFindIngestibleToNurse")]
+        public class TryFindIngestibleToNurse
+        {
+            [HarmonyPrefix]
+            public static void Prefix(Pawn ingester)
+            {
+                if (ingester.IsGuest())
+                {
+                    IsForbidden.checkPoliticallyProper = true;
+                }
+            }
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                IsForbidden.checkPoliticallyProper = false;
+            }
+        }
     }
 }
