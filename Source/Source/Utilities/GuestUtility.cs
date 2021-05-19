@@ -387,7 +387,7 @@ namespace Hospitality
 
         public static void FixTimetable(this Pawn pawn)
         {
-            if (pawn.mindState == null) pawn.mindState = new Pawn_MindState(pawn);
+            pawn.mindState ??= new Pawn_MindState(pawn);
             pawn.timetable = new Pawn_TimetableTracker(pawn) {times = new List<TimeAssignmentDef>(24)};
             for (int i = 0; i < 24; i++)
             {

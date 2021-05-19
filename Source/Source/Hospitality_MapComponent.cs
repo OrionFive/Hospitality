@@ -98,7 +98,7 @@ namespace Hospitality
         {
             base.MapComponentTick();
 
-            if (incidentQueue == null) incidentQueue = new IncidentQueue();
+            incidentQueue ??= new IncidentQueue();
             if(incidentQueue.Count <= 1) GenericUtility.FillIncidentQueue(map);
             incidentQueue.IncidentQueueTick();
 

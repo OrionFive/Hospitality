@@ -15,8 +15,7 @@ namespace Hospitality.Harmony
             [HarmonyPostfix]
             public static void Postfix(RimWorld.ITab_Pawn_Guest __instance, ref bool __result)
             {
-                if(selPawnProperty == null)
-                    selPawnProperty = Traverse.Create(__instance).Property("SelPawn");
+                selPawnProperty ??= Traverse.Create(__instance).Property("SelPawn");
 
                 var selPawn = selPawnProperty.GetValue<Pawn>();
                 __result &= !selPawn.IsGuest();
