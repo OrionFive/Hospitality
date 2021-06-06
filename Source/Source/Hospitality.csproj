@@ -9,7 +9,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <OutputPath>..\..\1.2\Assemblies\</OutputPath>
     <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
