@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
@@ -44,8 +43,6 @@ namespace Hospitality
         public Hospitality_MapComponent(Map map) : base(map)
         {
             defaultAreaRestriction = map.areaManager.Home;
-            
-            RefreshGuestListTotal();
         }
 
         public override void FinalizeInit()
@@ -55,14 +52,16 @@ namespace Hospitality
                 Array.Resize(ref GuestCacher.CachedComponents, Find.Maps.Count + 6); // This does Array.Copy for us.
             }   
 
-            GuestCacher.CachedComponents[this.map.Index] = this;
+            GuestCacher.CachedComponents[map.Index] = this;
         }
 
         public void RefreshGuestListTotal()
         {
             PresentLords.Clear();
             // We look for the job of our lord to determine whether it is a guest group or not.
-            PresentLords.AddRange(map.lordManager.lords.Where(l => l.curJob.GetType() == typeof(LordJob_VisitColony)));
+            PresentLords.AddRange(map.lordManager.lords.Where(l => l.LordJob is LordJob_VisitColony visit && !visit.leaving));
+            //Log.Message($"Present lords: {PresentLords.Select(l => $"{l?.faction?.Name} ({l?.ownedPawns?.Count})").ToCommaList()}");
+            MainTabWindowUtility.NotifyAllPawnTables_PawnsChanged();
 
             presentGuests = PresentLords.SelectMany(l => l.ownedPawns).ToHashSet();
         }
@@ -129,7 +128,6 @@ namespace Hospitality
             if (GenTicks.TicksGame > nextGuestListCheck)
             {
                 nextGuestListCheck = GenTicks.TicksGame + GenDate.TicksPerDay / 4;
-                PresentLords.Clear();
                 RefreshGuestListTotal();
             }
         }
