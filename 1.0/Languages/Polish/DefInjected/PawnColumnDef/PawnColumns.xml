@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <Faction.label>faction</Faction.label>
+  <Hospitality_Faction.label>faction</Hospitality_Faction.label>
   <Entertain.headerTip>Entertain</Entertain.headerTip>
   <MakeFriends.headerTip>Make friends</MakeFriends.headerTip>
   <AccommodationArea.label>area of accommodation</AccommodationArea.label>

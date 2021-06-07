@@ -254,7 +254,12 @@ namespace Hospitality
 
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
-            return guest.IsArrivedGuest(out _) && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest);
+            return guest.IsArrivedGuest(out _) && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest) &&!CantBeInterrupted(guest);
+        }
+
+        private static bool CantBeInterrupted(Pawn guest)
+        {
+            return guest.CurJob?.def.casualInterruptible == false;
         }
 
         private static bool IsEating(Pawn guest)
@@ -386,7 +391,7 @@ namespace Hospitality
 
         public static void FixTimetable(this Pawn pawn)
         {
-            if (pawn.mindState == null) pawn.mindState = new Pawn_MindState(pawn);
+            pawn.mindState ??= new Pawn_MindState(pawn);
             pawn.timetable = new Pawn_TimetableTracker(pawn) {times = new List<TimeAssignmentDef>(24)};
             for (int i = 0; i < 24; i++)
             {
@@ -398,7 +403,7 @@ namespace Hospitality
         public static void FixDrugPolicy(this Pawn pawn)
         {
             //if (pawn.drugs == null) 
-            pawn.drugs = new Pawn_DrugPolicyTracker(pawn) {CurrentPolicy = pawn.CompGuest().GetDrugPolicy(pawn)};
+            pawn.drugs = new Pawn_DrugPolicyTracker(pawn) {CurrentPolicy = pawn.Map.GetMapComponent().GetDrugPolicy()};
         }
 
         public static void TryImproveFriendship(this Pawn guest, Pawn recruiter, List<RulePackDef> extraSentencePacks)
@@ -531,7 +536,9 @@ namespace Hospitality
             guest.inventory.innerContainer.TryDropAll(guest.Position, guest.MapHeld, ThingPlaceMode.Near);
 
             guest.ownership.UnclaimBed();
+            var faction = guest.Faction;
             guest.SetFaction(Faction.OfPlayer);
+            if (PawnUtility.IsFactionLeader(guest)) Log.Warning($"{guest.NameShortColored}: Is still faction leader of {faction?.GetCallLabel()}.");
 
             guest.mindState.exitMapAfterTick = -99999;
             guest.MapHeld.mapPawns.UpdateRegistryForPawn(guest);

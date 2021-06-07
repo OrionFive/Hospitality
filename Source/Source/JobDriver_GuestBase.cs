@@ -98,6 +98,7 @@ namespace Hospitality
         {
             // Non-suspendable job? We're busy!
             if (p.CurJob?.def.suspendable == false) return true;
+            if (p.CurJob?.def.casualInterruptible == false) return true;
 
             return p.interactions.InteractedTooRecentlyToInteract() || GuestUtility.IsInTherapy(p);
         }

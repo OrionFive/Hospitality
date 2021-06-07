@@ -26,6 +26,7 @@ namespace Hospitality
         public static SettingHandle<bool> useIcon;
         public static SettingHandle<bool> enableBuyNotification;
         public static SettingHandle<bool> enableRecruitNotification;
+        public static SettingHandle<bool> disableFriendlyGearDrops;
 
         public Settings(ModSettingsPack settings)
         {
@@ -45,6 +46,7 @@ namespace Hospitality
             useIcon = settings.GetHandle("useIcon", "UseIcon".Translate(), "UseIconDesc".Translate(), false);
             enableBuyNotification = settings.GetHandle("enableBuyNotification", "EnableBuyNotification".Translate(), "EnableBuyNotificationDesc".Translate(), false);
             enableRecruitNotification = settings.GetHandle("enableRecruitNotification", "EnableRecruitNotification".Translate(), "EnableRecruitNotificationDesc".Translate(), true);
+            disableFriendlyGearDrops = settings.GetHandle("disableFriendlyGearDrops", "DisableFriendlyGearDrops".Translate(), "DisableFriendlyGearDropsDesc".Translate(), true);
 
             string hiddenConfigFile = Path.Combine(GenFilePaths.ConfigFolderPath, "Hospitality.cfg");
             if (File.Exists(hiddenConfigFile))

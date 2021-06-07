@@ -49,15 +49,16 @@ namespace Hospitality
         private static bool CheckCanCome(Map map, Faction faction, out TaggedString reasons)
         {
             var fallout = map.GameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout);
-            var hostileFactions = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && p.Faction != null && !p.Downed && !IsFogged(p) && !p.InContainerEnclosed).Select(p => p.Faction).Where(p =>
-                                                                   p.HostileTo(Faction.OfPlayer) || p.HostileTo(faction)).ToArray();
+            var potentiallyDangerous = map.mapPawns.AllPawnsSpawned.Where(p => !p.Dead && !p.IsPrisoner && !p.Downed && !IsFogged(p) && !p.InContainerEnclosed).ToArray();
+            var hostileFactions = potentiallyDangerous.Where(p => p.Faction != null).Select(p => p.Faction).Where(f => f.HostileTo(Faction.OfPlayer) || f.HostileTo(faction)).ToArray();
             var winter = map.GameConditionManager.ConditionIsActive(GameConditionDefOf.VolcanicWinter);
             var temp = faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.OutdoorTemp) && faction.def.allowedArrivalTemperatureRange.Includes(map.mapTemperature.SeasonalTemp);
             var beds = map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Any();
+            var manhunters = potentiallyDangerous.Where(p => p.InAggroMentalState);
 
             reasons = null;
 
-            if (temp && !fallout && !winter && !hostileFactions.Any() && beds) return true; // All clear, don't ask
+            if (temp && !fallout && !winter && beds && !hostileFactions.Any() && !manhunters.Any()) return true; // All clear, don't ask
 
             var reasonList = new List<string>(); // string, so we can check for Distinct later
             if (!beds) reasonList.Add("- " + "VisitorsArrivedReasonNoBeds".Translate());
@@ -68,6 +69,15 @@ namespace Hospitality
             foreach (var f in hostileFactions)
             {
                 reasonList.Add("- " + f.def.pawnsPlural.CapitalizeFirst());
+            }
+
+            var manhunterNames = manhunters.GroupBy(p=>p.MentalStateDef);
+            foreach (var manhunter in manhunterNames)
+            {
+                if (manhunter.Count() > 1)
+                    reasonList.Add($"- {manhunter.First().GetKindLabelPlural()} ({manhunter.First().MentalStateDef.label})");
+                else if (manhunter.Count() == 1)
+                    reasonList.Add($"- {manhunter.First().LabelShort} ({manhunter.First().MentalStateDef.label})");
             }
 
             reasons = reasonList.Distinct().Aggregate((a, b) => a+"\n"+b);

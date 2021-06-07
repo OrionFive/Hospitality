@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -151,8 +152,15 @@ namespace Hospitality
             if (!validGuest) return false;
             // Leader only comes when relations are good
             if (faction.leader == pawn && faction.PlayerGoodwill < 80) return false;
+            try // TODO: For version 1.3 this try/catch can be removed.
+            {
+                if (pawn.kindDef.factionHostileOnDeath) return false; // Bestower
+            }
+            catch (MissingFieldException)
+            {
+                Log.ErrorOnce("Your RimWorld is outdated! Update it already!", 829526939);
+            }
             if (QuestUtility.IsReservedByQuestOrQuestBeingGenerated(pawn)) return false;
-
             return true;
         }
 

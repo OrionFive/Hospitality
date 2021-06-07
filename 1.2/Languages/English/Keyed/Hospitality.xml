@@ -159,6 +159,8 @@
   <EnableBuyNotificationDesc>Receive a message when a guest buys something. Can be reviewed in the message history.</EnableBuyNotificationDesc>
   <EnableRecruitNotification>Enable enough friends notification</EnableRecruitNotification>
   <EnableRecruitNotificationDesc>Receive a message when a guest has enough friends to be recruited.</EnableRecruitNotificationDesc>
+  <DisableFriendlyGearDrops>No friendly inventory spill</DisableFriendlyGearDrops>
+  <DisableFriendlyGearDropsDesc>When a friendly pawn is downed, they will no longer drop their inventory.</DisableFriendlyGearDropsDesc>
   <UseIcon>Show guest tab icon</UseIcon>
   <UseIconDesc>Show an icon on the guests tab instead of text</UseIconDesc>
   

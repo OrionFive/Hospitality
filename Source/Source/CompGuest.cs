@@ -28,8 +28,6 @@ namespace Hospitality
         private Area guestArea_int;
         private Area shoppingArea_int;
 
-        private DrugPolicy drugPolicy;
-
         public Building_GuestBed bed;
         public int lastBedCheckTick;
 
@@ -81,8 +79,7 @@ namespace Hospitality
             Scribe_References.Look(ref guestArea_int, "guestArea");
             Scribe_References.Look(ref shoppingArea_int, "shoppingArea");
             Scribe_References.Look(ref bed, "bed");
-            Scribe_Deep.Look(ref drugPolicy, "drugPolicy");
-            if (boughtItems == null) boughtItems = new List<int>();
+            boughtItems ??= new List<int>();
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
@@ -148,16 +145,6 @@ namespace Hospitality
             Pawn.ownership.UnclaimBed();
             
             if(clearLord) lord = null;
-        }
-
-        public DrugPolicy GetDrugPolicy(Pawn pawn)
-        {
-            if (drugPolicy == null)
-            {
-                drugPolicy = new DrugPolicy(pawn.thingIDNumber, "GuestDrugPolicy");
-                drugPolicy.InitializeIfNeeded();
-            }
-            return drugPolicy;
         }
 
         public void ClaimBed([NotNull]Building_GuestBed newBed)

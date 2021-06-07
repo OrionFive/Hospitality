@@ -20,6 +20,7 @@ namespace Hospitality
         private int nextQueueInspection;
         private int nextRogueGuestCheck;
         private int nextGuestListCheck;
+        private DrugPolicy drugPolicy;
 
         public List<Lord> PresentLords { get; } = new List<Lord>();
         public HashSet<Pawn> presentGuests = new HashSet<Pawn>();
@@ -35,8 +36,9 @@ namespace Hospitality
             Scribe_Deep.Look(ref incidentQueue, "incidentQueue");
             Scribe_Values.Look(ref refuseGuestsUntilWeHaveBeds, "refuseGuestsUntilWeHaveBeds");
             Scribe_Values.Look(ref nextQueueInspection, "nextQueueInspection");
+            Scribe_Deep.Look(ref drugPolicy, "drugPolicy");
 
-            if (defaultAreaRestriction == null) defaultAreaRestriction = map.areaManager.Home;
+            defaultAreaRestriction ??= map.areaManager.Home;
         }
 
         public Hospitality_MapComponent(Map map) : base(map)
@@ -79,11 +81,36 @@ namespace Hospitality
             presentGuests = PresentLords.SelectMany(l => l.ownedPawns).ToHashSet();
         }
 
+        public void OnWorldLoaded()
+        {
+            RefreshGuestListTotal();
+            CheckForCorrectDrugPolicies();
+        }
+
+        public void CheckForCorrectDrugPolicies()
+        {
+            List<Pawn> changed = new List<Pawn>();
+            foreach (var pawn in PresentGuests)
+            {
+                if (pawn.drugs?.CurrentPolicy != GetDrugPolicy())
+                {
+                    pawn.drugs.CurrentPolicy = pawn.Map.GetMapComponent().GetDrugPolicy();
+                    changed.Add(pawn);
+                }
+            }
+
+            if (changed.Any())
+            {
+                // TODO: Remove this message again eventually. It's only relevant for updating save games. 25/2/2021
+                Log.Message($"Hospitality: Changed how DrugPolicies are stored. Fixed policies for {changed.Select(p => p.Name.ToStringShort).ToCommaList(true)}.");
+            }
+        }
+
         public override void MapComponentTick()
         {
             base.MapComponentTick();
 
-            if (incidentQueue == null) incidentQueue = new IncidentQueue();
+            incidentQueue ??= new IncidentQueue();
             if (incidentQueue.Count <= 1) GenericUtility.FillIncidentQueue(map);
             incidentQueue.IncidentQueueTick();
 
@@ -136,6 +163,28 @@ namespace Hospitality
             var mapComp = map.GetMapComponent();
             mapComp.refuseGuestsUntilWeHaveBeds = true;
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("GuestBeds"), null, OpportunityType.Important);
+        }
+
+        public DrugPolicy GetDrugPolicy()
+        {
+            if (drugPolicy == null)
+            {
+                drugPolicy = new DrugPolicy(map.uniqueID, "GuestDrugPolicy");
+                drugPolicy.InitializeIfNeeded();
+
+                for (int i = 0; i < drugPolicy.Count; i++)
+                {
+                    var entry = drugPolicy[i];
+                    var properties = entry.drug.GetCompProperties<CompProperties_Drug>();
+                    if (entry.drug.IsPleasureDrug && properties?.addictiveness < 0.025f && !properties.CanCauseOverdose)
+                    {
+                        entry.allowedForJoy = true;
+                        Log.Message($"Hospitality: Guests may use {entry.drug.label} for joy.");
+                    }
+                }
+            }
+
+            return drugPolicy;
         }
     }
 }
