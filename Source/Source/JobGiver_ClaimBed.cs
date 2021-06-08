@@ -5,7 +5,7 @@ namespace Hospitality
 {
     public class JobGiver_ClaimBed : ThinkNode_JobGiver
     {
-        protected override Job TryGiveJob(Pawn guest)
+        public override Job TryGiveJob(Pawn guest)
         {
             var guestComp = guest.CompGuest();
             if (guestComp == null) return null;

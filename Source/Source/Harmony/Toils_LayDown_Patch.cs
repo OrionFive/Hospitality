@@ -73,7 +73,7 @@ namespace Hospitality.Harmony
             // Added
             private static bool AddedBedIsOwned(Pawn pawn, Building_Bed building_Bed)
             {
-                return pawn.IsArrivedGuest() 
+                return pawn.IsArrivedGuest(out _) 
                     ? BedUtility.GetGuestBed(pawn) == building_Bed 
                     : building_Bed == pawn.ownership.OwnedBed;
             }

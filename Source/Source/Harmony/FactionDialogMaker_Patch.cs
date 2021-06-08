@@ -56,7 +56,7 @@ namespace Hospitality.Harmony
                 DiaOption optionInvite = new DiaOption(text);
                 int travelTicks = (int) (travelDays*GenDate.TicksPerDay);
                 DiaNode nodeOnTheirWay = new DiaNode("GuestsOnTheirWay".Translate(travelTicks.ToStringTicksToPeriodVague()));
-                DiaOption optionOK = Traverse.Create(typeof(FactionDialogMaker)).Method("OKToRoot", faction, negotiator).GetValue<DiaOption>();
+                DiaOption optionOK = FactionDialogMaker.OKToRoot(faction, negotiator);
                 nodeOnTheirWay.options.Add(optionOK);
                 optionInvite.link = nodeOnTheirWay;
                 optionInvite.action = delegate

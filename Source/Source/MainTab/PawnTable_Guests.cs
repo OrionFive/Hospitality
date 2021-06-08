@@ -10,7 +10,7 @@ namespace Hospitality.MainTab
         public PawnTable_Guests(PawnTableDef def, Func<IEnumerable<Pawn>> pawnsGetter, int uiWidth, int uiHeight) : base(def, pawnsGetter, uiWidth, uiHeight) { }
         
         // Removed, so lord groups can be drawn by default (pawns are ordered by lord)
-        protected override IEnumerable<Pawn> LabelSortFunction(IEnumerable<Pawn> input)
+        public override IEnumerable<Pawn> LabelSortFunction(IEnumerable<Pawn> input)
         {
             return input;
         }

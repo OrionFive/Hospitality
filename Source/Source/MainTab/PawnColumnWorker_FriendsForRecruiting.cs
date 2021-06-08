@@ -34,7 +34,7 @@ namespace Hospitality.MainTab
             else base.DoCell(rect, pawn, table);
         }
 
-        protected override string GetTextFor(Pawn pawn)
+        public override string GetTextFor(Pawn pawn)
         {
             if (pawn.CompGuest().WillOnlyJoinByForce) return "-";
             // Use cache

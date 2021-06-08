@@ -42,7 +42,19 @@ namespace Hospitality
 
         private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve {new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30)};
 
-        public static RoyalTitleDef[] AllTitles { get; private set; }
+        private static RoyalTitleDef[] titleDefs = null;
+        public static RoyalTitleDef[] AllTitles 
+        {
+            get
+            {
+                if (titleDefs == null)
+                {
+                    Initialize();
+                }
+                return titleDefs;
+            }
+            private set => titleDefs = value;
+        }
         public static Faction[] DistinctFactions { get; private set; }
 
         /// <summary>
@@ -82,29 +94,22 @@ namespace Hospitality
             return guestComp?.ShoppingArea != null;
         }
 
-        public static bool IsArrivedGuest(this Pawn pawn, bool makeValidPawnCheck = true)
+        // If this method returns false `comp` *CAN* be null.
+        public static bool IsArrivedGuest(this Pawn pawn, out CompGuest comp)
         {
-            return IsGuestInternal(pawn, true, makeValidPawnCheck);
+            comp = null;
+            if (!IsGuest(pawn)) return false;
+
+            comp = pawn.CompGuest();
+
+            return comp.arrived;
         }
 
-        public static bool IsGuest(this Pawn pawn, bool makeValidPawnCheck = true)
+        public static bool IsGuest(this Pawn pawn)
         {
-            return IsGuestInternal(pawn, false, makeValidPawnCheck);
-        }
+            if (pawn == null || pawn.mapIndexOrState < 0 || GuestCacher.CachedComponents[pawn.mapIndexOrState] == null) return false;
 
-        private static bool IsGuestInternal(this Pawn pawn, bool makeArrivedCheck, bool makeValidPawnCheck = true)
-        {
-            if (pawn == null) return false;
-            try
-            {
-                if (makeValidPawnCheck && !IsValidPawn(pawn)) return false;
-                return pawn.IsInVisitState(makeArrivedCheck);
-            }
-            catch (Exception e)
-            {
-                Log.Warning(pawn.Name.ToStringShort + ": \n" + e.Message);
-                return false;
-            }
+            return GuestCacher.CachedComponents[pawn.mapIndexOrState].presentGuests.Contains(pawn);
         }
 
         public static bool IsTrader(this Pawn pawn, bool makeValidPawnCheck = true)
@@ -249,7 +254,7 @@ namespace Hospitality
 
         public static bool ViableGuestTarget(Pawn guest, bool sleepingIsOk = false)
         {
-            return guest.IsArrivedGuest() && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest) &&!CantBeInterrupted(guest);
+            return guest.IsArrivedGuest(out _) && !guest.Downed && (sleepingIsOk || guest.Awake()) && !guest.HasDismissiveThought() && !IsInTherapy(guest) && !IsTired(guest) && !IsEating(guest) &&!CantBeInterrupted(guest);
         }
 
         private static bool CantBeInterrupted(Pawn guest)
@@ -367,8 +372,7 @@ namespace Hospitality
         {
             if (pawn.needs.joy == null)
             {
-                var addNeed = typeof(Pawn_NeedsTracker).GetMethod("AddNeed", BindingFlags.Instance | BindingFlags.NonPublic);
-                addNeed.Invoke(pawn.needs, new object[] {DefDatabase<NeedDef>.GetNamed("Joy")});
+                pawn.needs.AddNeed( DefDatabase<NeedDef>.GetNamed("Joy"));
             }
 
             pawn.needs.joy.CurLevel = Rand.Range(0, 0.5f);
@@ -387,7 +391,7 @@ namespace Hospitality
 
         public static void FixTimetable(this Pawn pawn)
         {
-            if (pawn.mindState == null) pawn.mindState = new Pawn_MindState(pawn);
+            pawn.mindState ??= new Pawn_MindState(pawn);
             pawn.timetable = new Pawn_TimetableTracker(pawn) {times = new List<TimeAssignmentDef>(24)};
             for (int i = 0; i < 24; i++)
             {
@@ -514,9 +518,8 @@ namespace Hospitality
             if (lord?.ownedPawns.Count > 1)
             {
                 // Inventory
-                for (int i = guest.inventory.innerContainer.Count - 1; i >= 0; i--)
+                foreach (var item in guest.inventory.innerContainer.Reverse().ToArray())
                 {
-                    var item = guest.inventory.innerContainer[i];
                     var randomOther = lord.ownedPawns.Where(p => p != guest).RandomElement();
                     guest.inventory.innerContainer.TryTransferToContainer(item, randomOther.inventory.innerContainer);
                 }

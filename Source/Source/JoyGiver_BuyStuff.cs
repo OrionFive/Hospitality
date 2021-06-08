@@ -15,7 +15,7 @@ namespace Hospitality
 
         public override float GetChance(Pawn pawn)
         {
-            if (!pawn.IsArrivedGuest()) return 0;
+            if (!pawn.IsArrivedGuest(out _)) return 0;
             if (!pawn.MayBuy()) return 0;
             var money = ItemUtility.GetMoney(pawn);
             //Log.Message(pawn.NameStringShort + " has " + money + " silver left.");

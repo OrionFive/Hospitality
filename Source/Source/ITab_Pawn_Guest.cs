@@ -30,7 +30,7 @@ namespace Hospitality
 
         public override bool IsVisible => SelPawn.IsGuest() || SelPawn.IsTrader();
 
-        protected override void FillTab()
+        public override void FillTab()
         {
             if (Multiplayer.IsRunning)
                 Multiplayer.WatchBegin();

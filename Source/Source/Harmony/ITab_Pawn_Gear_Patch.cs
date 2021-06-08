@@ -13,7 +13,7 @@ namespace Hospitality.Harmony
             [HarmonyPrefix]
             public static bool Prefix(ITab_Pawn_Gear __instance)
             {
-                var SelPawnForGear = Traverse.Create(__instance).Property("SelPawnForGear").GetValue<Pawn>();
+                var SelPawnForGear = __instance.SelPawnForGear;
 
                 var preventDrop = SelPawnForGear.HostFaction == Faction.OfPlayer && !SelPawnForGear.IsPrisoner;
                 return !preventDrop;

@@ -9,7 +9,7 @@ namespace Hospitality
     /// </summary>
     public class ThoughtWorker_CantAffordBed : ThoughtWorker
     {
-        protected override ThoughtState CurrentStateInternal(Pawn pawn)
+        public override ThoughtState CurrentStateInternal(Pawn pawn)
         {
             if (pawn == null) return ThoughtState.Inactive;
             if (pawn.thingIDNumber == 0) return ThoughtState.Inactive; // What do you know!!!
@@ -18,9 +18,8 @@ namespace Hospitality
             {
                 return ThoughtState.Inactive;
             }
-            if (!pawn.IsArrivedGuest()) return ThoughtState.Inactive;
+            if (!pawn.IsArrivedGuest(out var compGuest)) return ThoughtState.Inactive;
 
-            var compGuest = pawn.CompGuest();
             if (compGuest == null) return ThoughtState.Inactive;
             if(!compGuest.arrived) return ThoughtState.Inactive;
 

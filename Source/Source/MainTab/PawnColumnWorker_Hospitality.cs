@@ -8,7 +8,7 @@ namespace Hospitality.MainTab
     {
         protected internal float score;
 
-        protected override string GetTextFor(Pawn pawn)
+        public override string GetTextFor(Pawn pawn)
         {
             if (pawn.GetVisitScore(out score))
             {

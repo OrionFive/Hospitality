@@ -20,6 +20,8 @@ namespace Hospitality
 
         public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
 
+        public int previousRoyaltyUpdate = 0;
+
         public override Color DrawColor
         {
             get
@@ -72,16 +74,25 @@ namespace Hospitality
                 Stats.textAttractiveness = "BedAttractiveness".Translate(attractiveness);
                 Stats.textFee = rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
                 Stats.textAsArray = new[] {Stats.textAttractiveness, Stats.textFee};
-
-                if (ModLister.RoyaltyInstalled)
-                {
-                    Stats.metRoyalTitles = GetMetRoyalTitles(Stats.room);
-                    Stats.textNextTitleReq = GetNextTitleReq(Stats.room, Stats.metRoyalTitles);
-                }
             }
             catch (Exception e)
             {
                 Log.ErrorOnce($"Failed to calculate stats: {e}", 834763462);
+            }
+        }
+
+        public void UpdateRoyaltyStats()
+        {
+            if (!ModLister.RoyaltyInstalled) return;
+
+            var time = DateTime.Now.Second;
+
+            if (time != previousRoyaltyUpdate)
+            {
+                Stats.metRoyalTitles = GetMetRoyalTitles(Stats.room);
+                Stats.textNextTitleReq = GetNextTitleReq(Stats.room, Stats.metRoyalTitles);
+
+                previousRoyaltyUpdate = time;
             }
         }
 
@@ -98,7 +109,7 @@ namespace Hospitality
             return string.Empty;
         }
 
-        private RoyalTitleDef[] GetMetRoyalTitles(Room room)
+        private RoyalTitleDef[] GetMetRoyalTitles(Room room) // This causes the slowdown when there are lots of guest beds. Pref to cache these values. ~30ms per call
         {
             try
             {
@@ -278,7 +289,7 @@ namespace Hospitality
                     {
                         if (!owners[index].InBed() || owners[index].CurrentBed() != this || !(owners[index].Position == GetSleepingSlotPos(index)))
                         {
-                            var pos = Traverse.Create(this).Method("GetMultiOwnersLabelScreenPosFor", index).GetValue<Vector3>();
+                            var pos = this.GetMultiOwnersLabelScreenPosFor(index); 
                             GenMapUI.DrawThingLabel(pos, owners[index].LabelShort, defaultThingLabelColor);
                         }
                     }

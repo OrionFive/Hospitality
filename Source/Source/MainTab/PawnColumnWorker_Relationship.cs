@@ -11,13 +11,13 @@ namespace Hospitality.MainTab
         private static readonly Texture2D Icon = ContentFinder<Texture2D>.Get("UI/Tab/Relationship");
         private bool mayDrawLordGroups;
 
-        protected override Texture2D GetIconFor(Pawn pawn)
+        public override Texture2D GetIconFor(Pawn pawn)
         {
             if (pawn == null) return null;
             return GetRelationInfo(pawn).hasRelationship ? Icon : null;
         }
 
-        protected override string GetIconTip(Pawn pawn)
+        public override string GetIconTip(Pawn pawn)
         {
             return GetRelationInfo(pawn).tooltip;
         }

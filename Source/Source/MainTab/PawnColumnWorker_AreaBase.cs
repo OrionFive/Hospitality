@@ -13,7 +13,7 @@ namespace Hospitality.MainTab
 
         private const int ManageAreasButtonHeight = 32;
 
-        protected override GameFont DefaultHeaderFont => GameFont.Tiny;
+        public override GameFont DefaultHeaderFont => GameFont.Tiny;
 
         public override int GetMinWidth(PawnTable table)
         {
@@ -73,7 +73,7 @@ namespace Hospitality.MainTab
         // Added
         protected abstract void SetArea(Pawn pawn, Area area);
 
-        protected override void HeaderClicked(Rect headerRect, PawnTable table)
+        public override void HeaderClicked(Rect headerRect, PawnTable table)
         {
             base.HeaderClicked(headerRect, table);
             if (Event.current.shift && Find.CurrentMap != null)
@@ -109,7 +109,7 @@ namespace Hospitality.MainTab
             }
         }
 
-        protected override string GetHeaderTip(PawnTable table)
+        public override string GetHeaderTip(PawnTable table)
         {
             return base.GetHeaderTip(table) + "\n" + "AllowedAreaShiftClickTip".Translate();
         }

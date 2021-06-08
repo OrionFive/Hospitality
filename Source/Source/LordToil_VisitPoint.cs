@@ -103,7 +103,9 @@ namespace Hospitality
 
         private void Leave()
         {
+            if (lord.LordJob is LordJob_VisitColony visit) visit.OnLeaveTriggered();
             GuestUtility.OnLordLeft(lord);
+
             var pawns = lord.ownedPawns.ToArray(); // Copy, because recruiting changes lord
             bool hostile = lord.faction.RelationWith(Faction.OfPlayer).kind == FactionRelationKind.Hostile;
 
@@ -318,7 +320,7 @@ namespace Hospitality
 
         public void OnPlayerBoughtItem(Thing thing)
         {
-            if(Data.soldItemIDs == null) Data.soldItemIDs = new List<int>();
+            Data.soldItemIDs ??= new List<int>();
             Data.soldItemIDs.Add(thing.thingIDNumber);
         }
 

@@ -1,248 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A36BEEB2-7379-475B-B537-827E34571962}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Hospitality</RootNamespace>
     <AssemblyName>Hospitality</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <BaseIntermediateOutputPath>C:\Temp\</BaseIntermediateOutputPath>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
     <OutputPath>..\..\1.2\Assemblies\</OutputPath>
-    <DefineConstants>UNITY_ASSERTIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\1.2\Assemblies\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>8</LangVersion>
+    <DebugType>none</DebugType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NDEBUG</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.0.4\lib\net472\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="0MultiplayerAPI, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RimWorld.MultiplayerAPI.0.3.0\lib\net472\0MultiplayerAPI.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="HugsLib">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\818773962\v1.1\Assemblies\HugsLib.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.InputModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.InputModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.2.2753-REV" GeneratePathProperty="true" />
+    <PackageReference Include="Lib.Harmony" Version="2.0.2" ExcludeAssets="runtime" />
+    <PackageReference Include="TaskPubliciser" Version="1.0.3" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="1.1.0" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.0" />
+    <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="8.0.0" ExcludeAssets="runtime" />
+    <PackageReference Include="RimWorld.MultiplayerAPI" Version="0.2.0" ExcludeAssets="runtime" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Alert_Guest.cs" />
-    <Compile Include="Alert_GuestCantClaimBed.cs" />
-    <Compile Include="Alert_GuestNotEnoughBeds.cs" />
-    <Compile Include="Alert_GuestThought.cs" />
-    <Compile Include="BedStatsDrawer.cs" />
-    <Compile Include="Gizmo_GuestBedStats.cs" />
-    <Compile Include="Harmony\NoLittering_Patch.cs" />
-    <Compile Include="Harmony\Pawn_TraderTracker_Patch.cs" />
-    <Compile Include="Harmony\Room_Patch.cs" />
-    <Compile Include="Harmony\Pawn_Patch.cs" />
-    <Compile Include="IncidentWorker_VisitorGroupSelectFaction.cs" />
-    <Compile Include="MainTab\Dialog_MapSettings.cs" />
-    <Compile Include="MainTab\MainTabUtility.cs" />
-    <Compile Include="TransitionAction_EnsureHaveNearbyExitDestination.cs" />
-    <Compile Include="TransitionAction_MessageDebug.cs" />
-    <Compile Include="TransitionAction_SendAway.cs" />
-    <Compile Include="Utilities\BedUtility.cs" />
-    <Compile Include="ChoiceLetter_GuestJoinRequest.cs" />
-    <Compile Include="Utilities\CompUtility.cs" />
-    <Compile Include="Utilities\DefsUtility.cs" />
-    <Compile Include="Harmony\AddictionUtility_Patch.cs" />
-    <Compile Include="Harmony\Building_Bed_Patch.cs" />
-    <Compile Include="Harmony\ExpectationsUtility_Patch.cs" />
-    <Compile Include="Harmony\FactionDialogMaker_Patch.cs" />
-    <Compile Include="Harmony\FactionUtility_Patch.cs" />
-    <Compile Include="Harmony\Faction_Patch.cs" />
-    <Compile Include="Harmony\FoodUtility_Patch.cs" />
-    <Compile Include="Harmony\ForbidUtility_Patch.cs" />
-    <Compile Include="Harmony\GatheringsUtility_Patch.cs" />
-    <Compile Include="Harmony\JobDriver_Patch.cs" />
-    <Compile Include="Harmony\MentalStateHandler_Patch.cs" />
-    <Compile Include="Harmony\OverlayDrawer_Patch.cs" />
-    <Compile Include="Harmony\Pawn_MindState_Patch.cs" />
-    <Compile Include="Harmony\ThingFilter_Patch.cs" />
-    <Compile Include="Harmony\PawnNameColorUtility_Patch.cs" />
-    <Compile Include="Harmony\Pawn_ApparelTracker_Patch.cs" />
-    <Compile Include="Harmony\JobGiver_Work_Patch.cs" />
-    <Compile Include="Harmony\JoyGiver_Ingest_Patch.cs" />
-    <Compile Include="Harmony\MinifiedThing_Patch.cs" />
-    <Compile Include="Utilities\DialogUtility.cs" />
-    <Compile Include="Utilities\GenericUtility.cs" />
-    <Compile Include="Harmony\ITab_Pawn_Gear_Patch.cs" />
-    <Compile Include="Harmony\ITab_Pawn_Guest_Patch.cs" />
-    <Compile Include="Harmony\PawnUtility_Patch.cs" />
-    <Compile Include="Harmony\Pawn_GuestTracker_Patch.cs" />
-    <Compile Include="Harmony\Pawn_InteractionsTracker_Patch.cs" />
-    <Compile Include="Harmony\Pawn_NeedsTracker_Patch.cs" />
-    <Compile Include="Harmony\Pawn_Ownership_Patch.cs" />
-    <Compile Include="Harmony\Pawn_RelationsTracker_Patch.cs" />
-    <Compile Include="Harmony\Reachability_Patch.cs" />
-    <Compile Include="Harmony\ReservationManager_Patch.cs" />
-    <Compile Include="Harmony\RestUtility_Patch.cs" />
-    <Compile Include="Harmony\SocialCardUtility_Patch.cs" />
-    <Compile Include="Harmony\ThinkNode_ConditionalNPCCanSelfTendNow_Patch.cs" />
-    <Compile Include="Harmony\ThoughtWorker_Patch.cs" />
-    <Compile Include="Harmony\Toils_LayDown_Patch.cs" />
-    <Compile Include="Harmony\TransitionAction_EnsureHaveExitDestination_Patch.cs" />
-    <Compile Include="Harmony\TransitionAction_SetDefendLocalGroup_Patch.cs" />
-    <Compile Include="Harmony\Building_Door_Patch.cs" />
-    <Compile Include="Harmony\WorkGiver_HunterHunt_Patch.cs" />
-    <Compile Include="IncidentWorker_HappyGuestJoins.cs" />
-    <Compile Include="IncidentWorker_VisitorGroupMax.cs" />
-    <Compile Include="Utilities\ItemUtility.cs" />
-    <Compile Include="JobDriver_ClaimBed.cs" />
-    <Compile Include="JobGiver_ClaimBed.cs" />
-    <Compile Include="JobGiver_GotoGuestArea.cs" />
-    <Compile Include="CompGuest.cs" />
-    <Compile Include="CompProperties_Guest.cs" />
-    <Compile Include="EventAction.cs" />
-    <Compile Include="EventAction_Pawns.cs" />
-    <Compile Include="InteractionWorker_CharmGuestAttempt.cs" />
-    <Compile Include="InteractionWorker_GuestDiplomacy.cs" />
-    <Compile Include="JobDriver_BrowseItems.cs" />
-    <Compile Include="JobDriver_BuyItem.cs" />
-    <Compile Include="JoyGiver_BuyFood.cs" />
-    <Compile Include="JoyGiver_BuyStuff.cs" />
-    <Compile Include="LordJob_VisitColony.cs" />
-    <Compile Include="LordToil_CustomTravel.cs" />
-    <Compile Include="MainTab\AreaGUI.cs" />
-    <Compile Include="MainTab\MainTabWindow_Hospitality.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_AccommodationArea.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_AreaBase.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_ButtonMore.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_Entertain.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_Faction.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_FriendsForRecruiting.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_LabelCustom.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_Hospitality.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_MakeFriends.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_Relationship.cs" />
-    <Compile Include="MainTab\PawnColumnWorker_ShoppingArea.cs" />
-    <Compile Include="MainTab\PawnTable_Guests.cs" />
-    <Compile Include="HospitalityModBase.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacer.cs" />
-    <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacerCruise.cs" />
-    <Compile Include="Spacer\IncidentWorker_VisitorGroupSpacerLuxury.cs" />
-    <Compile Include="Utilities\RelationUtility.cs" />
-    <Compile Include="Utilities\SpawnGroupUtility.cs" />
-    <Compile Include="StatWorker_ForcedRelationshipDamage.cs" />
-    <Compile Include="ThinkNode_ConditionalShouldKeepLyingDown.cs" />
-    <Compile Include="ThinkNode_ConditionalWantsToHelp.cs" />
-    <Compile Include="ThinkNode_InGuestArea.cs" />
-    <Compile Include="ThoughtWorker_Beds.cs" />
-    <Compile Include="ThoughtWorker_CantAffordBed.cs" />
-    <Compile Include="Trigger_SentAway.cs" />
-    <Compile Include="Trigger_TicksPassedAndOkayToLeave.cs" />
-    <Compile Include="Trigger_UrgentlyCold.cs" />
-    <Compile Include="Building_GuestBed.cs" />
-    <Compile Include="Utilities\GuestUtility.cs" />
-    <Compile Include="IncidentWorker_VisitorGroup.cs" />
-    <Compile Include="JobDriver_GuestBase.cs" />
-    <Compile Include="JobDriver_GuestImproveRelationship.cs" />
-    <Compile Include="JobDriver_CharmGuest.cs" />
-    <Compile Include="JobGiver_Relax.cs" />
-    <Compile Include="JobGiver_Sleep.cs" />
-    <Compile Include="RoomRoleWorker_GuestRoom.cs" />
-    <Compile Include="LordToil_VisitPoint.cs" />
-    <Compile Include="StatWorker_RecruitEffectivity.cs" />
-    <Compile Include="StatWorker_RelationshipDamage.cs" />
-    <Compile Include="ThinkNode_FilterGuestRooms.cs" />
-    <Compile Include="Trigger_Visitors.cs" />
-    <Compile Include="WorkGiver_Diplomat.cs" />
-    <Compile Include="WorkGiver_Recruiter.cs" />
-    <Compile Include="Hospitality_MapComponent.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ITab_Pawn_Guest.cs" />
-    <Compile Include="Hospitality_SpecialInjector.cs" />
-    <Compile Include="Multiplayer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\NuGet.Build.Tasks.Pack.5.9.1\build\NuGet.Build.Tasks.Pack.targets" Condition="Exists('..\packages\NuGet.Build.Tasks.Pack.5.9.1\build\NuGet.Build.Tasks.Pack.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+  
+  <Target Name="MyCode" BeforeTargets="UpdateReferences">
+    <!-- Set our variables -->
     <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+      <AssemblyCSharp>$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll</AssemblyCSharp>
+      <PubliciseOutputPath>$(PkgKrafs_Rimworld_Ref)\ref\net472\</PubliciseOutputPath>
+      <AssemblyCSharp_Publicised>$(PubliciseOutputPath)Assembly-CSharp_publicised.dll</AssemblyCSharp_Publicised>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NuGet.Build.Tasks.Pack.5.9.1\build\NuGet.Build.Tasks.Pack.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NuGet.Build.Tasks.Pack.5.9.1\build\NuGet.Build.Tasks.Pack.targets'))" />
+
+    <!-- Publicise the dlls (if required) -->
+    <Message Importance="High" Text="Publicising Rimworld Assembly ..." />
+    <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(AssemblyCSharp)')" />
+
+    <!-- Add references to the new publicised dlls -->
+    <Message Importance="High" Text="Replacing reference to un-publicised assemblies with publicised equivalents ..." />
+
+    <ItemGroup>
+      <Reference Include="$(AssemblyCSharp_Publicised)">
+        <SpecificVersion>false</SpecificVersion>
+        <HintPath>$(AssemblyCSharp_Publicised)</HintPath>
+        <Implicit>true</Implicit>
+        <Private>false</Private>
+      </Reference>
+    </ItemGroup>
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+
+  <Target Name="UpdateReferences" AfterTargets="ResolveLockFileReferences">
+    <Message Importance="High" Text="Remove References ..." />
+
+    <ItemGroup>
+      <Reference Remove="$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll" />
+    </ItemGroup>
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+
 </Project>

@@ -11,6 +11,7 @@ namespace Hospitality
         private int stayDuration;
         private int checkEventId = -1;
         public bool getUpsetWhenLost;
+        public bool leaving;
         
         public LordJob_VisitColony()
         {
@@ -23,6 +24,7 @@ namespace Hospitality
             this.chillSpot = chillSpot;
             this.stayDuration = stayDuration;
             this.getUpsetWhenLost = getUpsetWhenLost;
+            leaving = false;
         }
 
         public override bool NeverInRestraints => true;
@@ -35,6 +37,12 @@ namespace Hospitality
             Scribe_Values.Look(ref checkEventId, "checkEventId", -1);
             Scribe_Values.Look(ref stayDuration, "stayDuration", GenDate.TicksPerDay);
             Scribe_Values.Look(ref getUpsetWhenLost, "getUpsetWhenLost", true);
+            Scribe_Values.Look(ref leaving, "leaving");
+        }
+
+        public void OnLeaveTriggered()
+        {
+            leaving = true;
         }
 
         public override StateGraph CreateGraph()

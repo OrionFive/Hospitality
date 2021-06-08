@@ -23,7 +23,7 @@ namespace Hospitality.Harmony
                 if (compGuest == null || !compGuest.rescued || member.guest == null || PawnUtility.IsTravelingInTransportPodWorldObject(member)) return true;
 
                 free = true;
-                Traverse.Create(member.guest).Field("hostFactionInt").SetValue(Faction.OfPlayer); // Settings this makes the reward work
+                member.guest.hostFactionInt = Faction.OfPlayer; // Settings this makes the reward work
                 compGuest.rescued = false; // Turn back off
 
                 return true;

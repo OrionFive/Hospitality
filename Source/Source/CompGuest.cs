@@ -83,6 +83,8 @@ namespace Hospitality
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
+                if (Pawn.Dead) return;
+
                 // Can't save lord (IExposable), so we just gotta find it each time
                 lord = Pawn.GetLord();
 
@@ -112,7 +114,7 @@ namespace Hospitality
 
             // Calling this method directly crashes the game (infinite loop, somehow). So here's a copy.
             Action<CompAssignableToPawn> TryUnassignPawn = comp => {
-                var assignedPawns = Traverse.Create(comp).Field<List<Pawn>>("assignedPawns").Value;
+                var assignedPawns = comp.assignedPawns;
                 if (!assignedPawns.Contains(Pawn)) return;
                 assignedPawns.Remove(Pawn);
                 Traverse.Create(comp).Method("SortAssignedPawns").GetValue();
@@ -141,6 +143,7 @@ namespace Hospitality
         {
             arrived = false;
             Pawn.ownership.UnclaimBed();
+            
             if(clearLord) lord = null;
         }
 

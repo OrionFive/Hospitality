@@ -205,7 +205,7 @@ namespace Hospitality
 
         public static Hospitality_MapComponent GetMapComponent(this Map map)
         {
-            return map.GetComponent<Hospitality_MapComponent>() ?? new Hospitality_MapComponent(true, map);
+            return map.GetComponent<Hospitality_MapComponent>();// ?? new Hospitality_MapComponent(true, map);
         }
     }
 }

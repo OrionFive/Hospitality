@@ -40,7 +40,7 @@ namespace Hospitality
             return Mathf.Lerp(-20, 20, Mathf.InverseLerp(-100, 100, current));
         }
 
-        protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
+        public override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
         {
             return !f.IsPlayer && !f.defeated && !f.def.hidden && !f.HostileTo(Faction.OfPlayer) 
                    && f.def.pawnGroupMakers != null && f.def.pawnGroupMakers.Any(x => x.kindDef == PawnGroupKindDef);
@@ -116,7 +116,7 @@ namespace Hospitality
             Find.WindowStack.Add(new Dialog_NodeTree(diaNode, true, true, title));
         }
 
-        protected override bool TryExecuteWorker(IncidentParms parms)
+        public override bool TryExecuteWorker(IncidentParms parms)
         {
             if (!TryResolveParms(parms))
             {
@@ -255,6 +255,9 @@ namespace Hospitality
 
                 var stayDuration = (int)(Rand.Range(1f, 2.4f) * GenDate.TicksPerDay);
                 CreateLord(parms.faction, spot, visitors, map, true, true, stayDuration);
+
+                // Update our mapcomponents guests.
+                map.GetMapComponent().RefreshGuestListTotal();                
             }
             catch (Exception e)
             {
@@ -274,7 +277,7 @@ namespace Hospitality
             return true; // be gone, event
         }
 
-        protected override void ResolveParmsPoints(IncidentParms parms)
+        public override void ResolveParmsPoints(IncidentParms parms)
         {
             if (parms.points < 0f)
             {
@@ -338,6 +341,7 @@ namespace Hospitality
             while(i < preferredAmount)
             {
                 var newPawns = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(PawnGroupKindDef, parms, true), false).ToArray();
+                
                 Log.Message($"Created {newPawns.Length} new pawns for {parms.faction.Name}.");
                 foreach (var pawn in newPawns)
                 {

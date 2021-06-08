@@ -40,7 +40,7 @@ namespace Hospitality
             joyGiverChances = new DefMap<JoyGiverDef, float>();
         }
 
-        protected override Job TryGiveJob(Pawn pawn)
+        public override Job TryGiveJob(Pawn pawn)
         {
             if (pawn == null)
             {

@@ -25,7 +25,7 @@ namespace Hospitality
             return pawn.Reserve(job.targetA.Thing, job);
         }
 
-        protected override IEnumerable<Toil> MakeNewToils()
+        public override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
