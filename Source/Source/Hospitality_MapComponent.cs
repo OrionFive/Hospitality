@@ -101,7 +101,7 @@ namespace Hospitality
             {
                 if (pawn.foodRestriction != null)
                 {
-                    pawn.foodRestriction.CurrentFoodRestriction = GuestUtility.defaultFoodRestriction;
+                    pawn.foodRestriction.CurrentFoodRestriction = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
                 }
             }
         }
