@@ -84,6 +84,8 @@ namespace Hospitality
             {
                 if (Pawn.Dead) return;
 
+                // NOTE: Careful! All pawns have this component
+
                 // Can't save lord (IExposable), so we just gotta find it each time
                 lord = Pawn.GetLord();
 

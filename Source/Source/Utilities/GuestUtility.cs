@@ -42,6 +42,9 @@ namespace Hospitality
 
         private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve {new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30)};
 
+        public static FoodRestriction defaultFoodRestriction = CreateDefaultFoodRestriction();
+
+
         private static RoyalTitleDef[] titleDefs = null;
         public static RoyalTitleDef[] AllTitles 
         {
@@ -76,6 +79,19 @@ namespace Hospitality
             DistinctFactions = factions.GroupBy(f => f.def).Select(x => x.First()).ToArray();
             AllTitles = titles.Distinct().ToArray();
             //Log.Message($"Hospitality: Read {DistinctFactions.Length} factions with royal titles, {AllTitles.Length} royal titles.");
+        }
+        private static FoodRestriction CreateDefaultFoodRestriction()
+        {
+            // This is recreated every time, so when new mods are added, the restrictions are correct
+            int id = 600; // Arbitrary number
+            FoodRestriction foodRestriction = new FoodRestriction(id, "FoodRestriction Hospitality Guests" + id);
+            foodRestriction.filter.SetAllow(ThingCategoryDefOf.Foods, true);
+            foodRestriction.filter.SetAllow(ThingCategoryDefOf.CorpsesHumanlike, true);
+            foodRestriction.filter.SetAllow(ThingCategoryDefOf.CorpsesAnimal, true);
+
+            Log.Message($"Guest food restriction: {foodRestriction.filter.AllowedThingDefs.Select(d=>d.label).ToCommaList()}\n{foodRestriction.filter.Summary}");
+
+            return foodRestriction;
         }
 
         public static bool IsRelaxing(this Pawn pawn)
@@ -547,6 +563,7 @@ namespace Hospitality
 
             guest.playerSettings.medCare = MedicalCareCategory.Best;
             guest.playerSettings.AreaRestriction = null;
+            guest.foodRestriction.CurrentFoodRestriction = Current.Game.foodRestrictionDatabase.DefaultFoodRestriction();
 
             guest.caller?.DoCall();
         }

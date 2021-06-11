@@ -126,6 +126,7 @@ namespace Hospitality
             GuestUtility.AddNeedComfort(visitor);
             visitor.FixTimetable();
             visitor.FixDrugPolicy();
+            visitor.foodRestriction.CurrentFoodRestriction = GuestUtility.defaultFoodRestriction;
         }
 
         public static Pawn SpawnVisitor(List<Pawn> spawned, Pawn pawn, Map map, IntVec3 location)

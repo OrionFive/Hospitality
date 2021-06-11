@@ -92,6 +92,18 @@ namespace Hospitality
         {
             RefreshGuestListTotal();
             CheckForCorrectDrugPolicies();
+            ApplyCorrectFoodRestrictions();
+        }
+
+        private void ApplyCorrectFoodRestrictions()
+        {
+            foreach (var pawn in PresentGuests)
+            {
+                if (pawn.foodRestriction != null)
+                {
+                    pawn.foodRestriction.CurrentFoodRestriction = GuestUtility.defaultFoodRestriction;
+                }
+            }
         }
 
         public void CheckForCorrectDrugPolicies()
