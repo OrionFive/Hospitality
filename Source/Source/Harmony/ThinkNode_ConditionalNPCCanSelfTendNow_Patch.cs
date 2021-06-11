@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Disable self-tending of guests
         /// </summary>
-        [HarmonyPatch(typeof(ThinkNode_ConditionalNPCCanSelfTendNow), "Satisfied")]
+        [HarmonyPatch(typeof(ThinkNode_ConditionalNPCCanSelfTendNow), nameof(ThinkNode_ConditionalNPCCanSelfTendNow.Satisfied))]
         public class Satisfied
         {
             [HarmonyPostfix]

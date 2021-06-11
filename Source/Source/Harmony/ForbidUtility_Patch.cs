@@ -74,7 +74,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Things dropped by guests are never forbidden
         /// </summary>
-        [HarmonyPatch(typeof(ForbidUtility), "SetForbidden")]
+        [HarmonyPatch(typeof(ForbidUtility), nameof(ForbidUtility.SetForbidden))]
         public class SetForbidden
         {
             [HarmonyPrefix]
@@ -92,7 +92,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Area check for guests trying to access things outside their zone.
         /// </summary>
-        [HarmonyPatch(typeof(ForbidUtility), "InAllowedArea")]
+        [HarmonyPatch(typeof(ForbidUtility), nameof(ForbidUtility.InAllowedArea))]
         public class InAllowedArea
         {
             // Thinktank
@@ -134,7 +134,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Make sure guests don't use the player's drugs
         /// </summary>
-        [HarmonyPatch(typeof(JoyGiver_SocialRelax), "TryFindIngestibleToNurse")]
+        [HarmonyPatch(typeof(JoyGiver_SocialRelax), nameof(JoyGiver_SocialRelax.TryFindIngestibleToNurse))]
         public class TryFindIngestibleToNurse
         {
             [HarmonyPrefix]

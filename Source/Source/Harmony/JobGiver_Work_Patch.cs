@@ -10,7 +10,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Allow guests to do work they enjoy and are reasonably good at
         /// </summary>
-        [HarmonyPatch(typeof(JobGiver_Work), "PawnCanUseWorkGiver")]
+        [HarmonyPatch(typeof(JobGiver_Work), nameof(JobGiver_Work.PawnCanUseWorkGiver))]
         public class PawnCanUseWorkGiver
         {
             [HarmonyPrefix]

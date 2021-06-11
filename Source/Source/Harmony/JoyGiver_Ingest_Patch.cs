@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class JoyGiver_Ingest_Patch
     {
-        [HarmonyPatch(typeof(JoyGiver_Ingest), "CanIngestForJoy")]
+        [HarmonyPatch(typeof(JoyGiver_Ingest), nameof(JoyGiver_Ingest.CanIngestForJoy))]
         public class CanIngestForJoy
         {
             [HarmonyPostfix]

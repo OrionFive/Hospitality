@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// So guests can think about their bedroom
         /// </summary>
-        [HarmonyPatch(typeof(Toils_LayDown), "ApplyBedThoughts")]
+        [HarmonyPatch(typeof(Toils_LayDown), nameof(Toils_LayDown.ApplyBedThoughts))]
         public class ApplyBedThoughts
         {
             [HarmonyPrefix]

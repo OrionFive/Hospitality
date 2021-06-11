@@ -7,7 +7,7 @@ namespace Hospitality.Harmony
     public static class ITab_Pawn_Gear_Patch
     {
         // This is so the player can't force visitors to drop items. The button remains, though, until fixed by Ludeon. Thus, never?
-        [HarmonyPatch(typeof(ITab_Pawn_Gear), "InterfaceDrop")]
+        [HarmonyPatch(typeof(ITab_Pawn_Gear), nameof(ITab_Pawn_Gear.InterfaceDrop))]
         public class InterfaceDrop
         {
             [HarmonyPrefix]

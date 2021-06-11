@@ -11,7 +11,7 @@ namespace Hospitality.Harmony
     /// </summary>
     public class ReservationManager_Patch
     {
-        [HarmonyPatch(typeof(ReservationManager), "LogCouldNotReserveError")]
+        [HarmonyPatch(typeof(ReservationManager), nameof(ReservationManager.LogCouldNotReserveError))]
         public class LogCouldNotReserveError
         {
             [HarmonyPrefix]

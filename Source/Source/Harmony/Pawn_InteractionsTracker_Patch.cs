@@ -12,7 +12,7 @@ namespace Hospitality.Harmony
     /// </summary>
     internal static class Pawn_InteractionsTracker_Patch
     {
-        [HarmonyPatch(typeof(Pawn_InteractionsTracker), "TryInteractRandomly")]
+        [HarmonyPatch(typeof(Pawn_InteractionsTracker), nameof(Pawn_InteractionsTracker.TryInteractRandomly))]
         public class TryInteractRandomly
         {
             [HarmonyPrefix]

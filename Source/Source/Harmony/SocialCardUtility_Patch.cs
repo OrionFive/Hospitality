@@ -12,7 +12,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Highlight pawns that are guests' friends
         /// </summary>
-        [HarmonyPatch(typeof(SocialCardUtility), "DrawPawnRow")]
+        [HarmonyPatch(typeof(SocialCardUtility), nameof(SocialCardUtility.DrawPawnRow))]
         public class DrawPawnRow
         {
             private static readonly Color HighlightColorFriend = new Color(0.0f, 0.5f, 0.0f, 1f);

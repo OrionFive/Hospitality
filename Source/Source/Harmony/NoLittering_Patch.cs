@@ -13,7 +13,7 @@ namespace Hospitality.Harmony
 		/// <summary>
 		/// Friendly pawns shouldn't litter all their stuff when they get downed.
 		/// </summary>
-		[HarmonyPatch(typeof(Pawn_HealthTracker), "MakeDowned")]
+		[HarmonyPatch(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.MakeDowned))]
 		public class MakeDowned
 		{
 			private static readonly MethodInfo original = AccessTools.Method(typeof(Pawn), nameof(Pawn.DropAndForbidEverything));

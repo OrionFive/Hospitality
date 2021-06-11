@@ -9,7 +9,7 @@ namespace Hospitality.Harmony
     /// </summary>
     internal static class Pawn_NeedsTracker_Patch
     {
-        [HarmonyPatch(typeof(Pawn_NeedsTracker), "ShouldHaveNeed")]
+        [HarmonyPatch(typeof(Pawn_NeedsTracker), nameof(Pawn_NeedsTracker.ShouldHaveNeed))]
         public class ShouldHaveNeed
         {
             private static readonly NeedDef defComfort = DefDatabase<NeedDef>.GetNamed("Comfort");

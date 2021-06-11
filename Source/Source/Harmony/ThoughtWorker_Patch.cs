@@ -12,7 +12,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Against rare error, when guest's ownership.OwnedBed == null 
         /// </summary>
-        [HarmonyPatch(typeof(ThoughtWorker_PrisonBarracksImpressiveness), "CurrentStateInternal")]
+        [HarmonyPatch(typeof(ThoughtWorker_PrisonBarracksImpressiveness), nameof(ThoughtWorker_PrisonBarracksImpressiveness.CurrentStateInternal))]
         public class PrisonBarracksImpressiveness
         {
             [HarmonyPrefix]
@@ -29,7 +29,7 @@ namespace Hospitality.Harmony
         /// <summary>
         /// Against rare error, when guest's ownership.OwnedBed == null 
         /// </summary>
-        [HarmonyPatch(typeof(ThoughtWorker_PrisonCellImpressiveness), "CurrentStateInternal")]
+        [HarmonyPatch(typeof(ThoughtWorker_PrisonCellImpressiveness), nameof(ThoughtWorker_PrisonCellImpressiveness.CurrentStateInternal))]
         public class PrisonCellImpressiveness
         {
             [HarmonyPrefix]
