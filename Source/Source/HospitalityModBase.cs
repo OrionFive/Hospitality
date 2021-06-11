@@ -79,7 +79,7 @@ namespace Hospitality
         {
             var mainButtonDef = DefDatabase<MainButtonDef>.GetNamed("Guests");
             mainButtonDef.iconPath = Hospitality.Settings.useIcon ? "UI/Buttons/MainButtons/IconHospitality" : null;
-            if(mainButtonDef.iconPath == null) AccessTools.Field(typeof(MainButtonDef), "icon").SetValue(mainButtonDef, null);
+            if (mainButtonDef.iconPath == null) mainButtonDef.icon = null;
         }
     }
 }

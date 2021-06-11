@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
@@ -98,7 +97,7 @@ namespace Hospitality
                 if (bed != null && Pawn.ownership.OwnedBed != bed)
                 {
                     // Log.Message($"Assigned bed {bed.Position} to {Pawn.NameShortColored}.");
-                    AccessTools.Field(typeof(Pawn_Ownership), "intOwnedBed").SetValue(Pawn.ownership, bed);
+                    Pawn.ownership.intOwnedBed = bed;
                 }
                 postLoaded = true;
             }
@@ -117,7 +116,7 @@ namespace Hospitality
                 var assignedPawns = comp.assignedPawns;
                 if (!assignedPawns.Contains(Pawn)) return;
                 assignedPawns.Remove(Pawn);
-                Traverse.Create(comp).Method("SortAssignedPawns").GetValue();
+                comp.SortAssignedPawns();
             };
 
             if (bed?.CompAssignableToPawn != null)
