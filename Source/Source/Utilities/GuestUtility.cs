@@ -782,12 +782,9 @@ namespace Hospitality
 
         public static void DoAllowedAreaSelectors(Rect rect, Func<Area, string> getLabel, ref Area currentArea)
         {
-            if (Find.CurrentMap == null)
-            {
-                return;
-            }
+            if (currentArea?.Map == null) return;
 
-            var areas = GetAreas().ToArray();
+            var areas = GetAreas(currentArea.Map).ToArray();
             int num = areas.Length + 1;
             float num2 = rect.width / num;
             Text.WordWrap = false;
@@ -807,9 +804,9 @@ namespace Hospitality
             Text.Font = GameFont.Small;
         }
 
-        public static IEnumerable<Area> GetAreas()
+        public static IEnumerable<Area> GetAreas(Map map)
         {
-            return Find.CurrentMap.areaManager.AllAreas.Where(a => a.AssignableAsAllowed());
+            return map.areaManager.AllAreas.Where(a => a.AssignableAsAllowed());
         }
 
         // From RimWorld.AreaAllowedGUI, modified

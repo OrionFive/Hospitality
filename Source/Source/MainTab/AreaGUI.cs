@@ -15,8 +15,7 @@ namespace Hospitality.MainTab
         // Added passing of Get/Set methods
         public static void DoAllowedAreaSelectors(Rect rect, Pawn p, Func<Pawn, Area> getArea, Action<Pawn, Area> setArea)
         {
-            if (Find.CurrentMap == null)
-                return;
+            if (Find.CurrentMap == null) return;
             List<Area> allAreas = Find.CurrentMap.areaManager.AllAreas;
             int num1 = 1;
             for (int index = 0; index < allAreas.Count; ++index)
