@@ -83,6 +83,11 @@ namespace Hospitality
             presentGuests.AddRange(PresentLords.SelectMany(l => l.ownedPawns));
         }
 
+        public void OnGuestAdopted(Pawn guest)
+        {
+            presentGuests.Remove(guest);
+        }
+
         public void OnWorldLoaded()
         {
             RefreshGuestListTotal();
