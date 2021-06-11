@@ -5,6 +5,7 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.AI.Group;
 
 namespace Hospitality
 {
@@ -206,6 +207,32 @@ namespace Hospitality
         public static Hospitality_MapComponent GetMapComponent(this Map map)
         {
             return map.GetComponent<Hospitality_MapComponent>();// ?? new Hospitality_MapComponent(true, map);
+        }
+
+        [DebugAction("General", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void RemoveBrokenGroups()
+        {
+            static void RemoveLord(Lord lord)
+            {
+                try
+                {
+                    Find.CurrentMap.lordManager.RemoveLord(lord);
+                }
+                catch
+                {
+                    Find.CurrentMap.lordManager.lords.Remove(lord);
+                }
+            }
+
+            foreach (var lord in Find.CurrentMap.lordManager.lords.ToArray())
+            {
+                if (lord?.faction == null || lord.LordJob == null || lord.ownedPawns == null) RemoveLord(lord);
+                else
+                {
+                    lord.ownedPawns.RemoveAll(p => p == null);
+                    lord.ownedBuildings.RemoveAll(b => b == null);
+                }
+            }
         }
     }
 }
