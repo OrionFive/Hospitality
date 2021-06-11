@@ -214,6 +214,7 @@ namespace Hospitality
         {
             static void RemoveLord(Lord lord)
             {
+                Log.Message($"Removing lord/group from {(lord.faction == null?"unset faction":lord.faction.Name)}.");
                 try
                 {
                     Find.CurrentMap.lordManager.RemoveLord(lord);
@@ -226,11 +227,13 @@ namespace Hospitality
 
             foreach (var lord in Find.CurrentMap.lordManager.lords.ToArray())
             {
-                if (lord?.faction == null || lord.LordJob == null || lord.ownedPawns == null) RemoveLord(lord);
+                if (lord?.faction == null || lord.LordJob == null || lord.ownedPawns == null || lord.ownedBuildings == null) RemoveLord(lord);
                 else
                 {
-                    lord.ownedPawns.RemoveAll(p => p == null);
-                    lord.ownedBuildings.RemoveAll(b => b == null);
+                    var count = 0;
+                    count += lord.ownedPawns.RemoveAll(p => p == null);
+                    count += lord.ownedBuildings.RemoveAll(b => b == null);
+                    if(count > 0) Log.Message($"Removed {count} invalid pawns or buildings for lord/group.");
                 }
             }
         }
