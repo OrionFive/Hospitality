@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -120,19 +121,24 @@ namespace Hospitality
             return (float) TechLevel.Ultra - Mathf.Abs((float) target - (float) def);
         }
 
-        public static void SetupAsVisitor(this Pawn visitor)
+        public static void SetupAsVisitor([NotNull] this Pawn visitor)
         {
             GuestUtility.AddNeedJoy(visitor);
             GuestUtility.AddNeedComfort(visitor);
             visitor.FixTimetable();
             visitor.FixDrugPolicy();
-            visitor.foodRestriction.CurrentFoodRestriction = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
+            
+            if (visitor.foodRestriction != null && visitor.RaceProps.Humanlike) // Humanlike check copied from vanilla, faction check removed (these are always guests)
+            {
+                visitor.foodRestriction.CurrentFoodRestriction = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
+            }
         }
 
         public static Pawn SpawnVisitor(List<Pawn> spawned, Pawn pawn, Map map, IntVec3 location)
         {
             GenerateNewGearFor(pawn, map.Tile);
             var spawnedPawn = (Pawn)GenSpawn.Spawn(pawn, CellFinder.RandomClosewalkCellNear(location, map, 5), map);
+            if (spawnedPawn == null) return null;
 
             spawnedPawn.SetupAsVisitor();
             spawnedPawn.needs.SetInitialLevels();
