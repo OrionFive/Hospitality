@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
@@ -12,6 +14,7 @@ namespace Hospitality
         public bool destAssigned;
         public float percentRequired;
         public float distance;
+        public HashSet<Pawn> arrivedPawns = new HashSet<Pawn>();
 
         public override void ExposeData()
         {
@@ -19,6 +22,7 @@ namespace Hospitality
             Scribe_Values.Look(ref destAssigned, "destAssigned");
             Scribe_Values.Look(ref percentRequired, "percentRequired", 1);
             Scribe_Values.Look(ref distance, "distance", 10);
+            Scribe_Collections.Look(ref arrivedPawns, "arrivedPawns", LookMode.Reference);
         }
     }
 
@@ -51,12 +55,26 @@ namespace Hospitality
 
         public override void LordToilTick()
         {
-            if (Find.TickManager.TicksGame%205 != 0) return;
-            int count = lord.ownedPawns.Count(pawn => pawn?.Position.InHorDistOf(Data.dest, Data.distance) == true && pawn.CanReach(Data.dest, PathEndMode.OnCell, Danger.Some));
-            float percent = 1f*count/lord.ownedPawns.Count(pawn => pawn != null);
             if (Data == null) return;
-            if (percent < Data.percentRequired) return;
-            lord.ReceiveMemo("TravelArrived");
+
+            foreach (var pawn in lord.ownedPawns)
+            {
+                if (pawn == null) continue;
+                if (!pawn.IsHashIntervalTick(205)) continue;
+                if (Data.arrivedPawns.Contains(pawn)) continue;
+                if (pawn.Dead || pawn.Downed || !pawn.Spawned) OnPawnArrived(pawn);
+                else if (pawn.Position.InHorDistOf(Data.dest, Data.distance) && pawn.CanReach(Data.dest, PathEndMode.OnCell, Danger.Some)) OnPawnArrived(pawn);
+            }
+
+            void OnPawnArrived(Pawn pawn)
+            {
+                Data.arrivedPawns.Add(pawn);
+
+                int count = Data.arrivedPawns.Count;
+                float percent = 1f*count/lord.ownedPawns.Count(p => p != null);
+                if (percent < Data.percentRequired) return;
+                lord.ReceiveMemo("TravelArrived");
+            }
         }
     }
 }

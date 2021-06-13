@@ -14,7 +14,7 @@ namespace Hospitality
 
         public override void ExposeData()
         {
-            Scribe_Collections.Look(ref pawns, "visitingPawns", LookMode.Reference); // TODO: Make sure the lookmode is correct
+            Scribe_Collections.Look(ref pawns, "visitingPawns", LookMode.Reference);
         }
     }
 }

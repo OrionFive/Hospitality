@@ -3,6 +3,7 @@
   <identifier>Hospitality</identifier>
   <version>1.2.11</version>
   <dependencies>
+	<li>brrainz.harmony</li>
     <li>UnlimitedHugs.HugsLib</li>
   </dependencies>
   <incompatibleWith />
