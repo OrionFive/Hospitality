@@ -285,7 +285,7 @@ namespace Hospitality
             }
         }
 
-        protected void SpawnPawns(IncidentParms parms,  List<Pawn> spawned)
+        protected void SpawnPawns(IncidentParms parms, List<Pawn> spawned)
         {
             var map = (Map)parms.target;
 
@@ -296,7 +296,7 @@ namespace Hospitality
                 try
                 {
                     var visitor = SpawnGroupUtility.SpawnVisitor(spawned, pawn, map, parms.spawnCenter);
-                    if (visitor.needs?.rest != null) visitor.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
+                    if (visitor?.needs?.rest != null) visitor.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
                 }
                 catch (Exception e)
                 {
