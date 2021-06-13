@@ -14,36 +14,35 @@ namespace Hospitality {
 
         protected ThoughtDef Thought => DefDatabase<ThoughtDef>.GetNamed("GuestBedCount");
 
-        protected override List<Pawn> AffectedPawns
+        protected override List<Pawn> FindAffectedPawns()
         {
-            get
+            affectedPawnsResult.Clear();
+            foreach (var map in Find.Maps)
+            foreach (var pawn in map.GetMapComponent().PresentGuests)
             {
-                affectedPawnsResult.Clear();
-                foreach (var map in Find.Maps)
-                foreach (var pawn in map.GetMapComponent().PresentGuests)
-                {
-                    if (pawn.Dead) continue;
+                if (pawn.Dead) continue;
 
-                    if (pawn.needs.mood != null)
+                if (pawn.needs.mood != null)
+                {
+                    pawn.needs.mood.thoughts.GetAllMoodThoughts(tmpThoughts);
+                    try
                     {
-                        pawn.needs.mood.thoughts.GetAllMoodThoughts(tmpThoughts);
-                        try
+                        foreach (var thought in tmpThoughts)
                         {
-                            foreach (var thought in tmpThoughts)
-                            {
-                                if (thought.def == Thought && thought.CurStageIndex < 2)
-                                    affectedPawnsResult.Add(pawn);
-                            }
-                        }
-                        finally
-                        {
-                            tmpThoughts.Clear();
+                            if (thought.def == Thought && thought.CurStageIndex < 2)
+                                affectedPawnsResult.Add(pawn);
                         }
                     }
+                    finally
+                    {
+                        tmpThoughts.Clear();
+                    }
                 }
-
-                return affectedPawnsResult;
             }
+
+            return affectedPawnsResult;
         }
+
+        private protected override int Hash => 4356;
     }
 }

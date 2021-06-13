@@ -12,5 +12,6 @@ namespace Hospitality
         }
 
         protected override ThoughtDef Thought => DefDatabase<ThoughtDef>.GetNamed("GuestCantAffordBed");
+        private protected override int Hash => 6237;
     }
 }
