@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 using System.Text;
-using JetBrains.Annotations;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Hospitality
 {
     public abstract class Alert_Guest : Alert
     {
-        protected List<Pawn> affectedPawnsResult = new List<Pawn>();
+        protected List<Pawn> affectedPawnCache = new List<Pawn>();
         protected string explanationKey;
-
-        protected abstract List<Pawn> FindAffectedPawns();
-        private readonly List<Pawn> affectedPawnCache = new List<Pawn>();
+        
+        protected abstract void UpdateAffectedPawnsCache();
         private protected abstract int Hash { get; }
+        private float nextCacheUpdate;
 
         public override string GetLabel()
         {
@@ -24,10 +24,11 @@ namespace Hospitality
 
         public override AlertReport GetReport()
         {
-            if ((Find.TickManager.TicksGame + Hash) % 250 == 0)
+            if (Time.realtimeSinceStartup >= nextCacheUpdate)
             {
-                affectedPawnCache.Clear();
-                affectedPawnCache.AddRange(FindAffectedPawns());
+                UpdateAffectedPawnsCache();
+                Log.Message($"Updating alert cache for {GetType().Name}: {affectedPawnCache.Count} pawns.");
+                nextCacheUpdate = Time.realtimeSinceStartup + 1 + 0.01f*(Hash % 25);
             }
             return affectedPawnCache.Any() ? AlertReport.CulpritsAre(affectedPawnCache) : AlertReport.Inactive;
         }

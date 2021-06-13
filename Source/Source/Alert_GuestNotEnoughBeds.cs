@@ -14,9 +14,9 @@ namespace Hospitality {
 
         protected ThoughtDef Thought => DefDatabase<ThoughtDef>.GetNamed("GuestBedCount");
 
-        protected override List<Pawn> FindAffectedPawns()
+        protected override void UpdateAffectedPawnsCache()
         {
-            affectedPawnsResult.Clear();
+            affectedPawnCache.Clear();
             foreach (var map in Find.Maps)
             foreach (var pawn in map.GetMapComponent().PresentGuests)
             {
@@ -30,7 +30,7 @@ namespace Hospitality {
                         foreach (var thought in tmpThoughts)
                         {
                             if (thought.def == Thought && thought.CurStageIndex < 2)
-                                affectedPawnsResult.Add(pawn);
+                                affectedPawnCache.Add(pawn);
                         }
                     }
                     finally
@@ -39,8 +39,6 @@ namespace Hospitality {
                     }
                 }
             }
-
-            return affectedPawnsResult;
         }
 
         private protected override int Hash => 4356;
