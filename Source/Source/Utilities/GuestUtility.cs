@@ -466,7 +466,7 @@ namespace Hospitality
                     {
                         // TODO: Use Translate instead of Format
                         string message;
-                        if (guest.Faction.leader != null)
+                        if (guest.Faction.leader != null && !PawnUtility.IsFactionLeader(guest))
                         {
                             message = Format(txtRecruitFactionAnger, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefAnger, message, LetterDefOf.NegativeEvent, GlobalTargetInfo.Invalid, guest.Faction);
@@ -481,7 +481,7 @@ namespace Hospitality
                     {
                         // TODO: Use Translate instead of Format
                         string message;
-                        if (guest.Faction.leader != null)
+                        if (guest.Faction.leader != null && !PawnUtility.IsFactionLeader(guest))
                         {
                             message = Format(txtRecruitFactionPlease, guest.Faction.leader.Name, guest.Faction.Name, guest.Name.ToStringShort, GenText.ToStringByStyle(-recruitPenalty, ToStringStyle.Integer, ToStringNumberSense.Offset));
                             Find.LetterStack.ReceiveLetter(labelRecruitFactionChiefPlease, message, LetterDefOf.PositiveEvent, GlobalTargetInfo.Invalid, guest.Faction);
@@ -544,7 +544,8 @@ namespace Hospitality
 
             var faction = guest.Faction;
             guest.SetFaction(Faction.OfPlayer);
-            if (PawnUtility.IsFactionLeader(guest)) Log.Warning($"{guest.NameShortColored}: Is still faction leader of {faction?.GetCallLabel()}.");
+            
+            if (PawnUtility.IsFactionLeader(guest)) faction.Notify_LeaderLost();
 
             guest.mindState.exitMapAfterTick = -99999;
             guest.MapHeld.mapPawns.UpdateRegistryForPawn(guest);
