@@ -52,6 +52,8 @@ namespace Hospitality.MainTab
 
             var rectGuestsAreWelcome = listingStandard.GetRect(Text.LineHeight);
             DialogUtility.CheckboxLabeled(listingStandard, "GuestsWelcome".Translate(), ref comp.guestsAreWelcome, rectGuestsAreWelcome, false, "GuestsWelcomeTooltip".Translate());
+            var rectRefuse = listingStandard.GetRect(Text.LineHeight);
+            DialogUtility.CheckboxLabeled(listingStandard, "RefuseGuestsUntilBeds".Translate(), ref comp.refuseGuestsUntilWeHaveBeds, rectRefuse, false, "RefuseGuestsUntilBedsTooltip".Translate());
 
             listingStandard.End();
 

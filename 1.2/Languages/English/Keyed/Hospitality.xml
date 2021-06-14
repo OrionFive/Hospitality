@@ -103,6 +103,8 @@
   <MapSettings>Map settings...</MapSettings>
   <GuestsWelcome>Allow new guests</GuestsWelcome>
   <GuestsWelcomeTooltip>If you turn this off, no new guest groups will arrive at this colony.</GuestsWelcomeTooltip>
+  <RefuseGuestsUntilBeds>Refuse guests until guest beds are built</RefuseGuestsUntilBeds>
+  <RefuseGuestsUntilBedsTooltip>If you turn this on, no new guest groups will arrive, until you've built guest beds.</RefuseGuestsUntilBedsTooltip>
   
   <!-- Infos -->
   <StatsReport_MissingFriends>Missing friends</StatsReport_MissingFriends>
