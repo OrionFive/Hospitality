@@ -95,16 +95,15 @@ namespace Hospitality.Harmony
         [HarmonyPatch(typeof(ForbidUtility), nameof(ForbidUtility.InAllowedArea))]
         public class InAllowedArea
         {
-            // Thinktank
-            // How does vanilla do this for animals, can this be done some other way?
-            // Could maybe build a hashset of intvec3 for each pawn for a quick check?
+            // Think tank
+            // How does vanilla do this for animals, can this be done some other way? >> exactly like this
+            // Could maybe build a hashset of IntVec3 for each pawn for a quick check?
             // Would transpiling the original method allow for improved performance?
 
             [HarmonyPostfix]
             public static void Postfix(IntVec3 c, Pawn forPawn, ref bool __result) 
             {
                 if (!__result) return; // Not ok anyway, moving on
-                if (GuestCacher.CachedComponents[forPawn.mapIndexOrState].presentGuests.Count == 0) return;
                 if (!forPawn.IsArrivedGuest(out var guestComp)) return;
 
                 var area = guestComp.GuestArea;

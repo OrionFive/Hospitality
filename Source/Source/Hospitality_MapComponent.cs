@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
@@ -21,8 +22,8 @@ namespace Hospitality
         private int nextGuestListCheck;
         private DrugPolicy drugPolicy;
 
-        public List<Lord> PresentLords { get; } = new List<Lord>();
-        public readonly HashSet<Pawn> presentGuests = new HashSet<Pawn>();
+        [NotNull]public List<Lord> PresentLords { get; } = new List<Lord>();
+        [NotNull]public readonly HashSet<Pawn> presentGuests = new HashSet<Pawn>();
         public IEnumerable<Pawn> PresentGuests => presentGuests;
 
         public override void ExposeData()
@@ -47,12 +48,7 @@ namespace Hospitality
 
         public override void FinalizeInit()
         {
-            if (GuestCacher.CachedComponents.Length < Find.Maps.Count)
-            {
-                Array.Resize(ref GuestCacher.CachedComponents, Find.Maps.Count + 6); // This does Array.Copy for us.
-            }   
-
-            GuestCacher.CachedComponents[map.Index] = this;
+            ComponentCache.Register(this);
         }
 
         public void RefreshGuestListTotal()

@@ -27,7 +27,6 @@ namespace Hospitality
             if (Time.realtimeSinceStartup >= nextCacheUpdate)
             {
                 UpdateAffectedPawnsCache();
-                Log.Message($"Updating alert cache for {GetType().Name}: {affectedPawnCache.Count} pawns.");
                 nextCacheUpdate = Time.realtimeSinceStartup + 1 + 0.01f*(Hash % 25);
             }
             return affectedPawnCache.Any() ? AlertReport.CulpritsAre(affectedPawnCache) : AlertReport.Inactive;

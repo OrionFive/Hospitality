@@ -95,7 +95,9 @@ namespace Hospitality
             return guestComp?.ShoppingArea != null;
         }
 
-        // If this method returns false `comp` *CAN* be null.
+        /// <summary>
+        /// If this method returns false `comp` *CAN* be null.
+        /// </summary>
         public static bool IsArrivedGuest(this Pawn pawn, out CompGuest comp)
         {
             comp = null;
@@ -108,9 +110,10 @@ namespace Hospitality
 
         public static bool IsGuest(this Pawn pawn)
         {
-            if (pawn == null || pawn.mapIndexOrState < 0 || GuestCacher.CachedComponents[pawn.mapIndexOrState] == null) return false;
+            if (pawn == null || pawn.mapIndexOrState < 0) return false;
 
-            return GuestCacher.CachedComponents[pawn.mapIndexOrState].presentGuests.Contains(pawn);
+            var cachedComponent = pawn.GetMapComponent();
+            return cachedComponent?.presentGuests.Count > 0 && cachedComponent.presentGuests.Contains(pawn);
         }
 
         public static bool IsTrader(this Pawn pawn, bool makeValidPawnCheck = true)
