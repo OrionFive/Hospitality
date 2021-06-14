@@ -10,7 +10,7 @@ using Verse.Sound;
 
 namespace Hospitality
 {
-    public class JobDriver_BuyItem : JobDriver
+	public class JobDriver_BuyItem : JobDriver
     {
         //Constants
         public const int MinShoppingDuration = 75;

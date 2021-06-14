@@ -48,6 +48,14 @@
 			  <insertTag>Humanlike_PreMain</insertTag>
 			</li>
 
+            <!-- Optimize apparel -->
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>ChangingApparel</tagToGive>
+              <subNodes>
+                <li Class="Hospitality.JobGiver_OptimizeApparel" />
+              </subNodes>
+            </li>
+            
 			<li Class="Hospitality.JobGiver_ClaimBed" />
 
 			<li Class="ThinkNode_Tagger">

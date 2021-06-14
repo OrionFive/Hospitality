@@ -53,9 +53,9 @@ namespace Hospitality {
             }
         }
 
-        private static bool CoversHead(this Apparel a)
+        public static bool CoversHead(this Apparel a)
         {
-            return a.def.apparel.bodyPartGroups.Any(g => g == BodyPartGroupDefOf.Eyes || g == BodyPartGroupDefOf.UpperHead || g == BodyPartGroupDefOf.FullHead);
+            return a.def.apparel.bodyPartGroups.Any(g => g == BodyPartGroupDefOf.UpperHead || g == BodyPartGroupDefOf.FullHead);
         }
 
         public static void WearHeadgear(this Pawn pawn)
