@@ -11,10 +11,10 @@ namespace Hospitality.Harmony
         public class SetGuestStatus
         {
             [HarmonyPrefix]
-            public static void Prefix(ref bool prisoner, Pawn ___pawn)
+            public static void Prefix(ref GuestStatus guestStatus, Pawn ___pawn)
             {
                 // Added
-                if (___pawn?.IsGuest() == true) prisoner = false;
+                if (___pawn?.IsGuest() == true) guestStatus = GuestStatus.Guest;
             }
         }
     }
