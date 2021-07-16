@@ -9,8 +9,12 @@ namespace Hospitality.MainTab
 
         public override bool GetValue(Pawn pawn) => pawn.MakeFriends();
 
-        public override void SetValue(Pawn pawn, bool value)
+        public override void SetValue(Pawn pawn, bool value, PawnTable table)
         {
+            if (table.SortingBy == def)
+            {
+                table.SetDirty();
+            }
             var compGuest = pawn.CompGuest();
             if (compGuest != null) compGuest.makeFriends = value;
         }

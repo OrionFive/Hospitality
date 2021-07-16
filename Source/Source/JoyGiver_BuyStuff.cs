@@ -34,7 +34,7 @@ namespace Hospitality
             if (things.Count == 0) return null;
 
             // Try some things
-            var selection = things.TakeRandom(5).Where(t => pawn.CanReach(t.Position, PathEndMode.Touch, Danger.None, false, TraverseMode.PassDoors)).ToArray();
+            var selection = things.TakeRandom(5).Where(t => pawn.CanReach(t.Position, PathEndMode.Touch, Danger.None, false, false, TraverseMode.PassDoors)).ToArray();
             Thing thing = null;
             if (selection.Length > 1)
                 thing = selection.MaxBy(t => Likey(pawn, t));
@@ -97,7 +97,7 @@ namespace Hospitality
                 if(hungerFactor > 0) appFactor -= hungerFactor;
             }
 
-            if (EquipmentUtility.IsBiocoded(thing) && !EquipmentUtility.IsBiocodedFor(thing, pawn)) return 0;
+            if (CompBiocodable.IsBiocoded(thing) && !CompBiocodable.IsBiocodedFor(thing, pawn)) return 0;
 
             // Weapon
             if (thing.def.IsRangedWeapon)

@@ -297,8 +297,8 @@ namespace Hospitality
             // To prevent dropping ammo from CE or similar
             var ammoCategory = DefDatabase<ThingCategoryDef>.GetNamedSilentFail("Ammo");
             if (ammoCategory != null && i.def.IsWithinCategory(ammoCategory)) return false;
-            if (EquipmentUtility.IsBiocoded(i)) return false;
-            if (i.TryGetComp<CompBladelinkWeapon>()?.bondedPawn != null) return false;
+            if (CompBiocodable.IsBiocoded(i)) return false;
+            if (i.TryGetComp<CompBladelinkWeapon>()?.CodedPawn != null) return false;
 
             return i.def != ThingDefOf.Silver && !i.IsMeal() && !pawn.Bought(i) && !BoughtOrSoldByPlayer(i) && !pawn.inventory.NotForSale(i);
         }

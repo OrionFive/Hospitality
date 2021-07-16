@@ -138,7 +138,7 @@ namespace Hospitality
             else
             {
                 // Failed to equip or take
-                if (!GenDrop.TryDropSpawn_NewTmp(thing, toil.actor.Position, map, ThingPlaceMode.Near, out var resultingThing))
+                if (!GenDrop.TryDropSpawn(thing, toil.actor.Position, map, ThingPlaceMode.Near, out _))
                 {
                     Log.Warning(toil.actor.Name.ToStringShort + " failed to buy and failed to drop " + thing.Label);
                 }

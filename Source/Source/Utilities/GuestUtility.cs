@@ -213,10 +213,26 @@ namespace Hospitality
 
         public static int GetMinRecruitOpinion(this Pawn guest)
         {
-            var difficulty = guest.RecruitDifficulty(Faction.OfPlayer);
+            var difficulty = guest.RecruitDifficulty();
 
             var adjusted = AdjustDifficulty(difficulty);
             return Mathf.RoundToInt(adjusted);
+        }
+
+        private static float RecruitDifficulty(this Pawn guest)
+        {
+            // From Pawn_GuestTracker.SetGuestStatus
+            float num = guest.kindDef.initialResistanceRange.Value.Average;
+            if (guest.royalty != null)
+            {
+                RoyalTitle mostSeniorTitle = guest.royalty.MostSeniorTitle;
+                if (mostSeniorTitle != null)
+                {
+                    num += mostSeniorTitle.def.recruitmentResistanceOffset;
+                }
+            }
+
+            return num;
         }
 
         private static float AdjustDifficulty(float difficulty)
@@ -562,9 +578,8 @@ namespace Hospitality
             var opinion = target.relations.OpinionOf(recruiter);
             //Log.Message(String.Format("Opinion of {0} about {1}: {2}", target.NameStringShort,recruiter.NameStringShort, opinion));
             //Log.Message(String.Format("{0} + {1} = {2}", pleaseChance, opinion*0.01f, pleaseChance + opinion*0.01f));
-            var difficultyOffset = target.royalty?.MostSeniorTitle?.def.recruitmentDifficultyOffset ?? 0;
-            var difficultyFactor = target.royalty?.MostSeniorTitle?.def.recruitmentResistanceFactor ?? 1;
-            return pleaseChance / difficultyFactor * 0.8f + opinion * 0.01f - difficultyOffset;
+            var difficultyOffset = target.royalty?.MostSeniorTitle?.def.recruitmentResistanceOffset ?? 0;
+            return pleaseChance * 0.8f + opinion * 0.01f - difficultyOffset;
         }
 
         private static void GainSocialThought(Pawn initiator, Pawn target, ThoughtDef thoughtDef)

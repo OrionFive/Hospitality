@@ -30,8 +30,8 @@ namespace Hospitality
             if (!found)
             {
                 // Find any
-                closeSpot = area.ActiveCells.InRandomOrder().Where(cell => area.Map.pathGrid.WalkableFast(cell)).Take(20)
-                    .FirstOrDefault(cell => pawn.CanReach(cell, PathEndMode.OnCell, Danger.Some, false, TraverseMode.PassDoors));
+                closeSpot = area.ActiveCells.InRandomOrder().Where(cell => cell.Walkable(area.Map)).Take(20)
+                    .FirstOrDefault(cell => pawn.CanReach(cell, PathEndMode.OnCell, Danger.Some, false, false, TraverseMode.PassDoors));
                 found = closeSpot.IsValid;
             }
 

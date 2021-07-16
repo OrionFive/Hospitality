@@ -24,7 +24,7 @@ namespace Hospitality
             return Mathf.Min(200f, maxWidth);
         }
 
-        public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth)
+        public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms)
         {
             var room = Room;
             if (room == null) return new GizmoResult(GizmoState.Clear);

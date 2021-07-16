@@ -49,12 +49,12 @@ namespace Hospitality
 			{
 				if (!apparel.IsBurning() && (apparel.def.apparel.gender == Gender.None || apparel.def.apparel.gender == pawn.gender) && !apparel.CoversHead())
 				{
-					float apparelScoreGain = ApparelScoreGain_NewTmp(pawn, apparel, wornApparelScores);
+					float apparelScoreGain = ApparelScoreGain(pawn, apparel, wornApparelScores);
 					if (DebugViewSettings.debugApparelOptimize)
 					{
 						debugSb.AppendLine($"{apparel.LabelCap}: {apparelScoreGain:F2}");
 					}
-					if (!(apparelScoreGain < 0.05f) && !(apparelScoreGain < highestApparelScoreGain) && (!EquipmentUtility.IsBiocoded(apparel) || EquipmentUtility.IsBiocodedFor(apparel, pawn)) && ApparelUtility.HasPartsToWear(pawn, apparel.def) && pawn.CanReserveAndReach(apparel, PathEndMode.OnCell, pawn.NormalMaxDanger()))
+					if (!(apparelScoreGain < 0.05f) && !(apparelScoreGain < highestApparelScoreGain) && (!CompBiocodable.IsBiocoded(apparel) || CompBiocodable.IsBiocodedFor(apparel, pawn)) && ApparelUtility.HasPartsToWear(pawn, apparel.def) && pawn.CanReserveAndReach(apparel, PathEndMode.OnCell, pawn.NormalMaxDanger()))
 					{
 						bestChoice = apparel;
 						highestApparelScoreGain = apparelScoreGain;

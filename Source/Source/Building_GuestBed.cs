@@ -146,9 +146,13 @@ namespace Hospitality
                 owner.ownership.UnclaimBed();
             }
 
-            var room = this.GetRoom();
+            District district = this.GetDistrict();
             base.DeSpawn(mode);
-            room?.Notify_RoomShapeOrContainedBedsChanged();
+            if (district != null)
+            {
+                district.Notify_RoomShapeOrContainedBedsChanged();
+                district.Room.Notify_RoomShapeChanged();
+            }
         }
 
         public override string GetInspectString()
