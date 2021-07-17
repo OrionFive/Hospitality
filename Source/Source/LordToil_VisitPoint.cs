@@ -74,8 +74,6 @@ namespace Hospitality
                 pawn.Arrive();
             }
 
-            GuestUtility.OnLordArrived(lord);
-          
             // Lessons
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("GuestBeds"), lord.ownedPawns.FirstOrDefault(), OpportunityType.Important);
             if (PlayerHasSkilledNegotiator)
@@ -104,7 +102,6 @@ namespace Hospitality
         private void Leave()
         {
             if (lord.LordJob is LordJob_VisitColony visit) visit.OnLeaveTriggered();
-            GuestUtility.OnLordLeft(lord);
 
             var pawns = lord.ownedPawns.ToArray(); // Copy, because recruiting changes lord
             bool hostile = lord.faction.RelationWith(Faction.OfPlayer).kind == FactionRelationKind.Hostile;

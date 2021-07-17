@@ -965,15 +965,15 @@ namespace Hospitality
             pawn.trader.traderKind = traderKindDef;
         }
 
-        public static void OnLordLeft(Lord lord)
+        public static void OnLordDespawned(Lord lord)
         {
-            lord.Map?.GetMapComponent()?.OnLordLeft(lord);
+            lord.Map?.GetMapComponent()?.OnLordDespawned(lord);
             MainTabWindowUtility.NotifyAllPawnTables_PawnsChanged();
         }
 
-        public static void OnLordArrived(Lord lord)
+        public static void OnLordSpawned(Lord lord)
         {
-            lord.Map?.GetMapComponent()?.OnLordArrived(lord);
+            lord.Map?.GetMapComponent()?.OnLordSpawned(lord);
             MainTabWindowUtility.NotifyAllPawnTables_PawnsChanged();
         }
 

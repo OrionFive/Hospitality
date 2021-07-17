@@ -581,6 +581,8 @@ namespace Hospitality
                 PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(pawns, ref label, ref description, "LetterRelatedPawnsNeutralGroup".Translate(Faction.OfPlayer.def.pawnsPlural), true);
                 Find.LetterStack.ReceiveLetter(label, description, LetterDefOf.PositiveEvent, pawns[0], faction);
             }
+
+            GuestUtility.OnLordSpawned(lord);
         }
 
         private static void RemovePawnsFromMapLords(List<Pawn> pawns, Map map)

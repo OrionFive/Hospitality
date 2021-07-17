@@ -63,7 +63,7 @@ namespace Hospitality
             presentGuests.AddRange(PresentLords.SelectMany(l => l.ownedPawns));
         }
 
-        public void OnLordArrived(Lord lord)
+        public void OnLordSpawned(Lord lord)
         {
             PresentLords.AddDistinct(lord);
 
@@ -71,7 +71,7 @@ namespace Hospitality
             presentGuests.AddRange(PresentLords.SelectMany(l => l.ownedPawns));
         }
 
-        public void OnLordLeft(Lord lord)
+        public void OnLordDespawned(Lord lord)
         {
             PresentLords.Remove(lord);
 
