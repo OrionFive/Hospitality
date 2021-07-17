@@ -553,6 +553,7 @@ namespace Hospitality
             guest.playerSettings.medCare = MedicalCareCategory.Best;
             guest.playerSettings.AreaRestriction = null;
             guest.foodRestriction.CurrentFoodRestriction = Current.Game.foodRestrictionDatabase.DefaultFoodRestriction();
+            guest.drugs.CurrentPolicy = Current.Game.drugPolicyDatabase.DefaultDrugPolicy();
 
             guest.caller?.DoCall();
         }
