@@ -16,6 +16,7 @@ namespace Hospitality.Harmony
             public static bool Prefix(Transition trans)
             {
                 var lordToilTravel = (LordToil_Travel) trans.target;
+                lordToilTravel.lord.ownedPawns.RemoveAll(p => p == null || !p.SpawnedOrAnyParentSpawned || p.Dead);
                 if (lordToilTravel.HasDestination()) return false;
                 return lordToilTravel.lord.ownedPawns.Any();
             }
