@@ -45,6 +45,12 @@ namespace Hospitality
             leaving = true;
         }
 
+        public override void Notify_LordDestroyed()
+        {
+            GuestUtility.OnLordDespawned(lord);
+            base.Notify_LordDestroyed();
+        }
+
         public override StateGraph CreateGraph()
         {
             StateGraph graphArrive = new StateGraph();
