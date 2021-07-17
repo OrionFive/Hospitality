@@ -39,7 +39,7 @@ namespace Hospitality
                     yield return comp;
                 }
             }
-            Log.Message(sb.ToString().TrimEnd(' ', ','));
+            //Log.Message(sb.ToString().TrimEnd(' ', ','));
         }
 
         private static void CreateGuestBedDefs(ThingDef[] bedDefs, CompProperties_Facility[] facilities)
@@ -99,7 +99,7 @@ namespace Hospitality
                     }
                 }
             }
-            Log.Message(sb.ToString().TrimEnd(' ', ','));
+            //Log.Message(sb.ToString().TrimEnd(' ', ','));
         }
 
         private static void CopyComps(ThingDef guestBedDef, ThingDef bedDef)
