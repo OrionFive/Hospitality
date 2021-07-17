@@ -313,6 +313,7 @@ namespace Hospitality
             else
             {
                 newBed = (Building_GuestBed) MakeBed(bed, bed.def.defName + "Guest");
+                forPrisoners = false; // never for prisoners
             }
 
             newBed.SetFactionDirect(bed.Faction);

@@ -15,10 +15,9 @@ namespace Hospitality.Harmony
         [HarmonyPatch(nameof(Building_Bed.ForPrisoners), MethodType.Setter)]
         public class ForPrisoners
         {
-            [HarmonyPostfix]
-            public static void Postfix(Building_Bed __instance)
+            public static void Postfix(Building_Bed __instance, bool value)
             {
-                if (!__instance.ForPrisoners) return;
+                if (!value || !__instance.ForPrisoners) return;
 
                 if (__instance is Building_GuestBed)
                 {
@@ -30,7 +29,6 @@ namespace Hospitality.Harmony
         [HarmonyPatch(typeof(Building_Bed), nameof(Building_Bed.GetGizmos))]
         public class GetGizmos
         {
-            [HarmonyPostfix]
             public static void Postfix(Building_Bed __instance, ref IEnumerable<Gizmo> __result)
             {
                 __result = Process(__instance, __result);
