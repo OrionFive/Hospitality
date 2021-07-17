@@ -84,8 +84,8 @@ namespace Hospitality
             if(ItemUtility.IsFood(thing) && pawn.RaceProps.CanEverEat(thing))
             {
                 appFactor = FoodUtility.FoodOptimality(pawn, thing, FoodUtility.GetFinalIngestibleDef(thing), 0, true) / 300f; // 300 = optimality max
-                Log.Message($"{pawn.LabelShort} looked at {thing.LabelShort} at {thing.Position}.");
-                Log.Message($"{pawn.LabelShort} added {hasFoodFactor} to the score for his hunger and {appFactor} for food optimality.");
+                //Log.Message($"{pawn.LabelShort} looked at {thing.LabelShort} at {thing.Position}.");
+                //Log.Message($"{pawn.LabelShort} added {hasFoodFactor} to the score for his hunger and {appFactor} for food optimality.");
                 appFactor += hasFoodFactor;
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.PlantFoodRaw)) appFactor -= 0.25f;
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.MeatRaw)) appFactor -= 0.5f;

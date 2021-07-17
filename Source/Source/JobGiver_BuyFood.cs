@@ -32,7 +32,7 @@ namespace Hospitality
 			joyDefBuyFood ??= DefDatabase<JoyGiverDef>.GetNamed("BuyFood");
 
 			if (joyDefBuyFood.Worker.MissingRequiredCapacity(pawn) != null) return null;
-			Log.Message($"{pawn.NameShortColored} is trying to buy food.");
+			//Log.Message($"{pawn.NameShortColored} is trying to buy food.");
 			return joyDefBuyFood.Worker.TryGiveJob(pawn);
 		}
 	}

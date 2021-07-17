@@ -2,7 +2,8 @@ using HarmonyLib;
 using Verse;
 using Verse.AI;
 
-namespace Hospitality.Harmony {
+namespace Hospitality.Harmony 
+{
     /// <summary>
     /// So guests don't break while arriving or leaving
     /// </summary>

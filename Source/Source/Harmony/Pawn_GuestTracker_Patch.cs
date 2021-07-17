@@ -4,9 +4,11 @@ using Verse;
 
 namespace Hospitality.Harmony
 {
+    /// <summary>
+    /// Detoured so guests don't become prisoners
+    /// </summary>
     internal static class Pawn_GuestTracker_Patch
     {
-        // Detoured so guests don't become prisoners
         [HarmonyPatch(typeof(Pawn_GuestTracker), nameof(Pawn_GuestTracker.SetGuestStatus))]
         public class SetGuestStatus
         {

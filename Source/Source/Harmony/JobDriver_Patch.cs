@@ -1,11 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
-using RimWorld;
-using Verse;
 using Verse.AI;
 
 namespace Hospitality.Harmony

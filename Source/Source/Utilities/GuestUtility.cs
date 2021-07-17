@@ -1026,7 +1026,7 @@ namespace Hospitality
             var carriedNutrition = pawn.inventory.innerContainer.Where(thing => JoyGiver_BuyStuff.CanEat(thing, pawn)).Sum(t => FoodUtility.GetNutrition(t, t.def) * t.stackCount);
 
             var priority = GenMath.LerpDoubleClamped(2, 4, 1, 0, carriedNutrition);
-            Log.Message($"{pawn.NameShortColored} - wanna buy food: priority = {priority}, carriedNutrition = {carriedNutrition}");
+            //Log.Message($"{pawn.NameShortColored} - wanna buy food: priority = {priority}, carriedNutrition = {carriedNutrition}");
             return priority;
         }
     }
