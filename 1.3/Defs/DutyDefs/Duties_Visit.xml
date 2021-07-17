@@ -72,6 +72,7 @@
     			  <subNodes>
     
     				<li Class="JobGiver_GetFood" />
+    				<li Class="Hospitality.JobGiver_BuyFood" />
     				<li Class="Hospitality.JobGiver_Sleep" />
     				<li Class="Hospitality.JobGiver_Relax" />            
     

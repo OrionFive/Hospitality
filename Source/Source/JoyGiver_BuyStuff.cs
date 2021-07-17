@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -11,7 +12,13 @@ namespace Hospitality
     {
         private JobDef jobDefBuy = DefDatabase<JobDef>.GetNamed("BuyItem");
         private JobDef jobDefBrowse = DefDatabase<JobDef>.GetNamed("BrowseItems");
-        protected virtual ThingRequestGroup RequestGroup => ThingRequestGroup.HaulableEver;
+        public JoyGiverDefShopping Def => (JoyGiverDefShopping) def;
+
+        public override void GetSearchSet(Pawn pawn, List<Thing> outCandidates)
+        {
+            outCandidates.Clear();
+            outCandidates.AddRange(pawn.Map.listerThings.ThingsInGroup(Def.requestGroup));
+        }
 
         public override float GetChance(Pawn pawn)
         {
@@ -71,15 +78,15 @@ namespace Hospitality
             var appFactor = thing is Apparel apparel ? 1 + ApparelScoreGain(pawn, apparel) : 0.8f; // Not apparel, less likey
             //Log.Message(thing.Label + " - apparel score: " + appFactor);
 
-            var hungerFactor = GetHungerFactor(pawn);
+            var hasFoodFactor = GuestUtility.GetRequiresFoodFactor(pawn) - 0.5f;
 
             // Food
             if(ItemUtility.IsFood(thing) && pawn.RaceProps.CanEverEat(thing))
             {
                 appFactor = FoodUtility.FoodOptimality(pawn, thing, FoodUtility.GetFinalIngestibleDef(thing), 0, true) / 300f; // 300 = optimality max
-                //Log.Message($"{pawn.LabelShort} looked at {thing.LabelShort} at {thing.Position} and scored it {appFactor}.");
-                appFactor += hungerFactor;
-                //Log.Message($"{pawn.LabelShort} added {hungerFactor} to the score for his hunger.");
+                Log.Message($"{pawn.LabelShort} looked at {thing.LabelShort} at {thing.Position}.");
+                Log.Message($"{pawn.LabelShort} added {hasFoodFactor} to the score for his hunger and {appFactor} for food optimality.");
+                appFactor += hasFoodFactor;
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.PlantFoodRaw)) appFactor -= 0.25f;
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.MeatRaw)) appFactor -= 0.5f;
             }
@@ -89,12 +96,12 @@ namespace Hospitality
                 appFactor = 1 + thing.def.ingestible.joy*0.5f;
 
                 // Hungry? Care less about other stuff
-                if(hungerFactor > 0) appFactor -= hungerFactor;
+                if(hasFoodFactor > 0) appFactor -= hasFoodFactor;
             }
             else
             {
                 // Hungry? Care less about other stuff
-                if(hungerFactor > 0) appFactor -= hungerFactor;
+                if(hasFoodFactor > 0) appFactor -= hasFoodFactor;
             }
 
             if (CompBiocodable.IsBiocoded(thing) && !CompBiocodable.IsBiocodedFor(thing, pawn)) return 0;
@@ -146,12 +153,15 @@ namespace Hospitality
             return Mathf.Max(0, hpFactor*hpFactor*qFactor*qFactor*tFactor*appFactor*rFactor); // <= 0.5 = don't buy
         }
 
+        [Obsolete]
         private static float GetHungerFactor(Pawn pawn)
         {
             var needFood = pawn.needs.TryGetNeed<Need_Food>();
+            var carriedNutrition = pawn.inventory.innerContainer.Where(thing => CanEat(thing, pawn)).Sum(t=>FoodUtility.GetNutrition(t, t.def));
+            var carriedFactor = GenMath.LerpDoubleClamped(0, 3, 3, 0.1f, carriedNutrition); // raised food factor
             var hungerFactor = 1 - needFood?.CurLevelPercentage ?? 0;
             hungerFactor -= 1 - needFood?.PercentageThreshHungry ?? 0; // about -0.7
-            return hungerFactor;
+            return hungerFactor * carriedFactor;
         }
 
         // Copied so we can make some adjustments
@@ -166,7 +176,7 @@ namespace Hospitality
                 return -1000;
             if (pawn.story.traits.HasTrait(TraitDefOf.Nudist)) return -1000;
             //if (PawnApparelGenerator.IsHeadgear(ap.def)) return 0;
-            float num = JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
+            float num = RimWorld.JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, ap);
             List<Apparel> wornApparel = pawn.apparel.WornApparel;
             bool flag = false;
             // Added:
@@ -182,7 +192,7 @@ namespace Hospitality
                     if (wornReq && !newReq) return -1000;
                     //if (!pawn.outfits.forcedHandler.AllowedToAutomaticallyDrop(wornApparel[index]))
                     //    return -1000f;
-                    num -= JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, wornApparel[i]);
+                    num -= RimWorld.JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, wornApparel[i]);
                     flag = true;
                 }
             }
@@ -193,7 +203,12 @@ namespace Hospitality
 
         protected virtual bool Qualifies(Thing thing, Pawn pawn)
         {
-            return true;
+            return Def.requestGroup.Includes(thing.def);
+        }
+
+        public static bool CanEat(Thing thing, Pawn pawn)
+        {
+            return thing.def.IsNutritionGivingIngestible && thing.def.IsWithinCategory(ThingCategoryDefOf.Foods) && ItemUtility.AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEat");
         }
     }
 }
