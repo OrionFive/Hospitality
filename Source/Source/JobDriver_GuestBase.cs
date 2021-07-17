@@ -73,7 +73,7 @@ namespace Hospitality
 
                     PawnUtility.ForceWait(talkee, duration, pawn);
                     TargetThingB = pawn;
-                    MoteMaker.MakeInteractionBubble(pawn, talkee, intDef.interactionMote, intDef.Symbol);
+                    MoteMaker.MakeInteractionBubble(pawn, talkee, intDef.interactionMote, intDef.GetSymbol(pawn.Faction, pawn.Ideo), intDef.GetSymbolColor(pawn.Faction));
                 }, 
                 socialMode = RandomSocialMode.Off,
                 defaultCompleteMode = ToilCompleteMode.Delay,
