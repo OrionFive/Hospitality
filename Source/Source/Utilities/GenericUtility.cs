@@ -184,10 +184,10 @@ namespace Hospitality
             PlanNewVisit(map, travelDays, faction);
         }
 
-        public static void DoAreaRestriction(Rect rect, Area area, Action<Area> setArea, Func<Area, string> getLabel)
+        public static void DoAreaRestriction(Rect rect, Area area, Action<Area> setArea, Func<Area, string> getLabel, Map map)
         {
             var newArea = area;
-            GuestUtility.DoAllowedAreaSelectors(rect, getLabel, ref newArea);
+            GuestUtility.DoAllowedAreaSelectors(rect, getLabel, ref newArea, map);
             Text.Anchor = TextAnchor.UpperLeft;
 
             if (newArea != area) setArea(newArea);

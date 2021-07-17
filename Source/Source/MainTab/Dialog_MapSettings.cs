@@ -39,9 +39,9 @@ namespace Hospitality.MainTab
             var rectBuy = listingStandard.GetRect(24);
 
             DialogUtility.LabelWithTooltip(labelStay, "AreaToStayTooltip".Translate(), rectStayLabel);
-            GenericUtility.DoAreaRestriction(rectStay, comp.defaultAreaRestriction, area => comp.defaultAreaRestriction = area, AreaUtility.AreaAllowedLabel_Area);
+            GenericUtility.DoAreaRestriction(rectStay, comp.defaultAreaRestriction, area => comp.defaultAreaRestriction = area, AreaUtility.AreaAllowedLabel_Area, map);
             DialogUtility.LabelWithTooltip(labelBuy, "AreaToBuyTooltip".Translate(), rectBuyLabel);
-            GenericUtility.DoAreaRestriction(rectBuy, comp.defaultAreaShopping, area => comp.defaultAreaShopping = area, GenericUtility.GetShoppingLabel);
+            GenericUtility.DoAreaRestriction(rectBuy, comp.defaultAreaShopping, area => comp.defaultAreaShopping = area, GenericUtility.GetShoppingLabel, map);
 
             var rectImproveRelationship = listingStandard.GetRect(Text.LineHeight);
             DialogUtility.CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref comp.defaultEntertain, rectImproveRelationship, false, ITab_Pawn_Guest.txtImproveTooltip);

@@ -33,7 +33,7 @@ namespace Hospitality.MainTab
             // Changed check
             if (!pawn.IsGuest()) return;
 
-            GenericUtility.DoAreaRestriction(rect, GetArea(pawn), area=>SetArea(pawn, area), GenericUtility.GetShoppingLabel);
+            GenericUtility.DoAreaRestriction(rect, GetArea(pawn), area=>SetArea(pawn, area), GenericUtility.GetShoppingLabel, pawn.Map);
         }
     }
 }

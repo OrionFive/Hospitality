@@ -786,11 +786,9 @@ namespace Hospitality
             GainThought(guest, ThoughtDef.Named("GuestDismissiveAttitude"));
         }
 
-        public static void DoAllowedAreaSelectors(Rect rect, Func<Area, string> getLabel, ref Area currentArea)
+        public static void DoAllowedAreaSelectors(Rect rect, Func<Area, string> getLabel, ref Area currentArea, Map map)
         {
-            if (currentArea?.Map == null) return;
-
-            var areas = GetAreas(currentArea.Map).ToArray();
+            var areas = GetAreas(map).ToArray();
             int num = areas.Length + 1;
             float num2 = rect.width / num;
             Text.WordWrap = false;
