@@ -112,7 +112,7 @@ namespace Hospitality
                 diaNode.options.Add(diaOption3);
             }
 
-            string title = "VisitorsArrivedTitle".Translate(new NamedArgument((MapParent)map.ParentHolder, "WORLDOBJECT"), spawnDirection.LabelShort());
+            string title = "VisitorsArrivedTitle".Translate(new NamedArgument((MapParent)map.ParentHolder, "WORLDOBJECT"), spawnDirection.LabelShort(), new NamedArgument(faction, "FACTION"));
             Find.WindowStack.Add(new Dialog_NodeTree(diaNode, true, true, title));
         }
 
@@ -183,7 +183,7 @@ namespace Hospitality
                 {
                     Log.Message("Guest group arrived, but there are no guest beds and the player asked to wait until they are built.");
 
-                    GenericUtility.PlanNewVisit(map, Rand.Range(5f, 10f), parms.faction);
+                    MaybeRevisit(parms, map, new FloatRange(5, 10));
                     return true;
                 }
 
@@ -197,11 +197,22 @@ namespace Hospitality
 
                 // Yes, ask the player for permission
                 void Allow() => SpawnGroup(parms, map);
-                void Refuse() => GenericUtility.PlanNewVisit(map, Rand.Range(2f, 5f), parms.faction);
+                void Refuse() => MaybeRevisit(parms, map, new FloatRange(2, 5));
 
                 AskForPermission(parms, map, reasons, Allow, Refuse);
             }
             return true;
+        }
+
+        private static void MaybeRevisit(IncidentParms parms, Map map, FloatRange afterDays)
+        {
+            var queue = map.GetMapComponent().GetQueuedVisits(afterDays.TrueMax);
+            var chance = GenMath.LerpDoubleClamped(0, 5, 1f, 0.3f, queue.Count());
+
+            if (Rand.Chance(chance))
+            {
+                GenericUtility.PlanNewVisit(map, afterDays.RandomInRange, parms.faction);
+            }
         }
 
         protected virtual void AskForPermission(IncidentParms parms, Map map, string reasons, Action allow, Action refuse)
