@@ -316,24 +316,30 @@ namespace Hospitality
                 forPrisoners = false; // never for prisoners
             }
 
+            // Art gets destroyed when new bed spawns
+            var compArt = bed.TryGetComp<CompArt>();
+            var art = compArt?.Active != null ? new {authorName = compArt.authorNameInt, title = compArt.titleInt, taleRef = new TaleReference {tale = compArt.taleRef.tale, seed = compArt.taleRef.seed}} : null;
+            compArt.taleRef.tale.Notify_NewlyUsed();
+
             newBed.SetFactionDirect(bed.Faction);
             var spawnedBed = (Building_Bed) GenSpawn.Spawn(newBed, bed.Position, bed.Map, bed.Rotation);
             spawnedBed.HitPoints = bed.HitPoints;
             spawnedBed.ForPrisoners = forPrisoners;
 
             var compQuality = spawnedBed.TryGetComp<CompQuality>();
+            compQuality?.SetQuality(bed.GetComp<CompQuality>().Quality, ArtGenerationContext.Colony);
 
-            compQuality?.SetQuality(bed.GetComp<CompQuality>().Quality, ArtGenerationContext.Outsider);
-            //var compArt = bed.TryGetComp<CompArt>();
-            //if (compArt != null)
-            //{
-            //    var art = spawnedBed.GetComp<CompArt>();
-            //    Traverse.Create(art).Field("authorNameInt").SetValue(Traverse.Create(compArt).Field("authorNameInt").GetValue());
-            //    Traverse.Create(art).Field("titleInt").SetValue(Traverse.Create(compArt).Field("titleInt").GetValue());
-            //    Traverse.Create(art).Field("taleRef").SetValue(Traverse.Create(compArt).Field("taleRef").GetValue());
-            //
-            //    // TODO: Make this work, art is now destroyed
-            //}
+            // Apply art
+            var newArt = spawnedBed.TryGetComp<CompArt>();
+            if (newArt != null && art != null)
+            {
+                newArt.authorNameInt = art.authorName;
+                newArt.titleInt = art.title;
+                newArt.taleRef = art.taleRef;
+            }
+
+            spawnedBed.StyleDef = bed.StyleDef;
+
             Find.Selector.Select(spawnedBed, false);
         }
 

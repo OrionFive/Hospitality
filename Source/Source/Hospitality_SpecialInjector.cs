@@ -114,6 +114,7 @@ namespace Hospitality
                 foreach (var field in fieldsComp)
                 {
                     field.SetValue(comp, field.GetValue(bedDef.comps[i]));
+                    //Log.Message($"Set {field.Name} of {comp.compClass.Name} of {guestBedDef.defName} to {field.GetValue(bedDef.comps[i])}");
                 }
                 guestBedDef.comps.Add(comp);
             }
