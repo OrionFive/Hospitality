@@ -113,12 +113,6 @@ namespace Hospitality
                     changed.Add(pawn);
                 }
             }
-
-            if (changed.Any())
-            {
-                // TODO: Remove this message again eventually. It's only relevant for updating save games. 25/2/2021
-                Log.Message($"Hospitality: Changed how DrugPolicies are stored. Fixed policies for {changed.Select(p => p.Name.ToStringShort).ToCommaList(true)}.");
-            }
         }
 
         public override void MapComponentTick()

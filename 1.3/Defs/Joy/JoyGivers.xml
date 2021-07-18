@@ -11,7 +11,7 @@
     <requiredCapacities>
       <li>Manipulation</li>
     </requiredCapacities>
-	<requestGroup>ThingRequestGroup.FoodSourceNotPlantOrTree</requestGroup>
+	<requestGroup>FoodSourceNotPlantOrTree</requestGroup>
   </Hospitality.JoyGiverDefShopping>
   
   <Hospitality.JoyGiverDefShopping>
@@ -24,7 +24,7 @@
     <requiredCapacities>
       <li>Manipulation</li>
     </requiredCapacities>
-	<requestGroup>ThingRequestGroup.HaulableEver</requestGroup>
+	<requestGroup>HaulableEver</requestGroup>
   </Hospitality.JoyGiverDefShopping>
 
 </Defs>
