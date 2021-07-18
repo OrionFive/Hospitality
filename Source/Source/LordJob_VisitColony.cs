@@ -4,6 +4,11 @@ using Verse.AI.Group;
 
 namespace Hospitality
 {
+    public class LordToil_Obsolete : LordToil
+    {
+        public override void UpdateAllDuties() { }
+    }
+
     public class LordJob_VisitColony : LordJob
     {
         private Faction faction;
@@ -56,7 +61,7 @@ namespace Hospitality
             StateGraph graphArrive = new StateGraph();
             StateGraph graphExit = new LordJob_TravelAndExit(IntVec3.Invalid).CreateGraph();
             StateGraph travelGraph = new LordJob_Travel(chillSpot).CreateGraph();
-            travelGraph.StartingToil = new LordToil_CustomTravel(chillSpot, 0.49f, 85);
+            travelGraph.StartingToil = new LordToil_CustomTravel(chillSpot, 0.49f, 50);
             // Arriving
             LordToil toilArriving = graphArrive.AttachSubgraph(travelGraph).StartingToil;
             // Visiting
@@ -69,9 +74,8 @@ namespace Hospitality
             // Take wounded
             LordToil toilTakeWounded = new LordToil_TakeWoundedGuest {lord = lord}; // This fixes the issue of missing lord when showing leave message
             graphExit.AddToil(toilTakeWounded);
-            // Exit (TODO: Remove for 1.2)
-            LordToil_ExitMap toilExitMap = new LordToil_ExitMap();
-            graphArrive.AddToil(toilExitMap);
+            // Kept to avoid breaking saves
+            graphArrive.AddToil(new LordToil_Obsolete());
             // Arrived
             {
                 Transition t1 = new Transition(toilArriving, toilVisiting);

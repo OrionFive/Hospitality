@@ -30,6 +30,7 @@ namespace Hospitality
     {
         private LordToilData_CustomTravel Data => data as LordToilData_CustomTravel;
         public override IntVec3 FlagLoc => Data.dest;
+        public override bool AllowSatisfyLongNeeds => false;
 
         public LordToil_CustomTravel(IntVec3 dest, float percentRequired = 1, float distance = 10)
         {
@@ -38,7 +39,7 @@ namespace Hospitality
 
         public override void UpdateAllDuties()
         {
-            foreach (Pawn pawn in lord.ownedPawns) pawn.mindState.duty = new PawnDuty(DutyDefOf.TravelOrLeave, Data.dest){locomotion = LocomotionUrgency.Jog};
+            foreach (Pawn pawn in lord.ownedPawns) pawn.mindState.duty = new PawnDuty(DutyDefOf.TravelOrLeave, Data.dest) {locomotion = LocomotionUrgency.Jog, maxDanger = Danger.Some};
         }
 
         public override void Init()
