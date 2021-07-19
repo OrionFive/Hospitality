@@ -303,6 +303,8 @@ namespace Hospitality
 
         public static void Swap(Building_Bed bed)
         {
+            if (bed == null) return;
+
             bool forPrisoners = bed.ForPrisoners; // Store this, since it changes during spawn
 
             Building_Bed newBed;
@@ -318,8 +320,8 @@ namespace Hospitality
 
             // Art gets destroyed when new bed spawns
             var compArt = bed.TryGetComp<CompArt>();
-            var art = compArt?.Active != null ? new {authorName = compArt.authorNameInt, title = compArt.titleInt, taleRef = new TaleReference {tale = compArt.taleRef.tale, seed = compArt.taleRef.seed}} : null;
-            compArt.taleRef.tale.Notify_NewlyUsed();
+            var art = compArt?.Active != null && compArt.taleRef != null ? new {authorName = compArt.authorNameInt, title = compArt.titleInt, taleRef = new TaleReference {tale = compArt.taleRef.tale, seed = compArt.taleRef.seed}} : null;
+            compArt?.taleRef?.tale?.Notify_NewlyUsed();
 
             newBed.SetFactionDirect(bed.Faction);
             var spawnedBed = (Building_Bed) GenSpawn.Spawn(newBed, bed.Position, bed.Map, bed.Rotation);
