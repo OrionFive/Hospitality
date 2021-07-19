@@ -27,8 +27,6 @@
   <VisitorsLeavingNormal>Ihr Aufenthalt war OK! (Wertung: {1})</VisitorsLeavingNormal>
   <VisitorsLeavingBad>Sie hatten mehr erwartet. (Wertung: {1})</VisitorsLeavingBad>
   <VisitorsLeavingAwful>Sie waren schrecklich enttäuscht von ihrem Aufenthalt. (Wertung: {1})</VisitorsLeavingAwful>
-  <VisitorSatisfied>{0} genoß {1} Aufenthalt. {2} hinterließ dir {3}.</VisitorSatisfied>
-  <VisitorVerySatisfied>{0} hat {1} Aufenthalt absolut genoßen. {2} hinterließ dir {3}.</VisitorVerySatisfied>
   <MessageVisitorsLeavingCold>Die Besucher von {0} verlassen dich wieder, da es zu kalt ist.</MessageVisitorsLeavingCold>
   <VisitorsSentAway>Du hast sie weggeschickt.</VisitorsSentAway>
   
@@ -37,8 +35,8 @@
   <VisitorsReturnNotSoon>Sie werden nicht so bald zurückkommen.</VisitorsReturnNotSoon>
   <VisitorsReturnNot>Sie haben genug von dir und werden diesen Ort in Zukunft meiden.</VisitorsReturnNot>
 
-  <VisitorsArrivedTitle>Besucher sind in {WORLDOBJECT_label} angekommen (von {1})</VisitorsArrivedTitle>
-  <VisitorsArrivedDesc>Sie haben Angst, aus folgenden Gründen in dein Gebiet einzureisen:\n{1}\n\nWenn du sie wegschickst, bleiben sie in der Gegend und kommen später zurück.</VisitorsArrivedDesc>
+  <VisitorsArrivedTitle>Besucher von {FACTION_name} sind in {WORLDOBJECT_label} angekommen (von {1})</VisitorsArrivedTitle>
+  <VisitorsArrivedDesc>Sie haben Angst, aus folgenden Gründen in dein Gebiet einzureisen:\n{1}\n\nWenn du sie wegschickst, bleiben sie vielleicht in der Gegend und kommen später zurück.</VisitorsArrivedDesc>
   <VisitorsArrivedAccept>Gewähre Sicherheit</VisitorsArrivedAccept>
   <VisitorsArrivedRefuse>Schicke sie weg</VisitorsArrivedRefuse>
   <VisitorsArrivedRefuseUntilBeds>Besucher abweisen, bis ich Gästebetten habe</VisitorsArrivedRefuseUntilBeds>
@@ -123,7 +121,8 @@
   <AlertCantClaimBedDesc>Diese Gäste können es sich nicht leisten ein Bett zu reservieren:\n\n{0}\nBiete günstigere Betten an oder schenke ihnen etwas Silber.\nFraktionen mit einer besseren Beziehung bringen mehr Silber mit.</AlertCantClaimBedDesc>
   <AlertNotEnoughBeds>Nicht genügend Gästebetten</AlertNotEnoughBeds>
   <AlertNotEnoughBedsDesc>Für diese Gäste sind keine Betten mehr verfügbar:\n\n{0}\nDu solltest weitere Betten für Gäste anbieten.</AlertNotEnoughBedsDesc>
-
+  <AlertHasNoFood>Gast hat nichts zu essen</AlertHasNoFood>
+  <AlertHasNoFoodDesc>Diese Gäste haben nichts zu essen:\n\n{0}\nBiete Essen zum Kauf an, oder schenke ihnen Silber oder Rationen.\nFraktionen mit einer besseren Beziehung bringen mehr Silber mit.</AlertHasNoFoodDesc>
 
   <!-- Settings -->
   <DisableLimits>Deaktiviere Optionslimits</DisableLimits>

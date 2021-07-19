@@ -5,7 +5,7 @@ using Verse;
 namespace Hospitality 
 {
     /// <summary>
-    /// Loaded via xml. Added so are upset when they can't afford a bed.
+    /// Loaded via xml. Added so guests are upset when they can't afford a bed.
     /// </summary>
     public class ThoughtWorker_CantAffordBed : ThoughtWorker
     {
