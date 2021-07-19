@@ -76,6 +76,7 @@ namespace Hospitality
             graphExit.AddToil(toilTakeWounded);
             // Kept to avoid breaking saves
             graphArrive.AddToil(new LordToil_Obsolete());
+
             // Arrived
             {
                 Transition t1 = new Transition(toilArriving, toilVisiting);

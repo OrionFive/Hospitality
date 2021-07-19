@@ -121,8 +121,7 @@ namespace Hospitality
                     {
                         var score = GetVisitScore(pawn);
 
-                        if (score > 0.99f) LeaveVerySatisfied(pawn, score);
-                        else if (score > 0.65f) LeaveSatisfied(pawn, score);
+                        if (score > 0.99f) PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("Hospitality"), KnowledgeAmount.Total);
                     }
                 }
                 pawn.Leave();
@@ -134,6 +133,12 @@ namespace Hospitality
             if (nonRescuedPawns.Any() && !hostile)
             {
                 var avgScore = nonRescuedPawns.Average(GetVisitScore);
+                var chance = 1f * VisitorGiftForPlayerUtility.PlayerWealthChanceFactor(Map) * avgScore;
+
+                if (DebugSettings.instantVisitorsGift || (lord.numPawnsLostViolently == 0 && !Settings.disableGifts && Rand.Chance(chance)))
+                {
+                    VisitorGiftForPlayerUtility.GiveRandomGift(lord.ownedPawns, lord.faction);
+                }
 
                 DisplayLeaveMessage(avgScore, lord.faction, lord.ownedPawns.Count, lord.Map, sentAway);
             }
@@ -256,37 +261,6 @@ namespace Hospitality
                 if (item is ThingWithComps twc && map.mapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerBuys, map.mapPawns.FreeColonistsSpawned.RandomElement(), pawn);
             }
             return dropped;
-        }
-
-        private void LeaveVerySatisfied(Pawn pawn, float score)
-        {
-            if (pawn.inventory.innerContainer.Count == 0 || Settings.disableGifts) return;
-
-            var dropped = GetLoot(pawn, (score + 10)*1.5f);
-            if (dropped.Count == 0) return;
-            var itemNames = dropped.Select(GetItemName).ToCommaList(true);
-            
-            var text = "VisitorVerySatisfied".Translate(pawn.Name.ToStringShort, pawn.Possessive(), pawn.ProSubjCap(), itemNames);
-            Messages.Message(text, dropped.First(), MessageTypeDefOf.PositiveEvent);
-
-            PlayerKnowledgeDatabase.KnowledgeDemonstrated(ConceptDef.Named("Hospitality"), KnowledgeAmount.Total);
-        }
-
-        private void LeaveSatisfied(Pawn pawn, float score)
-        {
-            if (pawn.inventory.innerContainer.Count == 0 || Settings.disableGifts) return;
-
-            var desiredValue = (score + 10)*2;
-            var things = pawn.inventory.innerContainer.Where(i => WillDrop(pawn, i) && i.MarketValue < desiredValue).ToArray();
-            if (!things.Any()) return;
-
-            var item = things.MaxBy(i => i.MarketValue); // MaxBy throws exception when list is empty!!!
-            if (item == null) return;
-
-            pawn.inventory.innerContainer.TryDrop(item, pawn.Position, pawn.MapHeld, ThingPlaceMode.Near, out item);
-
-            var text = "VisitorSatisfied".Translate(pawn.Name.ToStringShort, pawn.Possessive(), pawn.ProSubjCap(), GetItemName(item));
-            Messages.Message(text, item, MessageTypeDefOf.PositiveEvent);
         }
 
         private bool WillDrop(Pawn pawn, Thing i)

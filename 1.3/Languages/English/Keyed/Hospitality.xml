@@ -27,8 +27,6 @@
   <VisitorsLeavingNormal>Their stay was okay. (Score: {1})</VisitorsLeavingNormal>
   <VisitorsLeavingBad>They expected more from you. (Score: {1})</VisitorsLeavingBad>
   <VisitorsLeavingAwful>They were awfully disappointed by their stay. (Score: {1})</VisitorsLeavingAwful>
-  <VisitorSatisfied>{0} enjoyed {1} stay. {2} left you {3}.</VisitorSatisfied>
-  <VisitorVerySatisfied>{0} absolutely enjoyed {1} stay. {2} left you {3}.</VisitorVerySatisfied>
   <MessageVisitorsLeavingCold>The visitors from {0} are leaving again because it is too cold.</MessageVisitorsLeavingCold>
   <VisitorsSentAway>You have sent them away.</VisitorsSentAway>
   
