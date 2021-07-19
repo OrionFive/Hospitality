@@ -853,7 +853,9 @@ namespace Hospitality
         public static bool GuestsShouldStayLonger(Lord lord)
         {
             var incapableToLeave = lord.ownedPawns.Where(p => !p.Dead && !p.IsPrisoner && (p.Downed || p.MentalState != null && p.InMentalState));
-            return incapableToLeave.Any();
+            var dayPercent = GenLocalDate.DayPercent(lord.Map);
+            var isDayTime = dayPercent > 0.2f && dayPercent < 0.7f;
+            return incapableToLeave.Any() || !isDayTime;
         }
 
         public static void OnLostEntireGroup(Lord lord)
