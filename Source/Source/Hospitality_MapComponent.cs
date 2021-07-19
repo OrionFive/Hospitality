@@ -126,12 +126,12 @@ namespace Hospitality
             base.MapComponentTick();
 
             incidentQueue ??= new IncidentQueue();
-            if (incidentQueue.Count <= 1) GenericUtility.FillIncidentQueue(map);
             incidentQueue.IncidentQueueTick();
 
             if (GenTicks.TicksGame > nextQueueInspection)
             {
                 nextQueueInspection = GenTicks.TicksGame + GenDate.TicksPerDay;
+                if (incidentQueue.Count <= 1) GenericUtility.FillIncidentQueue(map);
                 GenericUtility.CheckTooManyIncidentsAtOnce(incidentQueue);
             }
 
