@@ -299,6 +299,8 @@ namespace Hospitality
 
         public static void Swap(Building_Bed bed)
         {
+            if (bed == null) return;
+
             bool forPrisoners = bed.ForPrisoners; // Store this, since it changes during spawn
 
             Building_Bed newBed;
