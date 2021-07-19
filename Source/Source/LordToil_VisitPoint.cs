@@ -134,8 +134,9 @@ namespace Hospitality
             {
                 var avgScore = nonRescuedPawns.Average(GetVisitScore);
                 var chance = 1f * VisitorGiftForPlayerUtility.PlayerWealthChanceFactor(Map) * avgScore;
+                //Log.Message($"Visitors are leaving. Gift chance: wealth chance = {VisitorGiftForPlayerUtility.PlayerWealthChanceFactor(Map)}, avgScore = {avgScore}, final = {chance}");
 
-                if (DebugSettings.instantVisitorsGift || (lord.numPawnsLostViolently == 0 && !Settings.disableGifts && Rand.Chance(chance)))
+                if (DebugSettings.instantVisitorsGift || (lord.numPawnsLostViolently == 0 && !sentAway && !Settings.disableGifts && Rand.Chance(chance)))
                 {
                     VisitorGiftForPlayerUtility.GiveRandomGift(lord.ownedPawns, lord.faction);
                 }
