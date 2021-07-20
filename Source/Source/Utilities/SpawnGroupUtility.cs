@@ -88,15 +88,19 @@ namespace Hospitality
         {
             if (itemsCache == null)
             {
-                bool Qualifies(ThingDef d) => d.category == ThingCategory.Item 
-                                              && d.EverStorable(true) 
-                                              && d.alwaysHaulable 
-                                              && d.thingClass != typeof(MinifiedThing) 
-                                              && !d.thingClass.IsSubclassOf(typeof(MinifiedThing))
-                                              && d.tradeability != Tradeability.None
-                                              && d.GetCompProperties<CompProperties_Hatcher>() == null
-                                              && !d.WillRotSoon()
-                                              && (d.thingSetMakerTags == null || !d.thingSetMakerTags.Contains("NotForGuests"));
+                static bool Qualifies(ThingDef d)
+                {
+                    try
+                    {
+                        return d != null && d.category == ThingCategory.Item && d.EverStorable(true) && d.alwaysHaulable && d.thingClass != null && d.thingClass != typeof(MinifiedThing) && !d.thingClass.IsSubclassOf(typeof(MinifiedThing))
+                               && d.tradeability != Tradeability.None && d.GetCompProperties<CompProperties_Hatcher>() == null && !d.WillRotSoon() && (d.thingSetMakerTags == null || !d.thingSetMakerTags.Contains("NotForGuests"));
+                    }
+                    catch (Exception)
+                    {
+                        Log.Error($"Found invalid thing: {d?.label} ({d?.defName}) from {(d?.modContentPack == null ? "unknown mod" : d.modContentPack.Name)}.");
+                        return false;
+                    }
+                }
 
                 itemsCache = DefDatabase<ThingDef>.AllDefs.Where(Qualifies).ToArray();
             }
