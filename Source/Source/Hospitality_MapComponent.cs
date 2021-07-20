@@ -200,5 +200,7 @@ namespace Hospitality
 
             return drugPolicy;
         }
+
+        public IEnumerable<QueuedIncident> GetQueuedVisits(float withinDays) => incidentQueue.queuedIncidents.Where(i => (i.FireTick - GenTicks.TicksGame + 0f) / GenDate.TicksPerDay < withinDays);
     }
 }
