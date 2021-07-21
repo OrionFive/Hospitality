@@ -17,6 +17,7 @@ namespace Hospitality
         {
             if (!pawn.IsArrivedGuest(out _)) return 0;
             if (!pawn.MayBuy()) return 0;
+            if (pawn.GetShoppingArea() == null) return 0;
             var money = ItemUtility.GetMoney(pawn);
             //Log.Message(pawn.NameStringShort + " has " + money + " silver left.");
 
@@ -25,10 +26,12 @@ namespace Hospitality
 
         public override Job TryGiveJob(Pawn pawn)
         {
+            var shoppingArea = pawn?.GetShoppingArea();
+            if (shoppingArea == null) return null;
+
             var map = pawn.MapHeld;
-            var shoppingArea = pawn.GetShoppingArea();
-            var things = shoppingArea.ActiveCells.SelectMany(cell=>map.thingGrid.ThingsListAtFast(cell)).Where(t=>t.def.EverHaulable && t.def.tradeability!=Tradeability.None
-            && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
+            var things = shoppingArea.ActiveCells.SelectMany(cell => map.thingGrid.ThingsListAtFast(cell))
+                .Where(t => t != null && t.def.EverHaulable && t.def.tradeability != Tradeability.None && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
             var storage = shoppingArea.ActiveCells.Select(cell=>map.edificeGrid[cell]).OfType<Building_Storage>();
             things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
             if (things.Count == 0) return null;
