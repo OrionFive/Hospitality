@@ -358,17 +358,6 @@ namespace Hospitality
             //}
         }
 
-        private static bool IsInVisitState(this Pawn pawn, bool makeArrivedCheck)
-        {
-            var compGuest = pawn.CompGuest();
-            if (compGuest == null) return false;
-            if (makeArrivedCheck && pawn.guest?.HostFaction != Faction.OfPlayer) return false;
-            var lord = compGuest.lord;
-            //if (!pawn.Map.lordManager.lords.Contains(lord)) return false; // invalid lord
-            var job = lord?.LordJob;
-            return job is LordJob_VisitColony;
-        }
-
         private static bool IsInTraderState(this Pawn pawn)
         {
             var compGuest = pawn.CompGuest();

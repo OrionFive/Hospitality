@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -10,8 +9,8 @@ namespace Hospitality
 {
     public class JoyGiver_BuyStuff : JoyGiver
     {
-        private JobDef jobDefBuy = DefDatabase<JobDef>.GetNamed("BuyItem");
-        private JobDef jobDefBrowse = DefDatabase<JobDef>.GetNamed("BrowseItems");
+        private readonly JobDef jobDefBuy = DefDatabase<JobDef>.GetNamed("BuyItem");
+        private readonly JobDef jobDefBrowse = DefDatabase<JobDef>.GetNamed("BrowseItems");
         public JoyGiverDefShopping Def => (JoyGiverDefShopping) def;
 
         public override void GetSearchSet(Pawn pawn, List<Thing> outCandidates)
@@ -154,17 +153,6 @@ namespace Hospitality
             //if(hpFactor*hpFactor*qFactor*qFactor*tFactor*appFactor > 0.5) 
             //    Log.Message($"{thing.LabelShort.Colorize(Color.yellow)} - score: {hpFactor * hpFactor * qFactor * qFactor * tFactor * appFactor}, random: {rFactor}");
             return Mathf.Max(0, hpFactor*hpFactor*qFactor*qFactor*tFactor*appFactor*rFactor); // <= 0.5 = don't buy
-        }
-
-        [Obsolete]
-        private static float GetHungerFactor(Pawn pawn)
-        {
-            var needFood = pawn.needs.TryGetNeed<Need_Food>();
-            var carriedNutrition = pawn.inventory.innerContainer.Where(thing => CanEat(thing, pawn)).Sum(t=>FoodUtility.GetNutrition(t, t.def));
-            var carriedFactor = GenMath.LerpDoubleClamped(0, 3, 3, 0.1f, carriedNutrition); // raised food factor
-            var hungerFactor = 1 - needFood?.CurLevelPercentage ?? 0;
-            hungerFactor -= 1 - needFood?.PercentageThreshHungry ?? 0; // about -0.7
-            return hungerFactor * carriedFactor;
         }
 
         // Copied so we can make some adjustments
