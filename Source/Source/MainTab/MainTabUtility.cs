@@ -10,6 +10,7 @@ namespace Hospitality.MainTab
         {
             if (table.SortingBy != null) return;
             if (firstPawn == null) return;
+            if (!firstPawn.SpawnedOrAnyParentSpawned) return;
 
             var lords = firstPawn.Map.GetMapComponent().PresentLords;
 
@@ -19,6 +20,8 @@ namespace Hospitality.MainTab
 
             foreach (var lord in lords)
             {
+                if (lord == null) continue;
+
                 const int verticalMargin = 6;
                 const float width = 4;
 
@@ -26,7 +29,7 @@ namespace Hospitality.MainTab
                 box.xMin = box.xMax - width;
                 box.yMin = yTop + index * cellHeight + verticalMargin;
                 box.yMax = box.yMin + lord.ownedPawns.Count * cellHeight - verticalMargin*2;
-                Widgets.DrawBoxSolid(box, lord.faction.Color);
+                if (lord.faction != null) Widgets.DrawBoxSolid(box, lord.faction.Color);
                 index += lord.ownedPawns.Count;
             }
         }
