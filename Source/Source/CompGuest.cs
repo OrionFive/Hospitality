@@ -148,6 +148,12 @@ namespace Hospitality
             if(clearLord) lord = null;
         }
 
+        public override void PostDeSpawn(Map map)
+        {
+            base.PostDeSpawn(map);
+            map.GetMapComponent().presentGuests.Remove(Pawn);
+        }
+
         public void ClaimBed([NotNull]Building_GuestBed newBed)
         {
             if (!newBed.AnyUnownedSleepingSlot) return;
