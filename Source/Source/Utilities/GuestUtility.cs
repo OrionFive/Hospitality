@@ -215,14 +215,13 @@ namespace Hospitality
         {
             var difficulty = guest.RecruitDifficulty();
 
-            var adjusted = AdjustDifficulty(difficulty);
-            return Mathf.RoundToInt(adjusted);
+            return Mathf.RoundToInt(AdjustDifficulty(difficulty));
         }
 
         private static float RecruitDifficulty(this Pawn guest)
         {
-            // From Pawn_GuestTracker.SetGuestStatus
-            float num = guest.kindDef.initialResistanceRange.Value.Average;
+            // From Pawn_GuestTracker.SetGuestStatus, added default value if not set (for mod compatibility)
+            float num = guest.kindDef.initialResistanceRange?.Average ?? 20;
             if (guest.royalty != null)
             {
                 RoyalTitle mostSeniorTitle = guest.royalty.MostSeniorTitle;
