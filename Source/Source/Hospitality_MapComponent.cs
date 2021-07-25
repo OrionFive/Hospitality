@@ -172,20 +172,17 @@ namespace Hospitality
 
         public DrugPolicy GetDrugPolicy()
         {
-            if (drugPolicy == null)
-            {
-                drugPolicy = new DrugPolicy(map.uniqueID, "GuestDrugPolicy");
-                drugPolicy.InitializeIfNeeded();
+            drugPolicy ??= new DrugPolicy(map.uniqueID, "GuestDrugPolicy");
+            drugPolicy.InitializeIfNeeded();
 
-                for (int i = 0; i < drugPolicy.Count; i++)
+            for (int i = 0; i < drugPolicy.Count; i++)
+            {
+                var entry = drugPolicy[i];
+                var properties = entry.drug.GetCompProperties<CompProperties_Drug>();
+                if (entry.drug.IsPleasureDrug && properties?.addictiveness < 0.025f && !properties.CanCauseOverdose)
                 {
-                    var entry = drugPolicy[i];
-                    var properties = entry.drug.GetCompProperties<CompProperties_Drug>();
-                    if (entry.drug.IsPleasureDrug && properties?.addictiveness < 0.025f && !properties.CanCauseOverdose)
-                    {
-                        entry.allowedForJoy = true;
-                        Log.Message($"Hospitality: Guests may use {entry.drug.label} for joy.");
-                    }
+                    entry.allowedForJoy = true;
+                    //Log.Message($"Hospitality: Guests may use {entry.drug.label} for joy.");
                 }
             }
 
