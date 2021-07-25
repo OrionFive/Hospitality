@@ -30,7 +30,7 @@ namespace Hospitality
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.defaultAreaRestriction)).SetBufferChanges(),
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.defaultAreaShopping)).SetBufferChanges(),
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.refuseGuestsUntilWeHaveBeds)),
-                MP.RegisterSyncField(typeof(Hospitality_GameComponent), nameof(Hospitality_GameComponent.defaultFoodRestriction)),
+                //MP.RegisterSyncField(typeof(Hospitality_GameComponent), nameof(Hospitality_GameComponent.defaultFoodRestriction)),
             };
 
             // Guest ITab
