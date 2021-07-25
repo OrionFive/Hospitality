@@ -209,6 +209,10 @@ namespace Hospitality
             {
                 switch (gizmo)
                 {
+                    case Command_SetBedOwnerType o: {
+                        o.Disable();
+                        break;
+                    }
                     case Command_Toggle toggle: {
                         // Disable prisoner and medical buttons
                         if (toggle.defaultLabel == "CommandBedSetForPrisonersLabel".Translate() || toggle.defaultLabel == "CommandBedSetAsMedicalLabel".Translate()) gizmo.Disable();
