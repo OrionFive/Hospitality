@@ -52,7 +52,7 @@
             <li Class="ThinkNode_Tagger">
               <tagToGive>ChangingApparel</tagToGive>
               <subNodes>
-                <li Class="Hospitality.JobGiver_OptimizeApparel" />
+                <li Class="Hospitality.JobGiver_OptimizeApparel_Guest" />
               </subNodes>
             </li>
             

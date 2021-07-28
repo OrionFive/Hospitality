@@ -6,7 +6,7 @@ using Verse.AI;
 
 namespace Hospitality
 {
-	public class JobGiver_OptimizeApparel : RimWorld.JobGiver_OptimizeApparel
+	public class JobGiver_OptimizeApparel_Guest : JobGiver_OptimizeApparel
 	{
 		public override Job TryGiveJob(Pawn pawn)
 		{
