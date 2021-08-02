@@ -19,7 +19,7 @@ namespace Hospitality
         internal static readonly string txtMakeFriendsTooltip = "TryRecruitTooltip".Translate();
 
         protected static readonly Vector2 buttonSize = new Vector2(120f, 30f);
-        private static Listing_Standard listingStandard = new Listing_Standard();
+        private static readonly Listing_Standard listingStandard = new Listing_Standard();
 
         public ITab_Pawn_Guest()
         {
@@ -135,12 +135,11 @@ namespace Hospitality
 
             if (!willOnlyJoinByForce)
             {
-                if (isRoyal)
-                    listingStandard.Label($"{"SeniorityRequirement".Translate(friends / 100, friendsRequired / 100)}:");
-                else
-                    listingStandard.Label($"{"FriendsRequirement".Translate(friends, friendsRequired)}:");
+                var label = isRoyal 
+                    ? $"{"SeniorityRequirement".Translate(friends / 100, friendsRequired / 100)}" 
+                    : $"{"FriendsRequirement".Translate(friends, friendsRequired)}";
 
-                listingStandard.Slider(Mathf.Clamp(friendPercentage, 0, 100), 0, 100);
+                DrawProgressBar(label, listingStandard.GetRect(32), Mathf.Clamp01(friendPercentage/100));
             }
 
             if (isRoyal && willOnlyJoinByForce)
@@ -164,9 +163,18 @@ namespace Hospitality
             // Will only have score while "checked in", becomes 0 again when guest leaves
             if (SelPawn.GetVisitScore(out var score))
             {
-                listingStandard.Label(txtHospitality + ":");
-                listingStandard.Slider(score, 0f, 1f);
+                DrawProgressBar(txtHospitality+":", listingStandard.GetRect(32), Mathf.Clamp01(score));
             }
+        }
+
+        private static void DrawProgressBar(string label, Rect rect, float score)
+        {
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Rect rectLabel = new Rect(rect.x, rect.y, rect.width / 2f, rect.height);
+            Widgets.Label(rectLabel, label);
+            Text.Anchor = TextAnchor.UpperLeft;
+            Rect rectBar = new Rect(rectLabel.xMax, rect.y, rect.width/2f, rect.height);
+            Widgets.FillableBar(rectBar.ContractedBy(4f), score, SocialCardUtility.BarFullTexHor);
         }
 
         private int RequiredFriends => GuestUtility.FriendsRequired(SelPawn.MapHeld) + SelPawn.GetEnemiesInColony();
@@ -203,13 +211,13 @@ namespace Hospitality
             int finalGoodwill = Mathf.Clamp(pawn.Faction.PlayerGoodwill - penalty, -100, 100);
 
             var text = finalGoodwill <= DiplomacyTuning.BecomeHostileThreshold ? "ForceRecruitWarning".Translate() : TaggedString.Empty;
-            return ColoredText.Colorize(text, ColoredText.FactionColor_Hostile);
+            return text.Colorize(ColoredText.FactionColor_Hostile);
         }
 
         private static string GetAcidifierWarning(Pawn pawn)
         {
             var text = pawn.HasDeathAcidifier() ? "ForceAcidifierWarning".Translate(new NamedArgument(pawn, "PAWN")) : TaggedString.Empty;
-            return ColoredText.Colorize(text, ColoredText.FactionColor_Hostile);
+            return text.Colorize(ColoredText.FactionColor_Hostile);
         }
 
         private static void SendHomeDialog(Lord lord)
