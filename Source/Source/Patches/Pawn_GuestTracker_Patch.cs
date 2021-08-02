@@ -5,7 +5,7 @@ using Verse;
 namespace Hospitality.Patches
 {
     /// <summary>
-    /// Detoured so guests don't become prisoners
+    /// So guests don't become prisoners
     /// </summary>
     internal static class Pawn_GuestTracker_Patch
     {
