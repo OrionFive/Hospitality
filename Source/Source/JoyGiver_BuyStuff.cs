@@ -41,17 +41,18 @@ namespace Hospitality
             var storage = shoppingArea.ActiveCells.Select(cell=>map.edificeGrid[cell]).OfType<Building_Storage>();
             things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
             if (things.Count == 0) return null;
+            var requiresFoodFactor = GuestUtility.GetRequiresFoodFactor(pawn);
 
             // Try some things
             var selection = things.TakeRandom(5).Where(t => pawn.CanReach(t.Position, PathEndMode.Touch, Danger.None, false, false, TraverseMode.PassDoors)).ToArray();
             Thing thing = null;
             if (selection.Length > 1)
-                thing = selection.MaxBy(t => Likey(pawn, t));
+                thing = selection.MaxBy(t => Likey(pawn, t, requiresFoodFactor));
             else if (selection.Length == 1) thing = selection[0];
 
             if (thing == null) return null;
 
-            if (Likey(pawn, thing) <= 0.5f)
+            if (Likey(pawn, thing, requiresFoodFactor) <= 0.5f)
             {
                 //Log.Message(thing.Label + ": not interesting for " + pawn.NameStringShort);
                 int duration = Rand.Range(JobDriver_BuyItem.MinShoppingDuration, JobDriver_BuyItem.MaxShoppingDuration);
@@ -69,7 +70,7 @@ namespace Hospitality
             return new Job(jobDefBuy, thing);
         }
 
-        private static float Likey(Pawn pawn, Thing thing)
+        private static float Likey(Pawn pawn, Thing thing, float requiresFoodFactor)
         {
             if (thing == null) return 0;
 
@@ -80,15 +81,13 @@ namespace Hospitality
             var appFactor = thing is Apparel apparel ? 1 + ApparelScoreGain(pawn, apparel) : 0.8f; // Not apparel, less likey
             //Log.Message(thing.Label + " - apparel score: " + appFactor);
 
-            var hasFoodFactor = GuestUtility.GetRequiresFoodFactor(pawn) - 0.5f;
-
             // Food
             if(ItemUtility.IsFood(thing) && pawn.RaceProps.CanEverEat(thing))
             {
                 appFactor = FoodUtility.FoodOptimality(pawn, thing, FoodUtility.GetFinalIngestibleDef(thing), 0, true) / 300f; // 300 = optimality max
                 //Log.Message($"{pawn.LabelShort} looked at {thing.LabelShort} at {thing.Position}.");
-                //Log.Message($"{pawn.LabelShort} added {hasFoodFactor} to the score for his hunger and {appFactor} for food optimality.");
-                appFactor += hasFoodFactor;
+                //Log.Message($"{pawn.LabelShort} added {requiresFoodFactor} to the score for his hunger and {appFactor} for food optimality.");
+                appFactor += requiresFoodFactor;
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.PlantFoodRaw)) appFactor -= 0.25f;
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.MeatRaw)) appFactor -= 0.5f;
             }
@@ -98,12 +97,12 @@ namespace Hospitality
                 appFactor = 1 + thing.def.ingestible.joy*0.5f;
 
                 // Hungry? Care less about other stuff
-                if(hasFoodFactor > 0) appFactor -= hasFoodFactor;
+                if(requiresFoodFactor > 0) appFactor -= requiresFoodFactor;
             }
             else
             {
                 // Hungry? Care less about other stuff
-                if(hasFoodFactor > 0) appFactor -= hasFoodFactor;
+                if(requiresFoodFactor > 0) appFactor -= requiresFoodFactor;
             }
 
             if (CompBiocodable.IsBiocoded(thing) && !CompBiocodable.IsBiocodedFor(thing, pawn)) return 0;
