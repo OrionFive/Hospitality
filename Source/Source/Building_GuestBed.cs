@@ -331,6 +331,7 @@ namespace Hospitality
             var spawnedBed = (Building_Bed) GenSpawn.Spawn(newBed, bed.Position, bed.Map, bed.Rotation);
             spawnedBed.HitPoints = bed.HitPoints;
             spawnedBed.ForPrisoners = forPrisoners;
+            spawnedBed.Medical = false;
 
             var compQuality = spawnedBed.TryGetComp<CompQuality>();
             compQuality?.SetQuality(bed.GetComp<CompQuality>().Quality, ArtGenerationContext.Colony);
