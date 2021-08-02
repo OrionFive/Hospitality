@@ -241,45 +241,6 @@ namespace Hospitality
             return score;
         }
 
-        private List<Thing> GetLoot(Pawn pawn, float desiredValue)
-        {
-            var totalValue = 0f;
-            var items = pawn.inventory.innerContainer.Where(i => WillDrop(pawn, i)).InRandomOrder().ToList();
-            var dropped = new List<Thing>();
-            while (totalValue < desiredValue && items.Count > 0)
-            {
-                var item = items.First();
-                items.Remove(item);
-                if (totalValue + item.MarketValue > desiredValue) continue;
-                Map map = pawn.MapHeld;
-                if (pawn.inventory.innerContainer.TryDrop(item, pawn.Position, map, ThingPlaceMode.Near, out item))
-                {
-                    dropped.Add(item);
-                    totalValue += item.MarketValue;
-                }
-
-                // Handle trade stuff
-                if (item is ThingWithComps twc && map.mapPawns.FreeColonistsSpawnedCount > 0) twc.PreTraded(TradeAction.PlayerBuys, map.mapPawns.FreeColonistsSpawned.RandomElement(), pawn);
-            }
-            return dropped;
-        }
-
-        private bool WillDrop(Pawn pawn, Thing i)
-        {
-            // To prevent dropping ammo from CE or similar
-            var ammoCategory = DefDatabase<ThingCategoryDef>.GetNamedSilentFail("Ammo");
-            if (ammoCategory != null && i.def.IsWithinCategory(ammoCategory)) return false;
-            if (CompBiocodable.IsBiocoded(i)) return false;
-            if (i.TryGetComp<CompBladelinkWeapon>()?.CodedPawn != null) return false;
-
-            return i.def != ThingDefOf.Silver && !i.IsMeal() && !pawn.Bought(i) && !BoughtOrSoldByPlayer(i) && !pawn.inventory.NotForSale(i);
-        }
-
-        private static string GetItemName(Thing item)
-        {
-            return Find.ActiveLanguageWorker.WithIndefiniteArticlePostProcessed(item.Label);
-        }
-
         public override void UpdateAllDuties()
         {
             foreach (Pawn pawn in lord.ownedPawns)

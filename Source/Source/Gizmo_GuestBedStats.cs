@@ -9,7 +9,7 @@ namespace Hospitality
     public class Gizmo_GuestBedStats : Gizmo
     {
         private static readonly Color GuestBedStatsColor = new Color(0.75f, 0.75f, 0.75f);
-        private Building_GuestBed bed;
+        private readonly Building_GuestBed bed;
 
         public Gizmo_GuestBedStats(Building_GuestBed bed)
         {

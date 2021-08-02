@@ -13,7 +13,7 @@ namespace Hospitality
     {
         private static readonly Color sheetColorForGuests = new Color(89 / 255f, 55 / 255f, 121 / 255f);
 
-        private int feeStep = 10;
+        private const int FeeStep = 10;
 
         public int rentalFee;
         private readonly string silverLabel = " " + ThingDefOf.Silver.label;
@@ -237,19 +237,19 @@ namespace Hospitality
             // Add buttons to decrease / increase the fee
             yield return new Command_Action
             {
-                defaultLabel = "CommandBedDecreaseFeeLabel".Translate(feeStep),
-                defaultDesc = "CommandBedDecreaseFeeDesc".Translate(feeStep, MoodEffect),
+                defaultLabel = "CommandBedDecreaseFeeLabel".Translate(FeeStep),
+                defaultDesc = "CommandBedDecreaseFeeDesc".Translate(FeeStep, MoodEffect),
                 icon = ContentFinder<Texture2D>.Get("UI/Commands/ChangePriceDown"),
-                action = () => AdjustFee(-feeStep),
+                action = () => AdjustFee(-FeeStep),
                 hotKey = KeyBindingDefOf.Misc5,
-                disabled = rentalFee < feeStep
+                disabled = rentalFee < FeeStep
             };
             yield return new Command_Action
             {
-                defaultLabel = "CommandBedIncreaseFeeLabel".Translate(feeStep),
-                defaultDesc = "CommandBedIncreaseFeeDesc".Translate(feeStep, MoodEffect),
+                defaultLabel = "CommandBedIncreaseFeeLabel".Translate(FeeStep),
+                defaultDesc = "CommandBedIncreaseFeeDesc".Translate(FeeStep, MoodEffect),
                 icon = ContentFinder<Texture2D>.Get("UI/Commands/ChangePriceUp"),
-                action = () => AdjustFee(feeStep),
+                action = () => AdjustFee(FeeStep),
                 hotKey = KeyBindingDefOf.Misc6
             };
 

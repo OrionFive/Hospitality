@@ -114,16 +114,17 @@ namespace Hospitality
             if (!postLoaded) return;
 
             // Calling this method directly crashes the game (infinite loop, somehow). So here's a copy.
-            Action<CompAssignableToPawn> TryUnassignPawn = comp => {
+            void TryUnassignPawn(CompAssignableToPawn comp)
+            {
                 var assignedPawns = comp.assignedPawns;
                 if (!assignedPawns.Contains(Pawn)) return;
                 assignedPawns.Remove(Pawn);
                 comp.SortAssignedPawns();
-            };
+            }
 
             if (bed?.CompAssignableToPawn != null)
             {
-                TryUnassignPawn.Invoke(bed?.CompAssignableToPawn);
+                TryUnassignPawn(bed?.CompAssignableToPawn);
             }
             bed = null;
         }

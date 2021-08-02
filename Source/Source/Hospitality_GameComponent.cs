@@ -8,7 +8,7 @@ namespace Hospitality
 		public FoodRestriction defaultFoodRestriction;
 
 		// ReSharper disable once UnusedParameter.Local
-		public Hospitality_GameComponent(Game game)
+		public Hospitality_GameComponent(Game _)
 		{
 			// Bug: Why does this run 3 times when loading a game?
 			defaultFoodRestriction ??= new FoodRestriction(600, "Hospitality_Guests"); // Arbitrary ID

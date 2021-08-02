@@ -99,9 +99,11 @@ namespace Hospitality
             return value => int.TryParse(value, out var actual) && actual >= amount();
         }
 
+/*
         private static SettingHandle.ValueIsValid AtMost(Func<int> amount)
         {
             return value => int.TryParse(value, out var actual) && actual <= amount();
         }
+*/
     }
 }
