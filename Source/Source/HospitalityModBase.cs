@@ -13,7 +13,7 @@ namespace Hospitality
 {
     internal class HospitalityModBase : ModBase
     {
-        private static List<Action> TickActions = new List<Action>();
+        private static readonly List<Action> tickActions = new List<Action>();
 
         public static Settings settings;
 
@@ -45,16 +45,16 @@ namespace Hospitality
 
         public override void Tick(int currentTick)
         {
-            foreach (var action in TickActions)
+            foreach (var action in tickActions)
             {
                 action();
             }
-            TickActions.Clear();
+            tickActions.Clear();
         }
 
         public static void RegisterTickAction(Action action)
         {
-            TickActions.Add(action);
+            tickActions.Add(action);
         }
 
         public override void SettingsChanged()
