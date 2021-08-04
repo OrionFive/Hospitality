@@ -28,6 +28,9 @@
 	<GuestCantAffordBed.stages.cant_afford_a_bed.label>нет денег на кровать</GuestCantAffordBed.stages.cant_afford_a_bed.label>
 	<GuestCantAffordBed.stages.cant_afford_a_bed.description>Я не могу позволить себе кровать в этом месте.</GuestCantAffordBed.stages.cant_afford_a_bed.description>
 	
+		<GuestHasNoFood.stages.no_food.label>нет еды</GuestHasNoFood.stages.no_food.label>
+	<GuestHasNoFood.stages.no_food.description>Мне нечего есть.</GuestHasNoFood.stages.no_food.description>
+	
 	<GuestBedCount.stages.no_guest_beds.label>нет гостевых кроватей</GuestBedCount.stages.no_guest_beds.label>
 	<GuestBedCount.stages.no_guest_beds.description>Здесь даже негде прилечь.</GuestBedCount.stages.no_guest_beds.description>
 	<GuestBedCount.stages.not_enough_guest_beds.label>не хватает кроватей</GuestBedCount.stages.not_enough_guest_beds.label>
