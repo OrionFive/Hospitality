@@ -121,7 +121,7 @@ namespace Hospitality
                 {
                     if (!pawn.needs.joy.tolerances.BoredOf(joyGiverDef.joyKind))
                     {
-                        if (joyGiverDef.Worker.MissingRequiredCapacity(pawn) == null)
+                        if (joyGiverDef.Worker.CanBeGivenTo(pawn))
                         {
                             if (joyGiverDef.pctPawnsEverDo < 1f)
                             {

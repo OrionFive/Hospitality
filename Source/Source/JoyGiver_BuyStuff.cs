@@ -24,7 +24,7 @@ namespace Hospitality
             if (!pawn.IsArrivedGuest(out _)) return 0;
             if (!pawn.MayBuy()) return 0;
             if (pawn.GetShoppingArea() == null) return 0;
-            var money = ItemUtility.GetMoney(pawn);
+            var money = pawn.GetMoney();
             //Log.Message(pawn.NameStringShort + " has " + money + " silver left.");
 
             return Mathf.InverseLerp(0, 25, money)*base.GetChance(pawn);
@@ -82,7 +82,7 @@ namespace Hospitality
             //Log.Message(thing.Label + " - apparel score: " + appFactor);
 
             // Food
-            if(ItemUtility.IsFood(thing) && pawn.RaceProps.CanEverEat(thing))
+            if(thing.IsFood() && pawn.RaceProps.CanEverEat(thing))
             {
                 appFactor = FoodUtility.FoodOptimality(pawn, thing, FoodUtility.GetFinalIngestibleDef(thing), 0, true) / 300f; // 300 = optimality max
                 //Log.Message($"{pawn.LabelShort} looked at {thing.LabelShort} at {thing.Position}.");
@@ -92,7 +92,7 @@ namespace Hospitality
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.MeatRaw)) appFactor -= 0.5f;
             }
             // Other consumables
-            else if (ItemUtility.IsIngestible(thing) && thing.def.ingestible.joy > 0)
+            else if (thing.IsIngestible() && thing.def.ingestible.joy > 0)
             {
                 appFactor = 1 + thing.def.ingestible.joy*0.5f;
 

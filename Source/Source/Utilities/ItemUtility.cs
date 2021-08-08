@@ -106,18 +106,18 @@ namespace Hospitality {
             return pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompInventory");
         }
 
-        public static int GetMoney(Pawn pawn)
+        public static int GetMoney(this Pawn pawn)
         {
             var money = pawn.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
             return money?.stackCount ?? 0;
         }
 
-        public static bool IsIngestible(Thing thing)
+        public static bool IsIngestible(this Thing thing)
         {
             return thing.def.IsIngestible && thing.def.ingestible.preferability != FoodPreferability.RawBad && thing.def.ingestible.preferability != FoodPreferability.MealAwful;
         }
 
-        public static bool IsFood(Thing thing)
+        public static bool IsFood(this Thing thing)
         {
             return thing.def.ingestible != null && thing.def.ingestible.preferability != FoodPreferability.NeverForNutrition && thing.def.ingestible.preferability != FoodPreferability.DesperateOnlyForHumanlikes
                    && thing.def.ingestible.preferability != FoodPreferability.DesperateOnly;

@@ -12,7 +12,7 @@ namespace Hospitality
             if (guestComp.HasBed) return null;
 
             // Wait longer if we have more money, but do it as soon as otherwise possible
-            if (GenTicks.TicksGame < guestComp.lastBedCheckTick  + ItemUtility.GetMoney(guest)*4) return null;
+            if (GenTicks.TicksGame < guestComp.lastBedCheckTick  + guest.GetMoney()*4) return null;
             
             guestComp.lastBedCheckTick = GenTicks.TicksGame + 500; // Recheck ever x ticks
 
