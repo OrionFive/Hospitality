@@ -26,7 +26,6 @@ namespace Hospitality
             if (pawn.GetShoppingArea() == null) return 0;
             var money = pawn.GetMoney();
             //Log.Message(pawn.NameStringShort + " has " + money + " silver left.");
-
             return Mathf.InverseLerp(0, 25, money)*base.GetChance(pawn);
         }
 
@@ -37,7 +36,7 @@ namespace Hospitality
 
             var map = pawn.MapHeld;
             var things = shoppingArea.ActiveCells.SelectMany(cell => map.thingGrid.ThingsListAtFast(cell))
-                .Where(t => t != null && t.def.EverHaulable && t.def.tradeability != Tradeability.None && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
+                .Where(t => t != null && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
             var storage = shoppingArea.ActiveCells.Select(cell=>map.edificeGrid[cell]).OfType<Building_Storage>();
             things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
             if (things.Count == 0) return null;

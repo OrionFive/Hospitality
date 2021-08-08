@@ -217,5 +217,11 @@ namespace Hospitality {
 
             return true;
         }
+
+        public static bool MayPurchaseThing(this ITrader guestTrader, Thing thing)
+        {
+            if (thing != null && thing.def.tradeability.PlayerCanSell()) return true;
+            return guestTrader != null && guestTrader.IsGuestTrader() && thing.def.thingCategories.Contains(ThingCategoryDefOf.FoodMeals);
+        }
     }
 }

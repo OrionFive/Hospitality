@@ -14,7 +14,7 @@ namespace Hospitality.Patches
 		{
 			public static void Postfix(ref bool __result, Thing t, ITrader trader)
 			{
-				if (!__result && t != null && trader.IsGuestTrader() && !t.def.tradeability.PlayerCanSell() && t.def.thingCategories.Contains(ThingCategoryDefOf.FoodMeals))
+				if (!__result && t != null && trader.MayPurchaseThing(t))
 				{
 					__result = true;
 				}
