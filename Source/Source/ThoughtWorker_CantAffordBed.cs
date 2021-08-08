@@ -1,5 +1,6 @@
 using System.Linq;
 using RimWorld;
+using RimWorld.BaseGen;
 using Verse;
 
 namespace Hospitality 
@@ -20,9 +21,6 @@ namespace Hospitality
             }
             if (!pawn.IsArrivedGuest(out var compGuest)) return ThoughtState.Inactive;
 
-            if (compGuest == null) return ThoughtState.Inactive;
-            if(!compGuest.arrived) return ThoughtState.Inactive;
-
             if(compGuest.rescued) return ThoughtState.Inactive;
             if(compGuest.HasBed) return ThoughtState.Inactive;
             
@@ -32,7 +30,10 @@ namespace Hospitality
             var beds = pawn.MapHeld.GetGuestBeds(pawn.GetGuestArea()).ToArray();
             if(beds.Length == 0) return ThoughtState.Inactive;
 
-            return !beds.Any(bed => bed.rentalFee <= money && bed.AnyUnownedSleepingSlot);
+            if (!beds.Any(bed => bed.AnyUnoccupiedSleepingSlot)) return ThoughtState.Inactive;
+            if (beds.Any(bed => bed.rentalFee <= money && bed.AnyUnownedSleepingSlot)) return ThoughtState.Inactive;
+
+            return true;
         }
     }
 }

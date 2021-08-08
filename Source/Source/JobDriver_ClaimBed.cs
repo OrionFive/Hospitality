@@ -29,7 +29,7 @@ namespace Hospitality
 
         private bool BedHasBeenClaimed(Toil toil)
         {
-            return !(TargetA.Thing is Building_GuestBed newBed) || !newBed.AnyUnownedSleepingSlot;
+            return !(TargetA.Thing is Building_GuestBed {AnyUnownedSleepingSlot: true});
         }
 
         private Toil ClaimBed()
