@@ -42,6 +42,8 @@ namespace Hospitality
 
         private static readonly SimpleCurve RecruitChanceOpinionCurve = new SimpleCurve {new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30)};
 
+        private static readonly Dictionary<int, bool> relatedCache = new Dictionary<int, bool>();
+        private static int relatedCacheNextClearTick;
 
         private static RoyalTitleDef[] titleDefs;
         public static RoyalTitleDef[] AllTitles 
@@ -173,8 +175,26 @@ namespace Hospitality
 
         private static int GetRelationValue(Pawn pawn, Pawn guest)
         {
-            if (guest.relations.RelatedPawns.Any(rel => rel == pawn)) return 2;
+            if (IsRelated(pawn, guest)) return 2;
             return 1;
+        }
+
+        private static bool IsRelated(Pawn pawn, Pawn guest)
+        {
+            // Clear cache
+            if (GenTicks.TicksGame >= relatedCacheNextClearTick)
+            {
+                relatedCache.Clear();
+                relatedCacheNextClearTick = GenTicks.TicksGame + GenDate.TicksPerHour * 3;
+            }
+
+            if (!relatedCache.TryGetValue(pawn.thingIDNumber, out var isRelated))
+            {
+                isRelated = guest.relations.RelatedPawns.Any(rel => rel == pawn);
+                relatedCache.Add(pawn.thingIDNumber, isRelated);
+            }
+
+            return isRelated;
         }
 
         private static IEnumerable<Pawn> GetPawnsFromBase(Map mapHeld)
