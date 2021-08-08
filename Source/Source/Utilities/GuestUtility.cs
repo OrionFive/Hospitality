@@ -990,6 +990,11 @@ namespace Hospitality
             pawn.trader.traderKind = traderKindDef;
         }
 
+        public static bool IsGuestTrader(this ITrader trader)
+        {
+            return trader.TraderKind == traderKindDef;
+        }
+
         public static void OnLordDespawned(Lord lord)
         {
             lord.Map?.GetMapComponent()?.OnLordDespawned(lord);
