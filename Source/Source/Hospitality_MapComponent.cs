@@ -17,6 +17,7 @@ namespace Hospitality
         public Area defaultAreaRestriction;
         public Area defaultAreaShopping;
         public bool refuseGuestsUntilWeHaveBeds;
+        public bool guestsCanTakeFoodForFree;
         private int nextQueueInspection;
         private int nextRogueGuestCheck;
         private int nextGuestListCheck;
@@ -35,6 +36,7 @@ namespace Hospitality
             Scribe_References.Look(ref defaultAreaShopping, "defaultAreaShopping");
             Scribe_Deep.Look(ref incidentQueue, "incidentQueue");
             Scribe_Values.Look(ref refuseGuestsUntilWeHaveBeds, "refuseGuestsUntilWeHaveBeds");
+            Scribe_Values.Look(ref guestsCanTakeFoodForFree, "guestsCanTakeFoodForFree");
             Scribe_Values.Look(ref nextQueueInspection, "nextQueueInspection");
             Scribe_Deep.Look(ref drugPolicy, "drugPolicy");
 

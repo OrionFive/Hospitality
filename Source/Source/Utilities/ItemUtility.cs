@@ -13,6 +13,9 @@ namespace Hospitality {
     {
         private static Dictionary<string, MethodInfo> alienFrameworkMethods = new Dictionary<string, MethodInfo>();
 
+        public static float PriceFactor = 0.55f;
+
+
         public static void PocketHeadgear(this Pawn pawn)
         {
             if (pawn?.apparel?.WornApparel == null || pawn.inventory?.innerContainer == null) return;
@@ -149,7 +152,7 @@ namespace Hospitality {
 
             if (thing.def == ThingDefOf.Silver) return false;
 
-            if (thing.def.tradeability == Tradeability.None) return false;
+            if (!pawn.MayPurchaseThing(thing)) return false;
 
             if (thing.def.thingSetMakerTags != null && thing.def.thingSetMakerTags.Contains("NotForGuests")) return false;
 
@@ -159,13 +162,9 @@ namespace Hospitality {
             //    Log.Message(thing.Label + ": is not proper for " + pawn.NameStringShort);
             //    return false;
             //}
-            var marketValue = thing.MarketValue * JobDriver_BuyItem.PriceFactor;
-            if (marketValue < 1)
-            {
-                return false;
-            }
-
-            if (marketValue > GetMoney(pawn))
+            var cost = GetPurchasingCost(thing);
+            
+            if (cost > GetMoney(pawn))
             {
                 return false;
             }
@@ -177,6 +176,12 @@ namespace Hospitality {
 
             //if (thing.IsInValidStorage()) Log.Message(thing.Label + " in storage ");
             return true;
+        }
+
+        public static float GetPurchasingCost([NotNull]this Thing thing)
+        {
+            if (IsFood(thing) && thing.GetMapComponent().guestsCanTakeFoodForFree) return 0;
+            return thing.MarketValue * PriceFactor;
         }
 
         private static bool BoughtByPlayer(Pawn pawn, Thing thing)

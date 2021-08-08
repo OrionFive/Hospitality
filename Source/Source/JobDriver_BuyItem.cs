@@ -15,7 +15,6 @@ namespace Hospitality
         //Constants
         public const int MinShoppingDuration = 75;
         public const int MaxShoppingDuration = 300;
-        public static float PriceFactor = 0.55f;
 
         //Properties
         protected Thing Item => job.targetA.Thing;
@@ -42,11 +41,11 @@ namespace Hospitality
                 Toil reserveTargetA = Toils_Reserve.Reserve(TargetIndex.A);
 
                 yield return reserveTargetA;
-                yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch)
+                yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch)
                     .FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
                 int duration = Rand.Range(MinShoppingDuration, MaxShoppingDuration);
-                yield return Toils_General.Wait(duration).FailOnCannotTouch(TargetIndex.A, PathEndMode.ClosestTouch);
+                yield return Toils_General.Wait(duration).FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
 
                 Toil takeThing = new Toil();
                 takeThing.initAction = () => BuyThing(takeThing);
@@ -72,8 +71,8 @@ namespace Hospitality
             Thing silver = inventory.FirstOrDefault(i => i.def == ThingDefOf.Silver);
             if (silver == null) return;
 
-            var itemCost = Item.MarketValue*PriceFactor;
-            var maxAffordable = Mathf.FloorToInt(silver.stackCount/itemCost);
+            var itemCost = Item.GetPurchasingCost();
+            var maxAffordable = itemCost <= 0 ? 5 : Mathf.FloorToInt(silver.stackCount/itemCost); // don't buy more than 5 of free stuff
             if (maxAffordable < 1) return;
 
             // Changed formula a bit, so guests are less likely to leave small stacks if they can afford it
@@ -91,7 +90,8 @@ namespace Hospitality
             // Notification
             if (Settings.enableBuyNotification)
             {
-                Messages.Message("GuestBoughtItem".Translate(new NamedArgument(toil.actor.Faction, "FACTION"), price, new NamedArgument(toil.actor, "PAWN"), new NamedArgument(thing, "ITEM")), toil.actor, MessageTypeDefOf.SilentInput);
+                var text = price <= 0 ? "GuestTookFreeItem" : "GuestBoughtItem";
+                Messages.Message(text.Translate(new NamedArgument(toil.actor.Faction, "FACTION"), price, new NamedArgument(toil.actor, "PAWN"), new NamedArgument(thing, "ITEM")), toil.actor, MessageTypeDefOf.SilentInput);
             }
 
             int tookItems;
@@ -123,7 +123,10 @@ namespace Hospitality
             var comp = toil.actor.CompGuest();
             if (tookItems > 0 && comp != null)
             {
-                inventory.TryDrop(silver, toil.actor.Position, map, ThingPlaceMode.Near, price, out silver);
+                if (price > 0)
+                {
+                    inventory.TryDrop(silver, toil.actor.Position, map, ThingPlaceMode.Near, price, out silver);
+                }
 
                 // Check what's new in the inventory (TryAdd creates a copy of the original object!)
                 var newItems = toil.actor.inventory.innerContainer.Except(inventoryItemsBefore).ToArray();

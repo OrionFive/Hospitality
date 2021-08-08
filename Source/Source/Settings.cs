@@ -67,7 +67,7 @@ namespace Hospitality
                         {
                             case "PriceFactor":
                                 Log.Message("[Hospitality] Setting PriceFactor to " + val);
-                                JobDriver_BuyItem.PriceFactor = float.Parse(val);
+                                ItemUtility.PriceFactor = float.Parse(val);
                                 break;
 
                             default:

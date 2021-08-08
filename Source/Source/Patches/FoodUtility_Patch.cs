@@ -16,7 +16,7 @@ namespace Hospitality.Patches
             public static bool Prefix(Pawn eater, bool desperate)
             {
                 if (!eater.IsArrivedGuest(out _)) return true;
-                return desperate;
+                return desperate || eater.GetMapComponent().guestsCanTakeFoodForFree;
             }
         }
     }

@@ -181,7 +181,7 @@ namespace Hospitality
                     if (wornReq && !newReq) return -1000;
                     //if (!pawn.outfits.forcedHandler.AllowedToAutomaticallyDrop(wornApparel[index]))
                     //    return -1000f;
-                    num -= RimWorld.JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, wornApparel[i]);
+                    num -= JobGiver_OptimizeApparel.ApparelScoreRaw(pawn, wornApparel[i]);
                     flag = true;
                 }
             }

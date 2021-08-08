@@ -50,11 +50,9 @@ namespace Hospitality.MainTab
 
             listingStandard.GapLine(24);
 
-            var rectGuestsAreWelcome = listingStandard.GetRect(Text.LineHeight);
-            DialogUtility.CheckboxLabeled(listingStandard, "GuestsWelcome".Translate(), ref comp.guestsAreWelcome, rectGuestsAreWelcome, false, "GuestsWelcomeTooltip".Translate());
-            var rectRefuse = listingStandard.GetRect(Text.LineHeight);
-            DialogUtility.CheckboxLabeled(listingStandard, "RefuseGuestsUntilBeds".Translate(), ref comp.refuseGuestsUntilWeHaveBeds, rectRefuse, false, "RefuseGuestsUntilBedsTooltip".Translate());
-
+            DialogUtility.CheckboxLabeled(listingStandard, "GuestsWelcome".Translate(), ref comp.guestsAreWelcome, listingStandard.GetRect(Text.LineHeight), false, "GuestsWelcomeTooltip".Translate());
+            DialogUtility.CheckboxLabeled(listingStandard, "RefuseGuestsUntilBeds".Translate(), ref comp.refuseGuestsUntilWeHaveBeds, listingStandard.GetRect(Text.LineHeight), false, "RefuseGuestsUntilBedsTooltip".Translate());
+            DialogUtility.CheckboxLabeled(listingStandard, "GuestsCanTakeFoodForFree".Translate(), ref comp.guestsCanTakeFoodForFree, listingStandard.GetRect(Text.LineHeight), false, "GuestsCanTakeFoodForFreeTooltip".Translate());
             listingStandard.End();
 
             if (Multiplayer.IsRunning)
