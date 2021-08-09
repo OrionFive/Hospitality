@@ -75,6 +75,7 @@ namespace Hospitality
 
             var comp = SelPawn.CompGuest();
             var willOnlyJoinByForce = comp.WillOnlyJoinByForce;
+            var canNeverRecruit = SelPawn.Faction?.HasGoodwill == false || isRoyal && willOnlyJoinByForce;
 
             Multiplayer.guestFields?.Watch(comp);
 
@@ -111,7 +112,7 @@ namespace Hospitality
                 DialogUtility.DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
 
                 var rectRecruitButton = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
-                DialogUtility.DrawRecruitButton(rectRecruitButton, SelPawn, friends >= friendsRequired, isRoyal, willOnlyJoinByForce);
+                DialogUtility.DrawRecruitButton(rectRecruitButton, SelPawn, friends >= friendsRequired, isRoyal, willOnlyJoinByForce, canNeverRecruit);
 
                 // Highlight defaults
                 if (Mouse.IsOver(rectSetDefault))
@@ -125,15 +126,16 @@ namespace Hospitality
                 }
             }
 
-            if (SelPawn.Faction != null)
+            if (SelPawn.Faction is {HasGoodwill: true})
             {
-                listingStandard.Label(txtRecruitmentPenalty.Translate(SelPawn.RecruitPenalty().ToString("##0"), SelPawn.ForcedRecruitPenalty().ToString("##0")));
+                if (!canNeverRecruit)
+                    listingStandard.Label(txtRecruitmentPenalty.Translate(SelPawn.RecruitPenalty().ToString("##0"), SelPawn.ForcedRecruitPenalty().ToString("##0")));
                 listingStandard.Label(txtFactionGoodwill + ": " + SelPawn.Faction.PlayerGoodwill.ToString("##0"));
             }
 
             listingStandard.Gap();
 
-            if (!willOnlyJoinByForce)
+            if (!willOnlyJoinByForce && !canNeverRecruit)
             {
                 var label = isRoyal 
                     ? $"{"SeniorityRequirement".Translate(friends / 100, friendsRequired / 100)}" 
@@ -142,11 +144,11 @@ namespace Hospitality
                 DrawProgressBar(label, listingStandard.GetRect(32), Mathf.Clamp01(friendPercentage/100));
             }
 
-            if (isRoyal && willOnlyJoinByForce)
+            if (canNeverRecruit)
             {
                 listingStandard.Label(ColoredText.StripTags("CanNeverRecruit".Translate().AdjustedFor(SelPawn)).Colorize(Color.red));
             }
-            if (willOnlyJoinByForce)
+            else if (willOnlyJoinByForce)
             {
                 listingStandard.Label(ColoredText.StripTags("OnlyJoinsByForce".Translate().AdjustedFor(SelPawn)).Colorize(Color.red));
             }

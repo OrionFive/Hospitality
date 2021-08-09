@@ -67,7 +67,7 @@ namespace Hospitality
 
                 var tweak = 0; // -0.1f;
                 var regularity = Mathf.Lerp(-0.5f, 0.25f, Mathf.InverseLerp(-100, 100, lord.faction.PlayerGoodwill));
-                    // negative factions have lower expectations
+                // negative factions have lower expectations
                 float expectations = tweak + regularity;
                 Data.visitorMoods[pawn.thingIDNumber] += expectations;
 
@@ -160,12 +160,14 @@ namespace Hospitality
 
         public static void DisplayLeaveMessage(float score, Faction faction, int visitorCount, Map currentMap, bool sentAway)
         {
-            var targetGoodwill = AffectGoodwill(score, faction, visitorCount);
+            var targetGoodwill = faction.HasGoodwill ? AffectGoodwill(score, faction, visitorCount) : 25;
 
-            var days = PlanRevisit(faction, targetGoodwill, currentMap, sentAway);
+            var days = faction.HasGoodwill ? PlanRevisit(faction, targetGoodwill, currentMap, sentAway) : 0;
 
             string messageReturn = " ";
-            if (days < 7)
+            if (!faction.HasGoodwill)
+            { /* No return message */ }
+            else if (days < 7)
                 messageReturn += "VisitorsReturnSoon".Translate();
             else if (days < 14)
                 messageReturn += "VisitorsReturnWhile".Translate();
@@ -203,7 +205,7 @@ namespace Hospitality
         private static float PlanRevisit(Faction faction, float targetGoodwill, Map currentMap, bool sentAway)
         {
             float days;
-            if (faction.defeated) return 100;
+            if (faction.defeated || !faction.HasGoodwill) return 100;
             else if (targetGoodwill > 0)
                 days = Mathf.Lerp(Rand.Range(6f, 12f), Rand.Range(3f, 6f), targetGoodwill/100f);
             else
@@ -217,7 +219,7 @@ namespace Hospitality
             if (Rand.Value < targetGoodwill / 100f && Rand.Value < 0.2f)
             {
                 // Send another friendly faction as well (start walking now)
-                if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && !f.HostileTo(Faction.OfPlayer) && !f.IsPlayer).TryRandomElement(out var newFaction))
+                if (Find.FactionManager.AllFactionsVisible.Where(f => f != faction && !f.defeated && f.HasGoodwill && !f.HostileTo(Faction.OfPlayer) && !f.IsPlayer).TryRandomElement(out var newFaction))
                 {
                     GenericUtility.TryCreateVisit(randomVisitMap, 0, newFaction);
                 }

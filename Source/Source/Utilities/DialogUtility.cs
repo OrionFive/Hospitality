@@ -44,9 +44,9 @@ namespace Hospitality
             listing.Gap(listing.verticalSpacing);
         }
 
-        public static void DrawRecruitButton(Rect rect, Pawn pawn, bool hasEnoughFriends, bool isRoyal, bool willOnlyJoinByForce)
+        public static void DrawRecruitButton(Rect rect, Pawn pawn, bool hasEnoughFriends, bool isRoyal, bool willOnlyJoinByForce, bool canNeverRecruit)
         {
-            var disabled = !pawn.MayRecruitRightNow();
+            var disabled = !pawn.MayRecruitRightNow() || canNeverRecruit;
             if (willOnlyJoinByForce && !isRoyal)
             {
                 // Not royal, has acidifier - can only force recruit

@@ -17,30 +17,6 @@ namespace Hospitality
         }
     }
 
-    public class Trigger_VisitorsPleasedMax : Trigger
-    {
-        private const int CheckInterval = 800;
-
-        private TriggerData_VisitorsPleasedMax Data { get { return data as TriggerData_VisitorsPleasedMax; } }
-
-        public Trigger_VisitorsPleasedMax(float threshold)
-        {
-            data = new TriggerData_VisitorsPleasedMax { threshold = threshold,arriveTick = Find.TickManager.TicksGame, minStayTicks = Rand.Range(40000,75000) };
-        }
-
-        public override bool ActivateOn(Lord lord, TriggerSignal signal)
-        {
-            //Log.Message((Find.TickManager.TicksGame - Data.arriveTick) + " ticks have passed since arrival");
-            if (Find.TickManager.TicksGame < Data.arriveTick + Data.minStayTicks) return false;
-
-            if (signal.type == TriggerSignalType.Tick && Find.TickManager.TicksGame % CheckInterval == 0)
-            {
-                if (Data != null && lord.faction.PlayerGoodwill >= Data.threshold) return true;
-            }
-            return false;
-        }
-    }
-
     public class TriggerData_VisitorsAngeredMax : TriggerData
     {
         public float threshold = -100;

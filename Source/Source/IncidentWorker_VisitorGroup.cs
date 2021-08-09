@@ -449,7 +449,7 @@ namespace Hospitality
 
                 // Money
                 //Log.Message("Goodwill: "+visitor.Faction.ColonyGoodwill);
-                var wealthBase = visitor.Faction.PlayerGoodwill;
+                var wealthBase = visitor.Faction.HasGoodwill ? visitor.Faction.PlayerGoodwill : Rand.Range(25, 75);
                 var title = visitor.royalty?.MostSeniorTitle;
                 if (title != null) wealthBase += title.def.seniority/2;
                 var amountS = Mathf.Max(0, Mathf.RoundToInt(Rand.Gaussian(wealthBase, wealthBase)*2))+Rand.Range(0, 40);
