@@ -990,7 +990,7 @@ namespace Hospitality
             pawn.trader.traderKind = traderKindDef;
         }
 
-        public static bool IsGuestTrader(this ITrader trader)
+        public static bool IsGuestTrader([NotNull]this ITrader trader)
         {
             return trader.TraderKind == traderKindDef;
         }

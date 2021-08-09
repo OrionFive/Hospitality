@@ -225,8 +225,9 @@ namespace Hospitality {
 
         public static bool MayPurchaseThing(this ITrader guestTrader, Thing thing)
         {
-            if (thing != null && thing.def.tradeability.PlayerCanSell()) return true;
-            return guestTrader != null && guestTrader.IsGuestTrader() && thing.def.thingCategories.Contains(ThingCategoryDefOf.FoodMeals);
+            if (thing == null || guestTrader == null) return false;
+            if (thing.def.tradeability.PlayerCanSell()) return true;
+            return guestTrader.IsGuestTrader() && thing.def.thingCategories?.Contains(ThingCategoryDefOf.FoodMeals) == true;
         }
     }
 }
