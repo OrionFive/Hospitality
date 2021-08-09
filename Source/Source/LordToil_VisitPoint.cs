@@ -198,7 +198,12 @@ namespace Hospitality
             float offset = targetGoodwill - currentGoodwill;
             int goodwillChange = Mathf.RoundToInt(Mathf.Clamp(offset, -goodwillChangeMax, goodwillChangeMax));
 
-            faction.TryAffectGoodwillWith(Faction.OfPlayer, goodwillChange, false);
+            HistoryEventDef reason;
+            if (goodwillChange >= 5) reason = DefDatabase<HistoryEventDef>.GetNamed("VisitBetterThanExpected");
+            else if (goodwillChange <= -5) reason = DefDatabase<HistoryEventDef>.GetNamed("VisitWorseThanExpected");
+            else return targetGoodwill;
+            // Between -5 and 5 change do nothing
+            faction.TryAffectGoodwillWith(Faction.OfPlayer, goodwillChange, false, reason: reason);
             return targetGoodwill;
         }
 
