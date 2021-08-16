@@ -19,6 +19,7 @@ namespace Hospitality.Patches
             private static readonly Color HighlightColorFriendRelated = new Color(0.0f, 0.75f, 0.0f, 1f);
             private static readonly Color HighlightColorEnemy = new Color(0.5f, 0.0f, 0.0f, 1f);
             private static readonly Color HighlightColorEnemyRelated = new Color(0.75f, 0.0f, 0.0f, 1f);
+            private static readonly Color HighlightColorSlave = new Color(0.35f, 0.35f, 0.35f, 1f);
 
             [HarmonyPrefix]
             public static bool Prefix(float y, float width,  SocialCardUtility.CachedSocialTabEntry entry, Pawn selPawnForSocialInfo)
@@ -37,6 +38,11 @@ namespace Hospitality.Patches
                 float rowHeight = SocialCardUtility.GetRowHeight(entry, width, selPawnForSocialInfo);
                 Rect rect = new Rect(0f, y, width, rowHeight);
 
+                if (otherPawn.IsSlave)
+                {
+                    return true;
+                }
+
                 float requiredOpinion = guest.GetMinRecruitOpinion();
 
                 float opinion = guest.relations.OpinionOf(otherPawn);
@@ -53,13 +59,16 @@ namespace Hospitality.Patches
                     percent = opinion / GuestUtility.MaxOpinionForEnemy;
                     GUI.color = related ? HighlightColorEnemyRelated : HighlightColorEnemy;
                 }
-                rect.width *= percent;
 
-                GUI.DrawTexture(rect, TexUI.HighlightTex);
-
+                DrawBar(rect, percent);
                 return true;
             }
 
+            private static void DrawBar(Rect rect, float percent)
+            {
+                rect.width *= percent;
+                GUI.DrawTexture(rect, TexUI.HighlightTex);
+            }
         }
 
         /// <summary>
@@ -86,7 +95,7 @@ namespace Hospitality.Patches
                     __result = "Kidnapped".Translate();
                     return false;
                 }
-                if (pawn.kindDef == PawnKindDefOf.Slave)
+                if (pawn.kindDef == PawnKindDefOf.Slave || pawn.IsSlave)
                 {
                     __result = "Slave".Translate();
                     return false;

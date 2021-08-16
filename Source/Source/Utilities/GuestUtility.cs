@@ -163,13 +163,13 @@ namespace Hospitality
         public static int GetFriendsInColony(this Pawn guest)
         {
             float requiredOpinion = GetMinRecruitOpinion(guest);
-            return GetPawnsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => GetRelationValue(pawn, guest));
+            return GetColonistsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => GetRelationValue(pawn, guest));
         }
 
         public static int GetFriendsSeniorityInColony(this Pawn guest)
         {
             float requiredOpinion = GetMinRecruitOpinion(guest);
-            return GetPawnsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion)
+            return GetColonistsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion)
                 .Sum(pawn => pawn.royalty.MostSeniorTitle.def.seniority + 100); // seriority can be 0!
         }
 
@@ -197,13 +197,14 @@ namespace Hospitality
             return isRelated;
         }
 
-        private static IEnumerable<Pawn> GetPawnsFromBase(Map mapHeld)
+        [NotNull]
+        private static IEnumerable<Pawn> GetColonistsFromBase(Map mapHeld)
         {
             if (mapHeld == null) yield break;
 
-            foreach (var pawn in mapHeld.mapPawns.FreeColonists) yield return pawn;
+            foreach (var pawn in mapHeld.mapPawns.FreeColonists.Where(c=>!c.IsSlave)) yield return pawn;
 
-            foreach (var pawn in GetNearbyColonists(mapHeld)) yield return pawn;
+            foreach (var pawn in GetNearbyColonists(mapHeld).Where(c=>!c.IsSlave)) yield return pawn;
         }
 
         private static IEnumerable<Pawn> GetNearbyColonists(Map mapHeld)
@@ -222,12 +223,12 @@ namespace Hospitality
 
         public static int GetEnemiesInColony(this Pawn guest)
         {
-            return GetPawnsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy).Sum(p => GetRelationValue(p, guest));
+            return GetColonistsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy).Sum(p => GetRelationValue(p, guest));
         }
 
         public static int GetRoyalEnemiesSeniorityInColony(this Pawn guest)
         {
-            return GetPawnsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy)
+            return GetColonistsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy)
                 .Sum(p => p.royalty.MostSeniorTitle.def.seniority + 100); // seniority can be 0!
         }
 
@@ -703,7 +704,7 @@ namespace Hospitality
 
         public static int FriendsRequired(Map map)
         {
-            var x = GetPawnsFromBase(map).Count();
+            var x = GetColonistsFromBase(map).Count();
             if (x <= 3) return 1;
             // Formula from: https://mycurvefit.com/share/5b359026-5f44-4ac4-88ed-9b364a242f7b
             var a = 0.887f;
