@@ -79,7 +79,7 @@ namespace Hospitality
             var maxWanted = Rand.RangeInclusive(1, maxAffordable);
             int count = Mathf.Min(Item.stackCount, maxSpace, maxWanted);
 
-            var price = Mathf.FloorToInt(count*itemCost);
+            var price = Mathf.CeilToInt(count*itemCost);
 
             if(silver.stackCount < price) return;
 

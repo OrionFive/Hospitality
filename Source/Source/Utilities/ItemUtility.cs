@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
@@ -162,7 +163,7 @@ namespace Hospitality {
             //    Log.Message(thing.Label + ": is not proper for " + pawn.NameStringShort);
             //    return false;
             //}
-            var cost = GetPurchasingCost(thing);
+            var cost = Mathf.CeilToInt(GetPurchasingCost(thing));
             
             if (cost > GetMoney(pawn))
             {

@@ -26,7 +26,7 @@ namespace Hospitality
             if (pawn.GetShoppingArea() == null) return 0;
             var money = pawn.GetMoney();
             //Log.Message(pawn.NameStringShort + " has " + money + " silver left.");
-            return Mathf.InverseLerp(0, 25, money)*base.GetChance(pawn);
+            return Mathf.InverseLerp(1, 25, money)*base.GetChance(pawn);
         }
 
         public override Job TryGiveJob(Pawn pawn)
