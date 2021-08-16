@@ -8,12 +8,14 @@ namespace Hospitality
     {
         [NotNull]private static Hospitality_MapComponent[] cachedComponents = new Hospitality_MapComponent[12];
 
-        public static Hospitality_MapComponent GetMapComponent(this Map map)
+        [CanBeNull]
+        public static Hospitality_MapComponent GetMapComponent([CanBeNull]this Map map)
         {
             return map == null ? null : cachedComponents[map.Index];
         }
 
-        public static Hospitality_MapComponent GetMapComponent(this Thing thing)
+        [CanBeNull]
+        public static Hospitality_MapComponent GetMapComponent([CanBeNull]this Thing thing)
         {
             return thing == null ? null : cachedComponents[thing.mapIndexOrState];
         }

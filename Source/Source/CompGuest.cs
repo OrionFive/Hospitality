@@ -152,7 +152,7 @@ namespace Hospitality
         public override void PostDeSpawn(Map map)
         {
             base.PostDeSpawn(map);
-            map.GetMapComponent().presentGuests.Remove(Pawn);
+            map.GetMapComponent()?.presentGuests.Remove(Pawn);
         }
 
         public void ClaimBed([NotNull]Building_GuestBed newBed)
@@ -163,7 +163,7 @@ namespace Hospitality
 
             foreach (var otherBed in allOtherBeds)
             {
-                if (otherBed.Owners() != null && otherBed.Owners().Contains(Pawn)) Log.Warning($"{Pawn.LabelShort} already owns {otherBed.Label}!");
+                if (otherBed.Owners().Contains(Pawn)) Log.Warning($"{Pawn.LabelShort} already owns {otherBed.Label}!");
             }
 
             Pawn.ownership.UnclaimBed();
