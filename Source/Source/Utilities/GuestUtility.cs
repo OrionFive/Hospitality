@@ -742,7 +742,7 @@ namespace Hospitality
         public static void TryPleaseGuest(Pawn recruiter, Pawn guest, bool focusOnRecruiting, List<RulePackDef> extraSentencePacks)
         {
             // TODO: pawn.records.Increment(RecordDefOf.GuestsCharmAttempts);
-            recruiter.skills.Learn(SkillDefOf.Social, 35f);
+            recruiter.skills.Learn(SkillDefOf.Social, 25f);
             float pleaseChance = recruiter.GetStatValue(StatDefOf.NegotiationAbility);
             pleaseChance = AdjustPleaseChance(pleaseChance, recruiter, guest);
             pleaseChance = Mathf.Clamp01(pleaseChance);
