@@ -91,6 +91,10 @@ namespace Hospitality {
             p.apparel.Wear(item, false);
         }
 
+        // CompInventory.CanFitInInventory from Combat Extended
+        static private MethodBase CanFitInInventory;
+        // method parameter from signature for CanFitInInventory
+        static private readonly Type[] CanFitInInventoryTypes = { typeof(Thing), typeof(int), typeof(bool), typeof(bool) };
         public static int GetInventorySpaceFor(this Pawn pawn, Thing current)
         {
             // Combat Realism
@@ -98,7 +102,17 @@ namespace Hospitality {
             if (inventory == null) return current.stackCount;
 
             object[] parameters = {current, 0, false, false};
-            var success = (bool) inventory.GetType().GetMethod("CanFitInInventory", BindingFlags.Instance | BindingFlags.Public).Invoke(inventory, parameters);
+            bool success = false;
+            if (CanFitInInventory == null)
+            {
+                try { CanFitInInventory = inventory.GetType().GetMethod("CanFitInInventory", BindingFlags.Instance | BindingFlags.Public, null, CanFitInInventoryTypes, null); }
+                catch (Exception e) { Log.Error(e.StackTrace); }
+            }
+            if (CanFitInInventory != null)
+            {
+                success = (bool) CanFitInInventory.Invoke(inventory, parameters);
+            }
+            
             if (!success) return 0;
             var count = (int) parameters[1];
 
