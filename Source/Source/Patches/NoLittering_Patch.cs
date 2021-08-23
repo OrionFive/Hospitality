@@ -29,8 +29,7 @@ namespace Hospitality.Patches
 					if (instruction.opcode == OpCodes.Callvirt && instruction.operand.Equals(original))
 					{
 						//Log.Message($"Replaced instruction {instruction.operand} with {replacement}.");
-						var replaced = instruction.Clone(replacement);
-						yield return replaced;
+						yield return instruction.Clone(replacement);
 					}
 					else yield return instruction;
 				}
@@ -44,7 +43,6 @@ namespace Hospitality.Patches
 			{
 				// Run original code
 				pawn.DropAndForbidEverything(keepInventoryAndEquipmentIfInBed);
-				return;
 			}
 
 			// Is not hostile, do nothing
@@ -52,9 +50,13 @@ namespace Hospitality.Patches
 
 		private static bool ShouldDrop(Pawn pawn)
 		{
-			return !Settings.disableFriendlyGearDrops || pawn?.Faction == null || pawn.HostileTo(Faction.OfPlayer) || pawn.Faction == Faction.OfPlayer;
+			if (pawn == null || pawn.IsColonist || pawn.IsSlaveOfColony || pawn.IsPrisonerOfColony) return true; // Only affect guests and caravans (who might come in, get drunk and drop all their loot)
+			return !Settings.disableFriendlyGearDrops || pawn.Faction == null || pawn.HostileTo(Faction.OfPlayer) || pawn.Faction == Faction.OfPlayer;
 		}
 
+		/// <summary>
+		/// Upon loading, downed pawns spill their stuff. Do the check.
+		/// </summary>
 		[HarmonyPatch(typeof(Pawn_EquipmentTracker), nameof(Pawn_EquipmentTracker.Notify_PawnSpawned))]
 		public class Notify_PawnSpawned
 		{
