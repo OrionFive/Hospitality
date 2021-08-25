@@ -12,9 +12,10 @@ namespace Hospitality
 		{
 			if (!pawn.IsGuest())
 			{
-				Log.ErrorOnce($"Non-guest {pawn} tried to optimize apparel.", 3574574);
-				return null;
+				// For compatibility with Combat Extended which randomly calls up OptimizeApparel in all kinds of think trees and then expects a valid result
+				return base.TryGiveJob(pawn);
 			}
+
 			pawn.outfits ??= new Pawn_OutfitTracker(pawn);
 
 			if (!DebugViewSettings.debugApparelOptimize)
