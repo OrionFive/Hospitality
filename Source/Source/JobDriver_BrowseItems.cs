@@ -33,7 +33,7 @@ namespace Hospitality
                     pawn.GainComfortFromCellIfPossible();
                 }
             };
-            toil.preInitActions.Add(delegate {
+            toil.AddPreInitAction(delegate {
                 var minDuration = ticksLeft / 2;
                 ticksLeft--;
                 if (ticksLeft <= 0)
