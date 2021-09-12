@@ -7,12 +7,12 @@ namespace Hospitality
 {
     public class JobDriver_BrowseItems : JobDriver
     {
-        private int ticksLeft;
+        private int ticksSpent;
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref ticksLeft, "ticksLeft");
+            Scribe_Values.Look(ref ticksSpent, "ticksSpent");
         }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -27,20 +27,16 @@ namespace Hospitality
             var toil = new Toil
             {
                 defaultCompleteMode = ToilCompleteMode.Never,
-                initAction = delegate { ticksLeft = Rand.Range(GenDate.TicksPerHour / 2, GenDate.TicksPerHour); },
                 tickAction = delegate {
                     pawn.rotationTracker.FaceCell(job.GetTarget(TargetIndex.B).Cell);
                     pawn.GainComfortFromCellIfPossible();
+                    ticksSpent++;
                 }
             };
-            toil.AddPreInitAction(delegate {
-                var minDuration = ticksLeft / 2;
-                ticksLeft--;
-                if (ticksLeft <= 0)
-                {
-                    ReadyForNextToil();
-                }
-                else if (ticksLeft < minDuration && pawn.IsHashIntervalTick(100))
+            toil.AddPreTickAction(delegate {
+                const int minDuration = GenDate.TicksPerHour / 8;
+
+                if (ticksSpent >= minDuration && pawn.IsHashIntervalTick(100))
                 {
                     pawn.jobs.CheckForJobOverride();
                 }
