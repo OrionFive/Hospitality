@@ -25,8 +25,8 @@ namespace Hospitality.Patches
                 if (Settings.disableArtAndCraft.Value && IsArtOrCraft(giver.def.workType.workTags)) return false;
                 if (Settings.disableOperations.Value && IsOperation(giver)) return false;
                 if (Settings.disableMedical.Value && IsOperation(giver) || IsMedical(giver)) return false;
-                if (Settings.disableWarden.Value && IsWarden(giver)) return false;
-                if (IsFeeding(giver)) return false; // Too many problems with this (uses food from inventory, wrong food category, etc.
+                if (IsWarden(giver)) return false; // Too many issues with this
+                if (IsFeeding(giver)) return false; // Too many problems with this (uses food from inventory, wrong food category, etc.)
 
                 if (!pawn.GetVisitScore(out var score)) return false;
 
