@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -16,7 +17,8 @@ namespace Hospitality
         {
             //yield return Toils_Reserve.Reserve(TargetIndex.A);
             yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.Touch);
-            yield return new Toil {
+            yield return new Toil
+            {
                 tickAction = delegate {
                     pawn.rotationTracker.FaceCell(job.GetTarget(TargetIndex.B).Cell);
                     pawn.GainComfortFromCellIfPossible();
@@ -25,7 +27,9 @@ namespace Hospitality
                         pawn.jobs.CheckForJobOverride();
                     }
                 },
-            defaultCompleteMode = ToilCompleteMode.Never};
+                defaultCompleteMode = ToilCompleteMode.Delay,
+                defaultDuration = Mathf.CeilToInt(GenDate.TicksPerHour * Rand.Range(0.5f, 2f)), 
+            };
         }
     }
 }
