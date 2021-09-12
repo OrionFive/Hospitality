@@ -12,6 +12,7 @@ namespace Hospitality
         private readonly JobDef jobDefBuy = DefDatabase<JobDef>.GetNamed("BuyItem");
         private readonly JobDef jobDefBrowse = DefDatabase<JobDef>.GetNamed("BrowseItems");
         public JoyGiverDefShopping Def => (JoyGiverDefShopping) def;
+        private Dictionary<int, List<ulong>> recentlyLookedAt = new Dictionary<int, List<ulong>>(); // Pawn ID, list of cell hashes
 
         public override void GetSearchSet(Pawn pawn, List<Thing> outCandidates)
         {
@@ -35,15 +36,17 @@ namespace Hospitality
             if (shoppingArea == null) return null;
 
             var map = pawn.MapHeld;
-            var things = shoppingArea.ActiveCells.SelectMany(cell => map.thingGrid.ThingsListAtFast(cell))
+            var things = shoppingArea.ActiveCells.Where(cell => !HasRecentlyLookedAt(pawn, cell)).SelectMany(cell => map.thingGrid.ThingsListAtFast(cell))
                 .Where(t => t != null && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
-            var storage = shoppingArea.ActiveCells.Select(cell=>map.edificeGrid[cell]).OfType<Building_Storage>();
+            var storage = shoppingArea.ActiveCells.Where(cell => !HasRecentlyLookedAt(pawn, cell)).Select(cell=>map.edificeGrid[cell]).OfType<Building_Storage>();
             things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
             if (things.Count == 0) return null;
             var requiresFoodFactor = GuestUtility.GetRequiresFoodFactor(pawn);
 
             // Try some things
             var selection = things.TakeRandom(5).Where(t => pawn.CanReach(t.Position, PathEndMode.Touch, Danger.None, false, false, TraverseMode.PassDoors)).ToArray();
+            foreach (var t in selection) RegisterLookedAt(pawn, t.Position);
+
             Thing thing = null;
             if (selection.Length > 1)
                 thing = selection.MaxBy(t => Likey(pawn, t, requiresFoodFactor));
@@ -55,6 +58,8 @@ namespace Hospitality
             {
                 //Log.Message(thing.Label + ": not interesting for " + pawn.NameStringShort);
                 int duration = Rand.Range(JobDriver_BuyItem.MinShoppingDuration, JobDriver_BuyItem.MaxShoppingDuration);
+                bool urgent = pawn.needs.food.CurCategory >= HungerCategory.UrgentlyHungry;
+                if (urgent) duration = 50;
 
                 var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, map, 2, out var standTarget) && ItemUtility.IsBuyableNow(pawn, thing);
                 if (canBrowse)
@@ -96,12 +101,12 @@ namespace Hospitality
                 appFactor = 1 + thing.def.ingestible.joy*0.5f;
 
                 // Hungry? Care less about other stuff
-                if(requiresFoodFactor > 0) appFactor -= requiresFoodFactor;
+                if(requiresFoodFactor > 0) appFactor -= requiresFoodFactor / 3;
             }
             else
             {
                 // Hungry? Care less about other stuff
-                if(requiresFoodFactor > 0) appFactor -= requiresFoodFactor;
+                if(requiresFoodFactor > 0) appFactor -= requiresFoodFactor / 3;
             }
 
             if (CompBiocodable.IsBiocoded(thing) && !CompBiocodable.IsBiocodedFor(thing, pawn)) return 0;
@@ -198,6 +203,22 @@ namespace Hospitality
         public static bool CanEat(Thing thing, Pawn pawn)
         {
             return thing.def.IsNutritionGivingIngestible && thing.def.IsWithinCategory(ThingCategoryDefOf.Foods) && ItemUtility.AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEat");
+        }
+
+        private bool HasRecentlyLookedAt(Pawn pawn, IntVec3 cell)
+        {
+            return recentlyLookedAt.TryGetValue(pawn.thingIDNumber, out var hashes) && hashes.Contains(cell.UniqueHashCode());
+        }
+
+        private void RegisterLookedAt(Pawn pawn, IntVec3 cell)
+        {
+            if (recentlyLookedAt.TryGetValue(pawn.thingIDNumber, out var hashes))
+            {
+                hashes.Add(cell.UniqueHashCode());
+                const int MaxCellsToRemember = 5;
+                if (hashes.Count > MaxCellsToRemember) hashes.RemoveAt(0);
+            }
+            else recentlyLookedAt.Add(pawn.thingIDNumber, new List<ulong> {cell.UniqueHashCode()});
         }
     }
 }
