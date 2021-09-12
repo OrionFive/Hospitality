@@ -91,13 +91,11 @@ namespace Hospitality {
             p.apparel.Wear(item, false);
         }
 
-        // CompInventory.CanFitInInventory from Combat Extended
-        static private MethodBase CanFitInInventory;
-        // method parameter from signature for CanFitInInventory
-        static private readonly Type[] CanFitInInventoryTypes = { typeof(Thing), typeof(int), typeof(bool), typeof(bool) };
+        #region Combat Extended fix
+        private static MethodBase CanFitInInventory;
+        private static readonly Type[] CanFitInInventoryTypes = { typeof(Thing), typeof(int), typeof(bool), typeof(bool) };
         public static int GetInventorySpaceFor(this Pawn pawn, Thing current)
         {
-            // Combat Realism
             var inventory = pawn.GetInventory();
             if (inventory == null) return current.stackCount;
 
@@ -118,6 +116,7 @@ namespace Hospitality {
 
             return count;
         }
+        #endregion
 
         private static ThingComp GetInventory(this Pawn pawn)
         {
