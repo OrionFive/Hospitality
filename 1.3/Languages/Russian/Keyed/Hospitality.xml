@@ -144,6 +144,8 @@
   <DisableMedical>Отключить медицинскую помощь гостей</DisableMedical>
   <DisableMedicalDesc>Когда активировано, гости не будут лечить и ухаживать за пациентами.</DisableMedicalDesc>
   <DisableGifts>Отключить подарки от гостей</DisableGifts>
+  <DisableWarden>Отключить помощь гостей в надзоре за заключёнными</DisableWarden>
+  <DisableWardenDesc>Когда выбрано, гости не будут выполнять работу, связанную с надзором.</DisableWardenDesc>
   <DisableGiftsDesc>Когда активировано, гости никогда не будут оставлять подарки.</DisableGiftsDesc>
   <MinGuestWorkSkill>Минимальный навык для работы</MinGuestWorkSkill>
   <MinGuestWorkSkillDesc>Минимальный навык гостя, необходимый для помощи вашим поселенцам. (рекомендуется: 7)</MinGuestWorkSkillDesc>

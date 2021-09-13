@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  
+
   <PropertyGroup>
     <RootNamespace>Hospitality</RootNamespace>
     <AssemblyName>Hospitality</AssemblyName>
@@ -14,9 +14,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;NDEBUG</DefineConstants> <!-- All published builds have to be built as 'release' because of the debug flag! -->
+    <DefineConstants>TRACE;NDEBUG</DefineConstants>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks> <!-- Unsafe is required for publicising! -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
@@ -27,7 +27,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Krafs.Rimworld.Ref" Version="*" GeneratePathProperty="true" /> <!-- Use Version="*-*" to get the latest beta! -->
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="*" GeneratePathProperty="true" />
+    <!-- Use Version="*-*" to get the latest beta! -->
     <PackageReference Include="Lib.Harmony" Version="*" ExcludeAssets="runtime" />
     <PackageReference Include="TaskPubliciser" Version="1.0.3" />
 
@@ -35,7 +36,7 @@
     <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="*" ExcludeAssets="runtime" />
     <PackageReference Include="RimWorld.MultiplayerAPI" Version="*" ExcludeAssets="runtime" />
   </ItemGroup>
-  
+
   <Target Name="MyCode" BeforeTargets="UpdateReferences">
     <!-- Set our variables -->
     <PropertyGroup>
@@ -46,7 +47,7 @@
 
     <!-- Publicise the dlls (if required) -->
     <Message Importance="High" Text="Publicising Rimworld Assembly ..." />
-    <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(AssemblyCSharp)')" />
+    <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(AssemblyCSharp)')" Logging="true" />
 
     <!-- Add references to the new publicised dlls -->
     <Message Importance="High" Text="Replacing reference to un-publicised assemblies with publicised equivalents ..." />

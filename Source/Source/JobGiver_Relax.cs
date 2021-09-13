@@ -95,9 +95,10 @@ namespace Hospitality
             //    return;
             //}
 
-            if(area is {TrueCount: 0})
+            if(area != null && area.TrueCount == 0)
             {
                 Log.ErrorOnce(pawn.LabelShort + " has an area that is empty!", 43737 + pawn.thingIDNumber);
+                return;
             }
         }
 

@@ -146,6 +146,8 @@
   <DisableOperationsDesc>Wenn diese Option aktiviert ist, führen die Gäste keine medizinischen Operationen durch.</DisableOperationsDesc>
   <DisableMedical>Deaktiviere Gäste die heilen</DisableMedical>
   <DisableMedicalDesc>Wenn diese Option aktiviert ist, führen die Gäste keine Heilungen durch.</DisableMedicalDesc>
+  <DisableWarden>Deaktiviere Gäste die aufsehen</DisableWarden>
+  <DisableWardenDesc>Wenn diese Option aktiviert ist, werden die Gäste keine Aufseher Aufgaben ausführen.</DisableWardenDesc>
   <DisableGifts>Deaktiviert, dass Gäste Geschenke hinterlassen</DisableGifts>
   <DisableGiftsDesc>Wenn diese Option aktiviert ist, werden Gäste keine Gegenstände zurücklassen, wenn sie zufrieden sind.</DisableGiftsDesc>
   <MinGuestWorkSkill>Mindestkenntnisse für die Arbeit</MinGuestWorkSkill>
