@@ -112,9 +112,9 @@
   
   <!-- Vending Machine -->
   <Hospitality_VendingMachinePrice>Price</Hospitality_VendingMachinePrice>
-  <Hospitality_VendingMachineEarnings>Earnings</Hospitality_VendingMachineEarnings>
-  <Hospitality_VendingMachine>Vending Machine</Hospitality_VendingMachine>
-  <Hospitality_VendingMachineToggleDesc>Toggle this dispenser to work as a vending machine for guests.</Hospitality_VendingMachineToggleDesc>
+  <Hospitality_VendingMachineEarnings>Earned</Hospitality_VendingMachineEarnings>
+  <Hospitality_VendingMachine>Vending machine</Hospitality_VendingMachine>
+  <Hospitality_VendingMachineToggleDesc>Allow guests to buy from this dispenser.</Hospitality_VendingMachineToggleDesc>
   
   <!-- Bed -->
   <GuestBedFormat>guest {0}</GuestBedFormat>
