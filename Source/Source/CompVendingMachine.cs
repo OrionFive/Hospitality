@@ -25,7 +25,7 @@ namespace Hospitality
         }
 
         public bool IsFree => CurrentPrice == 0;
-        public string TotalSold => $"${silverContainer.TotalStackCount}";
+        public string TotalSold => ((float)silverContainer.TotalStackCount).ToStringMoney();
 
         public bool ShouldEmpty => silverContainer.Count > 0;
 
