@@ -27,12 +27,12 @@
 
   <WorkGiverDef>
     <defName>Hospitality_WithdrawVendingMachineEarnings</defName>
-    <label>withdraw from vending machine</label>
+    <label>empty vending machine</label>
     <giverClass>Hospitality.WorkGiver_EmptyVendingMachine</giverClass>
     <workType>Hauling</workType>
     <priorityInType>18</priorityInType>
-    <verb>withdraw from vending machine</verb>
-    <gerund>withdrawing from vending machine</gerund>
+    <verb>empty vending machine</verb>
+    <gerund>emptying vending machine</gerund>
     <requiredCapacities>
       <li>Manipulation</li>
     </requiredCapacities>
