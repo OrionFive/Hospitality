@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hospitality.Utilities;
+﻿using Hospitality.Utilities;
 using UnityEngine;
-using UnityEngine.UI;
 using Verse;
 using Text = Verse.Text;
 

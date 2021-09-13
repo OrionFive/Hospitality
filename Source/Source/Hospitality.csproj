@@ -47,7 +47,7 @@
 
     <!-- Publicise the dlls (if required) -->
     <Message Importance="High" Text="Publicising Rimworld Assembly ..." />
-    <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(AssemblyCSharp)')" Logging="true" />
+    <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(AssemblyCSharp)')"/>
 
     <!-- Add references to the new publicised dlls -->
     <Message Importance="High" Text="Replacing reference to un-publicised assemblies with publicised equivalents ..." />
