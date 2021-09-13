@@ -27,7 +27,7 @@ namespace Hospitality
             if (Time.realtimeSinceStartup >= nextCacheUpdate)
             {
                 UpdateAffectedPawnsCache();
-                nextCacheUpdate = Time.realtimeSinceStartup + 1 + 0.01f*(Hash % 25);
+                nextCacheUpdate = Time.realtimeSinceStartup + 1 + 0.01f * (Hash % 25);
             }
             return affectedPawnCache.Any() ? AlertReport.CulpritsAre(affectedPawnCache) : AlertReport.Inactive;
         }
