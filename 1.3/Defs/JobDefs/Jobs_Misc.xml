@@ -40,9 +40,9 @@
 	</JobDef>
 	
 	<JobDef>
-		<defName>VendingMachine_WithDrawEarnings</defName>
+		<defName>VendingMachine_EmptyVendingMachine</defName>
 		<driverClass>Hospitality.JobDriver_EmptyVendingMachine</driverClass>
-		<reportString>withdrawing earnings.</reportString>
+		<reportString>Emptying vending machine.</reportString>
 		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
 	</JobDef>
 
