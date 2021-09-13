@@ -110,6 +110,12 @@
   <!-- Infos -->
   <StatsReport_MissingFriends>Missing friends</StatsReport_MissingFriends>
   
+  <!-- Vending Machine -->
+  <Hospitality_VendingMachinePrice>Price</Hospitality_VendingMachinePrice>
+  <Hospitality_VendingMachineEarnings>Earned</Hospitality_VendingMachineEarnings>
+  <Hospitality_VendingMachine>Vending machine</Hospitality_VendingMachine>
+  <Hospitality_VendingMachineToggleDesc>Allow guests to buy from this dispenser.</Hospitality_VendingMachineToggleDesc>
+  
   <!-- Bed -->
   <GuestBedFormat>guest {0}</GuestBedFormat>
   <CommandBedSetAsGuestLabel>For guests</CommandBedSetAsGuestLabel>
@@ -131,7 +137,7 @@
   <AlertNotEnoughBeds>Not enough guest beds</AlertNotEnoughBeds>
   <AlertNotEnoughBedsDesc>There are not enough beds for the following pawns:\n\n{0}\nYou should provide more beds for guests.</AlertNotEnoughBedsDesc>
   <AlertHasNoFood>Guest has nothing to eat</AlertHasNoFood>
-  <AlertHasNoFoodDesc>These guests have nothing to eat:\n\n{0}\nPut some food on sale, or gift the guests some silver or rations. You can also allow guests to take food for free.\nFactions with a better relationship will bring more silver.</AlertHasNoFoodDesc>
+  <AlertHasNoFoodDesc>These guests have nothing to eat:\n\n{0}\nPut some food on sale, set up a nutrient dispenser as a vending machine or gift the guests some silver or rations. You can also allow guests to take food for free.\nFactions with a better relationship will bring more silver.</AlertHasNoFoodDesc>
 
   <!-- Settings -->
   <DisableLimits>Disable option limits</DisableLimits>
