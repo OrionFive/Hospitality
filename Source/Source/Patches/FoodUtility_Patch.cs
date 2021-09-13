@@ -10,14 +10,64 @@ namespace Hospitality.Patches
         /// So guests will care
         /// </summary>
         [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.BestFoodSourceOnMap))]
-        public class BestFoodSourceOnMap
+        public class BestFoodSourceOnMapPatch
         {
-            [HarmonyPrefix]
-            public static bool Prefix(Pawn eater, bool desperate)
+            [HarmonyPostfix]
+            public static void Postfix(Pawn getter, Pawn eater, bool desperate, ThingDef foodDef, ref Thing __result)
             {
-                if (!eater.IsArrivedGuest(out _)) return true;
-                return desperate || eater.GetMapComponent().guestsCanTakeFoodForFree;
+                if (eater.IsArrivedGuest(out _))
+                {
+                    if (IsAcceptableForGuest(eater, __result, foodDef, desperate))
+                    {
+                        return;
+                    }
+                    __result = null;
+                }
             }
+        }      
+        
+        [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor))]
+        public class TryFindBestFoodSourceForPatch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(Pawn getter, Pawn eater, ref bool __result, ref Thing foodSource, ref ThingDef foodDef, ref bool desperate)
+            {
+                if (eater.IsArrivedGuest(out _))
+                {
+                    if (IsAcceptableForGuest(eater, foodSource, foodDef, desperate))
+                    {
+                        return;
+                    }
+                    __result = false;
+                }
+            }
+        }
+
+        internal static bool IsAcceptableForGuest(Pawn guest, Thing foodSource, ThingDef foodDef, bool desperate)
+        {
+            if (foodSource == null)
+            {
+                return true;
+            }
+
+            if (desperate || guest.GetMapComponent().guestsCanTakeFoodForFree)
+            {
+                return true;
+            }
+
+            //If the food source is a gastronomy dining spot, allow to get food as well
+            if (foodSource.def.defName == "Gastronomy_DiningSpot" && foodDef != null)
+            {
+                return true;
+            }
+
+            //Check whether the current food source is a dispenser set as a vending machine for this guest
+            if (foodSource is Building_NutrientPasteDispenser dispenser && (dispenser.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodSource, foodDef) ?? false))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

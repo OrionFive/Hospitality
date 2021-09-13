@@ -3,29 +3,32 @@ using Verse;
 
 namespace Hospitality
 {
-	/// <summary>
-	/// Loaded via xml. Added so guests are upset when they have nothing to eat.
-	/// </summary>
-	public class ThoughtWorker_HasNoFood : ThoughtWorker
-	{
-		public override ThoughtState CurrentStateInternal(Pawn pawn)
-		{
-			if (pawn == null) return ThoughtState.Inactive;
-			if (pawn.thingIDNumber == 0) return ThoughtState.Inactive; // What do you know!!!
+    /// <summary>
+    /// Loaded via xml. Added so guests are upset when they have nothing to eat.
+    /// </summary>
+    public class ThoughtWorker_HasNoFood : ThoughtWorkerCached
+    {
+        public override int ThoughtCacheInterval => GenTicks.TickLongInterval;
 
-			if (Current.ProgramState != ProgramState.Playing)
-			{
-				return ThoughtState.Inactive;
-			}
-			if (!pawn.IsArrivedGuest(out var compGuest)) return ThoughtState.Inactive;
+        public override ThoughtState GetStateToCache(Pawn p)
+        {
+            var flag = Utilities.FoodUtility.GuestCanSatisfyFoodNeed(p) ? ThoughtState.Inactive : ThoughtState.ActiveDefault;
+            return flag;
+        }
 
-			if (compGuest == null) return ThoughtState.Inactive;
-			if(!compGuest.arrived) return ThoughtState.Inactive;
+        public override bool ShouldCache(Pawn p)
+        {
+            if (p == null) return false;
+            if (p.thingIDNumber == 0) return false; // What do you know!!!
 
-			var food = FoodUtility.BestFoodInInventory(pawn, minFoodPref: FoodPreferability.RawTasty);
-			if(food != null) return ThoughtState.Inactive;
-
-			return true;
-		}
-	}
+            if (Current.ProgramState != ProgramState.Playing)
+            {
+                return false;
+            }
+            if (!p.IsArrivedGuest(out var compGuest)) return false;
+            if (compGuest == null) return false;
+            if (!compGuest.arrived) return false;
+            return true;
+        }
+    }
 }
