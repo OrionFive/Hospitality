@@ -26,7 +26,7 @@ namespace Hospitality.Patches
                     var properties = t.def.GetCompProperties<CompProperties_Drug>();
 
                     // It can cause overdose >> don't do it
-                    if (properties?.CanCauseOverdose == true)
+                    if (properties?.CanCauseOverdose == true || pawn.IsTeetotaler())
                     {
                         __result = false;
                     }

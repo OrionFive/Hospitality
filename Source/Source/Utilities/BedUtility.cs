@@ -6,7 +6,6 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 using static UnityEngine.Mathf;
-using Log = Verse.Log;
 
 namespace Hospitality
 {
@@ -36,7 +35,6 @@ namespace Hospitality
             comp.AssignedPawnsForReading.RemoveAll(p => p == null);
             return bed.CompAssignableToPawn.AssignedPawnsForReading;
         }
-
         private static IEnumerable<Building_GuestBed> FindAvailableBeds(Pawn guest, int money)
         {
             return guest.MapHeld.GetGuestBeds(guest.GetGuestArea()).Where(bed => 
@@ -58,17 +56,11 @@ namespace Hospitality
 
             var fee = RoundToInt(money > 0 ? 250 * (bed.rentalFee / money) : 0); // 0 - 250
 
-            //Ideology
-            var ideologyNeeds = GetIdeologicalFulfillment(bed, guest); // -150 - 50
-
             // Royalty requires single bed?
             var royalExpectations = GetRoyalExpectations(bed, guest, room, out var title);
 
-            //Facilities
-            var facilityScore = GetFacilityScore(bed); // facilityCount * 5 
-
             // Shared
-            var otherPawnOpinion = OtherPawnOpinion(bed, guest); // -150 - 0
+            int otherPawnOpinion = OtherPawnOpinion(bed, guest); // -150 - 0
 
             // Temperature
             var temperature = GetTemperatureScore(guest, room, bed); // -200 - 0
@@ -105,37 +97,11 @@ namespace Hospitality
                 //Log.Message($"{guest.LabelShort} is tired. {bed.LabelCap} is {distance} units far away.");
             }
 
-            var score = impressiveness + quality + comfort + roomType + temperature + otherPawnOpinion + royalExpectations + ideologyNeeds + facilityScore - distance;
+            var score = impressiveness + quality + comfort + roomType + temperature + otherPawnOpinion + royalExpectations - distance;
             var value = CeilToInt(scoreFactor * score - fee);
             //Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
             //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
             return value;
-        }
-
-        private static int GetFacilityScore(Building_Bed bed)
-        {
-            return bed.TryGetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading.Count * 10;
-        }
-        
-        private static int GetIdeologicalFulfillment(Building_Bed bed, Pawn guest)
-        {
-            if (!ModLister.IdeologyInstalled) return 0;
-            if (guest.ideo == null) return 0;
-
-            var otherOwner = bed.Owners().FirstOrDefault(owner => owner != guest);
-            if (otherOwner != null && !IdeoUtility.DoerWillingToDo(HistoryEventDefOf.SharedBed, guest))
-            {
-                return -150;
-            }
-
-            int score = 0;
-            var requiredFacilities = guest.Ideo.PreceptsListForReading.SelectMany(p => p.def.comps.Select(c => (c as PreceptComp_BedThought)?.requireFacility.def)).ToList();
-            if (requiredFacilities.Any())
-            {
-                score = 10 * bed.TryGetComp<CompAffectedByFacilities>().linkedFacilities.Count(f => requiredFacilities.Contains(f.def));
-            }
-            var dominance = IdeoUtility.GetStyleDominance(bed, guest.Ideo);
-            return score + CeilToInt(dominance * 50f);
         }
 
         private static int OtherPawnOpinion(Building_GuestBed bed, Pawn guest)

@@ -12,13 +12,9 @@ namespace Hospitality
     {
         public static void Inject()
         {
-            var mainConfig = HospitalityConfigDef.Config;
-
             InjectTab(typeof(ITab_Pawn_Guest), def => def.race?.Humanlike == true);
 
             InjectComp(typeof(CompProperties_Guest), def => def.race?.Humanlike == true);
-
-            InjectComp(typeof(CompProperties_VendingMachine), def => mainConfig.vendingMachines.Contains(def));
 
             Type bed = typeof(Building_Bed);
             var bedDefs = DefDatabase<ThingDef>.AllDefsListForReading

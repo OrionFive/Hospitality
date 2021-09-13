@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -13,18 +12,27 @@ namespace Hospitality
         protected override void UpdateAffectedPawnsCache()
         {
             affectedPawnCache.Clear();
-            var allGuests = Find.Maps.SelectMany(m => m.GetMapComponent()?.PresentGuests);
-            foreach (var guest in allGuests)
+            foreach (var map in Find.Maps)
+            foreach (var pawn in map.GetMapComponent().PresentGuests)
             {
-                if(guest.Dead) continue;
-                if(guest.needs.mood == null) continue;
+                if (pawn.Dead) continue;
 
-                guest.needs.mood.thoughts.GetAllMoodThoughts(tmpThoughts);
-                if (tmpThoughts.Any(t => t.def == Thought && !ThoughtUtility.ThoughtNullified(guest, t.def)))
+                if (pawn.needs.mood != null)
                 {
-                    affectedPawnCache.Add(guest);
+                    pawn.needs.mood.thoughts.GetAllMoodThoughts(tmpThoughts);
+                    try
+                    {
+                        foreach (var thought in tmpThoughts)
+                        {
+                            if (thought.def == Thought && !ThoughtUtility.ThoughtNullified(pawn, thought.def))
+                                affectedPawnCache.Add(pawn);
+                        }
+                    }
+                    finally
+                    {
+                        tmpThoughts.Clear();
+                    }
                 }
-                tmpThoughts.Clear();
             }
         }
     }

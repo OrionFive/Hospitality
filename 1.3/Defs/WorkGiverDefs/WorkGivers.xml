@@ -25,21 +25,4 @@
     </requiredCapacities>
   </WorkGiverDef>
 
-  <WorkGiverDef>
-    <defName>Hospitality_WithdrawVendingMachineEarnings</defName>
-    <label>withdraw from vending machine</label>
-    <giverClass>Hospitality.WorkGiver_EmptyVendingMachine</giverClass>
-    <workType>Hauling</workType>
-    <priorityInType>18</priorityInType>
-    <!-- <fixedBillGiverDefs> -->
-      <!-- <li>CashRegister_CashRegister</li> -->
-      <!-- <li>CashRegister_DiningSpot</li> -->
-    <!-- </fixedBillGiverDefs> -->
-    <verb>withdraw from vending machine</verb>
-    <gerund>withdrawing from vending machine</gerund>
-    <requiredCapacities>
-      <li>Manipulation</li>
-    </requiredCapacities>
-  </WorkGiverDef>
-
 </Defs>
