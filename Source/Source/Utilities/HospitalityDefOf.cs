@@ -6,6 +6,6 @@ namespace Hospitality.Utilities
     [DefOf]
     public static class HospitalityDefOf
     {
-        public static JobDef VendingMachine_WithDrawEarnings;
+        public static JobDef VendingMachine_EmptyVendingMachine;
     }
 }
