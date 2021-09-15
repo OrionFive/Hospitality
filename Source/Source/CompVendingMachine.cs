@@ -18,6 +18,22 @@ namespace Hospitality
 
         public Building_NutrientPasteDispenser Dispenser => (Building_NutrientPasteDispenser) parent;
 
+        public ThingOwner<Thing> MainContainer
+        {
+            get
+            {
+                if (silverContainer == null)
+                {
+                    silverContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
+                    if (parent is Building_NutrientPasteDispenser { DispensableDef: { } } dispenser)
+                    {
+                        basePrice = Mathf.CeilToInt(dispenser.DispensableDef.BaseMarketValue);
+                    }
+                }
+                return silverContainer;
+            }
+        }
+
         public int CurrentPrice
         {
             get => basePrice;
@@ -25,9 +41,8 @@ namespace Hospitality
         }
 
         public bool IsFree => CurrentPrice == 0;
-        public string TotalSold => ((float)silverContainer.TotalStackCount).ToStringMoney();
-
-        public bool ShouldEmpty => silverContainer.Count > 0;
+        public bool ShouldEmpty => MainContainer.Count > 0;
+        public string TotalSold => ((float)MainContainer.TotalStackCount).ToStringMoney();
 
         public override void PostExposeData()
         {
@@ -40,12 +55,6 @@ namespace Hospitality
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            if(respawningAfterLoad) return;
-            silverContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
-            if (parent is Building_NutrientPasteDispenser {DispensableDef: { }} dispenser)
-            {
-                basePrice = Mathf.CeilToInt(dispenser.DispensableDef.BaseMarketValue);
-            }
         }
 
         internal void SetAutoPricing()
@@ -63,7 +72,7 @@ namespace Hospitality
 
         public void ReceivePayment(ThingOwner<Thing> inventoryContainer, Thing silver)
         {
-            inventoryContainer.TryTransferToContainer(silver, silverContainer, CurrentPrice);
+            inventoryContainer.TryTransferToContainer(silver, MainContainer, CurrentPrice);
         }
 
         public bool CanAffordFast(Pawn buyerGuest, out Thing silver)
@@ -108,7 +117,7 @@ namespace Hospitality
 
         public ThingOwner GetDirectlyHeldThings()
         {
-            return silverContainer;
+            return MainContainer;
         }
     }
 

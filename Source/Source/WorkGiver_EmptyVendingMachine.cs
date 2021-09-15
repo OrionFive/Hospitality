@@ -19,7 +19,7 @@ namespace Hospitality
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             var vendingMachine = t.TryGetComp<CompVendingMachine>();
-            return vendingMachine != null && vendingMachine.ShouldEmpty && pawn.CanReserve(t, 1, 1);
+            return vendingMachine is {ShouldEmpty: true} && pawn.CanReserve(t, 1, 1);
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
