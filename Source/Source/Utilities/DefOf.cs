@@ -11,6 +11,9 @@ namespace Hospitality
         [MayRequire("CETeam.CombatExtended")]
         public static ThingDef Apparel_Backpack;
 
+        [MayRequire("Orion.Gastronomy")]
+        public static ThingDef Gastronomy_DiningSpot;
+
         public static JobDef VendingMachine_EmptyVendingMachine;
         public static RoomRoleDef GuestRoom;
         public static JobDef ClaimGuestBed;

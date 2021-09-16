@@ -56,7 +56,7 @@ namespace Hospitality.Patches
             }
 
             //If the food source is a gastronomy dining spot, allow to get food as well
-            if (foodSource.def.defName == "Gastronomy_DiningSpot" && foodDef != null)
+            if (foodSource.def == DefOf.Gastronomy_DiningSpot && foodDef != null)
             {
                 return true;
             }

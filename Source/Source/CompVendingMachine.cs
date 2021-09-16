@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace Hospitality
 {
     public class CompVendingMachine : ThingComp, IThingHolder
     {
-        private bool isActive = false;
+        private bool isActive;
 
         private int basePrice = 10;
 
@@ -52,23 +51,15 @@ namespace Hospitality
             Scribe_Deep.Look(ref silverContainer, "silverContainer");
         }
 
-        public override void PostSpawnSetup(bool respawningAfterLoad)
-        {
-            base.PostSpawnSetup(respawningAfterLoad);
-        }
-
         internal void SetAutoPricing()
         {
-            var mapcomp = parent.Map.GetMapComponent();
-            if (!mapcomp.PresentGuests.Any()) return;
-            var val = mapcomp.PresentGuests.Where(p => p.inventory.Count(ThingDefOf.Silver) > 0).Select(g => g.inventory.Count(ThingDefOf.Silver)).Min();
+            var mapComponent = parent.Map.GetMapComponent();
+            if (!mapComponent.PresentGuests.Any()) return;
+            var val = mapComponent.PresentGuests.Where(p => p.inventory.Count(ThingDefOf.Silver) > 0).Select(g => g.inventory.Count(ThingDefOf.Silver)).Min();
             CurrentPrice = Mathf.CeilToInt(val/2f);
         }
 
-        public bool IsActive()
-        {
-            return isActive;
-        }
+        public bool IsActive() => isActive;
 
         public void ReceivePayment(ThingOwner<Thing> inventoryContainer, Thing silver)
         {
