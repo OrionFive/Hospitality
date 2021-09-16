@@ -97,6 +97,7 @@ namespace Hospitality
         {
             foreach (var pawn in PresentGuests)
             {
+                pawn.foodRestriction ??= new Pawn_FoodRestrictionTracker(pawn);
                 pawn.foodRestriction.CurrentFoodRestriction = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
             }
         }
