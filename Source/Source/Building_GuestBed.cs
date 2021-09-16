@@ -20,7 +20,7 @@ namespace Hospitality
 
         public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
 
-        public int previousRoyaltyUpdate = 0;
+        public int previousRoyaltyUpdate;
 
         public override Color DrawColor
         {

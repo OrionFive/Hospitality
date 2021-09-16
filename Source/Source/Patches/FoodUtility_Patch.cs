@@ -15,14 +15,9 @@ namespace Hospitality.Patches
             [HarmonyPostfix]
             public static void Postfix(Pawn getter, Pawn eater, bool desperate, ThingDef foodDef, ref Thing __result)
             {
-                if (eater.IsArrivedGuest(out _))
-                {
-                    if (IsAcceptableForGuest(eater, __result, foodDef, desperate))
-                    {
-                        return;
-                    }
-                    __result = null;
-                }
+                if (!eater.IsArrivedGuest(out _)) return;
+                if (!IsAcceptableForGuest(eater, __result, foodDef, desperate)) __result = null;
+                Log.Message($"{eater.NameShortColored}: {foodDef.LabelCap} is acceptable == {IsAcceptableForGuest(eater, __result, foodDef, desperate)}");
             }
         }      
         
@@ -32,14 +27,8 @@ namespace Hospitality.Patches
             [HarmonyPostfix]
             public static void Postfix(Pawn getter, Pawn eater, ref bool __result, ref Thing foodSource, ref ThingDef foodDef, ref bool desperate)
             {
-                if (eater.IsArrivedGuest(out _))
-                {
-                    if (IsAcceptableForGuest(eater, foodSource, foodDef, desperate))
-                    {
-                        return;
-                    }
-                    __result = false;
-                }
+                if (!eater.IsArrivedGuest(out _)) return;
+                if (!IsAcceptableForGuest(eater, foodSource, foodDef, desperate)) __result = false;
             }
         }
 
