@@ -17,5 +17,6 @@ namespace Hospitality
         public static JobDef VendingMachine_EmptyVendingMachine;
         public static RoomRoleDef GuestRoom;
         public static JobDef ClaimGuestBed;
+        public static SpecialThingFilterDef AllowRotten;
     }
 }

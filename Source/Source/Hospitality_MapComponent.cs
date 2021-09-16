@@ -93,6 +93,23 @@ namespace Hospitality
             ApplyCorrectFoodRestrictions();
         }
 
+        [DebugAction("Pawns", actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        public static void ShowFoodRestrictions(Pawn pawn)
+        {
+            Log.Message($"Game restrictions = {Current.Game.foodRestrictionDatabase.AllFoodRestrictions.Select(r=>r.label).ToCommaList()}");
+            Log.Message($"Default restriction = {Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction?.label}");
+
+            if(pawn.foodRestriction == null) Log.Message($"{pawn.NameShortColored}: Food restriction is null.");
+            else if(pawn.foodRestriction.curRestriction == null) Log.Message($"{pawn.NameShortColored}: curRestriction is null.");
+            else
+            {
+                Log.Message($"{pawn.NameShortColored}: curRestriction is {pawn.foodRestriction.curRestriction.label}");
+                var dialog = new Dialog_ManageFoodRestrictions(pawn.foodRestriction.CurrentFoodRestriction);
+                Find.WindowStack.Add(dialog);
+                dialog.SelectedFoodRestriction = pawn.foodRestriction.CurrentFoodRestriction;
+            }
+        }
+
         private void ApplyCorrectFoodRestrictions()
         {
             foreach (var pawn in PresentGuests)
