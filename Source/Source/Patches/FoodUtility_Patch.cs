@@ -17,14 +17,14 @@ namespace Hospitality.Patches
             {
                 if (eater.IsArrivedGuest(out _))
                 {
-                    if (IsAcceptableForGuest(eater, __result, foodDef, desperate))
+                    if (Utilities.FoodUtility.GuestCanUseFoodSource(eater, __result, foodDef, desperate))
                     {
                         return;
                     }
                     __result = null;
                 }
             }
-        }      
+        }
         
         [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor))]
         public class TryFindBestFoodSourceForPatch
@@ -34,40 +34,13 @@ namespace Hospitality.Patches
             {
                 if (eater.IsArrivedGuest(out _))
                 {
-                    if (IsAcceptableForGuest(eater, foodSource, foodDef, desperate))
+                    if (Utilities.FoodUtility.GuestCanUseFoodSource(eater, foodSource, foodDef, desperate))
                     {
                         return;
                     }
                     __result = false;
                 }
             }
-        }
-
-        internal static bool IsAcceptableForGuest(Pawn guest, Thing foodSource, ThingDef foodDef, bool desperate)
-        {
-            if (desperate || guest.GetMapComponent().guestsCanTakeFoodForFree)
-            {
-                return true;
-            }
-
-            //If the food source is a gastronomy dining spot, allow to get food as well
-            if (foodSource?.def == DefOf.Gastronomy_DiningSpot && foodDef != null)
-            {
-                return true;
-            }
-
-            //Check whether the current food source is a dispenser set as a vending machine for this guest
-            if (foodSource is Building_NutrientPasteDispenser dispenser && (dispenser.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef) ?? false))
-            {
-                return true;
-            }
-
-            if (foodSource != null || foodDef != null)
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

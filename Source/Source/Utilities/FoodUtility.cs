@@ -8,15 +8,42 @@ namespace Hospitality.Utilities
         public static bool GuestCanSatisfyFoodNeed(Pawn guest)
         {
             //Check Inventory
-            var inventoryFood = RimWorld.FoodUtility.BestFoodInInventory(guest, minFoodPref: FoodPreferability.RawTasty);
-            if (inventoryFood != null) return true;
+            //var inventoryFood = RimWorld.FoodUtility.BestFoodInInventory(guest, minFoodPref: FoodPreferability.RawTasty);
+            //if (inventoryFood != null) return true;
 
             //Search FoodSource
-            if (RimWorld.FoodUtility.TryFindBestFoodSourceFor(guest, guest, false, out var foodSource, out var foodDef, false, false, false, false, false, false, false, false, false, FoodPreferability.RawTasty))
+            if (RimWorld.FoodUtility.TryFindBestFoodSourceFor(guest, guest, false, out var foodSource, out var foodDef, false, true, false, false, false, false, false, false, false, FoodPreferability.RawTasty))
             {
                 if (foodSource != null && foodDef != null) return true;
             }
+            return false;
+        }
 
+        public static bool GuestCanUseFoodSource(Pawn guest, Thing foodSource, ThingDef foodDef, bool desperate)
+        {
+            //If they own the food, they can simply eat it
+            if (guest.inventory.Contains(foodSource))
+            {
+                return true;
+            }
+
+            //If they are starving, they simply take the next best food source
+            if (desperate || guest.GetMapComponent().guestsCanTakeFoodForFree)
+            {
+                return true;
+            }
+
+            //If the food source is a gastronomy dining spot, allow to get food as well
+            if (foodSource?.def == DefOf.Gastronomy_DiningSpot && foodDef != null)
+            {
+                return true;
+            }
+
+            //Check whether the current food source is a dispenser set as a vending machine for this guest
+            if (foodSource is Building_NutrientPasteDispenser dispenser && (dispenser.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef) ?? false))
+            {
+                return true;
+            }
             return false;
         }
 
