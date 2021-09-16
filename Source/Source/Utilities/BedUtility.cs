@@ -108,9 +108,9 @@ namespace Hospitality
             return value;
         }
 
-        private static int GetFacilityScore(Building_Bed bed)
+        private static int GetFacilityScore(Building building)
         {
-            return bed.TryGetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading.Count * 10;
+            return building.TryGetComp<CompAffectedByFacilities>()?.LinkedFacilitiesListForReading.Count * 10 ?? 0;
         }
         
         private static int GetIdeologicalFulfillment(Building_Bed bed, Pawn guest)
@@ -125,13 +125,15 @@ namespace Hospitality
             }
 
             int score = 0;
-            var requiredFacilities = guest.Ideo.PreceptsListForReading.SelectMany(p => p.def.comps.Select(c => (c as PreceptComp_BedThought)?.requireFacility.def)).ToList();
+            var requiredFacilities = guest.Ideo.PreceptsListForReading.SelectMany(p => p.def.comps.Select(c => (c as PreceptComp_BedThought)?.requireFacility?.def)).ToList();
             if (requiredFacilities.Any())
             {
-                score = 10 * bed.TryGetComp<CompAffectedByFacilities>().linkedFacilities.Count(f => requiredFacilities.Contains(f.def));
+                var comp = bed.TryGetComp<CompAffectedByFacilities>();
+                if(comp?.linkedFacilities != null)
+                    score += 10 * comp.linkedFacilities.Count(f => requiredFacilities.Contains(f.def));
             }
             var dominance = IdeoUtility.GetStyleDominance(bed, guest.Ideo);
-            return score + CeilToInt(dominance * 50f);
+            return score + CeilToInt(dominance * 50);
         }
 
         private static int OtherPawnOpinion(Building_GuestBed bed, Pawn guest)
