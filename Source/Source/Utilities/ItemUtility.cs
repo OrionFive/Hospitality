@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using HarmonyLib;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -91,37 +92,43 @@ namespace Hospitality {
             p.apparel.Wear(item, false);
         }
 
-        #region Combat Extended fix
-        private static MethodBase CanFitInInventory;
-        private static readonly Type[] CanFitInInventoryTypes = { typeof(Thing), typeof(int), typeof(bool), typeof(bool) };
+        #region Combat Extended integration
+        private static MethodBase canFitInInventory;
+
         public static int GetInventorySpaceFor(this Pawn pawn, Thing current)
         {
+            if (pawn == null || current == null) return 0;
+
             var inventory = pawn.GetInventory();
             if (inventory == null) return current.stackCount;
 
-            object[] parameters = {current, 0, false, false};
-            bool success = false;
-            if (CanFitInInventory == null)
-            {
-                try { CanFitInInventory = inventory.GetType().GetMethod("CanFitInInventory", BindingFlags.Instance | BindingFlags.Public, null, CanFitInInventoryTypes, null); }
-                catch (Exception e) { Log.Error(e.StackTrace); }
-            }
-            if (CanFitInInventory != null)
-            {
-                success = (bool) CanFitInInventory.Invoke(inventory, parameters);
-            }
-            
-            if (!success) return 0;
-            var count = (int) parameters[1];
+            object[] arguments = {current, 0, false, false};
 
-            return count;
+            try
+            {
+                canFitInInventory ??= AccessTools.GetDeclaredMethods(inventory.GetType()).First(x => x.Name == "CanFitInInventory" && x.GetParameters()[0].ParameterType == typeof(Thing));
+
+                if (canFitInInventory == null)
+                {
+                    Log.ErrorOnce($"CanFitInInventory not found.", 4363476);
+                    return current.stackCount;
+                }
+                var success = (bool) canFitInInventory.Invoke(inventory, arguments);
+                if (!success) return 0;
+                return (int) arguments[1];
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.StackTrace);
+                return current.stackCount;
+            }
         }
-        #endregion
 
         private static ThingComp GetInventory(this Pawn pawn)
         {
             return pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompInventory");
         }
+        #endregion
 
         public static int GetMoney(this Pawn pawn)
         {
