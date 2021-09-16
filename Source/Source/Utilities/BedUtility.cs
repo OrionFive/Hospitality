@@ -40,6 +40,7 @@ namespace Hospitality
                 && bed.rentalFee <= money 
                 && !bed.IsForbidden(guest) 
                 && !bed.IsBurning() 
+                && !bed.CompAssignableToPawn.IdeoligionForbids(guest)
                 && guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some));
         }
 
@@ -50,7 +51,7 @@ namespace Hospitality
 
         private static float BedValue(Building_GuestBed bed, Pawn guest, int money)
         {
-            StaticBedValue(bed, out var room, out var quality, out var impressiveness, out var roomType, out var comfort);
+            StaticBedValue(bed, out var room, out var quality, out var impressiveness, out var roomType, out var comfort, out var facilities);
 
             var fee = RoundToInt(money > 0 ? 250 * (bed.rentalFee / money) : 0); // 0 - 250
 
@@ -59,9 +60,6 @@ namespace Hospitality
 
             // Royalty requires single bed?
             var royalExpectations = GetRoyalExpectations(bed, guest, room, out var title);
-
-            //Facilities
-            var facilityScore = GetFacilityScore(bed); // facilityCount * 5 
 
             // Shared
             var otherPawnOpinion = OtherPawnOpinion(bed, guest); // -150 - 0
@@ -84,9 +82,10 @@ namespace Hospitality
                 impressiveness *= -1;
                 roomType = 75; // We don't care, so always max
                 comfort = 100; // We don't care, so always max
+                facilities = 0; // We don't care, so they're ignored
             }
 
-            if (guest.story.traits.HasTrait(TraitDef.Named("Jealous")))
+            if (guest.story.traits.HasTrait(TraitDefOf.Jealous))
             {
                 fee /= 4;
                 impressiveness -= 50;
@@ -101,7 +100,7 @@ namespace Hospitality
                 //Log.Message($"{guest.LabelShort} is tired. {bed.LabelCap} is {distance} units far away.");
             }
 
-            var score = impressiveness + quality + comfort + roomType + temperature + otherPawnOpinion + royalExpectations + ideologyNeeds + facilityScore - distance;
+            var score = impressiveness + quality + comfort + roomType + temperature + otherPawnOpinion + royalExpectations + ideologyNeeds + facilities - distance;
             var value = CeilToInt(scoreFactor * score - fee);
             //Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
             //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
@@ -118,13 +117,11 @@ namespace Hospitality
             if (!ModLister.IdeologyInstalled) return 0;
             if (guest.ideo == null) return 0;
 
-            var otherOwner = bed.Owners().FirstOrDefault(owner => owner != guest);
-            if (otherOwner != null && !IdeoUtility.DoerWillingToDo(HistoryEventDefOf.SharedBed, guest))
-            {
-                return -150;
-            }
-
             int score = 0;
+
+            // If there's someone already using this bed and we're willing to share, affect score accordingly
+            score += OtherOwnerScore(bed, guest);
+
             var requiredFacilities = guest.Ideo.PreceptsListForReading.SelectMany(p => p.def.comps.Select(c => (c as PreceptComp_BedThought)?.requireFacility?.def)).ToList();
             if (requiredFacilities.Any())
             {
@@ -134,6 +131,18 @@ namespace Hospitality
             }
             var dominance = IdeoUtility.GetStyleDominance(bed, guest.Ideo);
             return score + CeilToInt(dominance * 50);
+        }
+
+        private static int OtherOwnerScore(Building_Bed bed, Pawn guest)
+        {
+            var score = 0;
+            foreach (var otherOwner in bed.Owners().Where(owner => owner != null && owner != guest))
+                if (RimWorld.BedUtility.WillingToShareBed(guest, otherOwner))
+                {
+                    score += guest.relations.OpinionOf(otherOwner); // -100 to 100
+                }
+
+            return score;
         }
 
         private static int OtherPawnOpinion(Building_GuestBed bed, Pawn guest)
@@ -173,15 +182,17 @@ namespace Hospitality
             return bed.Owners().Any(p => p != guest && !p.RaceProps.Animal && !LovePartnerRelationUtility.LovePartnerRelationExists(p, guest));
         }
 
-        public static int StaticBedValue(Building_GuestBed bed, [CanBeNull]out Room room, out int quality, out int impressiveness, out int roomTypeScore, out int comfort)
+        public static int StaticBedValue(Building_GuestBed bed, [CanBeNull] out Room room, out int quality, out int impressiveness, out int roomTypeScore, out int comfort, out int facilities)
         {
             room = bed.Map != null && bed.Map.regionAndRoomUpdater.Enabled ? bed.GetRoom() : null;
 
+            //Facilities
+            facilities = GetFacilityScore(bed); // facilityCount * 10
             quality = GetBedQuality(bed);
             impressiveness = room != null ? GetRoomImpressiveness(room) : 0;
             roomTypeScore = GetRoomTypeScore(room) * 2;
             comfort = RoundToInt(100*GetBedComfort(bed));
-            return quality + impressiveness + roomTypeScore + comfort;
+            return quality + impressiveness + roomTypeScore + comfort + facilities;
         }
 
         private static float GetBedComfort(Building_GuestBed bed)
