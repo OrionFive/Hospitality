@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using Hospitality.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -14,7 +13,7 @@ using Verse.AI.Group;
 namespace Hospitality {
     internal static class ItemUtility
     {
-        private static Dictionary<string, MethodInfo> alienFrameworkMethods = new Dictionary<string, MethodInfo>();
+        private static readonly Dictionary<string, MethodInfo> alienFrameworkMethods = new Dictionary<string, MethodInfo>();
 
         public static float PriceFactor = 0.55f;
 
