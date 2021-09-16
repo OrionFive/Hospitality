@@ -16,7 +16,7 @@ namespace Hospitality.Patches
             public static void Postfix(Pawn getter, Pawn eater, bool desperate, ThingDef foodDef, ref Thing __result)
             {
                 if (!eater.IsArrivedGuest(out _)) return;
-                if (Utilities.FoodUtility.GuestCanUseFoodSource(eater, __result, foodDef, desperate)) __result = null;
+                if (!Utilities.FoodUtility.GuestCanUseFoodSource(eater, __result, foodDef, desperate)) __result = null;
                 Log.Message($"{eater.NameShortColored}: {foodDef.LabelCap} is acceptable == {Utilities.FoodUtility.GuestCanUseFoodSource(eater, __result, foodDef, desperate)}");
             }
         }
@@ -28,7 +28,7 @@ namespace Hospitality.Patches
             public static void Postfix(Pawn getter, Pawn eater, ref bool __result, ref Thing foodSource, ref ThingDef foodDef, ref bool desperate)
             {
                 if (!eater.IsArrivedGuest(out _)) return;
-                if (Utilities.FoodUtility.GuestCanUseFoodSource(eater, foodSource, foodDef, desperate)) __result = false;
+                if (!Utilities.FoodUtility.GuestCanUseFoodSource(eater, foodSource, foodDef, desperate)) __result = false;
             }
         }
     }
