@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using Hospitality.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -81,7 +82,7 @@ namespace Hospitality {
 
         public static void TryGiveBackpack(this Pawn p)
         {
-            var def = DefDatabase<ThingDef>.GetNamed("Apparel_Backpack", false);
+            var def = DefOf.Apparel_Backpack;
             if (def == null) return;
 
             if (p.inventory.innerContainer.Contains(def)) return;

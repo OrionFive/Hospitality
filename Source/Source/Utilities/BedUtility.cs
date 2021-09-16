@@ -11,9 +11,6 @@ namespace Hospitality
 {
     internal static class BedUtility
     {
-        public static readonly RoomRoleDef roleDefGuestRoom = DefDatabase<RoomRoleDef>.GetNamed("GuestRoom");
-        public static readonly JobDef jobDefClaimGuestBed = DefDatabase<JobDef>.GetNamed("ClaimGuestBed");
-
         public static Building_GuestBed FindBedFor(this Pawn guest)
         {
             var silver = guest.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
@@ -216,7 +213,7 @@ namespace Hospitality
 
             int roomType;
             if (room.Role == RoomRoleDefOf.Barracks) roomType = 0;
-            else if (room.Role == roleDefGuestRoom) roomType = 30;
+            else if (room.Role == DefOf.GuestRoom) roomType = 30;
             else roomType = -30;
             if (room.OnlyOneBed()) roomType += 60;
             return roomType;

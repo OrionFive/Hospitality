@@ -47,7 +47,7 @@ namespace Hospitality.Patches
                 }
                 ThoughtDef thoughtDef = null;
                 // ADDED:
-                if (building_Bed.GetRoom().Role == BedUtility.roleDefGuestRoom)
+                if (building_Bed.GetRoom().Role == DefOf.GuestRoom)
                 {
                     thoughtDef = building_Bed.GetRoom().OnlyOneBed() ? ThoughtDefOf.SleptInBedroom : ThoughtDefOf.SleptInBarracks;
                 } ////

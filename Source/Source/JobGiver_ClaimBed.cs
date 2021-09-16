@@ -1,3 +1,4 @@
+using Hospitality.Utilities;
 using Verse;
 using Verse.AI;
 
@@ -19,7 +20,7 @@ namespace Hospitality
             var bed = guest.FindBedFor();
             if (bed == null) return null;
 
-            return new Job(BedUtility.jobDefClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}; // Store rentalFee to avoid cheating
+            return new Job(DefOf.ClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}; // Store rentalFee to avoid cheating
         }
     }
 }

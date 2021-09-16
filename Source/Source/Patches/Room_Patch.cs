@@ -66,7 +66,7 @@ namespace Hospitality.Patches
             private static bool WrongRoomType(Room room)
             {
                 // Added guest room
-                return room.Role != BedUtility.roleDefGuestRoom && room.Role != RoomRoleDefOf.Bedroom && room.Role != RoomRoleDefOf.PrisonCell && room.Role != RoomRoleDefOf.Barracks && room.Role != RoomRoleDefOf.PrisonBarracks;
+                return room.Role != DefOf.GuestRoom && room.Role != RoomRoleDefOf.Bedroom && room.Role != RoomRoleDefOf.PrisonCell && room.Role != RoomRoleDefOf.Barracks && room.Role != RoomRoleDefOf.PrisonBarracks;
             }
         }
     }

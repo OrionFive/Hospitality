@@ -1,3 +1,4 @@
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -73,7 +74,7 @@ namespace Hospitality
                 }
                 else
                 {
-                    return new ThinkResult(new Job(BedUtility.jobDefClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}, this);
+                    return new ThinkResult(new Job(DefOf.ClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}, this);
                 }
             }
             //Log.Message($"No bed available for {pawn.LabelShort}.");
