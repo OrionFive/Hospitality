@@ -12,7 +12,7 @@ namespace Hospitality.Utilities
             if (inventoryFood != null) return true;
 
             //Search FoodSource
-            if (RimWorld.FoodUtility.TryFindBestFoodSourceFor(guest, guest, false, out var foodSource, out var foodDef, true, false, false, false, false, false, false, false, false, FoodPreferability.RawTasty))
+            if (RimWorld.FoodUtility.TryFindBestFoodSourceFor(guest, guest, false, out var foodSource, out var foodDef, false, false, false, false, false, false, false, false, false, FoodPreferability.RawTasty))
             {
                 if (foodSource != null && foodDef != null) return true;
             }
