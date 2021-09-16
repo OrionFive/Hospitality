@@ -45,24 +45,24 @@ namespace Hospitality.Patches
 
         internal static bool IsAcceptableForGuest(Pawn guest, Thing foodSource, ThingDef foodDef, bool desperate)
         {
-            if (foodSource == null)
-            {
-                return true;
-            }
-
             if (desperate || guest.GetMapComponent().guestsCanTakeFoodForFree)
             {
                 return true;
             }
 
             //If the food source is a gastronomy dining spot, allow to get food as well
-            if (foodSource.def == DefOf.Gastronomy_DiningSpot && foodDef != null)
+            if (foodSource?.def == DefOf.Gastronomy_DiningSpot && foodDef != null)
             {
                 return true;
             }
 
             //Check whether the current food source is a dispenser set as a vending machine for this guest
-            if (foodSource is Building_NutrientPasteDispenser dispenser && (dispenser.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodSource, foodDef) ?? false))
+            if (foodSource is Building_NutrientPasteDispenser dispenser && (dispenser.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef) ?? false))
+            {
+                return true;
+            }
+
+            if (foodSource != null || foodDef != null)
             {
                 return true;
             }
