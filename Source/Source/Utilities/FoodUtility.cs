@@ -36,14 +36,17 @@ namespace Hospitality.Utilities
             //If the food source is a gastronomy dining spot, allow to get food as well
             if (foodSource?.def == DefOf.Gastronomy_DiningSpot && foodDef != null)
             {
+                Log.Message($"{guest.NameShortColored}: {foodSource?.LabelCap} ({foodSource?.Position}) is dining spot");
                 return true;
             }
 
             //Check whether the current food source is a dispenser set as a vending machine for this guest
+            Log.Message($"{guest.NameShortColored}: {foodSource.LabelCap} ({foodSource.Position}) is {foodSource.Label} (with food {foodDef?.label}). Is vending machine = {foodSource.TryGetComp<CompVendingMachine>() != null} CanUse = {foodSource.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef)??false}");
             if (foodSource is Building_NutrientPasteDispenser dispenser && (dispenser.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef) ?? false))
             {
                 return true;
             }
+            Log.Message($"{guest.NameShortColored}: {foodSource?.LabelCap} ({foodSource?.Position}) can't be used.");
             return false;
         }
 
