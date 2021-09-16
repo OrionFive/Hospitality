@@ -19,6 +19,8 @@ namespace Hospitality
                 if (eater.IsArrivedGuest(out _) && __result != null)
                 {
                     var dispenser = ((Building_NutrientPasteDispenser)eater.jobs.curJob.GetTarget(ind).Thing);
+                    //If guest didnt eat from a vending machine, ignore the rest
+                    if (dispenser == null) return;
 
                     __result.finishActions ??= new List<Action>();
                     __result.finishActions.Add(delegate

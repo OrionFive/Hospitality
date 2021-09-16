@@ -73,7 +73,7 @@ namespace Hospitality
             return silver.stackCount >= basePrice;
         }
 
-        public bool CanBeUsedBy(Pawn eaterGuest, Thing foodSource = null, ThingDef foodDef = null)
+        public bool CanBeUsedBy(Pawn eaterGuest, ThingDef foodDef = null)
         {
             if (!CanAffordFast(eaterGuest, out _)) return false;
             if (!FoodUtility.WillConsume(eaterGuest, foodDef)) return false;
