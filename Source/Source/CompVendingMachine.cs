@@ -23,7 +23,7 @@ namespace Hospitality
             {
                 if (silverContainer == null)
                 {
-                    silverContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
+                    silverContainer = new ThingOwner<Thing>(this, false);
                     if (parent is Building_NutrientPasteDispenser { DispensableDef: { } } dispenser)
                     {
                         basePrice = Mathf.CeilToInt(dispenser.DispensableDef.BaseMarketValue);
@@ -101,15 +101,9 @@ namespace Hospitality
             }
         }
 
-        public void GetChildHolders(List<IThingHolder> outChildren)
-        {
-            return;
-        }
+        public void GetChildHolders(List<IThingHolder> outChildren) { }
 
-        public ThingOwner GetDirectlyHeldThings()
-        {
-            return MainContainer;
-        }
+        public ThingOwner GetDirectlyHeldThings() => MainContainer;
     }
 
     public class CompProperties_VendingMachine : CompProperties
