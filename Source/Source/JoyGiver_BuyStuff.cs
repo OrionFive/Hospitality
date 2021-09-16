@@ -13,6 +13,7 @@ namespace Hospitality
         private readonly JobDef jobDefBrowse = DefDatabase<JobDef>.GetNamed("BrowseItems");
         public JoyGiverDefShopping Def => (JoyGiverDefShopping) def;
         private readonly Dictionary<int, List<ulong>> recentlyLookedAt = new Dictionary<int, List<ulong>>(); // Pawn ID, list of cell hashes
+        protected virtual int OptimalMoneyForShopping => 50;
 
         public override void GetSearchSet(Pawn pawn, List<Thing> outCandidates)
         {
@@ -27,7 +28,7 @@ namespace Hospitality
             if (pawn.GetShoppingArea() == null) return 0;
             var money = pawn.GetMoney();
             //Log.Message(pawn.NameStringShort + " has " + money + " silver left.");
-            return Mathf.InverseLerp(1, 25, money)*base.GetChance(pawn);
+            return Mathf.InverseLerp(1, OptimalMoneyForShopping, money)*base.GetChance(pawn);
         }
 
         public override Job TryGiveJob(Pawn pawn)
