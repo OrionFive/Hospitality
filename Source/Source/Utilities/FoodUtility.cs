@@ -1,4 +1,6 @@
-﻿using RimWorld;
+﻿using System;
+using Hospitality.Patches;
+using RimWorld;
 using Verse;
 
 namespace Hospitality.Utilities
@@ -19,35 +21,34 @@ namespace Hospitality.Utilities
             return false;
         }
 
-        public static bool GuestCanUseFoodSource(Pawn guest, Thing foodSource, ThingDef foodDef, bool desperate)
+        public static bool GuestCanUseFoodSourceInternal(Pawn guest, Thing foodSource)
         {
-            //If they own the food, they can simply eat it
-            if (guest.inventory.Contains(foodSource))
-            {
-                return true;
-            }
+            //Log.Message($"Checking FoodSource for {guest.NameShortColored}: {foodSource?.LabelCap} ({foodSource?.Position})");
 
+            //We need to get current status data of the guest
+            var foodDef = RimWorld.FoodUtility.GetFinalIngestibleDef(foodSource, true);
+            var desperate = guest.needs.food.CurCategory == HungerCategory.Starving;
+
+            //Log.Message($"FooDef: {foodDef?.LabelCap}| Desperate: {desperate}");
             //If they are starving, they simply take the next best food source
             if (desperate || guest.GetMapComponent().guestsCanTakeFoodForFree)
             {
                 return true;
             }
 
-            //If the food source is a gastronomy dining spot, allow to get food as well
-            if (foodSource?.def == DefOf.Gastronomy_DiningSpot && foodDef != null)
-            {
-                Log.Message($"{guest.NameShortColored}: {foodSource?.LabelCap} ({foodSource?.Position}) is dining spot");
-                return true;
-            }
-
             //Check whether the current food source is a dispenser set as a vending machine for this guest
-            Log.Message($"{guest.NameShortColored}: {foodSource.LabelCap} ({foodSource.Position}) is {foodSource.Label} (with food {foodDef?.label}). Is vending machine = {foodSource.TryGetComp<CompVendingMachine>() != null} CanUse = {foodSource.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef)??false}");
+            //Log.Message($"Dispenser: {foodSource is Building_NutrientPasteDispenser}| CanBeUsed: {(foodSource.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef) ?? false)}");
             if (foodSource is Building_NutrientPasteDispenser dispenser && (dispenser.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef) ?? false))
             {
                 return true;
             }
-            Log.Message($"{guest.NameShortColored}: {foodSource?.LabelCap} ({foodSource?.Position}) can't be used.");
             return false;
+        }
+
+        //This method is meant to be extended as we find new foodsources that go past the check in 'GuestCanUseFoodSourceInternal'
+        public static bool GuestCanUseFoodSourceExceptions(Pawn guest, Thing foodSource, ThingDef foodDef, bool desperate)
+        {
+            return true;
         }
 
         public static bool TryPayForFood(Pawn buyerGuest, Building_NutrientPasteDispenser dispenser)

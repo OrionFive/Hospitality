@@ -69,7 +69,7 @@ namespace Hospitality
         public bool CanAffordFast(Pawn buyerGuest, out Thing silver)
         {
             silver = buyerGuest.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
-            if (silver == null) return false;
+            if (silver == null) return IsFree;
             return silver.stackCount >= basePrice;
         }
 
