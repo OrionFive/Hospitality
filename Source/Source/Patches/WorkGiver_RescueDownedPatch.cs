@@ -20,7 +20,7 @@ namespace Hospitality.Patches
                 //Log.Message($"Adjusting should skip... all downed: {pawn.Map.mapPawns.SpawnedDownedPawns.Count()}");
                 foreach (var guest in pawn.Map.mapPawns.SpawnedDownedPawns)
                 {
-                    if(guest.GuestStatus != GuestStatus.Guest) continue;
+                    if(!(guest.GuestStatus == GuestStatus.Guest && guest.HostFaction == pawn.Faction)) continue;
                     //Log.Message($"Checking guest {guest.NameShortColored}: Downed: {guest.Downed}");
                     if (guest.Downed && !guest.InBed())
                     {
