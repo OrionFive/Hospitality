@@ -18,6 +18,7 @@ namespace Hospitality.Patches
             public static void Postfix(Pawn pawn, ref bool __result)
             {
                 //Log.Message($"Adjusting should skip... all downed: {pawn.Map.mapPawns.SpawnedDownedPawns.Count()}");
+                if (!__result) return;
                 foreach (var guest in pawn.Map.mapPawns.SpawnedDownedPawns)
                 {
                     if(!(guest.GuestStatus == GuestStatus.Guest && guest.HostFaction == pawn.Faction)) continue;
