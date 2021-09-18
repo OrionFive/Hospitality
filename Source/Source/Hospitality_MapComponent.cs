@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Hospitality.Utilities;
@@ -28,6 +27,7 @@ namespace Hospitality
         [NotNull]public List<Lord> PresentLords { get; } = new List<Lord>();
         [NotNull]public readonly HashSet<Pawn> presentGuests = new HashSet<Pawn>();
         public IEnumerable<Pawn> PresentGuests => presentGuests;
+        public RelationsCache RelationsCache { get; }
 
         public override void ExposeData()
         {
@@ -48,6 +48,7 @@ namespace Hospitality
         public Hospitality_MapComponent(Map map) : base(map)
         {
             defaultAreaRestriction = map.areaManager.Home;
+            RelationsCache = new RelationsCache(map);
         }
 
         public override void FinalizeInit()

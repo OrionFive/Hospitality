@@ -162,24 +162,15 @@ namespace Hospitality.Utilities
 
         public static int GetFriendsInColony(this Pawn guest)
         {
-            float requiredOpinion = GetMinRecruitOpinion(guest);
-            return GetColonistsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => GetRelationValue(pawn, guest));
+            return guest.GetMapComponent().RelationsCache.GetSetFor(guest).friends;
         }
 
         public static int GetFriendsSeniorityInColony(this Pawn guest)
         {
-            float requiredOpinion = GetMinRecruitOpinion(guest);
-            return GetColonistsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) >= requiredOpinion)
-                .Sum(pawn => pawn.royalty.MostSeniorTitle.def.seniority + 100); // seriority can be 0!
+            return guest.GetMapComponent().RelationsCache.GetSetFor(guest).friendsSeniority;
         }
 
-        private static int GetRelationValue(Pawn pawn, Pawn guest)
-        {
-            if (IsRelated(pawn, guest)) return 2;
-            return 1;
-        }
-
-        private static bool IsRelated(Pawn pawn, Pawn guest)
+        public static bool IsRelated(Pawn pawn, Pawn guest)
         {
             // Clear cache
             if (GenTicks.TicksGame >= relatedCacheNextClearTick)
@@ -197,39 +188,14 @@ namespace Hospitality.Utilities
             return isRelated;
         }
 
-        [NotNull]
-        private static IEnumerable<Pawn> GetColonistsFromBase(Map mapHeld)
-        {
-            if (mapHeld == null) yield break;
-
-            foreach (var pawn in mapHeld.mapPawns.FreeColonists.Where(c=>!c.IsSlave)) yield return pawn;
-
-            foreach (var pawn in GetNearbyColonists(mapHeld).Where(c=>!c.IsSlave)) yield return pawn;
-        }
-
-        private static IEnumerable<Pawn> GetNearbyColonists(Map mapHeld)
-        {
-            return PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_FreeColonists.Where(p => IsNearby(mapHeld, p));
-        }
-
-        private static bool IsNearby(Map mapHeld, Pawn p)
-        {
-            if (p.Spawned && p.MapHeld.IsPlayerHome) return false;
-            var tile = p.GetRootTile();
-            if (tile == -1) return false;
-
-            return Find.WorldGrid.ApproxDistanceInTiles(mapHeld.Tile, tile) < 8; // within 3 tiles counts
-        }
-
         public static int GetEnemiesInColony(this Pawn guest)
         {
-            return GetColonistsFromBase(guest.MapHeld).Where(p => RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy).Sum(p => GetRelationValue(p, guest));
+            return guest.GetMapComponent().RelationsCache.GetSetFor(guest).enemies;
         }
 
         public static int GetRoyalEnemiesSeniorityInColony(this Pawn guest)
         {
-            return GetColonistsFromBase(guest.MapHeld).Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(guest, p) && guest.relations.OpinionOf(p) <= MaxOpinionForEnemy)
-                .Sum(p => p.royalty.MostSeniorTitle.def.seniority + 100); // seniority can be 0!
+            return guest.GetMapComponent().RelationsCache.GetSetFor(guest).enemiesSeniority;
         }
 
         public static int GetMinRecruitOpinion(this Pawn guest)
@@ -704,14 +670,7 @@ namespace Hospitality.Utilities
 
         public static int FriendsRequired(Map map)
         {
-            var x = GetColonistsFromBase(map).Count();
-            if (x <= 3) return 1;
-            // Formula from: https://mycurvefit.com/share/5b359026-5f44-4ac4-88ed-9b364a242f7b
-            var a = 0.887f;
-            var b = 0.646f;
-            var y = a * Mathf.Pow(x, b);
-            var required = y;
-            return Mathf.RoundToInt(required);
+            return map.GetMapComponent().RelationsCache.friendsRequired;
         }
 
         public static int RoyalFriendsSeniorityRequired(Pawn pawn)
