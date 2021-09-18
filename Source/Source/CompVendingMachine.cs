@@ -86,7 +86,7 @@ namespace Hospitality
             {
                 defaultLabel = "Hospitality_VendingMachine".Translate(),
                 defaultDesc = "Hospitality_VendingMachineToggleDesc".Translate(),
-                icon = ContentFinder<Texture2D>.Get("UI/Commands/AsGuest"),
+                icon = ContentFinder<Texture2D>.Get("UI/Commands/VendingMachine"),
                 isActive = IsActive,
                 toggleAction = () => isActive = !isActive,
                 disabled = false,
