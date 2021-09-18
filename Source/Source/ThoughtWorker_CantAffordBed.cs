@@ -1,6 +1,5 @@
 using System.Linq;
 using RimWorld;
-using RimWorld.BaseGen;
 using Verse;
 
 namespace Hospitality 
@@ -8,22 +7,23 @@ namespace Hospitality
     /// <summary>
     /// Loaded via xml. Added so guests are upset when they can't afford a bed.
     /// </summary>
-    public class ThoughtWorker_CantAffordBed : ThoughtWorker
+    public class ThoughtWorker_CantAffordBed : ThoughtWorkerCached
     {
-        public override ThoughtState CurrentStateInternal(Pawn pawn)
+        public override bool ShouldCache(Pawn pawn)
         {
-            if (pawn == null) return ThoughtState.Inactive;
-            if (pawn.thingIDNumber == 0) return ThoughtState.Inactive; // What do you know!!!
+            if (pawn == null) return false;
+            if (pawn.thingIDNumber == 0) return false; // What do you know!!!
 
-            if (Current.ProgramState != ProgramState.Playing)
-            {
-                return ThoughtState.Inactive;
-            }
-            if (!pawn.IsArrivedGuest(out var compGuest)) return ThoughtState.Inactive;
+            if (Current.ProgramState != ProgramState.Playing) return false;
+            if (!pawn.IsArrivedGuest(out var compGuest)) return false;
 
-            if(compGuest.rescued) return ThoughtState.Inactive;
-            if(compGuest.HasBed) return ThoughtState.Inactive;
-            
+            if(compGuest.rescued) return false;
+            if(compGuest.HasBed) return false;
+            return true;
+        }
+
+        public override ThoughtState GetStateToCache(Pawn pawn)
+        {
             var silver = pawn.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
             var money = silver?.stackCount ?? 0;
 
@@ -33,7 +33,7 @@ namespace Hospitality
             if (!beds.Any(bed => bed.AnyUnoccupiedSleepingSlot)) return ThoughtState.Inactive;
             if (beds.Any(bed => bed.rentalFee <= money && bed.AnyUnownedSleepingSlot)) return ThoughtState.Inactive;
 
-            return true;
+            return ThoughtState.ActiveDefault;
         }
     }
 }

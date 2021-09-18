@@ -10,22 +10,21 @@ namespace Hospitality
     {
         public override int ThoughtCacheInterval => GenTicks.TickLongInterval;
 
-        public override ThoughtState GetStateToCache(Pawn p)
+        public override ThoughtState GetStateToCache(Pawn pawn)
         {
-            var flag = Utilities.FoodUtility.GuestCanSatisfyFoodNeed(p) ? ThoughtState.Inactive : ThoughtState.ActiveDefault;
-            return flag;
+            return Utilities.FoodUtility.GuestCanSatisfyFoodNeed(pawn) ? ThoughtState.Inactive : ThoughtState.ActiveDefault;
         }
 
-        public override bool ShouldCache(Pawn p)
+        public override bool ShouldCache(Pawn pawn)
         {
-            if (p == null) return false;
-            if (p.thingIDNumber == 0) return false; // What do you know!!!
+            if (pawn == null) return false;
+            if (pawn.thingIDNumber == 0) return false; // What do you know!!!
 
             if (Current.ProgramState != ProgramState.Playing)
             {
                 return false;
             }
-            if (!p.IsArrivedGuest(out var compGuest)) return false;
+            if (!pawn.IsArrivedGuest(out var compGuest)) return false;
             if (compGuest == null) return false;
             if (!compGuest.arrived) return false;
             return true;

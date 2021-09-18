@@ -8,25 +8,36 @@ namespace Hospitality
     /// <summary>
     /// Loaded via xml. Added so guests want beds.
     /// </summary>
-    public class ThoughtWorker_Beds : ThoughtWorker
+    public class ThoughtWorker_Beds : ThoughtWorkerCached
     {
-        public override ThoughtState CurrentStateInternal(Pawn pawn)
+        public override bool ShouldCache(Pawn pawn)
         {
             try
             {
-                if (pawn == null) return ThoughtState.Inactive;
-                if (pawn.thingIDNumber == 0) return ThoughtState.Inactive; // What do you know!!!
+                if (pawn == null) return false;
+                if (pawn.thingIDNumber == 0) return false; // What do you know!!!
 
-                if (Current.ProgramState != ProgramState.Playing)
-                {
-                    return ThoughtState.Inactive;
-                }
-                if (!pawn.IsArrivedGuest(out var compGuest)) return ThoughtState.Inactive;
+                if (Current.ProgramState != ProgramState.Playing) return false;
 
-                if (compGuest == null) return ThoughtState.Inactive;
-                if (!compGuest.arrived) return ThoughtState.Inactive;
-                if (compGuest.rescued) return ThoughtState.Inactive;
+                if (!pawn.IsArrivedGuest(out var compGuest)) return false;
 
+                if (compGuest == null) return false;
+                if (!compGuest.arrived) return false;
+                if (compGuest.rescued) return false;
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Warning(e.Message);
+                return false;
+            }
+        }
+
+        public override ThoughtState GetStateToCache(Pawn pawn)
+        {
+            try
+            {
+                var compGuest = pawn.CompGuest();
                 var area = pawn.GetGuestArea();
 
                 var bedCount = pawn.MapHeld.GetGuestBeds(pawn.GetGuestArea()).Count(b => b?.def.useHitPoints == true); // Sleeping spots don't count

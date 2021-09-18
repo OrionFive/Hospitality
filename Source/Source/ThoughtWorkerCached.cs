@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hospitality.Utilities;
+﻿using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 
@@ -16,27 +11,27 @@ namespace Hospitality
     {
         public virtual int ThoughtCacheInterval { get; }
 
-        public sealed override ThoughtState CurrentStateInternal(Pawn p)
+        /// <summary>
+        /// Override <see cref="ShouldCache"/> and <see cref="GetStateToCache"/> instead.
+        /// </summary>
+        public sealed override ThoughtState CurrentStateInternal(Pawn pawn)
         {
-            if (!ShouldCache(p)) return false;
+            if (!ShouldCache(pawn)) return false;
 
-            if (ThoughtResultCache.NeedsNewState(p, this, out ThoughtState existingState))
+            if (ThoughtResultCache.NeedsNewState(pawn, this, out var existingState))
             {
-                var state = GetStateToCache(p);
-                ThoughtResultCache.CacheThoughtResult(p, this, state);
+                var state = GetStateToCache(pawn);
+                ThoughtResultCache.CacheThoughtResult(pawn, this, state);
                 return state;
             }
             return existingState;
         }
 
-        public virtual bool ShouldCache(Pawn forPawn)
-        {
-            return true;
-        }
+        public virtual bool ShouldCache(Pawn pawn) => true;
 
-        public virtual ThoughtState GetStateToCache(Pawn p)
+        public virtual ThoughtState GetStateToCache(Pawn pawn)
         {
-            return base.CurrentStateInternal(p);
+            return base.CurrentStateInternal(pawn);
         }
     }
 }
