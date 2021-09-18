@@ -925,6 +925,9 @@ namespace Hospitality
 
         public static void CheckForRogueGuests(Map map)
         {
+            // This doesn't work anymore. See below
+            return;
+
             if (Settings.disableGuests) return;
             var pawns = map.mapPawns.AllPawnsSpawned.Where(p => p.CurJobDef == JobDefOf.Wait_Wander || p.CurJobDef == JobDefOf.GotoWander && !HealthAIUtility.ShouldSeekMedicalRest(p) && !p.health.hediffSet.HasNaturallyHealingInjury())
                 .Where(GuestHasNoLord).ToArray();
@@ -932,6 +935,11 @@ namespace Hospitality
             foreach (var pawn in pawns)
             {
                 if (pawn == null) continue; // I don't think this ever happens...
+
+                // Don't use this: Too generic, could conflict with all kinds of behaviors?
+                //if(pawn.CurJob?.def == JobDefOf.Goto && pawn.CurJob.exitMapOnArrival)
+
+                // This doesn't work anymore, recovered guests don't get a duty
                 if (pawn.mindState.duty?.def == DutyDefOf.ExitMapBestAndDefendSelf) continue;
 
                 var lords = map.lordManager.lords.Where(lord => lord.CurLordToil is LordToil_VisitPoint && lord.faction == pawn.Faction).ToArray();
