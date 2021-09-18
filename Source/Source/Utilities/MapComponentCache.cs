@@ -4,7 +4,7 @@ using Verse;
 
 namespace Hospitality
 {
-    public static class ComponentCache
+    public static class MapComponentCache
     {
         [NotNull]private static Hospitality_MapComponent[] cachedComponents = new Hospitality_MapComponent[12];
 

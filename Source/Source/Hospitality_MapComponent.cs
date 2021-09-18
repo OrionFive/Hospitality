@@ -50,7 +50,7 @@ namespace Hospitality
 
         public override void FinalizeInit()
         {
-            ComponentCache.Register(this);
+            MapComponentCache.Register(this);
         }
 
         public void RefreshGuestListTotal()
