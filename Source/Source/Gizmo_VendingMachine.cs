@@ -11,15 +11,12 @@ namespace Hospitality
          
         public Gizmo_VendingMachine()
         {
-            this.order = -25f;
+            order = -25f;
         }
 
-        public override float GetWidth(float maxWidth)
-        {
-            return 200;
-        }
+        public override float GetWidth(float maxWidth) => 200;
 
-        private float MainRectWidth => 175;
+        private const float MainRectWidth = 175;
 
         public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms)
         {
@@ -51,7 +48,7 @@ namespace Hospitality
 
             LabelRow(priceLabelRect,75,$"${vendingMachine.CurrentPrice}", "Hospitality_VendingMachinePrice".Translate(), GameFont.Small);
             GUI.color = Color.green;
-            LabelRow(earningLabelRect,75, vendingMachine.TotalSold, "Hospitality_VendingMachineEarnings".Translate(), GameFont.Tiny);
+            LabelRow(earningLabelRect,75, vendingMachine.TotalSold, "Hospitality_VendingMachineContains".Translate(), GameFont.Tiny);
             GUI.color = Color.white;
 
             Text.Anchor = default;
@@ -83,7 +80,7 @@ namespace Hospitality
             return new GizmoResult(GizmoState.Mouseover);
         }
 
-        private void LabelRow(Rect inRect, int labelX, string label, string title, GameFont font = GameFont.Tiny)
+        private static void LabelRow(Rect inRect, int labelX, string label, string title, GameFont font = GameFont.Tiny)
         {
             Text.Font = font;
             var titleSize = Text.CalcSize(title);
