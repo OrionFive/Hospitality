@@ -243,5 +243,13 @@ namespace Hospitality
 				}
 			}
 		}
+
+		internal static int CombinedHash(object first, object second)
+		{
+			int hash = 17;
+			hash = hash * 31 + first.GetHashCode();
+			hash = hash * 31 + second.GetHashCode();
+			return hash;
+		}
 	}
 }

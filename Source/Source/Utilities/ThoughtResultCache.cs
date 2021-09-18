@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -20,7 +16,7 @@ namespace Hospitality.Utilities
         public static void CacheThoughtResult(Pawn forPawn, ThoughtWorkerCached worker, ThoughtState result)
         {
             //For unique caching we get a mix of both the pawn and the worker's hash code
-            int hashMix = CombinedHash(forPawn, worker);
+            int hashMix = GenericUtility.CombinedHash(forPawn, worker);
             int curTick = Find.TickManager.TicksGame;
 
             if (!cachedStates.ContainsKey(hashMix))
@@ -36,7 +32,7 @@ namespace Hospitality.Utilities
         //If the time between current tick and last cache tick is greater than the interval defined in the worker, we request a new state
         internal static bool NeedsNewState(Pawn forPawn, ThoughtWorkerCached worker, out ThoughtState existingState)
         {
-            int hashMix = CombinedHash(forPawn, worker);
+            int hashMix = GenericUtility.CombinedHash(forPawn, worker);
             int curTick = Find.TickManager.TicksGame;
 
             existingState = cachedStates.TryGetValue(hashMix, false);
@@ -46,14 +42,6 @@ namespace Hospitality.Utilities
                 return curTick - lastCachedTick > worker.ThoughtCacheInterval;
             }
             return true;
-        }
-
-        internal static int CombinedHash(object first, object second)
-        {
-            int hash = 17;
-            hash = hash * 31 + first.GetHashCode();
-            hash = hash * 31 + second.GetHashCode();
-            return hash;
         }
     }
 }

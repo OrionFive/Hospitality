@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Verse;
 
 namespace Hospitality.Utilities
 {
     public static class ThingCache
     {
-        private static Dictionary<Map, ThingCacheSet> allCacheSets = new Dictionary<Map, ThingCacheSet>();
+        private static readonly Dictionary<Map, ThingCacheSet> allCacheSets = new Dictionary<Map, ThingCacheSet>();
 
-        public static ThingCacheSet GetSetFor(Map map) => allCacheSets.TryGetValue(map, null);
+        public static ThingCacheSet GetSetFor(Map map) => allCacheSets.TryGetValue(map);
 
         public static void TryRegisterNewThing(Thing thing)
         {

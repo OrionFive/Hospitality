@@ -6,7 +6,6 @@ namespace Hospitality.MainTab
 {
     public class PawnColumnWorker_FriendsForRecruiting : PawnColumnWorker_Text
     {
-        private Color enoughFriendsColor = new Color(0, 1, 0, 0.2f);
         private static readonly string txtRecruit = "Recruit".Translate();
 
         // Storing it just long enough to use it twice
