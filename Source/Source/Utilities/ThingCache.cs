@@ -15,6 +15,7 @@ namespace Hospitality.Utilities
             {
                 allCacheSets.Add(thing.Map, new ThingCacheSet());
             }
+
             allCacheSets[thing.Map].TryRegister(thing);
         }
 
@@ -25,30 +26,27 @@ namespace Hospitality.Utilities
                 allCacheSets[oldMap].Deregister(thing);
             }
         }
-    }
 
-    public class ThingCacheSet
-    {
-        //
-        private static List<Thing> vendingMachines = new List<Thing>();
-        //private static List<CompVendingMachine> vendingMachines = new List<CompVendingMachine>();
-
-        public List<Thing> AllVendingMachines => vendingMachines;
-
-        public void TryRegister(Thing newThing)
+        public class ThingCacheSet
         {
-            if (newThing is ThingWithComps thingWithComps)
+            private readonly List<Thing> vendingMachines = new List<Thing>();
+            public IEnumerable<Thing> AllVendingMachines => vendingMachines;
+
+            public void TryRegister(Thing newThing)
             {
-                if (thingWithComps.TryGetComp<CompVendingMachine>() != null)
+                if (newThing is ThingWithComps thingWithComps)
                 {
-                    vendingMachines.Add(newThing);
+                    if (thingWithComps.TryGetComp<CompVendingMachine>() != null)
+                    {
+                        vendingMachines.Add(newThing);
+                    }
                 }
             }
-        }
 
-        public void Deregister(Thing thing)
-        {
-            vendingMachines.Remove(thing);
+            public void Deregister(Thing thing)
+            {
+                vendingMachines.Remove(thing);
+            }
         }
     }
 }
