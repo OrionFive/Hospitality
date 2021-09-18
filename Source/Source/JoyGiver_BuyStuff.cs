@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using Hospitality.Utilities;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using FoodUtility = RimWorld.FoodUtility;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {

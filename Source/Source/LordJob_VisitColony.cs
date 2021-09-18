@@ -1,6 +1,7 @@
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {

@@ -1,5 +1,6 @@
 using System.Reflection;
 using HarmonyLib;
+using Hospitality.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;

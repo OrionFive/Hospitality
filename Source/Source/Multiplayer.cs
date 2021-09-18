@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Hospitality.Utilities;
 using Multiplayer.API;
 using Verse;
 

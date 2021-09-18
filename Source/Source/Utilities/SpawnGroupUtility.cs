@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hospitality.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {

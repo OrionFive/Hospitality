@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 using Verse.AI;

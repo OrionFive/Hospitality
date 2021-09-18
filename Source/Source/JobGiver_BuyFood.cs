@@ -1,6 +1,7 @@
 using RimWorld;
 using Verse;
 using Verse.AI;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {
@@ -10,7 +11,7 @@ namespace Hospitality
       
 		public override float GetPriority(Pawn pawn)
 		{
-			if (!pawn.IsArrivedGuest(out _)) return 0;
+			if (!GuestUtility.IsArrivedGuest(pawn, out _)) return 0;
 
 			var need = pawn.needs.food;
 			if (need == null) return 0;

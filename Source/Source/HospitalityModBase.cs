@@ -8,6 +8,7 @@ using Steamworks;
 using UnityEngine;
 using Verse;
 using Verse.Steam;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 using Verse.AI;

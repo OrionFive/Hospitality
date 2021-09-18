@@ -1,6 +1,7 @@
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality.Patches
 {
@@ -14,7 +15,7 @@ namespace Hospitality.Patches
         {
             public static void Postfix(Thing t, Pawn getter, Pawn eater, bool allowSociallyImproper, ref bool __result)
             {
-                if (!eater.IsArrivedGuest(out _)) return;
+                if (!GuestUtility.IsArrivedGuest(eater, out _)) return;
                 __result = Utilities.FoodUtility.GuestCanUseFoodSourceInternal(eater, t);
             }
         }
@@ -25,7 +26,7 @@ namespace Hospitality.Patches
             [HarmonyPostfix]
             public static void Postfix(Pawn getter, Pawn eater, bool desperate, ThingDef foodDef, ref Thing __result)
             {
-                if (!eater.IsArrivedGuest(out _)) return;
+                if (!GuestUtility.IsArrivedGuest(eater, out _)) return;
                 if (Utilities.FoodUtility.GuestCanUseFoodSourceExceptions(eater, __result, foodDef, desperate)) return;
                 __result = null;
             }
@@ -37,7 +38,7 @@ namespace Hospitality.Patches
             [HarmonyPostfix]
             public static void Postfix(Pawn getter, Pawn eater, ref bool __result, ref Thing foodSource, ref ThingDef foodDef, ref bool desperate)
             {
-                if (!eater.IsArrivedGuest(out _)) return;
+                if (!GuestUtility.IsArrivedGuest(eater, out _)) return;
                 if (Utilities.FoodUtility.GuestCanUseFoodSourceExceptions(eater, foodSource, foodDef, desperate)) return;
                 __result = false;
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using Hospitality.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;

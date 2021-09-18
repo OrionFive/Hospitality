@@ -7,7 +7,7 @@ using Verse;
 using Verse.AI;
 using static UnityEngine.Mathf;
 
-namespace Hospitality
+namespace Hospitality.Utilities
 {
     internal static class BedUtility
     {

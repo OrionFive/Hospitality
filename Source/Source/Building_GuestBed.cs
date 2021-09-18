@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HarmonyLib;
+using Hospitality.Utilities;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using BedUtility = Hospitality.Utilities.BedUtility;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {

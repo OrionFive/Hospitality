@@ -1,6 +1,8 @@
 using System.Linq;
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {

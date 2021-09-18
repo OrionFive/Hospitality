@@ -1,6 +1,9 @@
 using HarmonyLib;
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
+using BedUtility = Hospitality.Utilities.BedUtility;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality.Patches
 {
@@ -73,7 +76,7 @@ namespace Hospitality.Patches
             // Added
             private static bool AddedBedIsOwned(Pawn pawn, Building_Bed building_Bed)
             {
-                return pawn.IsArrivedGuest(out _) 
+                return GuestUtility.IsArrivedGuest(pawn, out _) 
                     ? BedUtility.GetGuestBed(pawn) == building_Bed 
                     : building_Bed == pawn.ownership.OwnedBed;
             }

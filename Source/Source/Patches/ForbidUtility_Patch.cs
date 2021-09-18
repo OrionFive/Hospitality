@@ -4,6 +4,7 @@ using HarmonyLib;
 using RimWorld;
 using System.Reflection;
 using System.Reflection.Emit;
+using Hospitality.Utilities;
 using Verse;
 
 namespace Hospitality.Patches

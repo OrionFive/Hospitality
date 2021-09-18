@@ -4,6 +4,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality.Patches
 {

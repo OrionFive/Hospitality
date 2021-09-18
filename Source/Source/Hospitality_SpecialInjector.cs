@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using RimWorld;
 using Verse;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {

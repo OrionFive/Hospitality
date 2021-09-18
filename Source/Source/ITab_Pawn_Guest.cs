@@ -1,7 +1,9 @@
+using Hospitality.Utilities;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI.Group;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {

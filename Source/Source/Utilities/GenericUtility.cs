@@ -7,7 +7,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 
-namespace Hospitality
+namespace Hospitality.Utilities
 {
 	internal static class GenericUtility
 	{

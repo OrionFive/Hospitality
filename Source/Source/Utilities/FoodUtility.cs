@@ -1,6 +1,4 @@
-﻿using System;
-using Hospitality.Patches;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace Hospitality.Utilities

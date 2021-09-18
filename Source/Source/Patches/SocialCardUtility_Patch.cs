@@ -1,9 +1,11 @@
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using Hospitality.Utilities;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality.Patches
 {

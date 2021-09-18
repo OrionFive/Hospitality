@@ -2,6 +2,7 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {
