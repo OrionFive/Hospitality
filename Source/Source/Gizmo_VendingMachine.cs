@@ -47,7 +47,7 @@ namespace Hospitality
             Rect earningLabelRect = new Rect(0, curY, MainRect.width, 20);
 
             LabelRow(priceLabelRect,75,$"${vendingMachine.CurrentPrice}", "Hospitality_VendingMachinePrice".Translate(), GameFont.Small);
-            GUI.color = Color.green;
+            GUI.color = new Color(249/256f, 178/256f, 86/256f);
             LabelRow(earningLabelRect,75, vendingMachine.TotalSold, "Hospitality_VendingMachineContains".Translate(), GameFont.Tiny);
             GUI.color = Color.white;
 
