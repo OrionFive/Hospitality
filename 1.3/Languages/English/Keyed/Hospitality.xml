@@ -114,7 +114,7 @@
   <Hospitality_VendingMachine>Vending machine</Hospitality_VendingMachine>
   <Hospitality_VendingMachinePrice>Price</Hospitality_VendingMachinePrice>
   <Hospitality_VendingMachineContains>Contains</Hospitality_VendingMachineContains>
-  <Hospitality_VendingMachineToggleDesc>Allow guests to buy from this dispenser.</Hospitality_VendingMachineToggleDesc>
+  <Hospitality_VendingMachineToggleDesc>Allow guests to buy from this machine.</Hospitality_VendingMachineToggleDesc>
   
   <!-- Bed -->
   <GuestBedFormat>guest {0}</GuestBedFormat>
