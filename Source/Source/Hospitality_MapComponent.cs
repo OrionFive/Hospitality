@@ -27,7 +27,7 @@ namespace Hospitality
         [NotNull]public List<Lord> PresentLords { get; } = new List<Lord>();
         [NotNull]public readonly HashSet<Pawn> presentGuests = new HashSet<Pawn>();
         public IEnumerable<Pawn> PresentGuests => presentGuests;
-        public RelationsCache RelationsCache { get; }
+        [NotNull] public RelationsCache RelationsCache { get; }
 
         public override void ExposeData()
         {

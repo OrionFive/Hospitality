@@ -17,7 +17,8 @@ namespace Hospitality
         [CanBeNull]
         public static Hospitality_MapComponent GetMapComponent([CanBeNull]this Thing thing)
         {
-            return thing == null ? null : cachedComponents[thing.mapIndexOrState];
+            if (thing == null || thing.mapIndexOrState < 0) return null;
+            return cachedComponents[thing.mapIndexOrState];
         }
 
         public static void Register([NotNull]Hospitality_MapComponent component)

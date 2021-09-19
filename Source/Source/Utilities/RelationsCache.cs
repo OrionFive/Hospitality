@@ -23,6 +23,7 @@ namespace Hospitality.Utilities
 			Map = map;
 		}
 
+		[NotNull]
 		public RelationsCacheSet GetSetFor(Pawn pawn)
 		{
 			// General stats
