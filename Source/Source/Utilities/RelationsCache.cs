@@ -95,18 +95,21 @@ namespace Hospitality.Utilities
 
 			public void TryUpdate()
 			{
-				if (Current.Game.tickManager.TicksGame <= lastUpdateTick + 50) return;
+				if (Current.Game.tickManager.TicksGame <= lastUpdateTick + 50 + Pawn.HashOffset() % 20) return; // Don't update everyone at once	
 				lastUpdateTick = Current.Game.tickManager.TicksGame;
 
-				enemies = Pawn.GetMapComponent().RelationsCache.ColonistsFromBase.Where(p => RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) <= GuestUtility.MaxOpinionForEnemy)
+				var mapComponent = Pawn.GetMapComponent();
+				if (mapComponent == null) return;
+
+				enemies = mapComponent.RelationsCache.ColonistsFromBase.Where(p => RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) <= GuestUtility.MaxOpinionForEnemy)
 					.Sum(p => GetRelationValue(p, Pawn));
-				enemiesSeniority = Pawn.GetMapComponent().RelationsCache.ColonistsFromBase
+				enemiesSeniority = mapComponent.RelationsCache.ColonistsFromBase
 					.Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) <= GuestUtility.MaxOpinionForEnemy)
 					.Sum(p => p.royalty.MostSeniorTitle.def.seniority + 100); // seniority can be 0!
 				float requiredOpinion = Pawn.GetMinRecruitOpinion();
-				friends = Pawn.GetMapComponent().RelationsCache.ColonistsFromBase.Where(p => RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => GetRelationValue(pawn, Pawn));
+				friends = mapComponent.RelationsCache.ColonistsFromBase.Where(p => RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => GetRelationValue(pawn, Pawn));
 
-				friendsSeniority = Pawn.GetMapComponent().RelationsCache.ColonistsFromBase.Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) >= requiredOpinion)
+				friendsSeniority = mapComponent.RelationsCache.ColonistsFromBase.Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) >= requiredOpinion)
 					.Sum(pawn => pawn.royalty.MostSeniorTitle.def.seniority + 100); // seriority can be 0!
 			}
 

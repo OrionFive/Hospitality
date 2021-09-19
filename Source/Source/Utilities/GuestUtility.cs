@@ -162,12 +162,12 @@ namespace Hospitality.Utilities
 
         public static int GetFriendsInColony(this Pawn guest)
         {
-            return guest.GetMapComponent().RelationsCache.GetSetFor(guest).friends;
+            return guest.GetMapComponent()?.RelationsCache.GetSetFor(guest).friends ?? 0;
         }
 
         public static int GetFriendsSeniorityInColony(this Pawn guest)
         {
-            return guest.GetMapComponent().RelationsCache.GetSetFor(guest).friendsSeniority;
+            return guest.GetMapComponent()?.RelationsCache.GetSetFor(guest).friendsSeniority ?? 0;
         }
 
         public static bool IsRelated(Pawn pawn, Pawn guest)
@@ -190,12 +190,12 @@ namespace Hospitality.Utilities
 
         public static int GetEnemiesInColony(this Pawn guest)
         {
-            return guest.GetMapComponent().RelationsCache.GetSetFor(guest).enemies;
+            return guest.GetMapComponent()?.RelationsCache.GetSetFor(guest).enemies ?? 0;
         }
 
         public static int GetRoyalEnemiesSeniorityInColony(this Pawn guest)
         {
-            return guest.GetMapComponent().RelationsCache.GetSetFor(guest).enemiesSeniority;
+            return guest.GetMapComponent()?.RelationsCache.GetSetFor(guest).enemiesSeniority ?? 0;
         }
 
         public static int GetMinRecruitOpinion(this Pawn guest)
@@ -670,7 +670,7 @@ namespace Hospitality.Utilities
 
         public static int FriendsRequired(Map map)
         {
-            return map.GetMapComponent().RelationsCache.friendsRequired;
+            return map?.GetMapComponent()?.RelationsCache.friendsRequired ?? 0;
         }
 
         public static int RoyalFriendsSeniorityRequired(Pawn pawn)
