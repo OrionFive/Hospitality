@@ -114,8 +114,8 @@ namespace Hospitality.Utilities
         
         private static int GetIdeologicalFulfillment(Building_Bed bed, Pawn guest)
         {
-            if (!ModLister.IdeologyInstalled) return 0;
-            if (guest.ideo == null) return 0;
+            if (!ModsConfig.IdeologyActive) return 0;
+            if (guest.ideo == null || bed == null) return 0;
 
             int score = 0;
 
