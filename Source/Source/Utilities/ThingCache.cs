@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using Verse;
 
 namespace Hospitality.Utilities
@@ -7,10 +8,21 @@ namespace Hospitality.Utilities
     {
         private static readonly Dictionary<Map, ThingCacheSet> allCacheSets = new Dictionary<Map, ThingCacheSet>();
 
-        public static ThingCacheSet GetSetFor(Map map) => allCacheSets.TryGetValue(map);
+        [NotNull]
+        public static ThingCacheSet GetSetFor(Map map)
+        {
+            if (map == null)
+            {
+                Log.Error($"Hospitality ThingCache: Called with map == null.");
+                return new ThingCacheSet();
+            }
+
+            return allCacheSets.TryGetValue(map);
+        }
 
         public static void TryRegisterNewThing(Thing thing)
         {
+            if (thing?.Map == null) return;
             if (!allCacheSets.ContainsKey(thing.Map))
             {
                 allCacheSets.Add(thing.Map, new ThingCacheSet());
@@ -21,6 +33,7 @@ namespace Hospitality.Utilities
 
         public static void TryDeregister(Thing thing, Map oldMap)
         {
+            if (thing == null || oldMap == null) return;
             if (allCacheSets.ContainsKey(oldMap))
             {
                 allCacheSets[oldMap].Deregister(thing);

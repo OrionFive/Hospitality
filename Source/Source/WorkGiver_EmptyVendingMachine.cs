@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Hospitality.Utilities;
 using RimWorld;
 using Verse;
@@ -14,7 +12,7 @@ namespace Hospitality
     {
         public override PathEndMode PathEndMode => PathEndMode.Touch;
 
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => ThingCache.GetSetFor(pawn.Map).AllVendingMachines;
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.Map != null ? ThingCache.GetSetFor(pawn.Map).AllVendingMachines : Array.Empty<Thing>();
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
