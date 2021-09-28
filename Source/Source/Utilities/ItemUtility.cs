@@ -103,7 +103,7 @@ namespace Hospitality {
             var inventory = pawn.GetInventory();
             if (inventory == null) return current.stackCount;
 
-            object[] arguments = {current, 0, false, false};
+            object[] arguments = {current, 0, false, true};
 
             try
             {
