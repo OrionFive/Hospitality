@@ -62,7 +62,7 @@ namespace Hospitality
             {
                 //Log.Message(thing.Label + ": not interesting for " + pawn.NameStringShort);
                 int duration = Rand.Range(JobDriver_BuyItem.MinShoppingDuration, JobDriver_BuyItem.MaxShoppingDuration);
-                bool urgent = pawn.needs.food.CurCategory >= HungerCategory.UrgentlyHungry;
+                bool urgent = pawn.needs?.food?.CurCategory >= HungerCategory.UrgentlyHungry;
                 if (urgent) duration = 50;
 
                 var canBrowse = CellFinder.TryRandomClosewalkCellNear(thing.Position, map, 2, out var standTarget) && ItemUtility.IsBuyableNow(pawn, thing);
