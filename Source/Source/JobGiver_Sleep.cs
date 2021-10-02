@@ -42,8 +42,7 @@ namespace Hospitality
             }
             if (pawn.needs?.rest == null)
             {
-                if (pawn.needs == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no needs", 453636 + pawn.thingIDNumber);
-                if (pawn.needs.rest == null) Log.ErrorOnce(pawn.Name.ToStringShort + " has no rest need", 357474 + pawn.thingIDNumber);
+                // Some races have this. It's fine.
                 return ThinkResult.NoJob;
             }
             if (pawn.mindState == null)

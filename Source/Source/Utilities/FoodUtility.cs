@@ -25,7 +25,7 @@ namespace Hospitality.Utilities
 
             //We need to get current status data of the guest
             var foodDef = RimWorld.FoodUtility.GetFinalIngestibleDef(foodSource, true);
-            var desperate = guest.needs.food.CurCategory == HungerCategory.Starving;
+            var desperate = guest.needs.food?.CurCategory == HungerCategory.Starving;
 
             //Log.Message($"FooDef: {foodDef?.LabelCap}| Desperate: {desperate}");
             //If they are starving, they simply take the next best food source

@@ -52,7 +52,7 @@ namespace Hospitality
             lord.AddPawn(pawn);
             if(!Data.visitorMoods.ContainsKey(pawn.thingIDNumber))
             {
-                var startMood = pawn.needs.mood.CurInstantLevel;
+                var startMood = pawn.needs.mood?.CurInstantLevel ?? 0.5f;
                 Data.visitorMoods.Add(pawn.thingIDNumber, startMood);
             }
             pawn.Arrive();

@@ -22,7 +22,6 @@ namespace Hospitality
             if (pawn.needs?.joy == null)
             {
                 // Apparently there are guests without joy...
-                //Log.Message(pawn.LabelShort + " needs no joy...");
                 return 0f;
             }
             float curLevel = pawn.needs.joy.CurLevel;
@@ -115,9 +114,10 @@ namespace Hospitality
             JoyToleranceSet tolerances = pawn.needs.joy.tolerances;
             foreach (JoyGiverDef joyGiverDef in allDefsListForReading)
             {
-                this.joyGiverChances[joyGiverDef] = 0f;
+                joyGiverChances[joyGiverDef] = 0f;
 
                 //if (this.JoyGiverAllowed(joyGiverDef)) REMOVED
+                if (pawn.needs.joy != null) // ADDED
                 {
                     if (!pawn.needs.joy.tolerances.BoredOf(joyGiverDef.joyKind))
                     {
@@ -136,7 +136,7 @@ namespace Hospitality
                             float tolerance = tolerances[joyGiverDef.joyKind];
                             float factor = Mathf.Pow(1f - tolerance, 5f);
                             factor = Mathf.Max(0.001f, factor);
-                            this.joyGiverChances[joyGiverDef] = joyGiverDef.Worker.GetChance(pawn)*factor;
+                            joyGiverChances[joyGiverDef] = joyGiverDef.Worker.GetChance(pawn)*factor;
                         }
                     }
                 }
