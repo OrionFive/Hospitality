@@ -6,6 +6,7 @@ namespace Hospitality.Utilities
 {
     public static class ThingCache
     {
+        [NotNull]
         private static readonly Dictionary<Map, ThingCacheSet> allCacheSets = new Dictionary<Map, ThingCacheSet>();
 
         [NotNull]
@@ -17,7 +18,10 @@ namespace Hospitality.Utilities
                 return new ThingCacheSet();
             }
 
-            return allCacheSets.TryGetValue(map);
+            if (allCacheSets.TryGetValue(map, out var set)) return set;
+            var newSet = new ThingCacheSet();
+            allCacheSets.Add(map, newSet);
+            return newSet;
         }
 
         public static void TryRegisterNewThing(Thing thing)

@@ -12,7 +12,7 @@ namespace Hospitality
     {
         public override PathEndMode PathEndMode => PathEndMode.Touch;
 
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.Map != null ? ThingCache.GetSetFor(pawn.Map).AllVendingMachines : Array.Empty<Thing>();
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn?.Map != null ? ThingCache.GetSetFor(pawn.Map).AllVendingMachines : Array.Empty<Thing>();
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
