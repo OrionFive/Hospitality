@@ -32,7 +32,7 @@ namespace Hospitality.Patches
             }
         }
         
-        [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor))]
+        [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor_NewTemp))]
         public class TryFindBestFoodSourceForPatch
         {
             [HarmonyPostfix]
