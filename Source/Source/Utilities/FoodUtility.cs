@@ -5,17 +5,25 @@ namespace Hospitality.Utilities
 {
     public static class FoodUtility
     {
+        
         public static bool GuestCanSatisfyFoodNeed(Pawn guest)
         {
             //Check Inventory
             //var inventoryFood = RimWorld.FoodUtility.BestFoodInInventory(guest, minFoodPref: FoodPreferability.RawTasty);
             //if (inventoryFood != null) return true;
+            Rand.PushState(Find.TickManager.TicksAbs);
 
             //Search FoodSource
             if (RimWorld.FoodUtility.TryFindBestFoodSourceFor_NewTemp(guest, guest, false, out var foodSource, out var foodDef, false, true, false, false, false, false, false, false, false, false, FoodPreferability.RawTasty))
             {
-                if (foodSource != null && foodDef != null) return true;
+                if (foodSource != null && foodDef != null)
+                {
+                    Rand.PopState();
+                    return true;
+                }
             }
+
+            Rand.PopState();
             return false;
         }
 
