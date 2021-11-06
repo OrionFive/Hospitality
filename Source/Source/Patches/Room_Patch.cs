@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
-using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 
