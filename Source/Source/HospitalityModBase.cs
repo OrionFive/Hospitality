@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
+using System.Reflection;
 using HugsLib;
 using RimWorld;
 using Steamworks;
@@ -34,6 +34,18 @@ namespace Hospitality
                 } 
             }
             Hospitality_SpecialInjector.Inject();
+
+            RunAllManualPatches();
+        }
+
+        private void RunAllManualPatches()
+        {
+            foreach (var method in Assembly.GetCallingAssembly().GetTypes()
+                .SelectMany(t => t.GetMethods())
+                .Where(m => m.GetCustomAttributes(typeof(PatchManuallyAttribute), false).Any()))
+            {
+                method.Invoke(null, new object[] { HarmonyInst });
+            }
         }
 
         public override void DefsLoaded()
@@ -83,4 +95,7 @@ namespace Hospitality
             if (mainButtonDef.iconPath == null) mainButtonDef.icon = null;
         }
     }
+    
+    [AttributeUsage(AttributeTargets.Method)]
+    internal class PatchManuallyAttribute : Attribute { }
 }
