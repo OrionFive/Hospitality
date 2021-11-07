@@ -18,5 +18,7 @@ namespace Hospitality
         public static RoomRoleDef GuestRoom;
         public static JobDef ClaimGuestBed;
         public static SpecialThingFilterDef AllowRotten;
+        public static ThoughtDef GuestExpensiveFood;
+        public static ThoughtDef GuestCheapFood;
     }
 }

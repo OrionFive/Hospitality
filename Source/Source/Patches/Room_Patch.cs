@@ -1,73 +1,36 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
-using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 
 namespace Hospitality.Patches
 {
-    internal static class Room_Patch
+    [HarmonyPatch]
+    internal static class Room_Owners_Transpiler
     {
-        [HarmonyPatch(typeof(Room), nameof(Room.Owners))]
-        [HarmonyPatch(MethodType.Getter)]
-        public class Owners
+        public const string targetMethodName = "get_Owners";
+        public static MethodBase TargetMethod()
         {
-            [HarmonyPrefix]
-            public static bool Replacement(Room __instance, out IEnumerable<Pawn> __result)
+            var classType = typeof(Room).GetNestedTypes(AccessTools.all).First(x => x.Name.Contains(targetMethodName));
+            return AccessTools.DeclaredMethod(classType, "MoveNext");
+        }
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = instructions.ToList();
+            for (var i = 0; i < codes.Count; i++)
             {
-                __result = GetOwnersInternal(__instance);
-                return false;
-            }
+                yield return codes[i];
 
-            // Copied
-            private static IEnumerable<Pawn> GetOwnersInternal(Room room)
-            {
-                // Extracted room types
-                if (room.TouchesMapEdge || room.IsHuge || WrongRoomType(room)) yield break;
-
-                Pawn pawn = null;
-                Pawn secondOwner = null;
-                foreach (Building_Bed containedBed in room.ContainedBeds)
+                if (i > 1 && codes[i - 1].LoadsField(AccessTools.Field(typeof(RoomRoleDefOf), "Bedroom")) && codes[i].opcode == OpCodes.Beq_S)
                 {
-                    if (containedBed.def.building.bed_humanlike)
-                    {
-                        foreach (var owner in containedBed.Owners())
-                        {
-                            if (pawn == null)
-                            {
-                                pawn = owner;
-                            }
-                            else
-                            {
-                                if (secondOwner != null)
-                                {
-                                    yield break;
-                                }
-
-                                secondOwner = owner;
-                            }
-                        }
-                    }
+                    yield return new CodeInstruction(OpCodes.Ldloc_2);
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Room), "get_Role"));
+                    yield return new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(DefOf), nameof(DefOf.GuestRoom)));
+                    yield return new CodeInstruction(OpCodes.Beq_S, codes[i].operand);
                 }
-
-                if (pawn != null)
-                {
-                    if (secondOwner == null)
-                    {
-                        yield return pawn;
-                    }
-                    else if (LovePartnerRelationUtility.LovePartnerRelationExists(pawn, secondOwner))
-                    {
-                        yield return pawn;
-                        yield return secondOwner;
-                    }
-                }
-            }
-
-            private static bool WrongRoomType(Room room)
-            {
-                // Added guest room
-                return room.Role != DefOf.GuestRoom && room.Role != RoomRoleDefOf.Bedroom && room.Role != RoomRoleDefOf.PrisonCell && room.Role != RoomRoleDefOf.Barracks && room.Role != RoomRoleDefOf.PrisonBarracks;
             }
         }
     }

@@ -882,34 +882,35 @@ namespace Hospitality.Utilities
             }
         }
 
+        public static void CheckForRoguePawn(Pawn pawn, Map map)
+        {
+            if (pawn == null) return;// I don't think this ever happens...
+
+            // Don't use this: Too generic, could conflict with all kinds of behaviors?
+            //if(pawn.CurJob?.def == JobDefOf.Goto && pawn.CurJob.exitMapOnArrival)
+
+            // This doesn't work anymore, recovered guests don't get a duty
+            if (pawn.mindState.duty?.def == DutyDefOf.ExitMapBestAndDefendSelf) return;
+
+            var lords = map.lordManager.lords.Where(lord => lord.CurLordToil is LordToil_VisitPoint && lord.faction == pawn.Faction).ToArray();
+            if (lords.Any())
+            {
+                JoinLord(lords.RandomElement(), pawn);
+            }
+            else CreateLordForPawn(pawn);
+
+            pawn.jobs.StopAll();
+            pawn.pather.StopDead();
+        }
         public static void CheckForRogueGuests(Map map)
         {
-            // This doesn't work anymore. See below
-            return;
-
             if (Settings.disableGuests) return;
-            var pawns = map.mapPawns.AllPawnsSpawned.Where(p => p.CurJobDef == JobDefOf.Wait_Wander || p.CurJobDef == JobDefOf.GotoWander && !HealthAIUtility.ShouldSeekMedicalRest(p) && !p.health.hediffSet.HasNaturallyHealingInjury())
+            var pawns = map.mapPawns.AllPawnsSpawned.Where(p => !HealthAIUtility.ShouldSeekMedicalRest(p) && !p.health.hediffSet.HasNaturallyHealingInjury())
                 .Where(GuestHasNoLord).ToArray();
 
             foreach (var pawn in pawns)
             {
-                if (pawn == null) continue; // I don't think this ever happens...
-
-                // Don't use this: Too generic, could conflict with all kinds of behaviors?
-                //if(pawn.CurJob?.def == JobDefOf.Goto && pawn.CurJob.exitMapOnArrival)
-
-                // This doesn't work anymore, recovered guests don't get a duty
-                if (pawn.mindState.duty?.def == DutyDefOf.ExitMapBestAndDefendSelf) continue;
-
-                var lords = map.lordManager.lords.Where(lord => lord.CurLordToil is LordToil_VisitPoint && lord.faction == pawn.Faction).ToArray();
-                if (lords.Any())
-                {
-                    JoinLord(lords.RandomElement(), pawn);
-                }
-                else CreateLordForPawn(pawn);
-
-                pawn.jobs.StopAll();
-                pawn.pather.StopDead();
+                CheckForRoguePawn(pawn, map);
             }
         }
 
@@ -922,7 +923,7 @@ namespace Hospitality.Utilities
             IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false, duration);
         }
 
-        private static bool GuestHasNoLord(Pawn pawn)
+        public static bool GuestHasNoLord(Pawn pawn)
         {
             if (!IsValidPawn(pawn)) return false;
             if (IsInTraderState(pawn)) return false;
