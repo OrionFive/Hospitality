@@ -36,6 +36,8 @@ namespace Hospitality.Patches
         [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.FoodOptimality))]
         public class FoodOptimalityPatch
         {
+            private const int OptimalityBonus = 30;
+
             [HarmonyPostfix]
             public static void Postfix(ref float __result, Pawn eater, Thing foodSource, ThingDef foodDef, float dist, bool takingToInventory = false)
             {
@@ -44,11 +46,12 @@ namespace Hospitality.Patches
                     var comp = foodSource.TryGetComp<CompVendingMachine>();
                     if (comp != null && comp.IsActive())
                     {
-                        Log.Message($"Before: FoodOptimality for {eater}, price: {comp.CurrentPrice}, base market value: {nutrientPasteDispenser.DispensableDef.BaseMarketValue}, result: {__result}");
-                        __result *= nutrientPasteDispenser.DispensableDef.BaseMarketValue / comp.CurrentPrice;
-                        Log.Message($"After: FoodOptimality for {eater}, price: {comp.CurrentPrice}, base market value: {nutrientPasteDispenser.DispensableDef.BaseMarketValue}, result: {__result}");
+                        var marketValue = nutrientPasteDispenser.DispensableDef.BaseMarketValue;
+
+                        __result += (marketValue - comp.CurrentPrice) / marketValue * OptimalityBonus;
                     }
                 }
+                //Log.Message($"FoodOptimality of {foodSource?.Label} for {eater}, result: {__result}");
             }
         }
 
