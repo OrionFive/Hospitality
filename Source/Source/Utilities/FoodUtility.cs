@@ -67,6 +67,16 @@ namespace Hospitality.Utilities
                 if (!vendingMachine.CanAffordFast(buyerGuest, out Thing silver)) return false;
 
                 vendingMachine.ReceivePayment(buyerGuest.inventory.innerContainer, silver);
+
+                var marketValueRate = vendingMachine.CurrentPrice / dispenser.DispensableDef.BaseMarketValue;
+                if (marketValueRate >= 1.25f)
+                {
+                    buyerGuest.needs.mood.thoughts.memories.TryGainMemory(DefOf.GuestExpensiveFood);
+                }
+                else if (marketValueRate <= 0.75f)
+                {
+                    buyerGuest.needs.mood.thoughts.memories.TryGainMemory(DefOf.GuestCheapFood);
+                }
                 return true;
             }
             return false;
