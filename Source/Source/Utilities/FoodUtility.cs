@@ -5,19 +5,27 @@ namespace Hospitality.Utilities
 {
     public static class FoodUtility
     {
+        
         public static bool GuestCanSatisfyFoodNeed(Pawn guest)
         {
             //Check Inventory
             //var inventoryFood = RimWorld.FoodUtility.BestFoodInInventory(guest, minFoodPref: FoodPreferability.RawTasty);
             //if (inventoryFood != null) return true;
+            Rand.PushState(Find.TickManager.TicksAbs);
 
             //Search FoodSource
 #pragma warning disable CS0612 // Type or member is obsolete
             if (RimWorld.FoodUtility.TryFindBestFoodSourceFor(guest, guest, false, out var foodSource, out var foodDef, false, true, false, false, false, false, false, false, false, FoodPreferability.RawTasty))
 #pragma warning restore CS0612 // Type or member is obsolete
             {
-                if (foodSource != null && foodDef != null) return true;
+                if (foodSource != null && foodDef != null)
+                {
+                    Rand.PopState();
+                    return true;
+                }
             }
+
+            Rand.PopState();
             return false;
         }
 
@@ -61,6 +69,16 @@ namespace Hospitality.Utilities
                 if (!vendingMachine.CanAffordFast(buyerGuest, out Thing silver)) return false;
 
                 vendingMachine.ReceivePayment(buyerGuest.inventory.innerContainer, silver);
+
+                var marketValueRate = vendingMachine.CurrentPrice / dispenser.DispensableDef.BaseMarketValue;
+                if (marketValueRate >= 1.25f)
+                {
+                    buyerGuest.needs.mood.thoughts.memories.TryGainMemory(DefOf.GuestExpensiveFood);
+                }
+                else if (marketValueRate <= 0.75f)
+                {
+                    buyerGuest.needs.mood.thoughts.memories.TryGainMemory(DefOf.GuestCheapFood);
+                }
                 return true;
             }
             return false;

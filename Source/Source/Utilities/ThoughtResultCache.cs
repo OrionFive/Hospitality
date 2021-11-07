@@ -13,6 +13,11 @@ namespace Hospitality.Utilities
         private static Dictionary<int, ThoughtState> cachedStates = new Dictionary<int, ThoughtState>();
         private static Dictionary<int, int> cachedTick = new Dictionary<int, int>();
 
+        public static void Reset()
+        {
+            cachedStates.Clear();
+            cachedTick.Clear();
+        }
         public static void CacheThoughtResult(Pawn forPawn, ThoughtWorkerCached worker, ThoughtState result)
         {
             //For unique caching we get a mix of both the pawn and the worker's hash code

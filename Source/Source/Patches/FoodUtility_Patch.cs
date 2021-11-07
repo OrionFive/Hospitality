@@ -33,6 +33,25 @@ namespace Hospitality.Patches
             }
         }
 
+        [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.FoodOptimality))]
+        public class FoodOptimalityPatch
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ref float __result, Pawn eater, Thing foodSource, ThingDef foodDef, float dist, bool takingToInventory = false)
+            {
+                if (GuestUtility.IsGuest(eater) && foodSource is Building_NutrientPasteDispenser nutrientPasteDispenser)
+                {
+                    var comp = foodSource.TryGetComp<CompVendingMachine>();
+                    if (comp != null && comp.IsActive())
+                    {
+                        Log.Message($"Before: FoodOptimality for {eater}, price: {comp.CurrentPrice}, base market value: {nutrientPasteDispenser.DispensableDef.BaseMarketValue}, result: {__result}");
+                        __result *= nutrientPasteDispenser.DispensableDef.BaseMarketValue / comp.CurrentPrice;
+                        Log.Message($"After: FoodOptimality for {eater}, price: {comp.CurrentPrice}, base market value: {nutrientPasteDispenser.DispensableDef.BaseMarketValue}, result: {__result}");
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Patching _NewTemp if it exists, or original version if it doesn't, so players with older versions don't run into issues.
         /// Also: Goddammit, Ludeon :(
