@@ -7,6 +7,7 @@ using Verse;
 
 namespace Hospitality.Patches
 {
+
     public class Building_Bed_Patch
     {
         /// <summary>

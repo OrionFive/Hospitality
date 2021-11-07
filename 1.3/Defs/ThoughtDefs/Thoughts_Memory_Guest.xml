@@ -119,7 +119,7 @@
     <stages>
       <li>
         <label>expensive food</label>
-        <description>I had to pay for expensive food.</description>
+        <description>I had to pay for expensive food at a dispenser.</description>
         <baseMoodEffect>-1</baseMoodEffect>
       </li>
     </stages>
@@ -137,10 +137,13 @@
     <stages>
       <li>
         <label>cheap food</label>
-        <description>The food is cheap here.</description>
+        <description>I could buy cheap food at a dispenser.</description>
         <baseMoodEffect>1</baseMoodEffect>
       </li>
     </stages>
+	<nullifyingTraits>
+	  <li>Greedy</li>
+	</nullifyingTraits>
   </ThoughtDef>
   
 </Defs>
