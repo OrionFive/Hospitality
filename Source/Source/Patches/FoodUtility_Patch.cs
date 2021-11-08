@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -59,18 +60,14 @@ namespace Hospitality.Patches
         /// Patching _NewTemp if it exists, or original version if it doesn't, so players with older versions don't run into issues.
         /// Also: Goddammit, Ludeon :(
         /// </summary>
-        //[HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor))]
+        [HarmonyPatch]
         public class TryFindBestFoodSourceFor_Patch
         {
-            [PatchManually]
-            public static void PatchManually(Harmony harmony)
+            [HarmonyTargetMethod]
+            private static MethodBase TargetMethod()
             {
-                var method = AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor_NewTemp));
-                if(method == null) Log.Message($"Hospitality: TryFindBestFoodSourceFor_NewTemp not found, patching original method.");
-                method ??= AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor));
-
-                var postfix = new HarmonyMethod(AccessTools.Method(typeof(TryFindBestFoodSourceFor_Patch), "Postfix"));
-                harmony.Patch(method, postfix: postfix);
+                return AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor_NewTemp)) ??
+                       AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor)); // Not obsolete until NewTemp goes away. Don't believe their lies!
             }
 
             [HarmonyPostfix]
