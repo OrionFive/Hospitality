@@ -884,7 +884,7 @@ namespace Hospitality.Utilities
 
         public static void CheckForRoguePawn(Pawn pawn, Map map)
         {
-            if (pawn == null) return;// I don't think this ever happens...
+            if (pawn?.jobs == null || map == null || !pawn.RaceProps.Humanlike) return;// I don't think this ever happens...
 
             // Don't use this: Too generic, could conflict with all kinds of behaviors?
             //if(pawn.CurJob?.def == JobDefOf.Goto && pawn.CurJob.exitMapOnArrival)
