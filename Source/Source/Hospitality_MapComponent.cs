@@ -124,13 +124,13 @@ namespace Hospitality
 
         public void CheckForCorrectDrugPolicies()
         {
-            List<Pawn> changed = new List<Pawn>();
+            var policy = GetDrugPolicy();
             foreach (var pawn in PresentGuests)
             {
-                if (pawn.drugs?.CurrentPolicy != GetDrugPolicy())
+                if (pawn?.drugs == null) continue;
+                if (pawn.drugs?.CurrentPolicy != policy)
                 {
-                    pawn.drugs.CurrentPolicy = pawn.Map.GetMapComponent().GetDrugPolicy();
-                    changed.Add(pawn);
+                    pawn.drugs.CurrentPolicy = policy;
                 }
             }
         }
