@@ -20,6 +20,7 @@ namespace Hospitality
         public bool arrived;
         public bool sentAway;
         public bool rescued;
+        public bool wasDowned;
 
         public Lord lord;
 
@@ -73,6 +74,7 @@ namespace Hospitality
             base.PostExposeData();
             Scribe_Values.Look(ref arrived, "arrived");
             Scribe_Values.Look(ref rescued, "rescued");
+            Scribe_Values.Look(ref wasDowned, "wasDowned");
             Scribe_Values.Look(ref entertain, "chat");
             Scribe_Values.Look(ref makeFriends, "recruit");
             Scribe_Collections.Look(ref boughtItems, "boughtItems", LookMode.Value);

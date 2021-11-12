@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using Hospitality.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 
 namespace Hospitality.Patches
 {
-	internal static class NoLittering_Patch
+	internal static class Pawn_HealthTracker_MakeDowned_Patch
 	{
 		/// <summary>
 		/// Friendly pawns shouldn't litter all their stuff when they get downed.
@@ -16,8 +17,21 @@ namespace Hospitality.Patches
 		[HarmonyPatch(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.MakeDowned))]
 		public class MakeDowned
 		{
+			public static void Prefix(Pawn_HealthTracker __instance, out bool __state)
+            {
+				__state = __instance.pawn.IsGuest();
+            }
+
+			public static void Postfix(Pawn_HealthTracker __instance, bool __state)
+            {
+				if (__state)
+                {
+					__instance.pawn.CompGuest().wasDowned = true;
+				}
+            }
+
 			private static readonly MethodInfo original = AccessTools.Method(typeof(Pawn), nameof(Pawn.DropAndForbidEverything));
-			private static readonly MethodInfo replacement = AccessTools.Method(typeof(NoLittering_Patch), nameof(DropAndForbidEverythingReplacement));
+			private static readonly MethodInfo replacement = AccessTools.Method(typeof(Pawn_HealthTracker_MakeDowned_Patch), nameof(DropAndForbidEverythingReplacement));
 
 			[HarmonyTranspiler]    
 			public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> source)
@@ -61,7 +75,7 @@ namespace Hospitality.Patches
 		public class Notify_PawnSpawned
 		{
 			private static readonly MethodInfo original = AccessTools.Method(typeof(Pawn_EquipmentTracker), nameof(Pawn_EquipmentTracker.DropAllEquipment));
-			private static readonly MethodInfo replacement = AccessTools.Method(typeof(NoLittering_Patch), nameof(DropAllEquipmentReplacement));
+			private static readonly MethodInfo replacement = AccessTools.Method(typeof(Pawn_HealthTracker_MakeDowned_Patch), nameof(DropAllEquipmentReplacement));
 
 			[HarmonyTranspiler]    
 			public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> source)
