@@ -9,10 +9,10 @@ namespace Hospitality.Patches
     {
         private static void Postfix(Pawn_HealthTracker __instance, Pawn ___pawn, DamageInfo? dinfo, Hediff hediff)
         {
-            if (___pawn.Map != null && !HealthAIUtility.ShouldSeekMedicalRest(___pawn) && !___pawn.health.hediffSet.HasNaturallyHealingInjury() 
+            if (!HealthAIUtility.ShouldSeekMedicalRest(___pawn) && !___pawn.health.hediffSet.HasNaturallyHealingInjury() 
                 && Utilities.GuestUtility.GuestHasNoLord(___pawn))
             {
-                Utilities.GuestUtility.CheckForRoguePawn(___pawn, ___pawn.Map);
+                Utilities.GuestUtility.CheckForRoguePawn(___pawn);
             }
         }
     }
