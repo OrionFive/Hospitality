@@ -589,15 +589,19 @@ namespace Hospitality
 
         private static void RemovePawnsFromMapLords(List<Pawn> pawns, Map map)
         {
-            foreach (var pawn in pawns)
+            for (int num = pawns.Count - 1; num >= 0; num--) // iterate backward to avoid collection modified exception
             {
-                map.lordManager.lords.ForEach(lord => {
+                Pawn pawn = pawns[num];
+                var lords = map.lordManager.lords;
+                for (int num2 = lords.Count - 1; num2 >= 0; num2--) // iterate backward to avoid collection modified exception
+                {
+                    var lord = lords[num2];
                     if (lord.ownedPawns.Contains(pawn))
                     {
                         Log.Warning($"Existing lord still contains pawn {pawn.LabelShort}. Removing.");
                         lord.Notify_PawnLost(pawn, PawnLostCondition.Undefined);
                     }
-                });
+                }
             }
         }
 

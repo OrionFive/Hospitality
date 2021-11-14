@@ -19,7 +19,7 @@ namespace Hospitality.Patches
 		{
 			public static void Prefix(Pawn_HealthTracker __instance, out bool __state)
             {
-				__state = __instance.pawn.IsGuest();
+				__state = __instance.pawn.Spawned && __instance.pawn.IsGuest();
             }
 
 			public static void Postfix(Pawn_HealthTracker __instance, bool __state)

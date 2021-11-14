@@ -882,10 +882,10 @@ namespace Hospitality.Utilities
             }
         }
 
-        public static void CheckForRoguePawn(Pawn pawn, Map map)
+        public static void CheckForRoguePawn(Pawn pawn)
         {
             var comp = pawn.CompGuest();
-            if (comp == null || !comp.wasDowned || pawn?.jobs == null || map == null || !pawn.RaceProps.Humanlike) return;// I don't think this ever happens...
+            if (comp == null || !comp.wasDowned || pawn?.jobs == null || pawn.Dead || pawn.Map == null || !pawn.RaceProps.Humanlike) return; // I don't think this ever happens...
 
             // Don't use this: Too generic, could conflict with all kinds of behaviors?
             //if(pawn.CurJob?.def == JobDefOf.Goto && pawn.CurJob.exitMapOnArrival)
@@ -893,7 +893,7 @@ namespace Hospitality.Utilities
             // This doesn't work anymore, recovered guests don't get a duty
             if (pawn.mindState.duty?.def == DutyDefOf.ExitMapBestAndDefendSelf) return;
 
-            var lords = map.lordManager.lords.Where(lord => lord.CurLordToil is LordToil_VisitPoint && lord.faction == pawn.Faction).ToArray();
+            var lords = pawn.Map.lordManager.lords.Where(lord => lord.CurLordToil is LordToil_VisitPoint && lord.faction == pawn.Faction).ToArray();
             if (lords.Any())
             {
                 JoinLord(lords.RandomElement(), pawn);
@@ -912,7 +912,7 @@ namespace Hospitality.Utilities
 
             foreach (var pawn in pawns)
             {
-                CheckForRoguePawn(pawn, map);
+                CheckForRoguePawn(pawn);
             }
         }
 
