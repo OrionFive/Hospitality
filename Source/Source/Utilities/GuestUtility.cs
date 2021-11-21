@@ -919,10 +919,11 @@ namespace Hospitality.Utilities
         private static void CreateLordForPawn([NotNull] Pawn pawn)
         {
             Log.Message($"Creating a temporary lord for {pawn.Label} of faction {(pawn.Faction != null ? pawn.Faction.Name : "null")}.");
-            Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}),
+            var desc = pawn.CompGuest().rescued ? "RescuedPawnBecameGuest" : "DownedPawnBecameGuest";
+            Find.LetterStack.ReceiveLetter("LetterLabelPawnBecameGuest".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), desc.Translate(new NamedArgument {arg = pawn, label = "PAWN"}),
                 LetterDefOf.NeutralEvent, pawn, pawn.Faction);
             var duration = (int) (Rand.Range(0.5f, 1f) * GenDate.TicksPerDay);
-            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> {pawn}, pawn.Map, false, false, duration);
+            IncidentWorker_VisitorGroup.CreateLord(pawn.Faction, pawn.Position, new List<Pawn> { pawn }, pawn.Map, false, false, duration);
         }
 
         public static bool GuestHasNoLord(Pawn pawn)
@@ -945,11 +946,11 @@ namespace Hospitality.Utilities
                 pawn.CompGuest().lord = lord;
                 return;
             }
-
             if (!(lord.CurLordToil is LordToil_VisitPoint lordToil)) return;
-
             Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
-            Find.LetterStack.ReceiveLetter("LetterLabelDownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), "DownedPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}),
+
+            var desc = pawn.CompGuest().rescued ? "RescuedPawnJoinedGroup" : "DownedPawnJoinedGroup";
+            Find.LetterStack.ReceiveLetter("LetterLabelPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), desc.Translate(new NamedArgument {arg = pawn, label = "PAWN"}),
                 LetterDefOf.NeutralEvent, pawn, pawn.Faction);
             lordToil.JoinLate(pawn);
         }
