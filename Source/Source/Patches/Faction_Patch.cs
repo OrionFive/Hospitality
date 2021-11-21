@@ -23,7 +23,7 @@ namespace Hospitality.Patches
                 if (compGuest == null || !compGuest.rescued || member.guest == null || PawnUtility.IsTravelingInTransportPodWorldObject(member)) return true;
 
                 free = true;
-                member.guest.hostFactionInt = Faction.OfPlayer; // Settings this makes the reward work
+                member.guest.hostFactionInt = Faction.OfPlayer; // Setting this makes the reward work
                 compGuest.rescued = false; // Turn back off
 
                 return true;

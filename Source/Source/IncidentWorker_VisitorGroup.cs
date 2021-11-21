@@ -543,24 +543,8 @@ namespace Hospitality
             var lordJob = new LordJob_VisitColony(faction, chillSpot, duration, getUpsetWhenLost);
             var lord = LordMaker.MakeNewLord(faction, lordJob, map, pawns);
 
-
             // Set default interaction
-            pawns.ForEach(delegate(Pawn p) {
-                var compGuest = p.CompGuest();
-                if (compGuest != null)
-                {
-                    compGuest.ResetForGuest(lord);
-                    compGuest.entertain = mapComp.defaultEntertain;
-                    compGuest.makeFriends = mapComp.defaultMakeFriends;
-                    compGuest.GuestArea = mapComp.defaultAreaRestriction;
-                    compGuest.ShoppingArea = mapComp.defaultAreaShopping;
-                }
-            });
-
-            foreach (var pawn in pawns)
-            {
-                pawn.ConvertToTrader(true);
-            }
+            pawns.ForEach(p => InitializePawnForLord(p, lord, mapComp));
 
             Pawn leader = pawns.Find(x => faction.leader == x);
             TaggedString label;
@@ -605,7 +589,7 @@ namespace Hospitality
             }
         }
 
-        public static bool BedCheck(Map map)
+        private static bool BedCheck(Map map)
         {
             if (map == null) return false;
             var mapComp = map.GetMapComponent();
@@ -616,6 +600,21 @@ namespace Hospitality
             // We have beds now!
             mapComp.refuseGuestsUntilWeHaveBeds = false;
             return true;
+        }
+
+        private static void InitializePawnForLord(Pawn pawn, Lord lord, Hospitality_MapComponent mapComp)
+        {
+            var compGuest = pawn.CompGuest();
+            if (compGuest != null)
+            {
+                compGuest.ResetForGuest(lord);
+                compGuest.entertain = mapComp.defaultEntertain;
+                compGuest.makeFriends = mapComp.defaultMakeFriends;
+                compGuest.GuestArea = mapComp.defaultAreaRestriction;
+                compGuest.ShoppingArea = mapComp.defaultAreaShopping;
+            }
+
+            pawn.ConvertToTrader(true);
         }
     }
 }

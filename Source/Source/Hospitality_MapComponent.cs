@@ -127,10 +127,7 @@ namespace Hospitality
             foreach (var pawn in PresentGuests)
             {
                 if (pawn?.drugs == null) continue;
-                if (pawn.drugs?.CurrentPolicy != policy)
-                {
-                    pawn.drugs.CurrentPolicy = policy;
-                }
+                pawn.drugs.CurrentPolicy = policy;
             }
         }
 
