@@ -117,6 +117,7 @@ namespace Hospitality.Patches
                     {
                         //Log.Message($"{__instance.Name.ToStringShort} has joined the player faction. 'rescued' was {compGuest.rescued}.");
                         compGuest.rescued = false;
+                        compGuest.wasDowned = false;
                     }
                 }
 

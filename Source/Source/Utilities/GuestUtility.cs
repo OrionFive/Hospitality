@@ -882,7 +882,7 @@ namespace Hospitality.Utilities
             }
         }
 
-        public static void CheckForRoguePawn(Pawn pawn)
+        public static void GiveLordToRoguePawn(Pawn pawn)
         {
             var comp = pawn.CompGuest();
             if (comp == null || !comp.wasDowned || pawn?.jobs == null || pawn.Dead || pawn.Map == null || !pawn.RaceProps.Humanlike) return; // I don't think this ever happens...
@@ -904,15 +904,16 @@ namespace Hospitality.Utilities
             pawn.jobs.StopAll();
             pawn.pather.StopDead();
         }
+
         public static void CheckForRogueGuests(Map map)
         {
             if (Settings.disableGuests) return;
             var pawns = map.mapPawns.AllPawnsSpawned.Where(p => !HealthAIUtility.ShouldSeekMedicalRest(p) && !p.health.hediffSet.HasNaturallyHealingInjury())
-                .Where(GuestHasNoLord).ToArray();
+                .Where(GuestHasNoLord);
 
             foreach (var pawn in pawns)
             {
-                CheckForRoguePawn(pawn);
+                GiveLordToRoguePawn(pawn);
             }
         }
 
@@ -948,6 +949,8 @@ namespace Hospitality.Utilities
             }
             if (!(lord.CurLordToil is LordToil_VisitPoint lordToil)) return;
             Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
+           
+            pawn.Map.GetMapComponent()?.OnGuestJoinedLate(pawn);
 
             var desc = pawn.CompGuest().rescued ? "RescuedPawnJoinedGroup" : "DownedPawnJoinedGroup";
             Find.LetterStack.ReceiveLetter("LetterLabelPawnJoinedGroup".Translate(new NamedArgument {arg = pawn, label = "PAWN"}), desc.Translate(new NamedArgument {arg = pawn, label = "PAWN"}),

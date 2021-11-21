@@ -25,6 +25,7 @@ namespace Hospitality.Patches
                 free = true;
                 member.guest.hostFactionInt = Faction.OfPlayer; // Setting this makes the reward work
                 compGuest.rescued = false; // Turn back off
+                compGuest.wasDowned = false;
 
                 return true;
             }

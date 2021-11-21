@@ -88,6 +88,11 @@ namespace Hospitality
             PresentGuests.Remove(guest);
         }
 
+        public void OnGuestJoinedLate(Pawn guest)
+        {
+            PresentGuests.Add(guest);
+        }
+
         public void OnWorldLoaded()
         {
             RefreshGuestListTotal();

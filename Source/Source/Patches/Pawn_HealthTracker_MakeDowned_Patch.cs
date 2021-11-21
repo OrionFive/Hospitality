@@ -17,14 +17,9 @@ namespace Hospitality.Patches
 		[HarmonyPatch(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.MakeDowned))]
 		public class MakeDowned
 		{
-			public static void Prefix(Pawn_HealthTracker __instance, out bool __state)
+			public static void Postfix(Pawn_HealthTracker __instance)
             {
-				__state = __instance.pawn.Spawned && __instance.pawn.IsGuest();
-            }
-
-			public static void Postfix(Pawn_HealthTracker __instance, bool __state)
-            {
-				if (__state)
+				if (__instance.pawn.Spawned)
                 {
 					__instance.pawn.CompGuest().wasDowned = true;
 				}
