@@ -24,9 +24,8 @@ namespace Hospitality
         private int nextGuestListCheck;
         private DrugPolicy drugPolicy;
 
-        [NotNull]public List<Lord> PresentLords { get; } = new List<Lord>();
-        [NotNull]public readonly HashSet<Pawn> presentGuests = new HashSet<Pawn>();
-        public IEnumerable<Pawn> PresentGuests => presentGuests;
+        [NotNull] public List<Lord> PresentLords { get; } = new List<Lord>();
+        [NotNull] public HashSet<Pawn> PresentGuests { get; } = new HashSet<Pawn>();
         [NotNull] public RelationsCache RelationsCache { get; }
 
         public override void ExposeData()
@@ -64,29 +63,29 @@ namespace Hospitality
             //Log.Message($"Present lords: {PresentLords.Select(l => $"{l?.faction?.Name} ({l?.ownedPawns?.Count})").ToCommaList()}");
             MainTabWindowUtility.NotifyAllPawnTables_PawnsChanged();
 
-            presentGuests.Clear();
-            presentGuests.AddRange(PresentLords.SelectMany(l => l.ownedPawns));
+            PresentGuests.Clear();
+            PresentGuests.AddRange(PresentLords.SelectMany(l => l.ownedPawns));
         }
 
         public void OnLordSpawned(Lord lord)
         {
             PresentLords.AddDistinct(lord);
 
-            presentGuests.Clear();
-            presentGuests.AddRange(PresentLords.SelectMany(l => l.ownedPawns));
+            PresentGuests.Clear();
+            PresentGuests.AddRange(PresentLords.SelectMany(l => l.ownedPawns));
         }
 
         public void OnLordDespawned(Lord lord)
         {
             PresentLords.Remove(lord);
 
-            presentGuests.Clear();
-            presentGuests.AddRange(PresentLords.SelectMany(l => l.ownedPawns));
+            PresentGuests.Clear();
+            PresentGuests.AddRange(PresentLords.SelectMany(l => l.ownedPawns));
         }
 
         public void OnGuestAdopted(Pawn guest)
         {
-            presentGuests.Remove(guest);
+            PresentGuests.Remove(guest);
         }
 
         public void OnWorldLoaded()

@@ -155,7 +155,7 @@ namespace Hospitality
         public override void PostDeSpawn(Map map)
         {
             base.PostDeSpawn(map);
-            map.GetMapComponent()?.presentGuests.Remove(Pawn);
+            map.GetMapComponent()?.PresentGuests.Remove(Pawn);
         }
 
         public void ClaimBed([NotNull]Building_GuestBed newBed)

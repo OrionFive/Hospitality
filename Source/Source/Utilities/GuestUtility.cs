@@ -115,7 +115,7 @@ namespace Hospitality.Utilities
             if (pawn == null || pawn.mapIndexOrState < 0) return false;
 
             var cachedComponent = pawn.GetMapComponent();
-            return cachedComponent?.presentGuests.Count > 0 && cachedComponent.presentGuests.Contains(pawn);
+            return cachedComponent?.PresentGuests.Count > 0 && cachedComponent.PresentGuests.Contains(pawn);
         }
 
         public static bool IsTrader(this Pawn pawn, bool makeValidPawnCheck = true)
