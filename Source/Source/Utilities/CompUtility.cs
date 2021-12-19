@@ -14,8 +14,12 @@ namespace Hospitality
             if (guestComps.TryGetValue(pawn, out var comp)) return comp;
 
             comp = pawn.GetComp<CompGuest>();
-            guestComps.Add(pawn, comp);
-            return comp;
+            if (comp != null)
+            {
+                guestComps.Add(pawn, comp);
+                return comp;
+            }
+            return null;
         }
 
         public static void OnPawnRemoved(Pawn pawn)
