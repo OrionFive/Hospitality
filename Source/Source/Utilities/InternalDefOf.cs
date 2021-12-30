@@ -1,15 +1,19 @@
 ﻿using RimWorld;
 using Verse;
 
+// ReSharper disable InconsistentNaming
 // ReSharper disable UnassignedField.Global
 
-namespace Hospitality
+namespace Hospitality.Utilities
 {
-    [RimWorld.DefOf]
-    public static class DefOf
+    [DefOf]
+    public static class InternalDefOf
     {
         [MayRequire("CETeam.CombatExtended")]
         public static ThingDef Apparel_Backpack;
+
+        [MayRequire("VanillaExpanded.VMemesE")]
+        public static PreceptDef VME_Anonymity_Required;
 
         [MayRequire("Orion.Gastronomy")]
         public static ThingDef Gastronomy_DiningSpot;
@@ -20,5 +24,7 @@ namespace Hospitality
         public static SpecialThingFilterDef AllowRotten;
         public static ThoughtDef GuestExpensiveFood;
         public static ThoughtDef GuestCheapFood;
+        public static ConceptDef GuestWork;
+        public static JoyGiverDef BuyFood;
     }
 }

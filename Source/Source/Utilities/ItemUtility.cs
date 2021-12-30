@@ -22,6 +22,8 @@ namespace Hospitality {
         public static void PocketHeadgear(this Pawn pawn)
         {
             if (pawn?.apparel?.WornApparel == null || pawn.inventory?.innerContainer == null) return;
+            // Don't do it when the pawn wants to stay anonymous
+            if (ModsConfig.IdeologyActive && pawn.ideo?.Ideo?.HasPrecept(InternalDefOf.VME_Anonymity_Required) == true) return;
 
             var headgear = pawn.apparel.WornApparel.Where(CoversHead).ToArray();
             foreach (var apparel in headgear)
