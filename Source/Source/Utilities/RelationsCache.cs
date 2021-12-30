@@ -11,7 +11,7 @@ namespace Hospitality.Utilities
 	{
 		private Map Map { get; }
 		[NotNull]
-		public readonly List<Pawn> ColonistsFromBase = new List<Pawn>();
+		public readonly List<Pawn> colonistsFromBase = new List<Pawn>();
 		private readonly Dictionary<Pawn, RelationsCacheSet> allCacheSets = new Dictionary<Pawn, RelationsCacheSet>();
 
 		private int lastUpdateTick;
@@ -47,9 +47,9 @@ namespace Hospitality.Utilities
 
 		private void UpdateColonistsFromBase()
 		{
-			ColonistsFromBase.Clear();
-			ColonistsFromBase.AddRange(Map.mapPawns.FreeColonists.Where(c => !c.IsSlave));
-			ColonistsFromBase.AddRange( GetNearbyColonists(Map).Where(c=>!c.IsSlave));
+			colonistsFromBase.Clear();
+			colonistsFromBase.AddRange(Map.mapPawns.FreeColonists.Where(c => !c.IsSlave));
+			colonistsFromBase.AddRange( GetNearbyColonists(Map).Where(c=>!c.IsSlave));
 		}
 		
 		private static IEnumerable<Pawn> GetNearbyColonists(Map mapHeld)
@@ -68,7 +68,7 @@ namespace Hospitality.Utilities
 
 		private int GetFriendsRequired()
 		{
-			var x = ColonistsFromBase.Count();
+			var x = colonistsFromBase.Count();
 			if (x <= 3) return 1;
 			// Formula from: https://mycurvefit.com/share/5b359026-5f44-4ac4-88ed-9b364a242f7b
 			var a = 0.887f;
@@ -102,15 +102,15 @@ namespace Hospitality.Utilities
 				var mapComponent = Pawn.GetMapComponent();
 				if (mapComponent == null) return;
 
-				enemies = mapComponent.RelationsCache.ColonistsFromBase.Where(p => RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) <= GuestUtility.MaxOpinionForEnemy)
+				enemies = mapComponent.RelationsCache.colonistsFromBase.Where(p => RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) <= GuestUtility.MaxOpinionForEnemy)
 					.Sum(p => GetRelationValue(p, Pawn));
-				enemiesSeniority = mapComponent.RelationsCache.ColonistsFromBase
+				enemiesSeniority = mapComponent.RelationsCache.colonistsFromBase
 					.Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) <= GuestUtility.MaxOpinionForEnemy)
 					.Sum(p => p.royalty.MostSeniorTitle.def.seniority + 100); // seniority can be 0!
 				float requiredOpinion = Pawn.GetMinRecruitOpinion();
-				friends = mapComponent.RelationsCache.ColonistsFromBase.Where(p => RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => GetRelationValue(pawn, Pawn));
+				friends = mapComponent.RelationsCache.colonistsFromBase.Where(p => RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) >= requiredOpinion).Sum(pawn => GetRelationValue(pawn, Pawn));
 
-				friendsSeniority = mapComponent.RelationsCache.ColonistsFromBase.Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) >= requiredOpinion)
+				friendsSeniority = mapComponent.RelationsCache.colonistsFromBase.Where(p => p.royalty?.MostSeniorTitle != null && RelationsUtility.PawnsKnowEachOther(Pawn, p) && Pawn.relations.OpinionOf(p) >= requiredOpinion)
 					.Sum(pawn => pawn.royalty.MostSeniorTitle.def.seniority + 100); // seriority can be 0!
 			}
 

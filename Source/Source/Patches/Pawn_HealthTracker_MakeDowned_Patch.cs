@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
-using Hospitality.Utilities;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;

@@ -101,7 +101,7 @@ namespace Hospitality.Utilities
             }
 
             var score = impressiveness + quality + comfort + roomType + temperature + otherPawnOpinion + royalExpectations + ideologyNeeds + facilities - distance;
-            var value = CeilToInt(scoreFactor * score - fee);
+            var value = CeilToInt(ScoreFactor * score - fee);
             //Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
             //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
             return value;
@@ -226,7 +226,7 @@ namespace Hospitality.Utilities
 
             int roomType;
             if (room.Role == RoomRoleDefOf.Barracks) roomType = 0;
-            else if (room.Role == DefOf.GuestRoom) roomType = 30;
+            else if (room.Role == InternalDefOf.GuestRoom) roomType = 30;
             else roomType = -30;
             if (room.OnlyOneBed()) roomType += 60;
             return roomType;
@@ -234,7 +234,7 @@ namespace Hospitality.Utilities
 
         public static IEnumerable<Building_GuestBed> GetGuestBeds(this Map map, Area area = null)
         {
-            if (map == null) return new Building_GuestBed[0];
+            if (map == null) return Array.Empty<Building_GuestBed>();
             if (area == null) return map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>();
             return map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Where(b => area[b.Position]);
         }
@@ -246,6 +246,6 @@ namespace Hospitality.Utilities
         }
 
         public static bool IsGuestBed(this Building_Bed bed) => bed is Building_GuestBed;
-        public const float scoreFactor = 0.5f; // factor for displayed value
+        public const float ScoreFactor = 0.5f; // factor for displayed value
     }
 }

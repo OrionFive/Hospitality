@@ -65,7 +65,7 @@ namespace Hospitality
                         {
                             case "PriceFactor":
                                 Log.Message("[Hospitality] Setting PriceFactor to " + val);
-                                ItemUtility.PriceFactor = float.Parse(val);
+                                ItemUtility.priceFactor = float.Parse(val);
                                 break;
 
                             default:

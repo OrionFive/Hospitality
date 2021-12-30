@@ -2,17 +2,21 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace Hospitality {
+namespace Hospitality
+{
     public class Alert_GuestNotEnoughBeds : Alert_Guest
     {
-        private static List<Thought> tmpThoughts = new List<Thought>();
+        private static readonly List<Thought> tmpThoughts = new List<Thought>();
+
         public Alert_GuestNotEnoughBeds()
         {
             defaultLabel = "AlertNotEnoughBeds".Translate();
             explanationKey = "AlertNotEnoughBedsDesc";
         }
 
-        protected ThoughtDef Thought => DefDatabase<ThoughtDef>.GetNamed("GuestBedCount");
+        protected static ThoughtDef Thought => DefDatabase<ThoughtDef>.GetNamed("GuestBedCount");
+
+        private protected override int Hash => 4356;
 
         protected override void UpdateAffectedPawnsCache()
         {
@@ -28,10 +32,8 @@ namespace Hospitality {
                     try
                     {
                         foreach (var thought in tmpThoughts)
-                        {
                             if (thought.def == Thought && thought.CurStageIndex < 2)
                                 affectedPawnCache.Add(pawn);
-                        }
                     }
                     finally
                     {
@@ -40,7 +42,5 @@ namespace Hospitality {
                 }
             }
         }
-
-        private protected override int Hash => 4356;
     }
 }

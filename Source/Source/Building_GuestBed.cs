@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HarmonyLib;
 using Hospitality.Utilities;
 using RimWorld;
 using UnityEngine;
@@ -73,7 +72,7 @@ namespace Hospitality
                 var owners = this.Owners().Count == 0 ? (string) "Nobody".Translate() : this.Owners().Select(o => (string) o.NameShortColored).ToCommaList(true);
                 Stats.title = $"{def.LabelCap} ({owners})";
                 Stats.staticBedValue = BedUtility.StaticBedValue(this, out Stats.room, out _, out _, out _, out _, out _);
-                var attractiveness = Mathf.CeilToInt(BedUtility.scoreFactor * Stats.staticBedValue - rentalFee);
+                var attractiveness = Mathf.CeilToInt(BedUtility.ScoreFactor * Stats.staticBedValue - rentalFee);
                 Stats.textAttractiveness = "BedAttractiveness".Translate(attractiveness);
                 Stats.textFee = rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
                 Stats.textAsArray = new[] {Stats.textAttractiveness, Stats.textFee};
@@ -373,7 +372,7 @@ namespace Hospitality
             public TaggedString textAttractiveness;
             public TaggedString textFee;
             public TaggedString title;
-            public IEnumerable<TaggedString> textAsArray = new TaggedString[0];
+            public IEnumerable<TaggedString> textAsArray = Array.Empty<TaggedString>();
             public int staticBedValue;
             public RoyalTitleDef[] metRoyalTitles;
             public TaggedString textNextTitleReq;

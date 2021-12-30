@@ -1,25 +1,23 @@
-using RimWorld;
+using Hospitality.Utilities;
 using Verse;
 using Verse.AI;
+using FoodUtility = RimWorld.FoodUtility;
 using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
 {
 	public class JobGiver_BuyFood : ThinkNode_JobGiver
 	{
-		private static JoyGiverDef joyDefBuyFood;
-      
-		public override float GetPriority(Pawn pawn)
+        public override float GetPriority(Pawn pawn)
 		{
-			if (!GuestUtility.IsArrivedGuest(pawn, out _)) return 0;
+			if (!pawn.IsArrivedGuest(out _)) return 0;
 
 			var need = pawn.needs.food;
 			if (need == null) return 0;
 
 			if ((int) pawn.needs.food.CurCategory < 3 && FoodUtility.ShouldBeFedBySomeone(pawn)) return 0;
-			joyDefBuyFood ??= DefDatabase<JoyGiverDef>.GetNamed("BuyFood");
 
-			var workerChance = joyDefBuyFood.Worker.GetChance(pawn) / joyDefBuyFood.Worker.def.baseChance;
+			var workerChance = InternalDefOf.BuyFood.Worker.GetChance(pawn) / InternalDefOf.BuyFood.Worker.def.baseChance;
 
 			var requiresFoodFactor = GuestUtility.GetRequiresFoodFactor(pawn);
 			if (requiresFoodFactor > 0.35f)
@@ -35,10 +33,10 @@ namespace Hospitality
 		{
 			if (pawn.needs.food == null) return null;
 
-			if (joyDefBuyFood.Worker.MissingRequiredCapacity(pawn) != null) return null;
+			if (InternalDefOf.BuyFood.Worker.MissingRequiredCapacity(pawn) != null) return null;
 			//Log.Message($"{pawn.NameShortColored} is trying to buy food.");
 
-			return joyDefBuyFood.Worker.TryGiveJob(pawn);
+			return InternalDefOf.BuyFood.Worker.TryGiveJob(pawn);
 		}
 	}
 }

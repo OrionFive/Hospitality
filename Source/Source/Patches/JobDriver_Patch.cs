@@ -14,8 +14,8 @@ namespace Hospitality.Patches
         [HarmonyPatch(typeof(JobDriver), nameof(JobDriver.DriverTick))]
         public class DriverTick
         {
-            private static FieldInfo pawnField = AccessTools.Field(typeof(JobDriver), nameof(JobDriver.pawn));
-            private static FieldInfo ourTransplant = AccessTools.Field(typeof(ForbidUtility_Patch), nameof(ForbidUtility_Patch.currentToilWorker));
+            private static readonly FieldInfo pawnField = AccessTools.Field(typeof(JobDriver), nameof(JobDriver.pawn));
+            private static readonly FieldInfo ourTransplant = AccessTools.Field(typeof(ForbidUtility_Patch), nameof(ForbidUtility_Patch.currentToilWorker));
 
             [HarmonyTranspiler]
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> insts)

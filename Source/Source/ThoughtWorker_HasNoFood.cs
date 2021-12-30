@@ -11,12 +11,12 @@ namespace Hospitality
     {
         public override int ThoughtCacheInterval => GenTicks.TickLongInterval;
 
-        public override ThoughtState GetStateToCache(Pawn pawn)
+        protected override ThoughtState GetStateToCache(Pawn pawn)
         {
             return Utilities.FoodUtility.GuestCanSatisfyFoodNeed(pawn) ? ThoughtState.Inactive : ThoughtState.ActiveDefault;
         }
 
-        public override bool ShouldCache(Pawn pawn)
+        protected override bool ShouldCache(Pawn pawn)
         {
             if (pawn == null) return false;
             if (pawn.thingIDNumber == 0) return false; // What do you know!!!

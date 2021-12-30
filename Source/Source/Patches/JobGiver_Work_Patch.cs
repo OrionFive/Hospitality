@@ -1,4 +1,3 @@
-using System.Reflection;
 using HarmonyLib;
 using Hospitality.Utilities;
 using RimWorld;
@@ -91,14 +90,12 @@ namespace Hospitality.Patches
         [HarmonyPatch(typeof(JobGiver_Work), nameof(JobGiver_Work.TryIssueJobPackage))]
         public class TryIssueJobPackage
         {
-            private static ConceptDef guestWorkDef = ConceptDef.Named("GuestWork");
-
             public static bool Prefix(Pawn pawn)
             {
                 if (!pawn.IsGuest()) return true;
 
                 GuestUtility.EnsureHasWorkSettings(pawn);
-                LessonAutoActivator.TeachOpportunity(guestWorkDef, pawn, OpportunityType.GoodToKnow);
+                LessonAutoActivator.TeachOpportunity(InternalDefOf.GuestWork, pawn, OpportunityType.GoodToKnow);
                 return true;
             }
         }

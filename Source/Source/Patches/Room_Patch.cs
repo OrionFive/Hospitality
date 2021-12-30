@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 
@@ -28,7 +29,7 @@ namespace Hospitality.Patches
                 {
                     yield return new CodeInstruction(OpCodes.Ldloc_2);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Room), "get_Role"));
-                    yield return new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(DefOf), nameof(DefOf.GuestRoom)));
+                    yield return new CodeInstruction(OpCodes.Ldsfld, AccessTools.Field(typeof(InternalDefOf), nameof(InternalDefOf.GuestRoom)));
                     yield return new CodeInstruction(OpCodes.Beq_S, codes[i].operand);
                 }
             }

@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace Hospitality
+namespace Hospitality.Utilities
 {
     internal static class DefsUtility
     {

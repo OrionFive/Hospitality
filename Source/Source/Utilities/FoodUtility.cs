@@ -73,11 +73,11 @@ namespace Hospitality.Utilities
                 var marketValueRate = vendingMachine.CurrentPrice / dispenser.DispensableDef.BaseMarketValue;
                 if (marketValueRate >= 1.25f)
                 {
-                    buyerGuest.needs.mood.thoughts.memories.TryGainMemory(DefOf.GuestExpensiveFood);
+                    buyerGuest.needs.mood.thoughts.memories.TryGainMemory(InternalDefOf.GuestExpensiveFood);
                 }
                 else if (marketValueRate <= 0.75f)
                 {
-                    buyerGuest.needs.mood.thoughts.memories.TryGainMemory(DefOf.GuestCheapFood);
+                    buyerGuest.needs.mood.thoughts.memories.TryGainMemory(InternalDefOf.GuestCheapFood);
                 }
                 return true;
             }

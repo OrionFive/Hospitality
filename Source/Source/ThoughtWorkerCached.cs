@@ -7,9 +7,9 @@ namespace Hospitality
     /// <summary>
     /// This extension of the vanilla ThoughtWorker adds a way to cache the result for a set interval
     /// </summary>
-    public class ThoughtWorkerCached : ThoughtWorker
+    public abstract class ThoughtWorkerCached : ThoughtWorker
     {
-        public virtual int ThoughtCacheInterval { get; }
+        public virtual int ThoughtCacheInterval => 0;
 
         /// <summary>
         /// Override <see cref="ShouldCache"/> and <see cref="GetStateToCache"/> instead.
@@ -27,9 +27,9 @@ namespace Hospitality
             return existingState;
         }
 
-        public virtual bool ShouldCache(Pawn pawn) => true;
+        protected virtual bool ShouldCache(Pawn pawn) => true;
 
-        public virtual ThoughtState GetStateToCache(Pawn pawn)
+        protected virtual ThoughtState GetStateToCache(Pawn pawn)
         {
             return base.CurrentStateInternal(pawn);
         }

@@ -6,7 +6,7 @@ namespace Hospitality.MainTab
 {
     public class Dialog_MapSettings : Window
     {
-        private Map map;
+        private readonly Map map;
 
         public Dialog_MapSettings(Map map)
         {

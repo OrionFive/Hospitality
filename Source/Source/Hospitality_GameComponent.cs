@@ -1,3 +1,4 @@
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 
@@ -38,7 +39,7 @@ namespace Hospitality
 			//foodRestriction.filter.SetAllow(ThingCategoryDefOf.MeatRaw, false);
 			foodRestriction.filter.SetAllow(ThingCategoryDefOf.CorpsesHumanlike, false);
 			foodRestriction.filter.SetAllow(ThingCategoryDefOf.CorpsesAnimal, false);
-			foodRestriction.filter.SetAllow(DefOf.AllowRotten, false);
+			foodRestriction.filter.SetAllow(InternalDefOf.AllowRotten, false);
 			//Log.Message($"Guest food restriction: {foodRestriction.filter.allowedDefs.Where(d=>foodRestriction.Allows(d)).Select(d=>d.label).ToCommaList()}");
 		}
 	}

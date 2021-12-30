@@ -28,7 +28,7 @@ namespace Hospitality
             {
                 if (StoreUtility.TryFindBestBetterStorageFor(silver, pawn, pawn.Map, StoreUtility.CurrentStoragePriorityOf(silver), pawn.Faction, out _, out _))
                 {
-                    return JobMaker.MakeJob(DefOf.VendingMachine_EmptyVendingMachine, t, silver);
+                    return JobMaker.MakeJob(InternalDefOf.VendingMachine_EmptyVendingMachine, t, silver);
                 }
             }
             return null;

@@ -73,7 +73,7 @@ namespace Hospitality
                 }
                 else
                 {
-                    return new ThinkResult(new Job(DefOf.ClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}, this);
+                    return new ThinkResult(new Job(InternalDefOf.ClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}, this);
                 }
             }
             //Log.Message($"No bed available for {pawn.LabelShort}.");

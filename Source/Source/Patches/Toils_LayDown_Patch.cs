@@ -3,7 +3,6 @@ using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 using BedUtility = Hospitality.Utilities.BedUtility;
-using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality.Patches
 {
@@ -50,7 +49,7 @@ namespace Hospitality.Patches
                 }
                 ThoughtDef thoughtDef = null;
                 // ADDED:
-                if (building_Bed.GetRoom().Role == DefOf.GuestRoom)
+                if (building_Bed.GetRoom().Role == InternalDefOf.GuestRoom)
                 {
                     thoughtDef = building_Bed.GetRoom().OnlyOneBed() ? ThoughtDefOf.SleptInBedroom : ThoughtDefOf.SleptInBarracks;
                 } ////
@@ -74,11 +73,11 @@ namespace Hospitality.Patches
             }
 
             // Added
-            private static bool AddedBedIsOwned(Pawn pawn, Building_Bed building_Bed)
+            private static bool AddedBedIsOwned(Pawn pawn, Building_Bed buildingBed)
             {
-                return GuestUtility.IsArrivedGuest(pawn, out _) 
-                    ? BedUtility.GetGuestBed(pawn) == building_Bed 
-                    : building_Bed == pawn.ownership.OwnedBed;
+                return pawn.IsArrivedGuest(out _) 
+                    ? BedUtility.GetGuestBed(pawn) == buildingBed 
+                    : buildingBed == pawn.ownership.OwnedBed;
             }
         }
     }

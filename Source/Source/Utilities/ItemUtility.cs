@@ -16,7 +16,7 @@ namespace Hospitality {
     {
         private static readonly Dictionary<string, MethodInfo> alienFrameworkMethods = new Dictionary<string, MethodInfo>();
 
-        public static float PriceFactor = 0.55f;
+        public static float priceFactor = 0.55f;
 
 
         public static void PocketHeadgear(this Pawn pawn)
@@ -82,7 +82,7 @@ namespace Hospitality {
 
         public static void TryGiveBackpack(this Pawn p)
         {
-            var def = DefOf.Apparel_Backpack;
+            var def = InternalDefOf.Apparel_Backpack;
             if (def == null) return;
 
             if (p.inventory.innerContainer.Contains(def)) return;
@@ -203,7 +203,7 @@ namespace Hospitality {
         public static float GetPurchasingCost([NotNull]this Thing thing)
         {
             if (IsFood(thing) && thing.GetMapComponent().guestsCanTakeFoodForFree) return 0;
-            return thing.MarketValue * PriceFactor;
+            return thing.MarketValue * priceFactor;
         }
 
         private static bool BoughtByPlayer(Pawn pawn, Thing thing)

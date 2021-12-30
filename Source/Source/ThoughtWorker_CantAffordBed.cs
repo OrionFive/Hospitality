@@ -10,7 +10,7 @@ namespace Hospitality
     /// </summary>
     public class ThoughtWorker_CantAffordBed : ThoughtWorkerCached
     {
-        public override bool ShouldCache(Pawn pawn)
+        protected override bool ShouldCache(Pawn pawn)
         {
             if (pawn == null) return false;
             if (pawn.thingIDNumber == 0) return false; // What do you know!!!
@@ -23,7 +23,7 @@ namespace Hospitality
             return true;
         }
 
-        public override ThoughtState GetStateToCache(Pawn pawn)
+        protected override ThoughtState GetStateToCache(Pawn pawn)
         {
             var silver = pawn.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
             var money = silver?.stackCount ?? 0;

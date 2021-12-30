@@ -1,11 +1,10 @@
 using System;
-using Hospitality.Utilities;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-namespace Hospitality
+namespace Hospitality.Utilities
 {
     internal static class DialogUtility
     {

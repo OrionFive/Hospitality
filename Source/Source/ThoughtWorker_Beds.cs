@@ -11,7 +11,7 @@ namespace Hospitality
     /// </summary>
     public class ThoughtWorker_Beds : ThoughtWorkerCached
     {
-        public override bool ShouldCache(Pawn pawn)
+        protected override bool ShouldCache(Pawn pawn)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace Hospitality
             }
         }
 
-        public override ThoughtState GetStateToCache(Pawn pawn)
+        protected override ThoughtState GetStateToCache(Pawn pawn)
         {
             try
             {
