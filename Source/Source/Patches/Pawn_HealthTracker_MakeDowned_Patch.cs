@@ -22,11 +22,8 @@ namespace Hospitality.Patches
 				if (__instance.pawn.Spawned)
                 {
 					var compGuest = __instance.pawn.CompGuest();
-					if (compGuest != null)
-                    {
-						compGuest.wasDowned = true;
-					}					
-				}
+					if (compGuest != null) compGuest.wasDowned = true;
+                }
             }
 
 			private static readonly MethodInfo original = AccessTools.Method(typeof(Pawn), nameof(Pawn.DropAndForbidEverything));

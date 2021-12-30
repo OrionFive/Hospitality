@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Verse;
 
 namespace Hospitality
@@ -7,6 +8,7 @@ namespace Hospitality
     {
         private static readonly Dictionary<Pawn, CompGuest> guestComps = new Dictionary<Pawn, CompGuest>();
 
+        [CanBeNull]
         public static CompGuest CompGuest(this Pawn pawn)
         {
             if (pawn == null) return null;
@@ -14,12 +16,10 @@ namespace Hospitality
             if (guestComps.TryGetValue(pawn, out var comp)) return comp;
 
             comp = pawn.GetComp<CompGuest>();
-            if (comp != null)
-            {
-                guestComps.Add(pawn, comp);
-                return comp;
-            }
-            return null;
+            if (comp == null) return null;
+            
+            guestComps.Add(pawn, comp);
+            return comp;
         }
 
         public static void OnPawnRemoved(Pawn pawn)
