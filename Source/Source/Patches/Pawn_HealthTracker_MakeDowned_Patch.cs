@@ -21,7 +21,11 @@ namespace Hospitality.Patches
             {
 				if (__instance.pawn.Spawned)
                 {
-					__instance.pawn.CompGuest().wasDowned = true;
+					var compGuest = __instance.pawn.CompGuest();
+					if (compGuest != null)
+                    {
+						compGuest.wasDowned = true;
+					}					
 				}
             }
 
