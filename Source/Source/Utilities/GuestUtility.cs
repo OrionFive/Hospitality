@@ -115,7 +115,7 @@ namespace Hospitality.Utilities
             if (pawn == null || pawn.mapIndexOrState < 0) return false;
 
             var cachedComponent = pawn.GetMapComponent();
-            return cachedComponent?.PresentGuests.Count > 0 && cachedComponent.PresentGuests.Contains(pawn);
+            return cachedComponent?.PresentGuests.Contains(pawn) == true;
         }
 
         public static bool IsTrader(this Pawn pawn, bool makeValidPawnCheck = true)
@@ -1018,6 +1018,17 @@ namespace Hospitality.Utilities
             var priority = GenMath.LerpDoubleClamped(2, 4, 1, 0, carriedNutrition);
             //Log.Message($"{pawn.NameShortColored} - wanna buy food: priority = {priority}, carriedNutrition = {carriedNutrition}");
             return priority;
+        }
+
+        private static FieldInfo _fieldPriorities = typeof(Pawn_WorkSettings).GetField("priorities", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        public static void EnsureHasWorkSettings(Pawn pawn)
+        {
+            var priorities = _fieldPriorities.GetValue(pawn.workSettings);
+            if (priorities == null)
+            {
+                pawn.workSettings.EnableAndInitialize();
+            }
         }
     }
 }

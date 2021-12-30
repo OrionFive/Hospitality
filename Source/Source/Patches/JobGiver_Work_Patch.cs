@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hospitality.Utilities;
 using RimWorld;
 using Verse;
+using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality.Patches
 {
@@ -90,20 +91,14 @@ namespace Hospitality.Patches
         [HarmonyPatch(typeof(JobGiver_Work), nameof(JobGiver_Work.TryIssueJobPackage))]
         public class TryIssueJobPackage
         {
-            private static FieldInfo _fieldPriorities = typeof(Pawn_WorkSettings).GetField("priorities", BindingFlags.NonPublic | BindingFlags.Instance);
             private static ConceptDef guestWorkDef = ConceptDef.Named("GuestWork");
 
             public static bool Prefix(Pawn pawn)
             {
-                if (!Settings.disableWork && pawn.IsGuest())
-                {
-                    var priorities = _fieldPriorities.GetValue(pawn.workSettings);
-                    if (priorities == null)
-                    {
-                        pawn.workSettings.EnableAndInitialize();
-                        LessonAutoActivator.TeachOpportunity(guestWorkDef, pawn, OpportunityType.GoodToKnow);
-                    }
-                }
+                if (!pawn.IsGuest()) return true;
+
+                GuestUtility.EnsureHasWorkSettings(pawn);
+                LessonAutoActivator.TeachOpportunity(guestWorkDef, pawn, OpportunityType.GoodToKnow);
                 return true;
             }
         }

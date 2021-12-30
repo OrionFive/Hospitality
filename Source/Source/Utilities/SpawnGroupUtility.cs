@@ -131,6 +131,7 @@ namespace Hospitality
         {
             GuestUtility.AddNeedJoy(visitor);
             GuestUtility.AddNeedComfort(visitor);
+            GuestUtility.EnsureHasWorkSettings(visitor);
             visitor.FixTimetable();
             visitor.FixDrugPolicy();
             
@@ -138,6 +139,7 @@ namespace Hospitality
             {
                 visitor.foodRestriction.CurrentFoodRestriction = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
             }
+
         }
 
         public static Pawn SpawnVisitor(List<Pawn> spawned, Pawn pawn, Map map, IntVec3 location)

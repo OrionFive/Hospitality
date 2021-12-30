@@ -254,7 +254,7 @@ namespace Hospitality
 
                 SpawnGroupUtility.CheckVisitorsValid(visitors);
 
-                if (visitors == null || visitors.Count == 0) return false;
+                if (visitors.Count == 0) return false;
 
                 var area = visitors.First().GetGuestArea() ?? map.GetMapComponent().defaultAreaRestriction;
                 var spot = GetSpot(map, area, visitors.First());
