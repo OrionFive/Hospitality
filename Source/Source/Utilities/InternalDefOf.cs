@@ -19,12 +19,14 @@ namespace Hospitality.Utilities
         public static ThingDef Gastronomy_DiningSpot;
 
         public static JobDef VendingMachine_EmptyVendingMachine;
-        public static RoomRoleDef GuestRoom;
         public static JobDef ClaimGuestBed;
+        public static RoomRoleDef GuestRoom;
         public static SpecialThingFilterDef AllowRotten;
+        public static JoyGiverDef BuyFood;
+        public static ConceptDef GuestWork;
         public static ThoughtDef GuestExpensiveFood;
         public static ThoughtDef GuestCheapFood;
-        public static ConceptDef GuestWork;
-        public static JoyGiverDef BuyFood;
+        public static ThoughtDef GuestCantAffordBed;
+        public static ThoughtDef GuestHasNoFood;
     }
 }

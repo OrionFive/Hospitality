@@ -1,3 +1,4 @@
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 
@@ -11,7 +12,7 @@ namespace Hospitality
 			explanationKey = "AlertHasNoFoodDesc";
 		}
 
-		protected override ThoughtDef Thought => DefDatabase<ThoughtDef>.GetNamed("GuestHasNoFood");
+		protected override ThoughtDef Thought => InternalDefOf.GuestHasNoFood;
 		private protected override int Hash => 7424;
 	}
 }

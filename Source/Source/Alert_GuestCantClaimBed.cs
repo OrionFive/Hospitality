@@ -1,3 +1,4 @@
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 
@@ -11,7 +12,7 @@ namespace Hospitality
             explanationKey = "AlertCantClaimBedDesc";
         }
 
-        protected override ThoughtDef Thought => DefDatabase<ThoughtDef>.GetNamed("GuestCantAffordBed");
+        protected override ThoughtDef Thought => InternalDefOf.GuestCantAffordBed;
         private protected override int Hash => 6237;
     }
 }
