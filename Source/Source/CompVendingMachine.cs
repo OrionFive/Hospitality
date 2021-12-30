@@ -63,7 +63,7 @@ namespace Hospitality
 
         public void ReceivePayment(ThingOwner<Thing> inventoryContainer, Thing silver)
         {
-            inventoryContainer.TryTransferToContainer(silver, MainContainer, CurrentPrice);
+            inventoryContainer.TryTransferToContainer(silver, MainContainer, Mathf.CeilToInt(CurrentPrice));
         }
 
         public bool CanAffordFast(Pawn buyerGuest, out Thing silver)
