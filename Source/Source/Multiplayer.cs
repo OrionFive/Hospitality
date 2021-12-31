@@ -8,8 +8,8 @@ namespace Hospitality
     [StaticConstructorOnStartup]
     internal static class Multiplayer
     {
-        internal static ISyncField[] guestFields;
-        internal static ISyncField[] mapFields;
+        internal static readonly ISyncField[] guestFields;
+        internal static readonly ISyncField[] mapFields;
         static Multiplayer()
         {
             if (!MP.enabled) return;
@@ -21,6 +21,8 @@ namespace Hospitality
                 MP.RegisterSyncField(typeof(CompGuest), nameof(CompGuest.makeFriends)),
                 MP.RegisterSyncField(typeof(CompGuest), nameof(CompGuest.entertain)),
                 MP.RegisterSyncField(typeof(CompGuest), nameof(CompGuest.sentAway)),
+                MP.RegisterSyncField(typeof(CompGuest), nameof(CompGuest.rescued)),
+                MP.RegisterSyncField(typeof(CompGuest), nameof(CompGuest.wasDowned)),
             };
 
             // Hospitality_MapComponent
@@ -32,7 +34,7 @@ namespace Hospitality
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.defaultAreaShopping)).SetBufferChanges(),
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.refuseGuestsUntilWeHaveBeds)),
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.guestsCanTakeFoodForFree)),
-                //MP.RegisterSyncField(typeof(Hospitality_GameComponent), nameof(Hospitality_GameComponent.defaultFoodRestriction)),
+                MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.drugPolicy))
             };
 
             // Guest ITab
@@ -45,7 +47,13 @@ namespace Hospitality
             // Beds
             {
                 MP.RegisterSyncMethod(AccessTools.Method(typeof(Building_GuestBed), nameof(Building_GuestBed.Swap)));
-                MP.RegisterSyncMethod(AccessTools.Method(typeof(Building_GuestBed), nameof(Building_GuestBed.AdjustFee)));
+                MP.RegisterSyncMethod(AccessTools.Method(typeof(Building_GuestBed), nameof(Building_GuestBed.SetRentalFee)));
+            }
+
+            // Dispenser
+            {
+                MP.RegisterSyncMethod(AccessTools.Method(typeof(CompVendingMachine), nameof(CompVendingMachine.SetPrice)));
+                MP.RegisterSyncMethod(AccessTools.Method(typeof(CompVendingMachine), nameof(CompVendingMachine.ToggleActive)));
             }
         }
 

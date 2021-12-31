@@ -22,7 +22,7 @@ namespace Hospitality
         private int nextQueueInspection;
         private int nextRogueGuestCheck;
         private int nextGuestListCheck;
-        private DrugPolicy drugPolicy;
+        public DrugPolicy drugPolicy;
 
         [NotNull] public List<Lord> PresentLords { get; } = new List<Lord>();
         [NotNull] public HashSet<Pawn> PresentGuests { get; } = new HashSet<Pawn>();
