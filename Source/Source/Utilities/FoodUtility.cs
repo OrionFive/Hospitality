@@ -43,10 +43,12 @@ namespace Hospitality.Utilities
             {
                 return true;
             }
+            
+            if (!WillConsume(guest, foodDef)) return false;
 
             //Check whether the current food source is a dispenser set as a vending machine for this guest
             //Log.Message($"Dispenser: {foodSource is Building_NutrientPasteDispenser}| CanBeUsed: {(foodSource.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef) ?? false)}");
-            if (foodSource is Building_NutrientPasteDispenser dispenser && (dispenser.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest, foodDef) ?? false))
+            if (foodSource is Building_NutrientPasteDispenser dispenser && (dispenser.TryGetComp<CompVendingMachine>()?.CanBeUsedBy(guest) ?? false))
             {
                 return true;
             }

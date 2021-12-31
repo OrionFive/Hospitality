@@ -20,7 +20,7 @@ namespace Hospitality
             var bed = guest.FindBedFor();
             if (bed == null) return null;
 
-            return new Job(InternalDefOf.ClaimGuestBed, bed) {takeExtraIngestibles = bed.rentalFee}; // Store rentalFee to avoid cheating
+            return new Job(InternalDefOf.ClaimGuestBed, bed) {takeExtraIngestibles = bed.RentalFee}; // Store RentalFee to avoid cheating
         }
     }
 }

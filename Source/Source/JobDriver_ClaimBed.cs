@@ -42,10 +42,10 @@ namespace Hospitality
                     var silver = actor.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
                     var money = silver?.stackCount ?? 0;
                     
-                    // Check the stored rentalFee (takeExtraIngestibles)... if it was increased, cancel!
+                    // Check the stored RentalFee (takeExtraIngestibles)... if it was increased, cancel!
                     if (!(TargetA.Thing is Building_GuestBed newBed) 
-                        || newBed.rentalFee > job.takeExtraIngestibles 
-                        || newBed.rentalFee > money) 
+                        || newBed.RentalFee > job.takeExtraIngestibles 
+                        || newBed.RentalFee > money) 
                     {
                         actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                         return;
@@ -62,10 +62,10 @@ namespace Hospitality
 
                     compGuest.ClaimBed(newBed);
 
-                    if (newBed.rentalFee > 0)
+                    if (newBed.RentalFee > 0)
                     {
-                        actor.inventory.innerContainer.TryDrop(silver, actor.Position, Map, ThingPlaceMode.Near, newBed.rentalFee, out silver);
-                        actor.UpsetAboutFee(newBed.rentalFee);
+                        actor.inventory.innerContainer.TryDrop(silver, actor.Position, Map, ThingPlaceMode.Near, newBed.RentalFee, out silver);
+                        actor.UpsetAboutFee(newBed.RentalFee);
                     }
                 }
             }.FailOnDespawnedNullOrForbidden(TargetIndex.A);

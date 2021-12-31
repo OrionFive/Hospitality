@@ -37,7 +37,7 @@ namespace Hospitality.Utilities
         {
             return guest.MapHeld.GetGuestBeds(guest.GetGuestArea()).Where(bed => 
                 bed.AnyUnownedSleepingSlot 
-                && bed.rentalFee <= money 
+                && bed.RentalFee <= money 
                 && !bed.IsForbidden(guest) 
                 && !bed.IsBurning() 
                 && !bed.CompAssignableToPawn.IdeoligionForbids(guest)
@@ -53,7 +53,7 @@ namespace Hospitality.Utilities
         {
             StaticBedValue(bed, out var room, out var quality, out var impressiveness, out var roomType, out var comfort, out var facilities);
 
-            var fee = RoundToInt(money > 0 ? 250 * (bed.rentalFee / money) : 0); // 0 - 250
+            var fee = RoundToInt(money > 0 ? 250 * (bed.RentalFee / money) : 0); // 0 - 250
 
             //Ideology
             var ideologyNeeds = GetIdeologicalFulfillment(bed, guest); // -150 - 50

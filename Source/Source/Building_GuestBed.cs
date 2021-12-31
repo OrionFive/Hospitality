@@ -15,35 +15,36 @@ namespace Hospitality
     {
         private static readonly Color sheetColorForGuests = new Color(89 / 255f, 55 / 255f, 121 / 255f);
 
-        private const int FeeStep = 10;
+        internal const int FeeStep = 10;
 
-        public int rentalFee;
-        private readonly string silverLabel = " " + ThingDefOf.Silver.label;
+        private int rentalFee;
 
         public int MoodEffect => Mathf.RoundToInt(rentalFee * -0.1f);
 
         public int previousRoyaltyUpdate;
 
-        public override Color DrawColor
-        {
-            get
-            {
-                if (def.MadeFromStuff)
-                {
-                    return base.DrawColor;
-                }
-                return DrawColorTwo;
-            }
-        }
+        public override Color DrawColor => def.MadeFromStuff ? base.DrawColor : DrawColorTwo;
 
         public override Color DrawColorTwo => sheetColorForGuests;
 
         public BedStats Stats { get; } = new BedStats();
 
+        internal int RentalFee
+        {
+            get => rentalFee;
+            set => SetRentalFee(value);
+        }
+
+        internal void SetRentalFee(int value)
+        {
+            rentalFee = Mathf.Clamp(value, 0, int.MaxValue);
+            UpdateStats();
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref rentalFee, "rentalFee");
+            Scribe_Values.Look(ref rentalFee, "RentalFee");
         }
 
         public override void TickLong()
@@ -72,10 +73,7 @@ namespace Hospitality
                 var owners = this.Owners().Count == 0 ? (string) "Nobody".Translate() : this.Owners().Select(o => (string) o.NameShortColored).ToCommaList(true);
                 Stats.title = $"{def.LabelCap} ({owners})";
                 Stats.staticBedValue = BedUtility.StaticBedValue(this, out Stats.room, out _, out _, out _, out _, out _);
-                var attractiveness = Mathf.CeilToInt(BedUtility.ScoreFactor * Stats.staticBedValue - rentalFee);
-                Stats.textAttractiveness = "BedAttractiveness".Translate(attractiveness);
-                Stats.textFee = rentalFee == 0 ? "FeeNone".Translate() : "FeeAmount".Translate(rentalFee);
-                Stats.textAsArray = new[] {Stats.textAttractiveness, Stats.textFee};
+                Stats.attractiveness = Mathf.CeilToInt(BedUtility.ScoreFactor * Stats.staticBedValue - rentalFee);
             }
             catch (Exception e)
             {
@@ -85,7 +83,7 @@ namespace Hospitality
 
         public void UpdateRoyaltyStats()
         {
-            if (!ModLister.RoyaltyInstalled) return;
+            if (!ModsConfig.RoyaltyActive) return;
 
             var time = DateTime.Now.Second;
 
@@ -230,45 +228,21 @@ namespace Hospitality
             }
 
             // Gizmo for drawing guest room info
-            if (Find.Selector.SingleSelectedObject == this)
+            var beds = Find.Selector.SelectedObjects.OfType<Building_GuestBed>().ToArray();
+            foreach (var bed in beds)
             {
-                if (Stats.lastCalculated == 0 || Stats.room == null) UpdateStats();
-                yield return new Gizmo_GuestBedStats(this);
+                if(bed.Stats.lastCalculated == 0 || bed.Stats.room == null) bed.UpdateStats();
             }
 
-            // Add buttons to decrease / increase the fee
-            yield return new Command_Action
-            {
-                defaultLabel = "CommandBedDecreaseFeeLabel".Translate(FeeStep),
-                defaultDesc = "CommandBedDecreaseFeeDesc".Translate(FeeStep, MoodEffect),
-                icon = ContentFinder<Texture2D>.Get("UI/Commands/ChangePriceDown"),
-                action = () => AdjustFee(-FeeStep),
-                hotKey = KeyBindingDefOf.Misc5,
-                disabled = rentalFee < FeeStep
-            };
-            yield return new Command_Action
-            {
-                defaultLabel = "CommandBedIncreaseFeeLabel".Translate(FeeStep),
-                defaultDesc = "CommandBedIncreaseFeeDesc".Translate(FeeStep, MoodEffect),
-                icon = ContentFinder<Texture2D>.Get("UI/Commands/ChangePriceUp"),
-                action = () => AdjustFee(FeeStep),
-                hotKey = KeyBindingDefOf.Misc6
-            };
+            yield return new Gizmo_GuestBed(beds);
 
             // Get base def
             var defName = def.defName.ReplaceFirst("Guest", string.Empty);
             var baseDef = DefDatabase<ThingDef>.GetNamed(defName);
 
             // Add build copy command
-            Command buildCopy = BuildCopyCommandUtility.BuildCopyCommand(baseDef, Stuff);
+            var buildCopy = BuildCopyCommandUtility.BuildCopyCommand(baseDef, Stuff);
             if (buildCopy != null) yield return buildCopy;
-        }
-
-        internal void AdjustFee(int amount)
-        {
-            rentalFee += amount;
-            if (rentalFee < 0) rentalFee = 0;
-            UpdateStats();
         }
 
         public override void PostMake()
@@ -281,12 +255,12 @@ namespace Hospitality
         {
             if (Find.CameraDriver.CurrentZoom == CameraZoomRange.Closest)
             {
-                Color defaultThingLabelColor = GenMapUI.DefaultThingLabelColor;
+                var defaultThingLabelColor = GenMapUI.DefaultThingLabelColor;
 
                 var owners = this.Owners();
                 if (!owners.Any())
                 {
-                    GenMapUI.DrawThingLabel(this, rentalFee + silverLabel, defaultThingLabelColor);
+                    GenMapUI.DrawThingLabel(this, ((float)rentalFee).ToStringMoney(), defaultThingLabelColor);
                 }
                 else if (owners.Count == 1)
                 {
@@ -354,7 +328,7 @@ namespace Hospitality
 
         private static Thing MakeBed(Building_Bed bed, string defName)
         {
-            ThingDef newDef = DefDatabase<ThingDef>.GetNamed(defName);
+            var newDef = DefDatabase<ThingDef>.GetNamed(defName);
             return ThingMaker.MakeThing(newDef, bed.Stuff);
         }
 
@@ -369,10 +343,8 @@ namespace Hospitality
         {
             public int lastCalculated;
             public Room room;
-            public TaggedString textAttractiveness;
-            public TaggedString textFee;
+            public int attractiveness;
             public TaggedString title;
-            public IEnumerable<TaggedString> textAsArray = Array.Empty<TaggedString>();
             public int staticBedValue;
             public RoyalTitleDef[] metRoyalTitles;
             public TaggedString textNextTitleReq;

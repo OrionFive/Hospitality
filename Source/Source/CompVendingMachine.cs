@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using FoodUtility = Hospitality.Utilities.FoodUtility;
 
 namespace Hospitality
 {
@@ -15,33 +15,41 @@ namespace Hospitality
 
         private ThingOwner<Thing> silverContainer;
 
-        public Building_NutrientPasteDispenser Dispenser => (Building_NutrientPasteDispenser) parent;
+        private Vendable vendable;
+        private Gizmo_VendingMachine gizmo;
 
-        public ThingOwner<Thing> MainContainer
+        public override void PostPostMake()
         {
-            get
-            {
-                if (silverContainer == null)
-                {
-                    silverContainer = new ThingOwner<Thing>(this, false);
-                    if (parent is Building_NutrientPasteDispenser { DispensableDef: { } } dispenser)
-                    {
-                        basePrice = Mathf.CeilToInt(dispenser.DispensableDef.BaseMarketValue);
-                    }
-                }
-                return silverContainer;
-            }
+            base.PostPostMake();
+            vendable = parent;
+            CurrentPrice = GetDefaultPrice();
         }
+
+        private int GetDefaultPrice()
+        {
+            // Try comp properties first
+            var propPrice = ((CompProperties_VendingMachine)props).defaultPrice;
+            if (propPrice > 0) return propPrice;
+            // Otherwise get it from vendable
+            return vendable.DefaultPrice;
+        }
+
+        public ThingOwner<Thing> MainContainer => silverContainer ??= new ThingOwner<Thing>(this, false);
 
         public int CurrentPrice
         {
             get => basePrice;
-            internal set => basePrice = Mathf.Clamp(value, 0, int.MaxValue);
+            set => SetPrice(value);
+        }
+
+        internal void SetPrice(int value)
+        {
+            basePrice = Mathf.Clamp(value, 0, int.MaxValue);
         }
 
         public bool IsFree => CurrentPrice == 0;
         public bool ShouldEmpty => MainContainer.Count > 0;
-        public string TotalSold => ((float)MainContainer.TotalStackCount).ToStringMoney();
+        public int TotalSold => MainContainer.TotalStackCount;
 
         public override void PostExposeData()
         {
@@ -49,14 +57,12 @@ namespace Hospitality
             Scribe_Values.Look(ref isActive, "isActive");
             Scribe_Values.Look(ref basePrice, "basePrice");
             Scribe_Deep.Look(ref silverContainer, "silverContainer");
+            vendable = parent;
         }
 
         internal void SetAutoPricing()
         {
-            var mapComponent = parent.Map.GetMapComponent();
-            if (!mapComponent.PresentGuests.Any()) return;
-            var val = mapComponent.PresentGuests.Where(p => p.inventory.Count(ThingDefOf.Silver) > 0).Select(g => g.inventory.Count(ThingDefOf.Silver)).Min();
-            CurrentPrice = Mathf.CeilToInt(val/2f);
+            CurrentPrice = GetDefaultPrice();
         }
 
         public bool IsActive() => isActive;
@@ -70,36 +76,39 @@ namespace Hospitality
         {
             silver = buyerGuest.inventory.innerContainer.FirstOrDefault(i => i.def == ThingDefOf.Silver);
             if (silver == null) return IsFree;
-            return silver.stackCount >= basePrice;
+            return silver.stackCount >= CurrentPrice;
         }
 
-        public bool CanBeUsedBy(Pawn eaterGuest, ThingDef foodDef = null)
+        public bool CanBeUsedBy(Pawn pawn)
         {
-            if (!CanAffordFast(eaterGuest, out _)) return false;
-            if (!FoodUtility.WillConsume(eaterGuest, foodDef)) return false;
-            return isActive;
+            return isActive && CanAffordFast(pawn, out _);
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
-            yield return new Command_Toggle
-            {
-                defaultLabel = "Hospitality_VendingMachine".Translate(),
-                defaultDesc = "Hospitality_VendingMachineToggleDesc".Translate(),
-                icon = ContentFinder<Texture2D>.Get("UI/Commands/VendingMachine"),
-                isActive = IsActive,
-                toggleAction = () => isActive = !isActive,
-                disabled = false,
-            };
-
-            if (isActive)
-            {
-                yield return new Gizmo_VendingMachine()
+            if(!Properties.noToggle)
+                yield return new Command_Toggle
                 {
-                    vendingMachine = this,
+                    defaultLabel = "Hospitality_VendingMachine".Translate(),
+                    defaultDesc = "Hospitality_VendingMachineToggleDesc".Translate(),
+                    icon = ContentFinder<Texture2D>.Get("UI/Commands/VendingMachine"),
+                    isActive = IsActive,
+                    toggleAction = () => ToggleActive(),
+                    disabled = false,
                 };
+
+            if (isActive || Properties.noToggle)
+            {
+                yield return gizmo ??= new Gizmo_VendingMachine(new[] { this });
             }
         }
+
+        public bool ToggleActive()
+        {
+            return isActive = !isActive;
+        }
+
+        public CompProperties_VendingMachine Properties => (CompProperties_VendingMachine)props;
 
         public void GetChildHolders(List<IThingHolder> outChildren) { }
 
@@ -108,9 +117,37 @@ namespace Hospitality
 
     public class CompProperties_VendingMachine : CompProperties
     {
+        public int defaultPrice = 0;
+        public bool noToggle = false;
+        public int priceSteps = 5;
+
         public CompProperties_VendingMachine()
         {
             compClass = typeof(CompVendingMachine);
+        }
+    }
+
+    /// <summary>
+    /// Wrapper for buildings that can be sold to guests
+    /// </summary>
+    public class Vendable
+    {
+        private readonly Func<int> getterPrice;
+        public int DefaultPrice => getterPrice?.Invoke() ?? 0;
+
+        public Vendable(Func<int> getterPrice)
+        {
+            this.getterPrice = getterPrice;
+        }
+
+        public static implicit operator Vendable(ThingWithComps thing) => ConvertToVendable(thing);
+
+        private static Vendable ConvertToVendable(ThingWithComps thing)
+        {
+            if (thing is Building_NutrientPasteDispenser dispenser)
+                return new Vendable(() => Mathf.CeilToInt(dispenser.DispensableDef.BaseMarketValue));
+
+            return new Vendable(null);
         }
     }
 }

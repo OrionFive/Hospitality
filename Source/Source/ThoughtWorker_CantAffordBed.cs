@@ -32,7 +32,7 @@ namespace Hospitality
             if(beds.Length == 0) return ThoughtState.Inactive;
 
             if (!beds.Any(bed => bed.AnyUnoccupiedSleepingSlot)) return ThoughtState.Inactive;
-            if (beds.Any(bed => bed.rentalFee <= money && bed.AnyUnownedSleepingSlot)) return ThoughtState.Inactive;
+            if (beds.Any(bed => bed.RentalFee <= money && bed.AnyUnownedSleepingSlot)) return ThoughtState.Inactive;
 
             return ThoughtState.ActiveDefault;
         }

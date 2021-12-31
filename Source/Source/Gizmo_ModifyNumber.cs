@@ -1,12 +1,16 @@
-﻿using Hospitality.Utilities;
+﻿using System;
+using System.Linq;
+using Hospitality.Utilities;
 using UnityEngine;
 using Verse;
 
 namespace Hospitality
 {
-    public abstract class Gizmo_ModifyNumber : Gizmo
+    public abstract class Gizmo_ModifyNumber<T> : Gizmo
     {
-        private const int LabelRowX = 75;
+        protected readonly T[] selection;
+
+        private const int LabelRowX = 110;
         private const int MainRectWidth = 175;
         protected abstract string Title { get; }
         protected abstract Color ButtonColor { get; }
@@ -16,9 +20,15 @@ namespace Hospitality
         protected abstract void DrawInfoRect(Rect rect);
         public override float GetWidth(float maxWidth) => 200;
 
-        protected Gizmo_ModifyNumber()
+        protected Gizmo_ModifyNumber(T[] selection)
         {
+            this.selection = selection;
             order = -25;
+        }
+
+        public override bool GroupsWith(Gizmo other)
+        {
+            return other is Gizmo_ModifyNumber<T>;
         }
 
         public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth, GizmoRenderParms parms)
@@ -56,8 +66,14 @@ namespace Hospitality
             var buttonsRect = totalRect.RightPartPixels((totalRect.height-10)/2.25f).ContractedBy(5);
             DrawButtons(buttonsRect);
 
+            GenUI.AbsorbClicksInRect(totalRect);
+
+            DrawTooltipBox(totalRect);
+            
             return new GizmoResult(GizmoState.Mouseover);
         }
+
+        protected abstract void DrawTooltipBox(Rect totalRect);
 
         private void DrawButtons(Rect rect)
         {
@@ -96,6 +112,15 @@ namespace Hospitality
 
             Text.Font = default;
             inRect.y += inRect.height;
+        }
+
+        protected string ToFromToString(Func<T, int> getValue, Func<int, string> format)
+        {
+            var min = selection.Min(getValue);
+            var max = selection.Max(getValue);
+
+            if (min == max) return format(min);
+            return $"{format(min)} - {format(max)}";
         }
     }
 }
