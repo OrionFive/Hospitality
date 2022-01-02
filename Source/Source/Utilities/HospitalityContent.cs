@@ -6,9 +6,9 @@ namespace Hospitality.Utilities
     [StaticConstructorOnStartup]
     public static class HospitalityContent
     {
-        public static readonly Texture2D VendingPriceUp = ContentFinder<Texture2D>.Get("UI/Commands/VendingPriceUp");
-        public static readonly Texture2D VendingPriceDown = ContentFinder<Texture2D>.Get("UI/Commands/VendingPriceDown");
-        public static readonly Texture2D VendingPriceAuto = ContentFinder<Texture2D>.Get("UI/Commands/VendingPriceAuto");
+        public static readonly Texture2D ButtonNumberUp = ContentFinder<Texture2D>.Get("UI/Commands/ButtonNumberUp");
+        public static readonly Texture2D ButtonNumberDown = ContentFinder<Texture2D>.Get("UI/Commands/ButtonNumberDown");
+        public static readonly Texture2D ButtonNumberAuto = ContentFinder<Texture2D>.Get("UI/Commands/ButtonNumberAuto");
 
     }
 }

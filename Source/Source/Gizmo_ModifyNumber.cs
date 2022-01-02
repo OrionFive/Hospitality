@@ -82,17 +82,17 @@ namespace Hospitality
             var upperSetting = new Rect(rect.x, middleSetting.y - size, size, size);
             var lowerSettings = new Rect(rect.x, middleSetting.yMax, size, size);
 
-            if (Widgets.ButtonImage(middleSetting, HospitalityContent.VendingPriceAuto, ButtonColor))
+            if (Widgets.ButtonImage(middleSetting, HospitalityContent.ButtonNumberAuto, ButtonColor))
             {
                 ButtonCenter();
             }
 
-            if (Widgets.ButtonImage(upperSetting, HospitalityContent.VendingPriceUp, ButtonColor))
+            if (Widgets.ButtonImage(upperSetting, HospitalityContent.ButtonNumberUp, ButtonColor))
             {
                 ButtonUp();
             }
 
-            if (Widgets.ButtonImage(lowerSettings, HospitalityContent.VendingPriceDown, ButtonColor))
+            if (Widgets.ButtonImage(lowerSettings, HospitalityContent.ButtonNumberDown, ButtonColor))
             {
                 ButtonDown();
             }
@@ -114,7 +114,7 @@ namespace Hospitality
             inRect.y += inRect.height;
         }
 
-        protected string ToFromToString(Func<T, int> getValue, Func<int, string> format)
+        protected string ToFromToString(Func<T, object> getValue, Func<object, string> format)
         {
             var min = selection.Min(getValue);
             var max = selection.Max(getValue);
