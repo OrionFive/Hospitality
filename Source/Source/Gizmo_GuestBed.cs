@@ -23,7 +23,7 @@ namespace Hospitality
                 var bed = beds.First();
                 Title = bed.def.LabelCap;
                 attractiveness = ToFromToString(b => b.Stats.attractiveness, i => i.ToString());
-                rentalFee = ToFromToString(b => b.RentalFee, i => ToStringMoney(i));
+                rentalFee = ToFromToString(b => b.RentalFee, i => ToStringMoney((float)i));
             }
         }
 
