@@ -114,12 +114,12 @@ namespace Hospitality
             inRect.y += inRect.height;
         }
 
-        protected string ToFromToString(Func<T, object> getValue, Func<object, string> format)
+        protected string ToFromToString<TValue>(Func<T, TValue> getValue, Func<TValue, string> format)
         {
             var min = selection.Min(getValue);
             var max = selection.Max(getValue);
 
-            if (min == max) return format(min);
+            if (min.Equals(max)) return format(min);
             return $"{format(min)} - {format(max)}";
         }
     }
