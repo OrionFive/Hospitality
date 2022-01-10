@@ -451,7 +451,7 @@ namespace Hospitality
 
                 // Money
                 //Log.Message("Goodwill: "+visitor.Faction.ColonyGoodwill);
-                var wealthBase = visitor.Faction.HasGoodwill ? visitor.Faction.PlayerGoodwill : Rand.Range(25, 75);
+                var wealthBase = 25 + (visitor.Faction.HasGoodwill ? visitor.Faction.PlayerGoodwill : Rand.Range(25, 75));
                 var title = visitor.royalty?.MostSeniorTitle;
                 if (title != null) wealthBase += title.def.seniority/2;
                 var amountS = Mathf.Max(0, Mathf.RoundToInt(Rand.Gaussian(wealthBase, wealthBase)*2))+Rand.Range(0, 40);
@@ -472,7 +472,7 @@ namespace Hospitality
                 
                 // Items
                 float maxValue = (wealthBase + 25)*Rand.Range(5, 8);
-                if (maxValue - totalValue <= 100) maxValue = totalValue + Rand.Range(25, 60); // At least bring some junk
+                if (maxValue - totalValue <= 100) maxValue = totalValue + Rand.Range(30, 70); // At least bring some junk
                 float value = maxValue - totalValue;
                 int curCount = 0;
                 while (value > 100 && curCount < 200)
