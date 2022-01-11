@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using System.Linq;
+using RimWorld;
 using Verse;
 
 namespace Hospitality.Utilities
@@ -8,9 +9,6 @@ namespace Hospitality.Utilities
         
         public static bool GuestCanSatisfyFoodNeed(Pawn guest)
         {
-            //Check Inventory
-            //var inventoryFood = RimWorld.FoodUtility.BestFoodInInventory(guest, minFoodPref: FoodPreferability.RawTasty);
-            //if (inventoryFood != null) return true;
             Rand.PushState(Find.TickManager.TicksAbs);
 
             //Search FoodSource
@@ -90,6 +88,7 @@ namespace Hospitality.Utilities
         {
             if (foodDef == null) return false;
             var restrictions = pawn.foodRestriction.CurrentFoodRestriction;
+
             if (!restrictions.Allows(foodDef)) return false;
 
             var fineAsFood = foodDef.ingestible?.preferability == FoodPreferability.Undefined || foodDef.ingestible?.preferability == FoodPreferability.NeverForNutrition || pawn.WillEat(foodDef);

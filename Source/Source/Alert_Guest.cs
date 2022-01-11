@@ -36,7 +36,12 @@ namespace Hospitality
         {
             StringBuilder stringBuilder = new StringBuilder();
             foreach (Pawn affectedPawn in affectedPawnCache)
-                stringBuilder.AppendLine("  - " + affectedPawn.NameShortColored.Resolve());
+            {
+                stringBuilder.Append("  - ");
+                stringBuilder.Append(affectedPawn.NameShortColored.Resolve());
+                if (affectedPawn.royalty.MostSeniorTitle is { } t) stringBuilder.Append($" ({t.Label})");
+                stringBuilder.AppendLine();
+            }
             return explanationKey.Translate(stringBuilder.ToString());
         }
     }
