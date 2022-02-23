@@ -163,7 +163,12 @@ namespace Hospitality.Utilities
 
 			var incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.FactionArrival, realMap);
 
-			if (faction == null) return;
+            if (faction == null) return;
+			if (faction.def.pawnGroupMakers == null || !faction.def.pawnGroupMakers.Any(g => g.kindDef == PawnGroupKindDefOf.Peaceful))
+			{
+				Log.Warning($"Faction {faction.GetCallLabel()} can't visit, because it doesn't have any peaceful group makers.");
+				return;
+			}
 
 			incidentParms.faction = faction;
 			var incident = new FiringIncident(IncidentDefOf.VisitorGroup, null, incidentParms);
