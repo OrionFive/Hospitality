@@ -7,7 +7,7 @@ namespace Hospitality.Spacer
     {
         protected override int GetGroupSize()
         {
-            return Random.Range(10, 30);
+            return Verse.Rand.Range(10, 30);
         }
     }
 }
