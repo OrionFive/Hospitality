@@ -4,10 +4,7 @@ using System.Linq;
 using Hospitality.Utilities;
 using HugsLib;
 using RimWorld;
-using Steamworks;
-using UnityEngine;
 using Verse;
-using Verse.Steam;
 using GuestUtility = Hospitality.Utilities.GuestUtility;
 
 namespace Hospitality
@@ -22,17 +19,6 @@ namespace Hospitality
 
         public override void Initialize()
         {
-            // Orion's shit list
-            var invalidIDs = new ulong[] {76561198362152774};
-            if(SteamManager.Initialized && invalidIDs.Contains(SteamUser.GetSteamID().m_SteamID)) 
-            {
-                var mod = ModLister.GetActiveModWithIdentifier("Orion.Hospitality");
-                if (mod != null)
-                {
-                    mod.Active = false;
-                    Application.Quit();
-                } 
-            }
             Hospitality_SpecialInjector.Inject();
         }
 
