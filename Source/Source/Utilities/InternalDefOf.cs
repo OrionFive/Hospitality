@@ -6,7 +6,7 @@ using Verse;
 
 namespace Hospitality.Utilities
 {
-    [DefOf]
+    [RimWorld.DefOf]
     public static class InternalDefOf
     {
         [MayRequire("CETeam.CombatExtended")]
