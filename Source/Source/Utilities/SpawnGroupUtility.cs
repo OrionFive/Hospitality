@@ -44,6 +44,7 @@ namespace Hospitality.Utilities
                 false, 1, true, true, true, false, 
                 false, false, false, false, 0, 0, null, 0.7f, null, null, null);
 
+            PawnInventoryGenerator.GenerateInventoryFor(pawn, request);
             PawnGenerator.RedressPawn(pawn, request);
         }
 
