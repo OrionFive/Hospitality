@@ -13,11 +13,11 @@ namespace Hospitality.Patches
 		public class SmoothWall
 		{
 			[HarmonyPostfix]
-			public static void Postfix(Thing target, Pawn smoother)
+			public static void Postfix(Pawn smoother, Thing __result)
 			{
 				if (smoother.HostFaction != smoother.Faction)
 				{
-					target.SetFaction(smoother.HostFaction);
+					__result.SetFaction(smoother.HostFaction);
 				}
 			}
 		}
