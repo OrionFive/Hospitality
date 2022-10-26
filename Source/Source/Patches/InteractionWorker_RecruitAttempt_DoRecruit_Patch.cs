@@ -20,7 +20,7 @@ namespace Hospitality.Patches
                     recruitee.SetFaction(recruiter.HostFaction);
                     if (faction != null)
                     {
-                        Find.FactionManager.Notify_PawnRecruited(faction);
+                        recruiter.HostFaction.Notify_PawnJoined(recruitee);
                     }
                 }
             }
