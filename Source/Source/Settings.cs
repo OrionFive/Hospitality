@@ -14,6 +14,7 @@ namespace Hospitality
         public static SettingHandle<int> minGuestGroupSize;
         public static SettingHandle<int> maxGuestGroupSize;
         public static SettingHandle<int> maxIncidentsPer3Days;
+        public static SettingHandle<int> silverMultiplier;
         public static SettingHandle<bool> disableGuests;
         public static SettingHandle<bool> disableWork;
         public static SettingHandle<bool> disableGifts;
@@ -39,6 +40,7 @@ namespace Hospitality
             minGuestGroupSize = settings.GetHandle("minGuestGroupSize", "MinGuestGroupSize".Translate(), "MinGuestGroupSizeDesc".Translate(), 1, GroupSizeLimitsMin);
             maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), DefaultMaxGroupSize, GroupSizeLimitsMax);
             maxIncidentsPer3Days = settings.GetHandle("maxIncidentsPer3Days", "MaxIncidentsPer3Days".Translate(), "MaxIncidentsPer3DaysDesc".Translate(), 5, MaxIncidentsPer3DaysLimitsMin);
+            silverMultiplier = settings.GetHandle("silverMultiplier", "SilverMultiplier".Translate(), "SilverMultiplierDesc".Translate(), 10, SilverMultiplierLimits);
             disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
             disableGuestsTab = settings.GetHandle("disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false);
             useIcon = settings.GetHandle("useIcon", "UseIcon".Translate(), "UseIconDesc".Translate(), false);
@@ -86,10 +88,11 @@ namespace Hospitality
         private static SettingHandle.ValueIsValid MaxIncidentsPer3DaysLimitsMin { get { return AtLeast(() => 1); } }
         private static SettingHandle.ValueIsValid GroupSizeLimitsMin { get { return Between(() => 1, () => maxGuestGroupSize?.Value ?? int.MaxValue); } }
         private static SettingHandle.ValueIsValid GroupSizeLimitsMax { get { return AtLeast(() => Mathf.Max(minGuestGroupSize?.Value ?? 0, disableLimits?.Value != false ? 1 : 8)); } }
+        private static SettingHandle.ValueIsValid SilverMultiplierLimits { get { return Between(() => disableLimits?.Value == true ? 0 : 5, () => disableLimits?.Value == true ? 100 : 15); } }
 
-        private static SettingHandle.ValueIsValid Between(Func<int> amountMin, Func<int> amountMax)
+        private static SettingHandle.ValueIsValid Between(Func<float> amountMin, Func<float> amountMax)
         {
-            return value => int.TryParse(value, out var actual) && actual >= amountMin() && actual <= amountMax();
+            return value => float.TryParse(value, out var actual) && actual >= amountMin() && actual <= amountMax();
         }
 
         private static SettingHandle.ValueIsValid AtLeast(Func<int> amount)
