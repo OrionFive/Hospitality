@@ -119,8 +119,9 @@ namespace Hospitality
             if (thing.def.IsRangedWeapon)
             {
                 if (pawn.story.traits.HasTrait(TraitDefOf.Brawler)) return 0;
-                if (pawn.apparel.WornApparel.OfType<ShieldBelt>().Any()) return 0;
+                if (pawn.apparel.WornApparel.Exists(apparelObject => apparelObject.def.IsShieldThatBlocksRanged)) return 0;
             }
+
             if (thing.def.IsWeapon)
             {
                 // Weapon is also good!
@@ -130,7 +131,7 @@ namespace Hospitality
                 if (!ItemUtility.AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEquip")) return 0;
             }
             // Shield belt
-            if (thing is ShieldBelt)
+            if (thing.def.IsShieldThatBlocksRanged)
             {
                 if (pawn.equipment.Primary?.def.IsRangedWeapon == true) return 0;
                 if (!ItemUtility.AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEquip")) return 0;
@@ -165,7 +166,7 @@ namespace Hospitality
         // Copied so we can make some adjustments
         public static float ApparelScoreGain(Pawn pawn, Apparel ap)
         {
-            if (ap is ShieldBelt && pawn.equipment.Primary?.def.IsWeaponUsingProjectiles == true)
+            if (ap.def.IsShieldThatBlocksRanged && pawn.equipment.Primary?.def.IsWeaponUsingProjectiles == true)
                 return -1000;
             // Added
             if (!ItemUtility.AlienFrameworkAllowsIt(pawn.def, ap.def, "CanWear")) 
