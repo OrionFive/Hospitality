@@ -1013,7 +1013,7 @@ namespace Hospitality.Utilities
 
         public static float GetRequiresFoodFactor(Pawn pawn)
         {
-            var carriedNutrition = pawn.inventory.innerContainer.Where(thing => JoyGiver_BuyStuff.CanEat(thing, pawn)).Sum(t => RimWorld.FoodUtility.GetNutrition(t, t.def) * t.stackCount);
+            var carriedNutrition = pawn.inventory.innerContainer.Where(thing => JoyGiver_BuyStuff.CanEat(thing, pawn)).Sum(t => RimWorld.FoodUtility.GetNutrition(pawn, t, t.def) * t.stackCount);
 
             var priority = GenMath.LerpDoubleClamped(2, 4, 1, 0, carriedNutrition);
             //Log.Message($"{pawn.NameShortColored} - wanna buy food: priority = {priority}, carriedNutrition = {carriedNutrition}");
