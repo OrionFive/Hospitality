@@ -241,7 +241,7 @@ namespace Hospitality
             var baseDef = DefDatabase<ThingDef>.GetNamed(defName);
 
             // Add build copy command
-            var buildCopy = BuildCopyCommandUtility.BuildCopyCommand(baseDef, Stuff);
+            var buildCopy = BuildCopyCommandUtility.BuildCopyCommand(baseDef, Stuff, null, null, false);
             if (buildCopy != null) yield return buildCopy;
         }
 
