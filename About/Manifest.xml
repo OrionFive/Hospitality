@@ -22,5 +22,5 @@
   <showCrossPromotions>true</showCrossPromotions>
   
   <manifestUri>https://raw.githubusercontent.com/OrionFive/Hospitality/develop/About/Manifest.xml</manifestUri>
-  <downloadUri>https://github.com/OrionFive/Hospitality/releases</downloadUri>
+  <downloadUri>https://github.com/OrionFive/Hospitality/tags</downloadUri>
 </Manifest>

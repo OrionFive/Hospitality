@@ -158,6 +158,8 @@
   <MaxGuestGroupSizeDesc>The maximum size a group of guests can be. (recommended: 16)</MaxGuestGroupSizeDesc>
   <MaxIncidentsPer3Days>Maximum groups within 3 days</MaxIncidentsPer3Days>
   <MaxIncidentsPer3DaysDesc>The maximum amount of guest groups that can come within 3 days. (recommended: 5)</MaxIncidentsPer3DaysDesc>
+  <SilverMultiplier>Silver multiplier</SilverMultiplier>
+  <SilverMultiplierDesc>Scales up how much silver guests bring. Higher faction relationship still means more silver. (recommended: 10)</SilverMultiplierDesc>
   <DisableGuestsTab>Disable guests tab</DisableGuestsTab>
   <DisableGuestsTabDesc>Hide the guests tab from the main tab bar.</DisableGuestsTabDesc>
   <EnableBuyNotification>Enable purchase notification</EnableBuyNotification>

@@ -454,7 +454,8 @@ namespace Hospitality
                 var wealthBase = 25 + (visitor.Faction.HasGoodwill ? visitor.Faction.PlayerGoodwill : Rand.Range(25, 75));
                 var title = visitor.royalty?.MostSeniorTitle;
                 if (title != null) wealthBase += title.def.seniority/2;
-                var amountS = Mathf.Max(0, Mathf.RoundToInt(Rand.Gaussian(wealthBase, wealthBase)*2))+Rand.Range(0, 40);
+                var amountS = Mathf.Max(0, Mathf.RoundToInt(Rand.Gaussian(wealthBase, wealthBase) * 2 * Settings.silverMultiplier * 0.1f)) + Rand.Range(0, 40);
+
                 if (amountS >= Rand.Range(10, 25))
                 {
                     var money = SpawnGroupUtility.CreateRandomItem(visitor, ThingDefOf.Silver);
