@@ -39,8 +39,8 @@
           </subNodes>
 		</li>
 		
-		<!-- Do stuff inside of guest area -->
-        <li Class="Hospitality.ThinkNode_FilterGuestRooms">
+		<!-- Only interact with allowed things -->
+        <li Class="Hospitality.ThinkNode_OnlyAllowed">
           <subNodes>
 		  
 			<!-- Insertion hook for modders -->

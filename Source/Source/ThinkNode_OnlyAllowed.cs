@@ -4,7 +4,7 @@ using Verse.AI;
 
 namespace Hospitality
 {
-    public class ThinkNode_FilterGuestRooms : ThinkNode_Priority
+    public class ThinkNode_OnlyAllowed : ThinkNode_Priority
     {
         public override ThinkResult TryIssueJobPackage(Pawn pawn, JobIssueParams jobParams)
         {

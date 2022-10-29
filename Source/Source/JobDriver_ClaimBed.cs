@@ -12,10 +12,7 @@ namespace Hospitality
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             if (!(TargetA.Thing is Building_GuestBed newBed)) return false;
-            if (pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed))
-            {
-                return true;
-            }
+            if (pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed)) return true;
 
             Log.Message($"{pawn.LabelShort} failed to reserve {TargetA.Thing.LabelShort}!");
             return false;
