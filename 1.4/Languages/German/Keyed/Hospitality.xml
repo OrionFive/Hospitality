@@ -158,6 +158,8 @@
   <DisableGiftsDesc>Wenn diese Option aktiviert ist, werden Gäste keine Gegenstände zurücklassen, wenn sie zufrieden sind.</DisableGiftsDesc>
   <MinGuestWorkSkill>Mindestkenntnisse für die Arbeit</MinGuestWorkSkill>
   <MinGuestWorkSkillDesc>Die minimale Fähigkeit, die ein Gast erfüllen muss, wenn er aushilft. (Empfohlen: 7)</MinGuestWorkSkillDesc>
+  <SilverMultiplier>Silber Multiplikator</SilverMultiplier>
+  <SilverMultiplierDesc>Verändert die Menge an Silber die Gäste mitbringen. Eine bessere Beziehung mit der Fraktion bedeutet trotzdem noch mehr Silber. (Empfohlen: 10)</SilverMultiplierDesc>
   <MinGuestGroupSize>Minimale Gästegruppengröße</MinGuestGroupSize>
   <MinGuestGroupSizeDesc>Die minimale Größe einer Gruppe von Gästen. (Empfohlen: 1)</MinGuestGroupSizeDesc>
   <MaxGuestGroupSize>Maximale Gästegruppengröße</MaxGuestGroupSize>
