@@ -16,12 +16,8 @@ namespace Hospitality.Patches
                 {
                     if (recruiter.HostFaction == recruiter.Faction) return;
 
-                    Faction faction = recruitee.Faction;
-                    recruitee.SetFaction(recruiter.HostFaction);
-                    if (faction != null)
-                    {
-                        Find.FactionManager.Notify_PawnRecruited(faction);
-                    }
+                    Faction faction = recruiter.HostFaction;
+                    recruitee.SetFaction(faction);
                 }
             }
         }

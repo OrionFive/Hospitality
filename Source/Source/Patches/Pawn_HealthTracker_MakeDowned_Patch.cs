@@ -46,7 +46,7 @@ namespace Hospitality.Patches
 		}
 
 		[UsedImplicitly]
-		public static void DropAndForbidEverythingReplacement(this Pawn pawn, bool keepInventoryAndEquipmentIfInBed)
+		public static void DropAndForbidEverythingReplacement(this Pawn pawn, bool keepInventoryAndEquipmentIfInBed, bool rememberPrimary)
 		{
 			if (ShouldDrop(pawn))
 			{
@@ -90,7 +90,7 @@ namespace Hospitality.Patches
 		}
 
 		[UsedImplicitly]
-		public static void DropAllEquipmentReplacement(this Pawn_EquipmentTracker equipment, IntVec3 pos, bool forbid = true)
+		public static void DropAllEquipmentReplacement(this Pawn_EquipmentTracker equipment, IntVec3 pos, bool forbid = true, bool rememberPrimary = false)
 		{
 			if (ShouldDrop(equipment.pawn))
 			{

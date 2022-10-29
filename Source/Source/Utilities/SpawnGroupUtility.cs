@@ -39,10 +39,32 @@ namespace Hospitality.Utilities
         public static void GenerateNewGearFor(Pawn pawn, int mapTile)
         {
             // All default, except kindDef, faction and forceAddFreeWarmLayerIfNeeded
-            var request = new PawnGenerationRequest(pawn.kindDef, pawn.Faction, PawnGenerationContext.NonPlayer,
-                mapTile, false, false, false, false, true, 
-                false, 1, true, true, true, false, 
-                false, false, false, false, 0, 0, null, 0.7f, null, null, null);
+            var request = new PawnGenerationRequest(
+                kind: pawn.kindDef, 
+                faction: pawn.Faction, 
+                context: PawnGenerationContext.NonPlayer,
+                tile: mapTile, 
+                forceGenerateNewPawn: false, 
+                allowDead: false,
+                allowDowned: false, 
+                canGeneratePawnRelations: true, 
+                mustBeCapableOfViolence: false, 
+                colonistRelationChanceFactor: 1, 
+                forceAddFreeWarmLayerIfNeeded: true, 
+                allowGay: true, 
+                allowFood: true, 
+                allowAddictions: false, 
+                inhabitant: false,
+                certainlyBeenInCryptosleep: false,
+                forceRedressWorldPawnIfFormerColonist: false,
+                worldPawnFactionDoesntMatter: false,
+                biocodeWeaponChance: 0,
+                biocodeApparelChance: 0,
+                extraPawnForExtraRelationChance: null,
+                relationWithExtraPawnChanceFactor: 0.7f,
+                validatorPreGear: null,
+                validatorPostGear: null,
+                forcedTraits: null);
 
             PawnInventoryGenerator.GenerateInventoryFor(pawn, request);
             PawnGenerator.RedressPawn(pawn, request);

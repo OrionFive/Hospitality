@@ -24,8 +24,22 @@ namespace Hospitality.Spacer
         {
             for (int i = 0; i < amount; i++)
             {
-                PawnGenerationRequest request = new PawnGenerationRequest(options.RandomElementByWeight(o => o.selectionWeight).kind, Faction.OfAncients, PawnGenerationContext.NonPlayer, -1, false, false, false, false, false, false, 0,
-                    true, true, true, false, true);
+                PawnGenerationRequest request = new PawnGenerationRequest(
+                    kind: options.RandomElementByWeight(o => o.selectionWeight).kind, 
+                    faction: Faction.OfAncients, 
+                    context: PawnGenerationContext.NonPlayer, 
+                    tile: -1, 
+                    forceGenerateNewPawn: false,
+                    allowDead: false,
+                    allowDowned: false,
+                    canGeneratePawnRelations: false,
+                    mustBeCapableOfViolence: false,
+                    colonistRelationChanceFactor: 0,
+                    forceAddFreeWarmLayerIfNeeded: true,
+                    allowGay: true,
+                    allowFood: true,
+                    allowAddictions: false,
+                    inhabitant: true);
                 yield return PawnGenerator.GeneratePawn(request);
             }
         }
