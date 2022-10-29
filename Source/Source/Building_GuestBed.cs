@@ -287,6 +287,11 @@ namespace Hospitality
 
             bool forPrisoners = bed.ForPrisoners; // Store this, since it changes during spawn
 
+            foreach (var pawn in bed.CurOccupants)
+            {
+                RestUtility.KickOutOfBed(pawn, bed);
+            }
+
             Building_Bed newBed;
             if (bed.IsGuestBed())
             {
