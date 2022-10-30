@@ -22,8 +22,18 @@ namespace Hospitality.MainTab
 
             base.DoCell(rect, pawn, table);
 
+            bool CheckCanRecruit() 
+            {
+                // Getting comp is expensive
+                var comp = pawn.CompGuest();
+                var isRoyal = pawn.royalty?.MostSeniorTitle != null;
+                var willOnlyJoinByForce = comp.WillOnlyJoinByForce;
+                var canNeverRecruit = pawn.Faction?.HasGoodwill == false || isRoyal && willOnlyJoinByForce;
+                return !willOnlyJoinByForce && !canNeverRecruit && pawn.MayRecruitRightNow();
+            }
+
             // Use cache - only get comp when we have enough friends
-            if (friendsShortCache >= friendsRequiredShortCache && !pawn.CompGuest().WillOnlyJoinByForce && pawn.MayRecruitRightNow())
+            if (friendsShortCache >= friendsRequiredShortCache && CheckCanRecruit())
             {
                 var rect2 = rect;
                 rect2.x -= 4;
