@@ -64,25 +64,26 @@ namespace Hospitality
         private void FillTabGuest(Rect rect)
         {
             //ConceptDatabase.KnowledgeDemonstrated(ConceptDefOf.PrisonerTab, KnowledgeAmount.GuiFrame);
-            var title = SelPawn.royalty?.MostSeniorTitle;
+            var pawn = SelPawn;
+            var title = pawn.royalty?.MostSeniorTitle;
             var isRoyal = title != null;
-            var friends = isRoyal ? SelPawn.GetFriendsSeniorityInColony() : SelPawn.GetFriendsInColony();
-            var friendsRequired = isRoyal ? RequiredSeniority : RequiredFriends;
+            var friends = isRoyal ? pawn.GetFriendsSeniorityInColony() : pawn.GetFriendsInColony();
+            var friendsRequired = isRoyal ? GetRequiredSeniority(SelPawn) : GetRequiredFriends(SelPawn);
             var friendPercentage = 100f*friends/friendsRequired;
 
-            var tryImprove = SelPawn.ImproveRelationship();
-            var tryMakeFriends = SelPawn.MakeFriends();
+            var tryImprove = pawn.ImproveRelationship();
+            var tryMakeFriends = pawn.MakeFriends();
 
             listingStandard.ColumnWidth = size.x - 20;
 
-            var comp = SelPawn.CompGuest();
+            var comp = pawn.CompGuest();
             var willOnlyJoinByForce = comp.WillOnlyJoinByForce;
-            var canNeverRecruit = SelPawn.Faction?.HasGoodwill == false || isRoyal && willOnlyJoinByForce;
+            var canNeverRecruit = pawn.Faction?.HasGoodwill == false || isRoyal && willOnlyJoinByForce;
 
             Multiplayer.guestFields?.Watch(comp);
 
             // If the lord is not on the map it's invalid!
-            if (comp?.lord != null && comp.lord.ownedPawns.Contains(SelPawn) && SelPawn.Map.lordManager.lords.Contains(comp.lord))
+            if (comp?.lord != null && comp.lord.ownedPawns.Contains(pawn) && pawn.Map.lordManager.lords.Contains(comp.lord))
             {
                 listingStandard.Gap();
                 string labelStay = "AreaToStay".Translate();
@@ -93,9 +94,9 @@ namespace Hospitality
                 var rectBuy = listingStandard.GetRect(24);
 
                 DialogUtility.LabelWithTooltip(labelStay, "AreaToStayTooltip".Translate(), rectStayLabel);
-                GenericUtility.DoAreaRestriction(rectStay, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area, SelPawn.Map);
+                GenericUtility.DoAreaRestriction(rectStay, comp.GuestArea, SetAreaRestriction, AreaUtility.AreaAllowedLabel_Area, pawn.Map);
                 DialogUtility.LabelWithTooltip(labelBuy, "AreaToBuyTooltip".Translate(), rectBuyLabel);
-                GenericUtility.DoAreaRestriction(rectBuy, comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel, SelPawn.Map);
+                GenericUtility.DoAreaRestriction(rectBuy, comp.ShoppingArea, SetAreaShopping, GenericUtility.GetShoppingLabel, pawn.Map);
 
                 var rectImproveRelationship = listingStandard.GetRect(Text.LineHeight);
                 DialogUtility.CheckboxLabeled(listingStandard, "ImproveRelationship".Translate(), ref tryImprove, rectImproveRelationship, false, txtImproveTooltip);
@@ -110,11 +111,11 @@ namespace Hospitality
 
                 var rectSetDefault = new Rect(rect.xMax - buttonSize.x - 10, 160, buttonSize.x, buttonSize.y);
                 var rectSendHome = new Rect(rect.xMin - 10, 160, buttonSize.x, buttonSize.y);
-                DialogUtility.DrawButton(() => SetAllDefaults(SelPawn), txtMakeDefault, rectSetDefault, txtMakeDefaultTooltip);
-                DialogUtility.DrawButton(() => SendHomeDialog(SelPawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
+                DialogUtility.DrawButton(() => SetAllDefaults(pawn), txtMakeDefault, rectSetDefault, txtMakeDefaultTooltip);
+                DialogUtility.DrawButton(() => SendHomeDialog(pawn.GetLord()), txtSendAway, rectSendHome, txtSendAwayTooltip);
 
                 var rectRecruitButton = new Rect(rect.xMin - 10 + 10 + buttonSize.x, 160, buttonSize.x, buttonSize.y);
-                DialogUtility.DrawRecruitButton(rectRecruitButton, SelPawn, friends >= friendsRequired, isRoyal, willOnlyJoinByForce, canNeverRecruit);
+                DialogUtility.DrawRecruitButton(rectRecruitButton, pawn, friends >= friendsRequired, isRoyal, willOnlyJoinByForce, canNeverRecruit);
 
                 // Highlight defaults
                 if (Mouse.IsOver(rectSetDefault))
@@ -128,11 +129,11 @@ namespace Hospitality
                 }
             }
 
-            if (SelPawn.Faction is {HasGoodwill: true})
+            if (pawn.Faction is {HasGoodwill: true})
             {
                 if (!canNeverRecruit)
-                    listingStandard.Label(txtRecruitmentPenalty.Translate(SelPawn.RecruitPenalty().ToString("##0"), SelPawn.ForcedRecruitPenalty().ToString("##0")));
-                listingStandard.Label(txtFactionGoodwill + ": " + SelPawn.Faction.PlayerGoodwill.ToString("##0"));
+                    listingStandard.Label(txtRecruitmentPenalty.Translate(pawn.RecruitPenalty().ToString("##0"), pawn.ForcedRecruitPenalty().ToString("##0")));
+                listingStandard.Label(txtFactionGoodwill + ": " + pawn.Faction.PlayerGoodwill.ToString("##0"));
             }
 
             listingStandard.Gap();
@@ -148,24 +149,24 @@ namespace Hospitality
 
             if (canNeverRecruit)
             {
-                listingStandard.Label(ColoredText.StripTags("CanNeverRecruit".Translate().AdjustedFor(SelPawn)).Colorize(Color.red));
+                listingStandard.Label(ColoredText.StripTags("CanNeverRecruit".Translate().AdjustedFor(pawn)).Colorize(Color.red));
             }
             else if (willOnlyJoinByForce)
             {
-                listingStandard.Label(ColoredText.StripTags("OnlyJoinsByForce".Translate().AdjustedFor(SelPawn)).Colorize(Color.red));
+                listingStandard.Label(ColoredText.StripTags("OnlyJoinsByForce".Translate().AdjustedFor(pawn)).Colorize(Color.red));
             }
             else if (friendPercentage <= 99)
             {
                 // Remove color from AdjustedFor and then Colorize
-                listingStandard.Label(ColoredText.StripTags("NotEnoughFriends".Translate(SelPawn.GetMinRecruitOpinion()).AdjustedFor(SelPawn)).Colorize(Color.red));
+                listingStandard.Label(ColoredText.StripTags("NotEnoughFriends".Translate(pawn.GetMinRecruitOpinion()).AdjustedFor(pawn)).Colorize(Color.red));
             }
             else
             {
-                listingStandard.Label("CanNowBeRecruited".Translate().AdjustedFor(SelPawn));
+                listingStandard.Label("CanNowBeRecruited".Translate().AdjustedFor(pawn));
             }
 
             // Will only have score while "checked in", becomes 0 again when guest leaves
-            if (SelPawn.GetVisitScore(out var score))
+            if (pawn.GetVisitScore(out var score))
             {
                 DrawProgressBar(txtHospitality+":", listingStandard.GetRect(32), Mathf.Clamp01(score));
             }
@@ -181,8 +182,8 @@ namespace Hospitality
             Widgets.FillableBar(rectBar.ContractedBy(4f), score, SocialCardUtility.BarFullTexHor);
         }
 
-        private int RequiredFriends => GuestUtility.FriendsRequired(SelPawn.MapHeld) + SelPawn.GetEnemiesInColony();
-        private int RequiredSeniority => GuestUtility.RoyalFriendsSeniorityRequired(SelPawn) + SelPawn.GetRoyalEnemiesSeniorityInColony();
+        private static int GetRequiredFriends(Pawn pawn) => GuestUtility.FriendsRequired(pawn.MapHeld) + pawn.GetEnemiesInColony();
+        private static int GetRequiredSeniority(Pawn pawn) => GuestUtility.RoyalFriendsSeniorityRequired(pawn) + pawn.GetRoyalEnemiesSeniorityInColony();
 
         private void SetAreaRestriction(Area area)
         {
