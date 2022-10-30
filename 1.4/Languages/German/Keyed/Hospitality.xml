@@ -160,10 +160,8 @@
   <MinGuestWorkSkillDesc>Die minimale Fähigkeit, die ein Gast erfüllen muss, wenn er aushilft. (Empfohlen: 7)</MinGuestWorkSkillDesc>
   <SilverMultiplier>Silber Multiplikator</SilverMultiplier>
   <SilverMultiplierDesc>Verändert die Menge an Silber die Gäste mitbringen. Eine bessere Beziehung mit der Fraktion bedeutet trotzdem noch mehr Silber. (Empfohlen: 10)</SilverMultiplierDesc>
-  <MinGuestGroupSize>Minimale Gästegruppengröße</MinGuestGroupSize>
-  <MinGuestGroupSizeDesc>Die minimale Größe einer Gruppe von Gästen. (Empfohlen: 1)</MinGuestGroupSizeDesc>
-  <MaxGuestGroupSize>Maximale Gästegruppengröße</MaxGuestGroupSize>
-  <MaxGuestGroupSizeDesc>Die maximale Größe einer Gruppe von Gästen. (Empfohlen: 16)</MaxGuestGroupSizeDesc>
+  <GuestGroupSize>Gästegruppengröße</GuestGroupSize>
+  <GuestGroupSizeDesc>Die Größe einer Gruppe von Gästen. (Empfohlen: 1-16)</GuestGroupSizeDesc>
   <MaxIncidentsPer3Days>Maximale Anzahl Gruppen innerhalb von 3 Tagen</MaxIncidentsPer3Days>
   <MaxIncidentsPer3DaysDesc>Die maximale Anzahl Gästegruppen die innerhalb von 3 Tagen kommen können. (Empfohlen: 5)</MaxIncidentsPer3DaysDesc>
   <DisableGuestsTab>Gäste Tab deaktivieren</DisableGuestsTab>
@@ -176,5 +174,8 @@
   <DisableFriendlyGearDropsDesc>Wenn ein freundlicher Charakter zu Boden geht, verliert er nicht mehr sein Inventar.</DisableFriendlyGearDropsDesc>
   <UseIcon>Gäste Tab Symbol verwenden</UseIcon>
   <UseIconDesc>Verwende ein Symbol auf dem Gäste Tab, statt Text.</UseIconDesc>
+  <Hospitality_RecommendedOn>Es wird empfohlen, diese Einstellung an zu lassen.</Hospitality_RecommendedOn>
+  <Hospitality_RecommendedOff>Es wird empfohlen, diese Einstellung aus zu lassen.</Hospitality_RecommendedOff>
+  <Hospitality_RecommendedRange>Es wird empfohlen, diese Einstellung zwischen {0} und {1} zu lassen.</Hospitality_RecommendedRange>
   
 </LanguageData>

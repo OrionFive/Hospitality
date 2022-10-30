@@ -9,7 +9,7 @@ namespace Hospitality
     {
         protected override int GetGroupSize()
         {
-            return Settings.maxGuestGroupSize;
+            return Settings.guestGroupSize.Value.Max;
         }
 
         public override bool CanFireNowSub(IncidentParms parms)

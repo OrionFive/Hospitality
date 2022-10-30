@@ -1,24 +1,21 @@
-using System;
-using System.IO;
 using HugsLib.Settings;
+using System;
+using System.Globalization;
 using UnityEngine;
 using Verse;
+using Color = UnityEngine.Color;
 
 namespace Hospitality
 {
     internal class Settings
     {
-        private const int DefaultMaxGroupSize = 16;
-
         public static SettingHandle<int> minGuestWorkSkill;
-        public static SettingHandle<int> minGuestGroupSize;
-        public static SettingHandle<int> maxGuestGroupSize;
+        public static SettingHandle<ConvertibleIntRange> guestGroupSize;
         public static SettingHandle<int> maxIncidentsPer3Days;
-        public static SettingHandle<int> silverMultiplier;
+        public static SettingHandle<float> silverMultiplier;
         public static SettingHandle<bool> disableGuests;
         public static SettingHandle<bool> disableWork;
         public static SettingHandle<bool> disableGifts;
-        public static SettingHandle<bool> disableLimits;
         public static SettingHandle<bool> disableArtAndCraft;
         public static SettingHandle<bool> disableOperations;
         public static SettingHandle<bool> disableMedical;
@@ -30,81 +27,135 @@ namespace Hospitality
 
         public Settings(ModSettingsPack settings)
         {
-            disableGuests = settings.GetHandle("disableGuests", "DisableVisitors".Translate(), "DisableVisitorsDesc".Translate(), false);
-            disableWork = settings.GetHandle("disableWork", "DisableGuestsHelping".Translate(), "DisableGuestsHelpingDesc".Translate(), false);
-            disableArtAndCraft = settings.GetHandle("disableArtAndCraft", "DisableArtAndCraft".Translate(), "DisableArtAndCraftDesc".Translate(), true);
-            disableOperations = settings.GetHandle("disableOperations", "DisableOperations".Translate(), "DisableOperationsDesc".Translate(), true);
-            disableMedical = settings.GetHandle("disableMedical", "DisableMedical".Translate(), "DisableMedicalDesc".Translate(), false);
-            disableGifts = settings.GetHandle("disableGifts", "DisableGifts".Translate(), "DisableGiftsDesc".Translate(), false);
-            minGuestWorkSkill = settings.GetHandle("minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, WorkSkillLimits);
-            minGuestGroupSize = settings.GetHandle("minGuestGroupSize", "MinGuestGroupSize".Translate(), "MinGuestGroupSizeDesc".Translate(), 1, GroupSizeLimitsMin);
-            maxGuestGroupSize = settings.GetHandle("maxGuestGroupSize", "MaxGuestGroupSize".Translate(), "MaxGuestGroupSizeDesc".Translate(), DefaultMaxGroupSize, GroupSizeLimitsMax);
-            maxIncidentsPer3Days = settings.GetHandle("maxIncidentsPer3Days", "MaxIncidentsPer3Days".Translate(), "MaxIncidentsPer3DaysDesc".Translate(), 5, MaxIncidentsPer3DaysLimitsMin);
-            silverMultiplier = settings.GetHandle("silverMultiplier", "SilverMultiplier".Translate(), "SilverMultiplierDesc".Translate(), 10); //, SilverMultiplierLimits); Broken right now: resets when game restarts
-            disableLimits = settings.GetHandle("disableLimits", "DisableLimits".Translate(), "DisableLimitsDesc".Translate(), false);
-            disableGuestsTab = settings.GetHandle("disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false);
-            useIcon = settings.GetHandle("useIcon", "UseIcon".Translate(), "UseIconDesc".Translate(), false);
-            enableBuyNotification = settings.GetHandle("enableBuyNotification", "EnableBuyNotification".Translate(), "EnableBuyNotificationDesc".Translate(), false);
-            enableRecruitNotification = settings.GetHandle("enableRecruitNotification", "EnableRecruitNotification".Translate(), "EnableRecruitNotificationDesc".Translate(), true);
-            disableFriendlyGearDrops = settings.GetHandle("disableFriendlyGearDrops", "DisableFriendlyGearDrops".Translate(), "DisableFriendlyGearDropsDesc".Translate(), true);
+            disableGuests = GetToggleHandle(settings, "disableGuests", "DisableVisitors".Translate(), "DisableVisitorsDesc".Translate(), false);
+            disableWork = GetToggleHandle(settings, "disableWork", "DisableGuestsHelping".Translate(), "DisableGuestsHelpingDesc".Translate(), false);
+            disableArtAndCraft = GetToggleHandle(settings, "disableArtAndCraft", "DisableArtAndCraft".Translate(), "DisableArtAndCraftDesc".Translate(), true, true);
+            disableOperations = GetToggleHandle(settings, "disableOperations", "DisableOperations".Translate(), "DisableOperationsDesc".Translate(), true, true);
+            disableMedical = GetToggleHandle(settings, "disableMedical", "DisableMedical".Translate(), "DisableMedicalDesc".Translate(), false);
+            disableGifts = GetToggleHandle(settings, "disableGifts", "DisableGifts".Translate(), "DisableGiftsDesc".Translate(), false);
+            minGuestWorkSkill = GetSliderHandle(settings, "minGuestWorkSkill", "MinGuestWorkSkill".Translate(), "MinGuestWorkSkillDesc".Translate(), 7, () => 0, () => 20, recommended: new IntRange(6, 20));
+            guestGroupSize = GetRangeHandle(settings, "guestGroupSize", "GuestGroupSize".Translate(), "GuestGroupSizeDesc".Translate(), new ConvertibleIntRange(1, 16), () => 1, () => 20, recommendedMin: new IntRange(1, 1), recommendedMax: new IntRange(8, 20));
+            maxIncidentsPer3Days = GetSliderHandle(settings, "maxIncidentsPer3Days", "MaxIncidentsPer3Days".Translate(), "MaxIncidentsPer3DaysDesc".Translate(), 5, () => 1, () => 10);
+            silverMultiplier = GetSliderHandle(settings, "silverMultiplier", "SilverMultiplier".Translate(), "SilverMultiplierDesc".Translate(), 1, () => 0, () => 10f, 0.1f, recommended: new FloatRange(0.5f, 1.5f));
+            disableGuestsTab = GetToggleHandle(settings, "disableGuestsTab", "DisableGuestsTab".Translate(), "DisableGuestsTabDesc".Translate(), false, false);
+            useIcon = GetToggleHandle(settings, "useIcon", "UseIcon".Translate(), "UseIconDesc".Translate(), false);
+            enableBuyNotification = GetToggleHandle(settings, "enableBuyNotification", "EnableBuyNotification".Translate(), "EnableBuyNotificationDesc".Translate(), false);
+            enableRecruitNotification = GetToggleHandle(settings, "enableRecruitNotification", "EnableRecruitNotification".Translate(), "EnableRecruitNotificationDesc".Translate(), true);
+            disableFriendlyGearDrops = GetToggleHandle(settings, "disableFriendlyGearDrops", "DisableFriendlyGearDrops".Translate(), "DisableFriendlyGearDropsDesc".Translate(), true, true);
+        }
 
-            string hiddenConfigFile = Path.Combine(GenFilePaths.ConfigFolderPath, "Hospitality.cfg");
-            if (File.Exists(hiddenConfigFile))
+        private static SettingHandle<bool> GetToggleHandle(ModSettingsPack settings, string name, TaggedString title, TaggedString description, bool defaultValue, bool? recommended = null)
+        {
+            var handle = settings.GetHandle(name, title, description, defaultValue);
+            handle.CustomDrawer = rect =>
             {
-                try
-                {
-                    var reader = File.OpenText(hiddenConfigFile);
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (line.StartsWith("#")) continue;
-                        string[] keyVal = line.Split('=');
-                        if (keyVal.Length != 2) continue;
-                        string key = keyVal[0].Trim();
-                        string val = keyVal[1].Trim();
+                var value = handle.Value;
+                Widgets.CheckboxLabeled(rect.TopPartPixels(34), string.Empty, ref value, placeCheckboxNearText: true);
+                handle.Value = value;
+                CheckBadValue(rect.BottomPartPixels(52), handle, recommended);
+                return true;
+            };
+            return handle;
+        }
 
-                        switch (key)
-                        {
-                            case "PriceFactor":
-                                Log.Message("[Hospitality] Setting PriceFactor to " + val);
-                                ItemUtility.priceFactor = float.Parse(val);
-                                break;
+        private static SettingHandle<float> GetSliderHandle(ModSettingsPack settings, string name, TaggedString title, TaggedString description, float defaultValue, Func<float> min, Func<float> max, float steps = -1, FloatRange? recommended = null)
+        {
+            var handle = settings.GetHandle(name, title, description, defaultValue);
+            handle.CustomDrawer = rect =>
+            {
+                handle.Value = Widgets.HorizontalSlider(rect.TopPartPixels(34), Convert.ToSingle(handle.Value), min(), max(), true, handle.Value.ToString(CultureInfo.CurrentCulture), min().ToString(CultureInfo.CurrentCulture), max().ToString(CultureInfo.CurrentCulture), steps);
+                CheckBadValue(rect.BottomPartPixels(52), handle, recommended);
+                return true;
+            };
+            return handle;
+        }
 
-                            default:
-                                Log.Message("[Hospitality] Unrecognized setting: " + key);
-                                break;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Error("[Hospitality] Exception loading Hospitality.cfg: " + e.Message);
-                }
+        private static SettingHandle<int> GetSliderHandle(ModSettingsPack settings, string name, TaggedString title, TaggedString description, int defaultValue, Func<int> min, Func<int> max, int steps = -1, IntRange? recommended = null)
+        {
+            var handle = settings.GetHandle(name, title, description, defaultValue);
+            handle.CustomDrawer = rect =>
+            {
+                handle.Value = (int)Widgets.HorizontalSlider(rect.TopPartPixels(34), Convert.ToSingle(handle.Value), min(), max(), true, handle.Value.ToString(), min().ToString(), max().ToString(), steps);
+                CheckBadValue(rect.BottomPartPixels(52), handle, recommended);
+                return true;
+            };
+            return handle;
+        }
+
+        private static SettingHandle<ConvertibleIntRange> GetRangeHandle(ModSettingsPack settings, string name, TaggedString title, TaggedString description, ConvertibleIntRange defaultValue, Func<int> min, Func<int> max, int minRange = 0, IntRange? recommendedMin = null, IntRange? recommendedMax = null)
+        {
+            var handle = settings.GetHandle(name, title, description, defaultValue);
+            handle.CustomDrawer = rect =>
+            {
+                var range = new IntRange(handle.Value.Min, handle.Value.Max);
+                Widgets.IntRange(rect.TopPartPixels(34), handle.GetHashCode(), ref range, min(), max(), range.ToString(), minRange);
+                handle.Value = new ConvertibleIntRange(range.TrueMin, range.TrueMax);
+                CheckBadValue(rect.BottomPartPixels(52), handle, recommendedMin, recommendedMax);
+                return true;
+            };
+
+            return handle;
+        }
+
+        private static void CheckBadValue(Rect rect, SettingHandle<bool> handle, bool? recommended)
+        {
+            var badValue = recommended.HasValue && handle.Value != recommended.Value;
+            if (badValue)
+            {
+                var font = Text.Font;
+                Text.Font = GameFont.Small;
+                Widgets.Label(rect, recommended == true ? "Hospitality_RecommendedOn".Translate().Colorize(Color.red) : "Hospitality_RecommendedOff".Translate().Colorize(Color.red));
+                Text.Font = font;
             }
+            handle.CustomDrawerHeight = badValue ? 34 + 52 : 34;
         }
 
-        // Make sure that it still works when referenced settings are null!
-        private static SettingHandle.ValueIsValid WorkSkillLimits { get { return AtLeast(() => disableLimits?.Value != false ? 0 : 6); } }
-        private static SettingHandle.ValueIsValid MaxIncidentsPer3DaysLimitsMin { get { return AtLeast(() => 1); } }
-        private static SettingHandle.ValueIsValid GroupSizeLimitsMin { get { return Between(() => 1, () => maxGuestGroupSize?.Value ?? int.MaxValue); } }
-        private static SettingHandle.ValueIsValid GroupSizeLimitsMax { get { return AtLeast(() => Mathf.Max(minGuestGroupSize?.Value ?? 0, disableLimits?.Value != false ? 1 : 8)); } }
-        private static SettingHandle.ValueIsValid SilverMultiplierLimits { get { return Between(() => disableLimits?.Value == true ? 0 : 5, () => disableLimits?.Value == true ? 100 : 15); } }
-
-        private static SettingHandle.ValueIsValid Between(Func<float> amountMin, Func<float> amountMax)
+        private static void CheckBadValue(Rect rect, SettingHandle<int> handle, IntRange? recommended)
         {
-            return value => float.TryParse(value, out var actual) && actual >= amountMin() && actual <= amountMax();
+            var badValue = recommended.HasValue && !recommended.Value.Includes(handle.Value);
+            if (badValue)
+            {
+                var font = Text.Font;
+                Text.Font = GameFont.Small;
+                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommended.Value.TrueMin, recommended.Value.TrueMax).Colorize(Color.red));
+                Text.Font = font;
+            }
+            handle.CustomDrawerHeight = badValue ? 34 + 52 : 34;
         }
 
-        private static SettingHandle.ValueIsValid AtLeast(Func<int> amount)
+        private static void CheckBadValue(Rect rect, SettingHandle<float> handle, FloatRange? recommended)
         {
-            return value => int.TryParse(value, out var actual) && actual >= amount();
+            var badValue = recommended.HasValue && !recommended.Value.Includes(handle.Value);
+            if (badValue)
+            {
+                var font = Text.Font;
+                Text.Font = GameFont.Small;
+                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommended.Value.TrueMin, recommended.Value.TrueMax).Colorize(Color.red));
+                Text.Font = font;
+            }
+            handle.CustomDrawerHeight = badValue ? 34 + 52 : 34;
         }
 
-/*
-        private static SettingHandle.ValueIsValid AtMost(Func<int> amount)
+        private static void CheckBadValue(Rect rect, SettingHandle<ConvertibleIntRange> handle, IntRange? recommendedMin, IntRange? recommendedMax)
         {
-            return value => int.TryParse(value, out var actual) && actual <= amount();
+            var badValueMin = recommendedMin.HasValue && !recommendedMin.Value.Includes(handle.Value.Min);
+            var badValueMax = recommendedMax.HasValue && !recommendedMax.Value.Includes(handle.Value.Max);
+
+            if (badValueMin)
+            {
+                var font = Text.Font;
+                Text.Font = GameFont.Small;
+                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommendedMin.Value.TrueMin, recommendedMin.Value.TrueMax).Colorize(Color.red));
+                Text.Font = font;
+            }
+            else if (badValueMax)
+            {
+                var font = Text.Font;
+                Text.Font = GameFont.Small;
+                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommendedMax.Value.TrueMin, recommendedMax.Value.TrueMax).Colorize(Color.red));
+                Text.Font = font;
+            }
+            handle.CustomDrawerHeight = badValueMin || badValueMax ? 34 + 52 : 34;
         }
-*/
     }
 }

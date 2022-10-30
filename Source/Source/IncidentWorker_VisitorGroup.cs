@@ -377,7 +377,7 @@ namespace Hospitality
         {
             //Log.Message($"Optimal amount of guests = {OptimalAmount}, max = {OptimalAmount * 16f/6}");
             var random = Rand.GaussianAsymmetric(OptimalAmount, 1.5f, 16f / 6);
-            return Mathf.Clamp(Mathf.CeilToInt(random), Settings.minGuestGroupSize, Settings.maxGuestGroupSize);
+            return Mathf.Clamp(GenMath.RoundRandom(random), Settings.guestGroupSize.Value.Min, Settings.guestGroupSize.Value.Max);
         }
 
         /// <summary>
