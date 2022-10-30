@@ -117,7 +117,7 @@ namespace Hospitality
             {
                 var font = Text.Font;
                 Text.Font = GameFont.Small;
-                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommended.Value.TrueMin, recommended.Value.TrueMax).Colorize(Color.red));
+                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommended.Value.TrueMin.ToString(CultureInfo.CurrentCulture), recommended.Value.TrueMax.ToString(CultureInfo.CurrentCulture)).Colorize(Color.red));
                 Text.Font = font;
             }
             handle.CustomDrawerHeight = badValue ? 34 + 52 : 34;
@@ -130,7 +130,7 @@ namespace Hospitality
             {
                 var font = Text.Font;
                 Text.Font = GameFont.Small;
-                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommended.Value.TrueMin, recommended.Value.TrueMax).Colorize(Color.red));
+                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommended.Value.TrueMin.ToString(CultureInfo.CurrentCulture), recommended.Value.TrueMax.ToString(CultureInfo.CurrentCulture)).Colorize(Color.red));
                 Text.Font = font;
             }
             handle.CustomDrawerHeight = badValue ? 34 + 52 : 34;
@@ -145,14 +145,14 @@ namespace Hospitality
             {
                 var font = Text.Font;
                 Text.Font = GameFont.Small;
-                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommendedMin.Value.TrueMin, recommendedMin.Value.TrueMax).Colorize(Color.red));
+                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommendedMin.Value.TrueMin.ToString(CultureInfo.CurrentCulture), recommendedMin.Value.TrueMax.ToString(CultureInfo.CurrentCulture)).Colorize(Color.red));
                 Text.Font = font;
             }
             else if (badValueMax)
             {
                 var font = Text.Font;
                 Text.Font = GameFont.Small;
-                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommendedMax.Value.TrueMin, recommendedMax.Value.TrueMax).Colorize(Color.red));
+                Widgets.Label(rect, "Hospitality_RecommendedRange".Translate(recommendedMax.Value.TrueMin.ToString(CultureInfo.CurrentCulture), recommendedMax.Value.TrueMax.ToString(CultureInfo.CurrentCulture)).Colorize(Color.red));
                 Text.Font = font;
             }
             handle.CustomDrawerHeight = badValueMin || badValueMax ? 34 + 52 : 34;
