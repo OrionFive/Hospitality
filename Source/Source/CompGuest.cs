@@ -30,6 +30,7 @@ namespace Hospitality
 
         public Building_GuestBed bed;
         public int lastBedCheckTick;
+        public int lastFoodCheckTick;
 
         private bool postLoaded;
 

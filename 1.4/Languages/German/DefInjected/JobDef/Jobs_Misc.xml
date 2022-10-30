@@ -8,5 +8,7 @@
 	<BrowseItems.reportString>Schaue die Waren an.</BrowseItems.reportString>
 	<ClaimGuestBed.reportString>Reserviere ein Bett.</ClaimGuestBed.reportString>
 	<VendingMachine_EmptyVendingMachine.reportString>Leere den Automaten.</VendingMachine_EmptyVendingMachine.reportString>
+	<ScroungeFood.reportString>Beschaffe was zu essen von TargetA.</ScroungeFood.reportString>
+	<SwipeFood.reportString>Mopse Essen von TargetA.</Swipe.reportString>
 
 </LanguageData>

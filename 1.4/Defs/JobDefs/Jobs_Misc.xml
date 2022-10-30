@@ -45,5 +45,19 @@
 		<reportString>Emptying vending machine.</reportString>
 		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
 	</JobDef>
+	
+	<JobDef>
+		<defName>ScroungeFood</defName>
+		<driverClass>Hospitality.JobDriver_ScroungeFood</driverClass>
+		<reportString>Scrounging food from TargetA.</reportString>
+		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+	</JobDef>
+	
+	<JobDef>
+		<defName>SwipeFood</defName>
+		<driverClass>Hospitality.JobDriver_SwipeFood</driverClass>
+		<reportString>Swiping food from TargetA.</reportString>
+		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+	</JobDef>
 
 </Defs>

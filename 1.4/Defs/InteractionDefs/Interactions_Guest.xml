@@ -56,5 +56,21 @@
       </rulesStrings>
     </logRulesInitiator>
   </InteractionDef>
+  
+  <InteractionDef>
+    <defName>ScroungeFoodAttempt</defName>
+    <label>scrounge food</label>
+	<symbol>Things/Mote/SpeechSymbols/Chitchat</symbol>
+    <workerClass>Hospitality.InteractionWorker_ScroungeFoodAttempt</workerClass>
+    <initiatorXpGainSkill>Social</initiatorXpGainSkill>
+    <initiatorXpGainAmount>50</initiatorXpGainAmount>
+    <logRulesInitiator>
+      <rulesStrings>
+        <li>r_logentry->[INITIATOR_nameDef] begged [RECIPIENT_nameDef] for some food.</li>
+        <li>r_logentry->[INITIATOR_nameDef] asked [RECIPIENT_nameDef] for something to eat.</li>
+        <li>r_logentry->[INITIATOR_nameDef] stared at [RECIPIENT_nameDef]'s food longingly.</li>
+      </rulesStrings>
+    </logRulesInitiator>
+  </InteractionDef>
 
 </Defs>

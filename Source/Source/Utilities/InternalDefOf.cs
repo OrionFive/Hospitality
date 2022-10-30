@@ -20,6 +20,8 @@ namespace Hospitality.Utilities
 
         public static JobDef VendingMachine_EmptyVendingMachine;
         public static JobDef ClaimGuestBed;
+        public static JobDef ScroungeFood;
+        public static JobDef SwipeFood;
         public static RoomRoleDef GuestRoom;
         public static SpecialThingFilterDef AllowRotten;
         public static JoyGiverDef BuyFood;

@@ -8,5 +8,7 @@
 	<BrowseItems.reportString>Browsing wares.</BrowseItems.reportString>
 	<ClaimGuestBed.reportString>Claiming a bed.</ClaimGuestBed.reportString>
 	<VendingMachine_EmptyVendingMachine.reportString>Emptying vending machine.</VendingMachine_EmptyVendingMachine.reportString>
+	<ScroungeFood.reportString>Scrounging food from TargetA.</ScroungeFood.reportString>
+	<SwipeFood.reportString>Swiping food from TargetA.</Swipe.reportString>
 
 </LanguageData>
