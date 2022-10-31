@@ -14,10 +14,20 @@ namespace Hospitality.Patches
         public class SetGuestStatus
         {
             [HarmonyPrefix]
-            public static void Prefix(ref GuestStatus guestStatus, Pawn ___pawn)
+            public static bool Prefix(ref GuestStatus guestStatus, Pawn ___pawn)
             {
-                // Added
-                if (___pawn?.IsGuest() == true) guestStatus = GuestStatus.Guest;
+                if (___pawn?.IsGuest() != true) return true;
+
+                // Became hostile?
+                if (___pawn.Faction.HostileTo(Faction.OfPlayer))
+                {
+                    // Remove from guest list
+                    ___pawn.MapHeld.GetMapComponent()?.PresentGuests.Remove(___pawn);
+                    // But don't try to make them prisoners
+                    return false;
+                }
+                guestStatus = GuestStatus.Guest;
+                return true;
             }
         }
     }
