@@ -92,15 +92,15 @@ namespace Hospitality
             return pawn.MapHeld.fogGrid.IsFogged(pawn.PositionHeld);
         }
 
-        private static void ShowAskMayComeDialog(Faction faction, Map map, TaggedString reasons, Direction8Way spawnDirection, Action allow, Action refuse)
+        private static void ShowAskMayComeDialog(Faction faction, Map map, TaggedString reasons, Direction8Way spawnDirection, Action allow, Action refuse, Action dontAskAgain)
         {
             var text = "VisitorsArrivedDesc".Translate(faction, reasons);
 
             DiaNode diaNode = new DiaNode(text);
-            DiaOption diaOption = new DiaOption("VisitorsArrivedAccept".Translate()) {action = allow, resolveTree = true};
+            DiaOption diaOption = new DiaOption("VisitorsArrivedAccept".Translate()) { action = allow, resolveTree = true };
             diaNode.options.Add(diaOption);
 
-            DiaOption diaOption2 = new DiaOption("VisitorsArrivedRefuse".Translate()) {action = refuse, resolveTree = true};
+            DiaOption diaOption2 = new DiaOption("VisitorsArrivedRefuse".Translate()) { action = refuse, resolveTree = true };
             diaNode.options.Add(diaOption2);
 
             if (!map.listerBuildings.AllBuildingsColonistOfClass<Building_GuestBed>().Any())
@@ -113,6 +113,9 @@ namespace Hospitality
                 };
                 diaNode.options.Add(diaOption3);
             }
+
+            DiaOption diaOption4 = new DiaOption("VisitorsArrivedDontAskAgain".Translate()) { action = dontAskAgain, resolveTree = true };
+            diaNode.options.Add(diaOption4);
 
             string title = "VisitorsArrivedTitle".Translate(new NamedArgument((MapParent)map.ParentHolder, "WORLDOBJECT"), spawnDirection.LabelShort(), new NamedArgument(faction, "FACTION"));
             Find.WindowStack.Add(new Dialog_NodeTree(diaNode, true, true, title));
@@ -191,7 +194,7 @@ namespace Hospitality
 
                 // We check here instead of CanFireNow, so we can reschedule the visit.
                 // Any reasons not to come?
-                if (CheckCanCome(map, parms.faction, out var reasons))
+                if (!map.GetMapComponent().askForSafety || CheckCanCome(map, parms.faction, out var reasons))
                 {
                     // No, spawn
                     return SpawnGroup(parms, map);
@@ -200,8 +203,13 @@ namespace Hospitality
                 // Yes, ask the player for permission
                 void Allow() => SpawnGroup(parms, map);
                 void Refuse() => MaybeRevisit(parms, map, new FloatRange(2, 5));
+                void DontAskAgain()
+                {
+                    SpawnGroup(parms, map);
+                    map.GetMapComponent().askForSafety = false;
+                }
 
-                AskForPermission(parms, map, reasons, Allow, Refuse);
+                AskForSafety(parms, map, reasons, Allow, Refuse, DontAskAgain);
             }
             return true;
         }
@@ -217,14 +225,15 @@ namespace Hospitality
             }
         }
 
-        protected virtual void AskForPermission(IncidentParms parms, Map map, string reasons, Action allow, Action refuse)
+        protected virtual void AskForSafety(IncidentParms parms, Map map, string reasons, Action allow, Action refuse, Action dontAskAgain)
         {
             var spawnDirection = GetSpawnDirection(map, parms.spawnCenter);
             ShowAskMayComeDialog(parms.faction, map, reasons, spawnDirection,
                 // Permission, spawn
                 allow,
                 // No permission, come again later
-                refuse);
+                refuse,
+                dontAskAgain);
         }
 
         private static Direction8Way GetSpawnDirection(Map map, IntVec3 position)

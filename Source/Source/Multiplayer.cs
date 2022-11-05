@@ -30,6 +30,7 @@ namespace Hospitality
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.defaultMakeFriends)),
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.defaultEntertain)),
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.guestsAreWelcome)),
+                MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.askForSafety)),
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.defaultAreaRestriction)).SetBufferChanges(),
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.defaultAreaShopping)).SetBufferChanges(),
                 MP.RegisterSyncField(typeof(Hospitality_MapComponent), nameof(Hospitality_MapComponent.refuseGuestsUntilWeHaveBeds)),

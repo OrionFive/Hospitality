@@ -41,6 +41,7 @@
   <VisitorsArrivedRefuse>Schicke sie weg</VisitorsArrivedRefuse>
   <VisitorsArrivedRefuseUntilBeds>Besucher abweisen, bis ich Gästebetten habe</VisitorsArrivedRefuseUntilBeds>
   <VisitorsArrivedReasonNoBeds>Keine Gästebetten</VisitorsArrivedReasonNoBeds>
+  <VisitorsArrivedDontAskAgain>Gäste immer zulassen (nicht nochmal fragen)</VisitorsArrivedDontAskAgain>
 
   <LetterLabelPawnBecameGuest>{PAWN_labelShort} wurde ein Gast</LetterLabelPawnBecameGuest>
   <LetterLabelPawnJoinedGroup>{PAWN_labelShort} schließt sich Gästen an</LetterLabelPawnJoinedGroup>
@@ -107,7 +108,9 @@
   <RefuseGuestsUntilBeds>Gäste abweisen bis es Betten gibt</RefuseGuestsUntilBeds>
   <RefuseGuestsUntilBedsTooltip>Wenn du dies aktivierst, kommen keine neuen Gästegruppen bis es Gästebetten gibt.</RefuseGuestsUntilBedsTooltip>
   <GuestsCanTakeFoodForFree>Essen ist kostenlos für Gäste</GuestsCanTakeFoodForFree>
-  <GuestsCanTakeFoodForFreeTooltip>Wenn du dies aktivierst, dürfen Gäste gratis Essen von dir nehmen und konsumieren.</GuestsCanTakeFoodForFreeTooltip>
+  <GuestsCanTakeFoodForFreeTooltip>Wenn du dies aktivierst, dürfen Gäste gratis Essen von dir nehmen und konsumieren.</GuestsCanTakeFoodForFreeTooltip>  
+  <GuestsAskForSafety>Gäste müssen fragen, wenn Gefahr besteht</GuestsAskForSafety>
+  <GuestsAskForSafetyTooltip>Wenn du dies deaktivierst, werden Gäste nicht mehr fragen, ob es sicher ist, zu kommen.</GuestsAskForSafetyTooltip>
 
   <!-- Infos -->
   <StatsReport_MissingFriends>Fehlende Freunde</StatsReport_MissingFriends>

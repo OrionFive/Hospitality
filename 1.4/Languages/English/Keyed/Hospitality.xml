@@ -41,6 +41,7 @@
   <VisitorsArrivedRefuse>Send away</VisitorsArrivedRefuse>
   <VisitorsArrivedRefuseUntilBeds>Refuse visitors until I have guest beds</VisitorsArrivedRefuseUntilBeds>
   <VisitorsArrivedReasonNoBeds>No guest beds</VisitorsArrivedReasonNoBeds>
+  <VisitorsArrivedDontAskAgain>Always let them come (don't ask this again)</VisitorsArrivedDontAskAgain>
   
   <LetterLabelPawnBecameGuest>{PAWN_labelShort} became a guest</LetterLabelPawnBecameGuest>
   <LetterLabelPawnJoinedGroup>{PAWN_labelShort} joined guests</LetterLabelPawnJoinedGroup>
@@ -108,6 +109,8 @@
   <RefuseGuestsUntilBedsTooltip>If you turn this on, no new guest groups will arrive, until you've built guest beds.</RefuseGuestsUntilBedsTooltip>
   <GuestsCanTakeFoodForFree>Guests may take food for free</GuestsCanTakeFoodForFree>
   <GuestsCanTakeFoodForFreeTooltip>If you turn this on, guests may take and eat food from your stockpile for free.</GuestsCanTakeFoodForFreeTooltip>
+  <GuestsAskForSafety>Guests ask if it is safe to come</GuestsAskForSafety>
+  <GuestsAskForSafetyTooltip>If you turn this off, guests will not ask if they may come if there is danger present.</GuestsAskForSafetyTooltip>
   
   <!-- Infos -->
   <StatsReport_MissingFriends>Missing friends</StatsReport_MissingFriends>
