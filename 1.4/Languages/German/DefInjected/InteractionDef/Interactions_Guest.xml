@@ -40,11 +40,11 @@
 		<li>adjwords->charmante</li>
 	</CharmGuestAttempt.logRulesInitiator.rulesStrings>
 
-	<CharmGuestAttempt.label>Essen schnorren</CharmGuestAttempt.label>
- 	<CharmGuestAttempt.logRulesInitiator.rulesStrings>
+	<ScroungeFoodAttempt.label>Essen schnorren</ScroungeFoodAttempt.label>
+ 	<ScroungeFoodAttempt.logRulesInitiator.rulesStrings>
 		<li>r_logentry->[INITIATOR_nameDef] hat [RECIPIENT_nameDef] um Essen angebettelt.</li>
         <li>r_logentry->[INITIATOR_nameDef] hat [RECIPIENT_nameDef] um etwas zu essen gefragt.</li>
         <li>r_logentry->[INITIATOR_nameDef] hat das Essen von [RECIPIENT_nameDef] hungrig angestarrt.</li>
-	</CharmGuestAttempt.logRulesInitiator.rulesStrings>
+	</ScroungeFoodAttempt.logRulesInitiator.rulesStrings>
 
 </LanguageData>
