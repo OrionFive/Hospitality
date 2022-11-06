@@ -401,20 +401,6 @@ namespace Hospitality.Utilities
             pawn.drugs = new Pawn_DrugPolicyTracker(pawn) {CurrentPolicy = pawn.Map.GetMapComponent().GetDrugPolicy()};
         }
 
-        public static void ScroungedFoodFrom(this Pawn guest, Pawn target, bool swiped)
-        {
-            GetFood(guest, target, swiped);
-        }
-
-        private static void GetFood(Pawn guest, Pawn target, bool swiped)
-        {
-            var food = JobGiver_ScroungeFood.BestFoodInInventory(target, guest);
-            if (food == null || food.stackCount <= 0) return;
-            var half = Mathf.Max(food.stackCount / 2, 1);
-            var split = food.SplitOff(half);
-            var success = guest.inventory.innerContainer.TryAdd(split);
-        }
-
         public static void TryImproveFriendship(this Pawn guest, Pawn recruiter, List<RulePackDef> extraSentencePacks)
         {
             if (!guest.MakeFriends()) return;

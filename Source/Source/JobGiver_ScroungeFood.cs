@@ -1,6 +1,7 @@
 using System.Linq;
 using Hospitality.Utilities;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
@@ -21,13 +22,7 @@ namespace Hospitality
             if (pawn.needs.food.CurCategory < HungerCategory.Starving && FoodUtility.ShouldBeFedBySomeone(pawn)) return 0;
 
             var requiresFoodFactor = GuestUtility.GetRequiresFoodFactor(pawn);
-            if (requiresFoodFactor > 0.35f)
-            {
-                return requiresFoodFactor * 6;
-            }
-            var priority = requiresFoodFactor;
-            //if(priority > 0) Log.Message($"{pawn.NameShortColored} scrounge food priority: {priority:F2}; factor = {requiresFoodFactor}");
-            return priority;
+            return requiresFoodFactor * 6;
         }
 
         public override Job TryGiveJob(Pawn guest)
@@ -62,7 +57,17 @@ namespace Hospitality
             var swipe = target?.Awake() == false;
             //Log.Message($"{guest.LabelCap} tried to find scroungable food. Found {target?.Label}. pressure = {pressure} maxStealOpinion = {maxStealOpinion} swipe = {swipe}");
             if (target == null) return null;
-            return new Job(swipe ? InternalDefOf.SwipeFood : InternalDefOf.ScroungeFood, target) { overeat = swipe }; // overeat stores swiping
+
+            food = BestFoodInInventory(target, guest);
+            if (food == null) return null;
+            var amount = GetAmount(food);
+            return new Job(swipe ? InternalDefOf.SwipeFood : InternalDefOf.ScroungeFood, target, food) { overeat = swipe, count = amount }; // overeat stores swiping
+        }
+
+        private static int GetAmount(Thing thing)
+        {
+            if (thing == null || thing.stackCount < 1) return 0;
+            return Mathf.Max(thing.stackCount / 2, 1);
         }
 
         private static Pawn FindTarget(Pawn guest, int maxStealOpinion)

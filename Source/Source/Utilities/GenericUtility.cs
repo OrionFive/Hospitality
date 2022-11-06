@@ -256,5 +256,11 @@ namespace Hospitality.Utilities
 			hash = hash * 31 + second.GetHashCode();
 			return hash;
 		}
-	}
+
+        public static void TryCreateBubble(Pawn pawn1, Pawn pawn2, Texture2D symbol)
+        {
+            if (pawn1.interactions.InteractedTooRecentlyToInteract()) return;
+            MoteMaker.MakeInteractionBubble(pawn1, pawn2, ThingDefOf.Mote_Speech, symbol);
+        }
+    }
 }

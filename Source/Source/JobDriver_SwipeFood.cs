@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Hospitality.Utilities;
 using RimWorld;
 using Verse.AI;
 
@@ -17,11 +16,10 @@ namespace Hospitality
             this.FailOnIncapable(PawnCapacityDefOf.Manipulation);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
             Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).socialMode = RandomSocialMode.Off;
-            yield return Toils_General.Do(delegate
-            {
-                var target = pawn.CurJob.targetA.Pawn;
-                pawn.ScroungedFoodFrom(target, true);
-            });
+            yield return ItemUtility.TakeFromPawn(job.targetB.Thing, job.targetA.Pawn.inventory.innerContainer, job.count, TargetIndex.B);
+            yield return Toils_Haul.StartCarryThing(TargetIndex.B);
+            yield return Toils_General.Wait(150);
+            yield return ItemUtility.TakeToInventory(TargetIndex.B);
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 
@@ -13,8 +12,6 @@ namespace Hospitality
             letterLabel = null;
             letterText = null;
             lookTargets = null;
-
-            guest.ScroungedFoodFrom(target, false);
         }
     }
 }

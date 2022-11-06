@@ -10,6 +10,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
+using Verse.Sound;
 
 namespace Hospitality {
     internal static class ItemUtility
@@ -252,6 +253,54 @@ namespace Hospitality {
             if (thing == null || guestTrader == null) return false;
             if (thing.def.tradeability.PlayerCanSell()) return true;
             return guestTrader.IsGuestTrader() && thing.def.thingCategories?.Contains(ThingCategoryDefOf.FoodMeals) == true;
+        }
+
+        public static Toil TakeFromPawn(Thing item, ThingOwner holder, int count = -1, TargetIndex indexToSet = TargetIndex.None)
+        {
+            var toil = ToilMaker.MakeToil();
+            toil.initAction = delegate
+            {
+                if (!holder.Contains(item))
+                {
+                    toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
+                }
+                else
+                {
+                    count = count < 0 ? toil.actor.jobs.curJob.count : count;
+                    holder.TryDrop(item, ThingPlaceMode.Near, count, out var droppedThing);
+                    if (droppedThing == null)
+                    {
+                        Log.Warning($"Taker {toil.actor.Label} unable to take count {count} of thing {item.Label} from holder's inventory");
+                        toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
+                    }
+                    else if (indexToSet != 0)
+                    {
+                        toil.actor.jobs.curJob.SetTarget(indexToSet, droppedThing);
+                    }
+                }
+            };
+            return toil;
+        }
+
+        public static Toil TakeToInventory(TargetIndex indItem)
+        {
+            Toil takeThing = ToilMaker.MakeToil();
+            takeThing.initAction = delegate
+            {
+                Pawn actor = takeThing.actor;
+                Thing thing = actor.CurJob.GetTarget(indItem).Thing;
+                if (actor.carryTracker.TryDropCarriedThing(actor.PositionHeld, ThingPlaceMode.Near, out var droppedThing))
+                {
+                    droppedThing.DeSpawn();
+                    actor.inventory.TryAddItemNotForSale(droppedThing);
+                    thing.def.soundPickup.PlayOneShot(new TargetInfo(actor.Position, actor.Map));
+                }
+                else
+                {
+                    actor.jobs.EndCurrentJob(JobCondition.Errored);
+                }
+            };
+            return takeThing;
         }
     }
 }

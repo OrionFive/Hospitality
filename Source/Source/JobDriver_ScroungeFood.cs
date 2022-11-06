@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Hospitality.Utilities;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -26,19 +27,12 @@ namespace Hospitality
             yield return toil2;
             finalGoto.socialMode = RandomSocialMode.Off;
             yield return finalGoto;
-            yield return Toils_General.Do(delegate
-            {
-                if (!OtherPawn.Awake())
-                {
-                    OtherPawn.jobs.SuspendCurrentJob(JobCondition.InterruptForced);
-                    var intDef = DefDatabase<InteractionDef>.GetNamed("ScroungeFoodAttempt");
-                    if (!pawn.interactions.CanInteractNowWith(OtherPawn, intDef))
-                    {
-                        Log.Message($"{pawn.LabelCap} failed to scrounge food from {OtherPawn.Label}: Could not interact.");
-                    }
-                }
-            });
-            yield return Toils_Interpersonal.Interact(TargetIndex.A, DefDatabase<InteractionDef>.GetNamed("ScroungeFoodAttempt"));
+            yield return AskForFood(TargetIndex.A, TargetIndex.B);
+            yield return ItemUtility.TakeFromPawn(job.targetB.Thing, job.targetA.Pawn.inventory.innerContainer, job.count, TargetIndex.B);
+            yield return Toils_Haul.StartCarryThing(TargetIndex.B);
+            yield return Toils_General.Wait(80);
+            yield return ItemUtility.TakeToInventory(TargetIndex.B);
+
         }
 
         public static Toil GotoPawn(TargetIndex targetInd)
@@ -61,6 +55,56 @@ namespace Hospitality
             toil.socialMode = RandomSocialMode.Off;
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             return toil;
+        }
+
+        public static Toil AskForFood(TargetIndex targetInd, TargetIndex foodInd)
+        {
+            var toil = ToilMaker.MakeToil("Scrounge food interaction"); ;
+            toil.defaultDuration = 100;
+            toil.defaultCompleteMode = ToilCompleteMode.Delay;
+            toil.socialMode = RandomSocialMode.Off;
+            toil.activeSkill = () => SkillDefOf.Social;
+            toil.tickAction = TickAction;
+            toil.initAction = InitAction;
+            return toil;
+
+            void InitAction()
+            {
+                Pawn actor = toil.actor;
+                Job curJob = actor.CurJob;
+                LocalTargetInfo target = curJob.GetTarget(targetInd);
+                LocalTargetInfo targetFood = curJob.GetTarget(foodInd);
+
+                var targetPawn = target.Pawn;
+                if (!target.HasThing || targetPawn == null)
+                {
+                    Log.Warning($"Can't scrounge, no target.");
+                    actor.jobs.EndCurrentJob(JobCondition.Incompletable);
+                    return;
+                }
+
+                var food = targetFood.Thing;
+                if (!targetFood.HasThing || food == null)
+                {
+                    Log.Warning($"Can't scrounge, no food.");
+                    actor.jobs.EndCurrentJob(JobCondition.Incompletable);
+                    return;
+                }
+
+                var symbol = food.def.uiIcon;
+                if (symbol != null) GenericUtility.TryCreateBubble(actor, targetPawn, symbol);
+                var intDef = DefDatabase<InteractionDef>.GetNamed("ScroungeFoodAttempt");
+                actor.interactions.lastInteractionTime = Find.TickManager.TicksGame;
+                actor.interactions.lastInteraction = intDef.defName;
+                var list = new List<RulePackDef>();
+                intDef.Worker.Interacted(actor, targetPawn, list, out _, out _, out _, out _);
+                Find.PlayLog.Add(new PlayLogEntry_Interaction(intDef, actor, targetPawn, list));
+            }
+
+            void TickAction()
+            {
+                toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(targetInd).Cell);
+            }
         }
     }
 }
