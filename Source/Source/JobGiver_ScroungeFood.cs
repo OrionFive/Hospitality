@@ -83,16 +83,28 @@ namespace Hospitality
 
         private static bool Qualifies(Pawn target, Pawn guest, int maxStealOpinion)
         {
+            if (target == null || guest == null) return false;
             if (target == guest) return false;
             if (target.inventory == null) return false;
+            if (target.relations == null) return false;
 
             var awake = target.Awake();
-            if (!awake && guest.relations.OpinionOf(target) > maxStealOpinion) return false;
+            if (guest.relations != null)
+            {
+                if (!awake && guest.relations.OpinionOf(target) > maxStealOpinion) return false;
+            }
 
-            var minAwakeOpinion = 0;
-            if (target.story.traits.HasTrait(TraitDefOf.Kind)) minAwakeOpinion -= 35;
-            if (target.story.traits.HasTrait(TraitDefOf.Kind)) minAwakeOpinion += 50;
-            if (awake && target.relations.OpinionOf(guest) < minAwakeOpinion) return false;
+            if (target.relations != null)
+            {
+                var minAwakeOpinion = 0;
+                if (target.story?.traits != null)
+                {
+                    if (target.story.traits.HasTrait(TraitDefOf.Kind)) minAwakeOpinion -= 35;
+                    if (target.story.traits.HasTrait(TraitDefOf.Kind)) minAwakeOpinion += 50;
+                }
+
+                if (awake && target.relations.OpinionOf(guest) < minAwakeOpinion) return false;
+            }
 
             var food = BestFoodInInventory(target, guest);
             return food != null;
