@@ -85,15 +85,20 @@ namespace Hospitality {
 
         public static void TryGiveBackpack(this Pawn p)
         {
-            var def = InternalDefOf.Apparel_Backpack;
+            var def = InternalDefOf.CE_Apparel_Backpack;
             if (def == null) return;
 
-            if (p.inventory.innerContainer.Contains(def)) return;
-
-            ThingDef stuff = GenStuff.RandomStuffFor(def);
-            var item = (Apparel) ThingMaker.MakeThing(def, stuff);
-            item.stackCount = 1;
-            p.apparel.Wear(item, false);
+            var item = p.inventory.innerContainer.OfType<Apparel>().FirstOrDefault(i => i.def == def);
+            if (item == null)
+            {
+                var stuff = GenStuff.RandomStuffFor(def);
+                item = (Apparel)ThingMaker.MakeThing(def, stuff);
+                item.stackCount = 1;
+            }
+            if (!p.apparel.Wearing(item))
+            {
+                p.apparel.Wear(item, false);
+            }
         }
 
         #region Combat Extended integration

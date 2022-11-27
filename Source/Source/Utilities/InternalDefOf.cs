@@ -10,7 +10,7 @@ namespace Hospitality.Utilities
     public static class InternalDefOf
     {
         [MayRequire("CETeam.CombatExtended")]
-        public static ThingDef Apparel_Backpack;
+        public static ThingDef CE_Apparel_Backpack;
 
         [MayRequire("VanillaExpanded.VMemesE")]
         public static PreceptDef VME_Anonymity_Required;
