@@ -291,6 +291,7 @@ namespace Hospitality
             {
                 RestUtility.KickOutOfBed(pawn, bed);
             }
+            bed.RemoveAllOwners();
 
             Building_Bed newBed;
             if (bed.IsGuestBed())
