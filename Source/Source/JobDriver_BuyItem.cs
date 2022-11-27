@@ -72,7 +72,7 @@ namespace Hospitality
             if (silver == null) return;
 
             var itemCost = Item.GetPurchasingCost();
-            var maxAffordable = itemCost <= 0 ? 5 : Mathf.FloorToInt(silver.stackCount/itemCost); // don't buy more than 5 of free stuff
+            var maxAffordable = itemCost <= 0 ? 3 : Mathf.FloorToInt(silver.stackCount/itemCost); // don't buy more than x of free stuff
             if (maxAffordable < 1) return;
 
             // Changed formula a bit, so guests are less likely to leave small stacks if they can afford it
