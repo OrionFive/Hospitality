@@ -62,8 +62,8 @@ namespace Hospitality
                     if (newBed.RentalFee > 0)
                     {
                         actor.inventory.innerContainer.TryDrop(silver, actor.Position, Map, ThingPlaceMode.Near, newBed.RentalFee, out silver);
-                        actor.UpsetAboutFee(newBed.RentalFee);
                     }
+                    actor.ThoughtAboutClaimedBed(newBed, money);
                 }
             }.FailOnDespawnedNullOrForbidden(TargetIndex.A);
         }

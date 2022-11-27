@@ -572,15 +572,25 @@ namespace Hospitality.Utilities
             target.needs.mood.thoughts.memories.TryGainMemory(thoughtMemory, initiator);
         }
 
-        public static void UpsetAboutFee(this Pawn pawn, int cost)
+        public static void ThoughtAboutClaimedBed(this Pawn pawn, Building_GuestBed bed, int moneyBeforeClaiming)
         {
-            var thoughtDef = ThoughtDef.Named("GuestPaidFee");
-            var amount = cost / 10;
-            for (int i = 0; i < amount; i++)
+            var thoughtDef = ThoughtDef.Named("GuestClaimedBed");
+            if (pawn == null || bed == null) return;
+
+            var score = bed.BedValue(pawn, moneyBeforeClaiming);
+            int stage = score switch
             {
-                var thoughtMemory = (Thought_Memory) ThoughtMaker.MakeThought(thoughtDef);
-                pawn?.needs?.mood?.thoughts?.memories?.TryGainMemory(thoughtMemory); // *cough* Extra defensive
-            }
+                >= 100 => 5, // 5
+                >=  50 => 4, // 3
+                >=   0 => 3, // 1
+                >= -35 => 2, // -3
+                >= -60 => 1, // -6
+                _      => 0, // -12
+            };
+            //Log.Message($"{pawn.LabelCap} claimed bed at {bed.Position}. It scored {score:F2} for them.");
+
+            var thoughtMemory = ThoughtMaker.MakeThought(thoughtDef, stage);
+            pawn.needs?.mood?.thoughts?.memories?.TryGainMemory(thoughtMemory); // *cough* Extra defensive
         }
 
         private static void GainThought(this Pawn target, ThoughtDef thoughtDef)

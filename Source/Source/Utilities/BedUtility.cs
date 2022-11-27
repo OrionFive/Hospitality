@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
-using static UnityEngine.Mathf;
 
 namespace Hospitality.Utilities
 {
@@ -46,14 +46,14 @@ namespace Hospitality.Utilities
 
         private static Building_GuestBed SelectBest(IEnumerable<Building_GuestBed> beds, Pawn guest, int money)
         {
-            return beds.MaxBy(bed => BedValue(bed, guest, money));
+            return beds.MaxBy(bed => bed.BedValue(guest, money));
         }
 
-        private static float BedValue(Building_GuestBed bed, Pawn guest, int money)
+        public static float BedValue(this Building_GuestBed bed, Pawn guest, int money)
         {
             StaticBedValue(bed, out var room, out var quality, out var impressiveness, out var roomType, out var comfort, out var facilities);
 
-            var fee = RoundToInt(money > 0 ? 250 * (bed.RentalFee / money) : 0); // 0 - 250
+            var fee = Mathf.RoundToInt(money > 0 ? 250 * (bed.RentalFee / money) : 0); // 0 - 250
 
             //Ideology
             var ideologyNeeds = GetIdeologicalFulfillment(bed, guest); // -150 - 50
@@ -101,7 +101,7 @@ namespace Hospitality.Utilities
             }
 
             var score = impressiveness + quality + comfort + roomType + temperature + otherPawnOpinion + royalExpectations + ideologyNeeds + facilities - distance;
-            var value = CeilToInt(ScoreFactor * score - fee);
+            var value = Mathf.CeilToInt(ScoreFactor * score - fee);
             //Log.Message($"For {guest.LabelShort} {bed.Label} at {bed.Position} has a score of {score} and value of {value}:\n"
             //            + $"impressiveness = {impressiveness}, quality = {quality}, fee = {fee}, roomType = {roomType}, opinion = {otherPawnOpinion}, temperature = {temperature}, distance = {distance}");
             return value;
@@ -130,7 +130,7 @@ namespace Hospitality.Utilities
                     score += 10 * comp.linkedFacilities.Count(f => requiredFacilities.Contains(f.def));
             }
             var dominance = IdeoUtility.GetStyleDominance(bed, guest.Ideo);
-            return score + CeilToInt(dominance * 50);
+            return score + Mathf.CeilToInt(dominance * 50);
         }
 
         private static int OtherOwnerScore(Building_Bed bed, Pawn guest)
@@ -191,7 +191,7 @@ namespace Hospitality.Utilities
             quality = GetBedQuality(bed);
             impressiveness = room != null ? GetRoomImpressiveness(room) : 0;
             roomTypeScore = GetRoomTypeScore(room) * 2;
-            comfort = RoundToInt(100*GetBedComfort(bed));
+            comfort = Mathf.RoundToInt(100*GetBedComfort(bed));
             return quality + impressiveness + roomTypeScore + comfort + facilities;
         }
 
@@ -208,15 +208,15 @@ namespace Hospitality.Utilities
 
         private static int GetRoomImpressiveness(Room room)
         {
-            return RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness));
+            return Mathf.RoundToInt(room.GetStat(RoomStatDefOf.Impressiveness));
         }
 
         private static float GetTemperatureScore(Pawn guest, Room room, Building_Bed bed)
         {
             if (room == null) return 0;
             var optimalTemperature = GenTemperature.ComfortableTemperatureRange(guest.def);
-            var pctTemperature = Abs(optimalTemperature.InverseLerpThroughRange(room.Temperature) - 0.5f) * 2; // 0-1
-            return RoundToInt(Lerp(0, -200, pctTemperature - 0.75f) * 4); // -200 - 0
+            var pctTemperature = Mathf.Abs(optimalTemperature.InverseLerpThroughRange(room.Temperature) - 0.5f) * 2; // 0-1
+            return Mathf.RoundToInt(Mathf.Lerp(0, -200, pctTemperature - 0.75f) * 4); // -200 - 0
         }
 
         private static int GetRoomTypeScore(Room room)
