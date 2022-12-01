@@ -88,6 +88,7 @@ namespace Hospitality.Utilities
                     return null;
                 }
             }
+
             if (item.def.useHitPoints)
             {
                 // Make sure health is at least 60%. Otherwise too expensive items can become gifts.
@@ -104,6 +105,7 @@ namespace Hospitality.Utilities
                     item.HitPoints = num;
                 }
             }
+
             return item;
         }
 
@@ -115,7 +117,7 @@ namespace Hospitality.Utilities
                 {
                     try
                     {
-                        return d != null && d.category == ThingCategory.Item && d.EverStorable(true) && d.alwaysHaulable && d.thingClass != null && d.thingClass != typeof(MinifiedThing) && !d.thingClass.IsSubclassOf(typeof(MinifiedThing))
+                        return d is { category: ThingCategory.Item, alwaysHaulable: true } && d.EverStorable(true) && d.thingClass != null && d.thingClass != typeof(MinifiedThing) && !d.thingClass.IsSubclassOf(typeof(MinifiedThing)) 
                                && d.tradeability != Tradeability.None && d.GetCompProperties<CompProperties_Hatcher>() == null && !d.WillRotSoon() && (d.thingSetMakerTags == null || !d.thingSetMakerTags.Contains("NotForGuests"));
                     }
                     catch (Exception)
@@ -140,12 +142,12 @@ namespace Hospitality.Utilities
 
         private static TechLevel Increase(TechLevel techLevel)
         {
-            return techLevel+1;
+            return techLevel + 1;
         }
 
         private static float TechLevelDiff(TechLevel def, TechLevel target)
         {
-            return (float) TechLevel.Ultra - Mathf.Abs((float) target - (float) def);
+            return (float)TechLevel.Ultra - Mathf.Abs((float)target - (float)def);
         }
 
         public static void SetupAsVisitor([NotNull] this Pawn visitor)
@@ -155,7 +157,7 @@ namespace Hospitality.Utilities
             GuestUtility.EnsureHasWorkSettings(visitor);
             visitor.FixTimetable();
             visitor.FixDrugPolicy();
-            
+
             if (visitor.foodRestriction != null && visitor.RaceProps.Humanlike) // Humanlike check copied from vanilla, faction check removed (these are always guests)
             {
                 visitor.foodRestriction.CurrentFoodRestriction = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
@@ -199,13 +201,11 @@ namespace Hospitality.Utilities
             {
                 if (pawn == null) continue;
                 var title = pawn.royalty?.MostSeniorTitle?.def;
-                if (title == null) yield return pawn;
-                else
-                {
-                    var chance = 25 * title.commonality / (title.seniority+100); // 0-1; seniority can be 0!
-                    //Log.Message($"{pawn.NameShortColored} has a chance of {chance:P2} of showing up.");
-                    if (Rand.Chance(chance)) yield return pawn;
-                }
+
+                var chance = title == null ? 1 : 25 * title.commonality / (title.seniority + 100); // 0-1; seniority can be 0!
+                chance = Mathf.Min(0.75f, chance); // All pawns have 25% chance not to show up
+                //Log.Message($"{pawn.NameShortColored} has a chance of {chance:P2} of showing up.");
+                if (Rand.Chance(chance)) yield return pawn;
             }
         }
     }
