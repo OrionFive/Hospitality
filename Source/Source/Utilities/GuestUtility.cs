@@ -577,15 +577,22 @@ namespace Hospitality.Utilities
             var thoughtDef = ThoughtDef.Named("GuestClaimedBed");
             if (pawn == null || bed == null) return;
 
+            var free = bed.RentalFee <= 0;
             var score = bed.BedValue(pawn, moneyBeforeClaiming);
-            int stage = score switch
+            int stage = free ? score switch
             {
-                >= 100 => 5, // 5
-                >=  50 => 4, // 3
-                >=   0 => 3, // 1
-                >= -35 => 2, // -3
-                >= -60 => 1, // -6
-                _      => 0, // -12
+                >= 100 => 6, // 5
+                >= 50 => 5,  // 3
+                _ => 0       // 2
+            } 
+            : score switch
+            {
+                >= 100 => 6, // 5
+                >=  50 => 5, // 3
+                >=   0 => 4, // 1
+                >= -35 => 3, // -2
+                >= -60 => 2, // -5
+                _      => 1, // -10
             };
             //Log.Message($"{pawn.LabelCap} claimed bed at {bed.Position}. It scored {score:F2} for them.");
 
