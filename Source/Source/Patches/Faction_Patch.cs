@@ -17,6 +17,7 @@ namespace Hospitality.Patches
             {
                 if (member.Faction == Faction.OfPlayer) return true;
                 if (PawnUtility.IsTravelingInTransportPodWorldObject(member)) return false; // Fired in pod? Don't trigger
+                if (member.IsSlave) return false;
 
                 var compGuest = member.CompGuest();
 
