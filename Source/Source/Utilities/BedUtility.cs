@@ -40,6 +40,7 @@ namespace Hospitality.Utilities
                 && bed.RentalFee <= money 
                 && !bed.IsForbidden(guest) 
                 && !bed.IsBurning() 
+                && RestUtility.CanUseBedEver(guest, bed.def)
                 && !bed.CompAssignableToPawn.IdeoligionForbids(guest)
                 && guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some));
         }
