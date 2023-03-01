@@ -12,17 +12,20 @@ namespace Hospitality
         private bool isActive;
 
         private int basePrice = 10;
+        private int emptyThreshold = 100;
 
         private ThingOwner<Thing> silverContainer;
 
         private Vendable vendable;
         private Gizmo_VendingMachine gizmo;
+        private Gizmo_VendingMachineContent gizmoContent;
 
         public override void PostPostMake()
         {
             base.PostPostMake();
             vendable = parent;
             CurrentPrice = GetDefaultPrice();
+            CurrentEmptyThreshold = GetDefaultPrice() * 10;
         }
 
         private int GetDefaultPrice()
@@ -42,9 +45,20 @@ namespace Hospitality
             set => SetPrice(value);
         }
 
+        public int CurrentEmptyThreshold
+        {
+            get => emptyThreshold;
+            set => SetEmptyThreshold(value);
+        }
+
         internal void SetPrice(int value)
         {
             basePrice = Mathf.Clamp(value, 0, int.MaxValue);
+        }
+
+        internal void SetEmptyThreshold(int value)
+        {
+            emptyThreshold = Mathf.Clamp(value, 0, int.MaxValue);
         }
 
         public bool IsFree => CurrentPrice == 0;
@@ -56,6 +70,7 @@ namespace Hospitality
             base.PostExposeData();
             Scribe_Values.Look(ref isActive, "isActive");
             Scribe_Values.Look(ref basePrice, "basePrice");
+            Scribe_Values.Look(ref emptyThreshold, "emptyThreshold");
             Scribe_Deep.Look(ref silverContainer, "silverContainer");
             vendable = parent;
         }
@@ -100,7 +115,8 @@ namespace Hospitality
             if (isActive || Properties.noToggle)
             {
                 yield return gizmo ??= new Gizmo_VendingMachine(new[] { this });
-            }
+                yield return gizmoContent ??= new Gizmo_VendingMachineContent(new[] { this });
+            }           
         }
 
         public bool ToggleActive()

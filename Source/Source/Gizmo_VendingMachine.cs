@@ -28,9 +28,6 @@ namespace Hospitality
         protected override void DrawInfoRect(Rect rect)
         {
             LabelRow(ref rect, "Hospitality_VendingMachinePrice".Translate(), ((float)vendingMachine.CurrentPrice).ToStringMoney("F0"));
-            GUI.color = ButtonColor;
-            LabelRow(ref rect, "Hospitality_VendingMachineContains".Translate(), ((float)vendingMachine.TotalSold).ToStringMoney("F0"));
-            GUI.color = Color.white;
         }
 
         protected override void DrawTooltipBox(Rect totalRect) { }
