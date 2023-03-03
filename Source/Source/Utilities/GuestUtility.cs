@@ -555,7 +555,8 @@ namespace Hospitality.Utilities
             //Log.Message(String.Format("Opinion of {0} about {1}: {2}", target.NameStringShort,recruiter.NameStringShort, opinion));
             //Log.Message(String.Format("{0} + {1} = {2}", pleaseChance, opinion*0.01f, pleaseChance + opinion*0.01f));
             var difficultyOffset = target.royalty?.MostSeniorTitle?.def.recruitmentResistanceOffset ?? 0;
-            return pleaseChance * 0.8f + opinion * 0.01f - difficultyOffset;
+            //Log.Message(String.Format("difficultyOffset of {0} ", difficultyOffset));
+            return pleaseChance * 0.8f + opinion * 0.01f - difficultyOffset * 0.01f;
         }
 
         private static void GainSocialThought(Pawn initiator, Pawn target, ThoughtDef thoughtDef)
