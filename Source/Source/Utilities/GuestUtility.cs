@@ -14,7 +14,7 @@ using static System.String;
 
 namespace Hospitality.Utilities
 {
-    internal static class GuestUtility
+    public static class GuestUtility
     {
         public const int InteractIntervalAbsoluteMin = 360; // changed from 120
         public const int MaxOpinionForEnemy = -20;

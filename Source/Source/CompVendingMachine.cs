@@ -129,6 +129,13 @@ namespace Hospitality
         public void GetChildHolders(List<IThingHolder> outChildren) { }
 
         public ThingOwner GetDirectlyHeldThings() => MainContainer;
+
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            base.PostDestroy(mode, previousMap);
+            MainContainer.TryDropAll(parent.InteractionCell, previousMap, ThingPlaceMode.Near);
+            MainContainer.ClearAndDestroyContents();
+        }
     }
 
     public class CompProperties_VendingMachine : CompProperties
