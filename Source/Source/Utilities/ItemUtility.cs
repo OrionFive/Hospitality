@@ -13,7 +13,7 @@ using Verse.AI.Group;
 using Verse.Sound;
 
 namespace Hospitality {
-    internal static class ItemUtility
+    public static class ItemUtility
     {
         private static readonly Dictionary<string, MethodInfo> alienFrameworkMethods = new Dictionary<string, MethodInfo>();
 

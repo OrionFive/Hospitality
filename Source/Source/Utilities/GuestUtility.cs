@@ -14,7 +14,7 @@ using static System.String;
 
 namespace Hospitality.Utilities
 {
-    internal static class GuestUtility
+    public static class GuestUtility
     {
         public const int InteractIntervalAbsoluteMin = 360; // changed from 120
         public const int MaxOpinionForEnemy = -20;
@@ -555,8 +555,7 @@ namespace Hospitality.Utilities
             //Log.Message(String.Format("Opinion of {0} about {1}: {2}", target.NameStringShort,recruiter.NameStringShort, opinion));
             //Log.Message(String.Format("{0} + {1} = {2}", pleaseChance, opinion*0.01f, pleaseChance + opinion*0.01f));
             var difficultyOffset = target.royalty?.MostSeniorTitle?.def.recruitmentResistanceOffset ?? 0;
-            //Log.Message(String.Format("difficultyOffset of {0} ", difficultyOffset));
-            return pleaseChance * 0.8f + opinion * 0.01f - difficultyOffset * 0.01f;
+            return pleaseChance * 0.8f + opinion * 0.01f - difficultyOffset;
         }
 
         private static void GainSocialThought(Pawn initiator, Pawn target, ThoughtDef thoughtDef)
