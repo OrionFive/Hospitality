@@ -24,7 +24,7 @@ namespace Hospitality
         {
             var vendingMachine = t.TryGetComp<CompVendingMachine>();
             var silver = vendingMachine?.GetDirectlyHeldThings()?.FirstOrDefault();
-            if (silver != null)
+            if (silver != null && vendingMachine.TotalSold >= vendingMachine.CurrentEmptyThreshold)
             {
                 if (StoreUtility.TryFindBestBetterStorageFor(silver, pawn, pawn.Map, StoreUtility.CurrentStoragePriorityOf(silver), pawn.Faction, out _, out _))
                 {

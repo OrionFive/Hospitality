@@ -459,13 +459,11 @@ namespace Hospitality
                 float totalValue = 0;
 
                 // Money
-                //Log.Message("Goodwill: "+visitor.Faction.ColonyGoodwill);
-                var wealthBase = 25 + (visitor.Faction.HasGoodwill ? visitor.Faction.PlayerGoodwill : Rand.Range(25, 75));
+                var wealthBase = 10 + (visitor.Faction.HasGoodwill ? visitor.Faction.PlayerGoodwill / 2.0f : Rand.Range(0, 50)); // everyone travelling has at least 10s in their pocket
                 var title = visitor.royalty?.MostSeniorTitle;
-                if (title != null) wealthBase += title.def.seniority/2;
-                var amountS = Mathf.Max(0, Mathf.RoundToInt(Rand.Gaussian(wealthBase, wealthBase) * 2 * Settings.silverMultiplier * 0.1f)) + Rand.Range(0, 40);
-
-                if (amountS >= Rand.Range(10, 25))
+                if (title != null) wealthBase += title.def.seniority / 2.0f;
+                var amountS = Mathf.RoundToInt(((wealthBase + (visitor.ageTracker.AgeBiologicalYears / 5.0f)) * Settings.silverMultiplier)); // eldery can get better beds to compensate for their lower mood
+                if (amountS > 0)
                 {
                     var money = SpawnGroupUtility.CreateRandomItem(visitor, ThingDefOf.Silver);
                     money.stackCount = amountS;
