@@ -62,7 +62,7 @@ namespace Hospitality
         }
 
         public bool IsFree => CurrentPrice == 0;
-        public bool ShouldEmpty => MainContainer.Count > 0;
+        public bool ShouldEmpty => TotalSold > CurrentEmptyThreshold;
         public int TotalSold => MainContainer.TotalStackCount;
 
         public override void PostExposeData()
