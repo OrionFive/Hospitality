@@ -42,7 +42,7 @@ namespace Hospitality.Utilities
                 && !bed.IsBurning() 
                 && RestUtility.CanUseBedEver(guest, bed.def)
                 && !bed.CompAssignableToPawn.IdeoligionForbids(guest)
-                && guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some));
+                && guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some, bed.SleepingSlotsCount));
         }
 
         private static Building_GuestBed SelectBest(IEnumerable<Building_GuestBed> beds, Pawn guest, int money)
