@@ -12,7 +12,8 @@ namespace Hospitality
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             if (TargetA.Thing is not Building_GuestBed newBed) return false;
-            if (pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed)) return true;
+            var reserve = pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed);
+            if (reserve) return true;
 
             Log.Message($"{pawn.LabelShort} failed to reserve {TargetA.Thing.LabelShort}!");
             return false;
@@ -56,7 +57,11 @@ namespace Hospitality
                     }
 
                     var compGuest = actor.CompGuest();
-                    if (compGuest.HasBed) Log.Error($"{actor.LabelShort} already has a bed ({compGuest.bed.Label})");
+                    if (compGuest.HasBed)
+                    {
+                        Log.Error($"{actor.LabelShort} already has a bed ({compGuest.bed.Label})");
+                        return;
+                    }
 
                     compGuest.ClaimBed(newBed);
 
