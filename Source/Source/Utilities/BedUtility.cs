@@ -36,13 +36,20 @@ namespace Hospitality.Utilities
         private static IEnumerable<Building_GuestBed> FindAvailableBeds(Pawn guest, int money)
         {
             return guest.MapHeld.GetGuestBeds(guest.GetGuestArea()).Where(bed => 
-                bed.AnyUnownedSleepingSlot 
-                && bed.RentalFee <= money 
-                && !bed.IsForbidden(guest) 
-                && !bed.IsBurning() 
-                && RestUtility.CanUseBedEver(guest, bed.def)
-                && !bed.CompAssignableToPawn.IdeoligionForbids(guest)
-                && guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some, bed.SleepingSlotsCount));
+                IsAvailableBed(bed, guest, money));
+        }
+
+        private static bool IsAvailableBed(Building_GuestBed bed, Pawn guest, int money)
+        {
+            if (!bed.AnyUnownedSleepingSlot) return false;
+            if (bed.RentalFee > money) return false;
+            if (bed.IsForbidden(guest)) return false;
+            if (bed.IsBurning()) return false;
+            if (!RestUtility.CanUseBedEver(guest, bed.def)) return false;
+            if (bed.CompAssignableToPawn.IdeoligionForbids(guest)) return false;
+            if (!guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some, bed.SleepingSlotsCount)) return false;
+            return true;
+
         }
 
         private static Building_GuestBed SelectBest(IEnumerable<Building_GuestBed> beds, Pawn guest, int money)

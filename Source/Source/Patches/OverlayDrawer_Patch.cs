@@ -16,7 +16,7 @@ namespace Hospitality.Patches
             [HarmonyPrefix]
             public static bool Prefix(Thing t, OverlayTypes overlayType)
             {
-                if (!(t is Pawn pawn)) return true;
+                if (t is not Pawn pawn) return true;
                 var tryingToDrawQuestionMarkOnGuest = overlayType == OverlayTypes.QuestionMark && pawn.IsGuest();
                 return !tryingToDrawQuestionMarkOnGuest;
             }

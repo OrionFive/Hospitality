@@ -130,7 +130,7 @@ namespace Hospitality
             }
 
             // Is map not available anymore?
-            if (!(parms.target is Map map))
+            if (parms.target is not Map map)
             {
                 Log.ErrorOnce("Trying to spawn visitors, but map does not exist anymore.", 43692862);
                 return true;

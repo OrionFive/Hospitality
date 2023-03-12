@@ -13,7 +13,7 @@ namespace Hospitality.Patches
             [HarmonyPrefix]
             public static bool Prefix(MinifiedThing __instance)
             {
-                if (!(__instance.InnerThing is Building_Bed)) return true;
+                if (__instance.InnerThing is not Building_Bed) return true;
                 if (__instance.InnerThing?.def?.Minifiable != true)
                 {
                     // Destroy next tick

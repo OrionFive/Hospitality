@@ -217,7 +217,7 @@ namespace Hospitality {
         private static bool BoughtByPlayer(Pawn pawn, Thing thing)
         {
             var lord = pawn.GetLord();
-            return !(lord?.CurLordToil is LordToil_VisitPoint toil) || toil.BoughtOrSoldByPlayer(thing);
+            return lord?.CurLordToil is not LordToil_VisitPoint toil || toil.BoughtOrSoldByPlayer(thing);
         }
 
         public static bool IsBuyableNow(Pawn pawn, Thing thing)

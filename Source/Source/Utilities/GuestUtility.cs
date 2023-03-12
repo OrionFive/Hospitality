@@ -976,7 +976,7 @@ namespace Hospitality.Utilities
                 pawn.CompGuest().lord = lord;
                 return;
             }
-            if (!(lord.CurLordToil is LordToil_VisitPoint lordToil)) return;
+            if (lord.CurLordToil is not LordToil_VisitPoint lordToil) return;
             Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
            
             pawn.Map.GetMapComponent()?.OnGuestJoinedLate(pawn);

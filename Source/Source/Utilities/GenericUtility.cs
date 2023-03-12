@@ -159,7 +159,7 @@ namespace Hospitality.Utilities
 
 		public static void PlanNewVisit(IIncidentTarget map, float afterDays, Faction faction = null)
 		{
-			if (!(map is Map realMap)) return;
+			if (map is not Map realMap) return;
 
 			var incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.FactionArrival, realMap);
 

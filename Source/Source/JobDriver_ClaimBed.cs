@@ -11,7 +11,7 @@ namespace Hospitality
     {
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            if (!(TargetA.Thing is Building_GuestBed newBed)) return false;
+            if (TargetA.Thing is not Building_GuestBed newBed) return false;
             if (pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed)) return true;
 
             Log.Message($"{pawn.LabelShort} failed to reserve {TargetA.Thing.LabelShort}!");
@@ -27,7 +27,8 @@ namespace Hospitality
 
         private bool BedHasBeenClaimed(Toil toil)
         {
-            return !(TargetA.Thing is Building_GuestBed {AnyUnownedSleepingSlot: true});
+            var claimed = TargetA.Thing is not Building_GuestBed {AnyUnownedSleepingSlot: true};
+            return claimed;
         }
 
         private Toil ClaimBed()
@@ -40,7 +41,7 @@ namespace Hospitality
                     var money = silver?.stackCount ?? 0;
                     
                     // Check the stored RentalFee (takeExtraIngestibles)... if it was increased, cancel!
-                    if (!(TargetA.Thing is Building_GuestBed newBed) 
+                    if (TargetA.Thing is not Building_GuestBed newBed 
                         || newBed.RentalFee > job.takeExtraIngestibles 
                         || newBed.RentalFee > money) 
                     {
