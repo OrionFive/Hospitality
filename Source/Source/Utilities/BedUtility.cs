@@ -41,11 +41,12 @@ namespace Hospitality.Utilities
 
         private static bool IsAvailableBed(Building_GuestBed bed, Pawn guest, int money)
         {
-            if (!bed.AnyUnownedSleepingSlot) return false;
             if (bed.RentalFee > money) return false;
             if (bed.IsForbidden(guest)) return false;
             if (bed.IsBurning()) return false;
             if (!RestUtility.CanUseBedEver(guest, bed.def)) return false;
+            Log.Message($"{guest.LabelShort} is checking {bed.Label} at {bed.Position}. SleepingSlots = {bed.SleepingSlotsCount}, Owners = {bed.Owners().Count}, Ideology forbids = {bed.CompAssignableToPawn.IdeoligionForbids(guest)}, AnyUnowned = {bed.AnyUnownedSleepingSlot}, CanReserve (with slots) = {guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some, bed.SleepingSlotsCount)} CanReserve (without) = {guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some)}");
+            if (!bed.AnyUnownedSleepingSlot) return false;
             if (bed.CompAssignableToPawn.IdeoligionForbids(guest)) return false;
             if (!guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some, bed.SleepingSlotsCount)) return false;
             return true;
