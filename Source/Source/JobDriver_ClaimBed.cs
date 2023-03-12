@@ -21,8 +21,8 @@ namespace Hospitality
         public override IEnumerable<Toil> MakeNewToils()
         {
             this.EndOnDespawnedOrNull(TargetIndex.A);
-            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOn(BedHasBeenClaimed);//.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
             yield return ClaimBed();
+            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOn(BedHasBeenClaimed);//.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
         }
 
         private bool BedHasBeenClaimed(Toil toil)
