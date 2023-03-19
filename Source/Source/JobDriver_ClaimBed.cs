@@ -12,10 +12,9 @@ namespace Hospitality
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             if (TargetA.Thing is not Building_GuestBed newBed) return false;
-            if (pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed)) return true;
-
-            Log.Message($"{pawn.LabelShort} failed to reserve {TargetA.Thing.LabelShort} at {TargetA.Thing.Position}");
-            return false;
+            var reserve = pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed);
+            //Log.Message($"{pawn.LabelShort} failed to reserve {TargetA.Thing.LabelShort}!");
+            return reserve;
         }
 
         public override IEnumerable<Toil> MakeNewToils()
@@ -27,10 +26,7 @@ namespace Hospitality
 
         private bool BedHasBeenClaimed(Toil toil)
         {
-            var bed = TargetA.Thing as Building_GuestBed;
-            var claimed = bed is not { AnyUnownedSleepingSlot: true};
-            if (claimed) Log.Message($"{pawn.LabelShort} failed to claim {TargetA.Thing?.LabelShort}. It has no remaining sleeping slots (current owners = {bed?.OwnersForReading.Select(o => o?.LabelShort).ToCommaList(emptyIfNone: true)})");
-            return claimed;
+            return TargetA.Thing is not Building_GuestBed {AnyUnownedSleepingSlot: true};
         }
 
         private Toil ClaimBed()
@@ -53,7 +49,6 @@ namespace Hospitality
 
                     if (!newBed.AnyUnownedSleepingSlot)
                     {
-                        Log.Message($"{actor.LabelShort} failed to claim {newBed.LabelShort} - no sleeping slot available!");
                         actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                         return;
                     }
