@@ -6,7 +6,7 @@ namespace Hospitality
 {
     internal static class CompUtility
     {
-        private static readonly Dictionary<Pawn, CompGuest> guestComps = new Dictionary<Pawn, CompGuest>();
+        private static readonly Dictionary<Pawn, CompGuest> guestComps = new();
 
         [CanBeNull]
         public static CompGuest CompGuest(this Pawn pawn)

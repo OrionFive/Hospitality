@@ -13,8 +13,8 @@ namespace Hospitality
     internal class LordToilData_VisitPoint : LordToilData
     {
         public float radius;
-        public Dictionary<int, float> visitorMoods = new Dictionary<int, float>();
-        public List<int> soldItemIDs = new List<int>(); // items that may not be bought or gifted back
+        public Dictionary<int, float> visitorMoods = new();
+        public List<int> soldItemIDs = new(); // items that may not be bought or gifted back
 
         public override void ExposeData()
         {

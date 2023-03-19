@@ -13,7 +13,7 @@ namespace Hospitality.Utilities
 	{
 		internal const int NoBasesLeft = -1;
 
-		private static readonly Dictionary<Faction, int> travelDaysCache = new Dictionary<Faction, int>();
+		private static readonly Dictionary<Faction, int> travelDaysCache = new();
 
 		public static bool IsMeal(this Thing thing)
 		{

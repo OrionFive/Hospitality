@@ -20,8 +20,8 @@ namespace Hospitality
         internal static readonly string txtImproveTooltip = "ImproveTooltip".Translate();
         internal static readonly string txtMakeFriendsTooltip = "TryRecruitTooltip".Translate();
 
-        protected static readonly Vector2 buttonSize = new Vector2(120f, 30f);
-        private static readonly Listing_Standard listingStandard = new Listing_Standard();
+        protected static readonly Vector2 buttonSize = new(120f, 30f);
+        private static readonly Listing_Standard listingStandard = new();
 
         public ITab_Pawn_Guest()
         {

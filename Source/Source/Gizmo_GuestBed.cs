@@ -29,7 +29,7 @@ namespace Hospitality
 
         private static string ToStringMoney(float number) => number.ToStringMoney("F0");
 
-        protected override Color ButtonColor { get; } = new Color(249 / 256f, 178 / 256f, 86 / 256f);
+        protected override Color ButtonColor { get; } = new(249 / 256f, 178 / 256f, 86 / 256f);
 
         protected override string Title { get; }
 

@@ -40,7 +40,7 @@ namespace Hospitality
         }
 
         private DiaOption Option_Accept =>
-            new DiaOption("RansomDemand_Accept".Translate()) // This should be fine, it just says "Accept"
+            new("RansomDemand_Accept".Translate()) // This should be fine, it just says "Accept"
             {
                 action = delegate {
                     DontGetUpset();

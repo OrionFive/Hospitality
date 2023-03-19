@@ -11,8 +11,8 @@ namespace Hospitality.Utilities
 	{
 		private Map Map { get; }
 		[NotNull]
-		public readonly List<Pawn> colonistsFromBase = new List<Pawn>();
-		private readonly Dictionary<Pawn, RelationsCacheSet> allCacheSets = new Dictionary<Pawn, RelationsCacheSet>();
+		public readonly List<Pawn> colonistsFromBase = new();
+		private readonly Dictionary<Pawn, RelationsCacheSet> allCacheSets = new();
 
 		private int lastUpdateTick;
 

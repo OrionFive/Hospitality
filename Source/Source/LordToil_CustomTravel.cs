@@ -14,7 +14,7 @@ namespace Hospitality
         public bool destAssigned;
         public float percentRequired;
         public float distance;
-        public HashSet<Pawn> arrivedPawns = new HashSet<Pawn>();
+        public HashSet<Pawn> arrivedPawns = new();
 
         public override void ExposeData()
         {

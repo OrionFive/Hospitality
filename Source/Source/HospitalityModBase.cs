@@ -11,7 +11,7 @@ namespace Hospitality
 {
     internal class HospitalityModBase : ModBase
     {
-        private static readonly List<Action> tickActions = new List<Action>();
+        private static readonly List<Action> tickActions = new();
 
         public static Settings settings;
 

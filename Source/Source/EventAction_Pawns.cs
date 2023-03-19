@@ -5,7 +5,7 @@ namespace Hospitality
 {
     public abstract class EventAction_Pawns : EventAction
     {
-        protected List<Pawn> pawns = new List<Pawn>();
+        protected List<Pawn> pawns = new();
 
         public void RemovePawn(Pawn p)
         {

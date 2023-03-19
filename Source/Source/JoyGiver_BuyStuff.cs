@@ -15,7 +15,7 @@ namespace Hospitality
         private readonly JobDef jobDefBuy = DefDatabase<JobDef>.GetNamed("BuyItem");
         private readonly JobDef jobDefBrowse = DefDatabase<JobDef>.GetNamed("BrowseItems");
         public JoyGiverDefShopping Def => (JoyGiverDefShopping) def;
-        private readonly Dictionary<int, List<ulong>> recentlyLookedAt = new Dictionary<int, List<ulong>>(); // Pawn ID, list of cell hashes
+        private readonly Dictionary<int, List<ulong>> recentlyLookedAt = new(); // Pawn ID, list of cell hashes
         protected virtual int OptimalMoneyForShopping => 50;
 
         public override void GetSearchSet(Pawn pawn, List<Thing> outCandidates)

@@ -8,7 +8,7 @@ namespace Hospitality
 {
     public static class BedStatsDrawer
     {
-        private static readonly Color StackElementBackgroundDisabled = new Color(1f, 1f, 1f, 0.03f);
+        private static readonly Color StackElementBackgroundDisabled = new(1f, 1f, 1f, 0.03f);
 
         private const float DistFromMouse = 26f;
 

@@ -40,9 +40,9 @@ namespace Hospitality.Utilities
         private static readonly StatDef statForcedRecruitRelationshipDamage = StatDef.Named("ForcedRecruitRelationshipDamage");
         private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
 
-        private static readonly SimpleCurve recruitChanceOpinionCurve = new SimpleCurve {new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30)};
+        private static readonly SimpleCurve recruitChanceOpinionCurve = new() {new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30)};
 
-        private static readonly Dictionary<int, bool> relatedCache = new Dictionary<int, bool>();
+        private static readonly Dictionary<int, bool> relatedCache = new();
         private static int relatedCacheNextClearTick;
 
         private static RoyalTitleDef[] titleDefs;

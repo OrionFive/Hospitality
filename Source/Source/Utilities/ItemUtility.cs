@@ -15,7 +15,7 @@ using Verse.Sound;
 namespace Hospitality {
     public static class ItemUtility
     {
-        private static readonly Dictionary<string, MethodInfo> alienFrameworkMethods = new Dictionary<string, MethodInfo>();
+        private static readonly Dictionary<string, MethodInfo> alienFrameworkMethods = new();
 
         public static float priceFactor = 0.55f;
 

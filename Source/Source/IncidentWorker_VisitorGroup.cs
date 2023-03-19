@@ -19,7 +19,7 @@ namespace Hospitality
         private static ThingDef[] _items;
 
         // Taken from core
-        private static readonly SimpleCurve pointsCurve = new SimpleCurve
+        private static readonly SimpleCurve pointsCurve = new()
         {
             new CurvePoint(45f, 0f), new CurvePoint(50f, 1f), new CurvePoint(100f, 1f), new CurvePoint(200f, 0.25f), new CurvePoint(300f, 0.1f), new CurvePoint(500f, 0f)
         };

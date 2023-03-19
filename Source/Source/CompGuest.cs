@@ -10,7 +10,7 @@ namespace Hospitality
 {
     public class CompGuest : ThingComp
     {
-        public List<int> boughtItems = new List<int>();
+        public List<int> boughtItems = new();
 
         public bool entertain;
         public bool makeFriends;
@@ -23,7 +23,7 @@ namespace Hospitality
 
         public Lord lord;
 
-        public readonly Dictionary<Pawn, int> failedCharms = new Dictionary<Pawn, int>();
+        public readonly Dictionary<Pawn, int> failedCharms = new();
 
         private Area guestArea_int;
         private Area shoppingArea_int;
