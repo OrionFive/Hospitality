@@ -35,8 +35,7 @@ namespace Hospitality.Utilities
 
         private static IEnumerable<Building_GuestBed> FindAvailableBeds(Pawn guest, int money)
         {
-            return guest.MapHeld.GetGuestBeds(guest.GetGuestArea()).Where(bed => 
-                IsAvailableBed(bed, guest, money));
+            return guest.MapHeld.GetGuestBeds(guest.GetGuestArea()).Where(bed => IsAvailableBed(bed, guest, money));
         }
 
         private static bool IsAvailableBed(Building_GuestBed bed, Pawn guest, int money)
@@ -166,22 +165,21 @@ namespace Hospitality.Utilities
 
         private static int GetRoyalExpectations(Building_GuestBed bed, Pawn guest, Room room, out RoyalTitle title)
         {
-            var royalExpectations = 0;
             title = guest.royalty?.HighestTitleWithBedroomRequirements();
-            if (title != null)
-            {
-                if (room == null) royalExpectations -= 75;
-                else
-                    foreach (Building_Bed roomBeds in room.ContainedBeds)
+            if (title == null) return 0;
+            
+            var royalExpectations = 0;
+            if (room == null) royalExpectations -= 75;
+            else
+                foreach (Building_Bed roomBeds in room.ContainedBeds)
+                {
+                    if (roomBeds != bed && BedClaimedByStranger(roomBeds, guest))
                     {
-                        if (roomBeds != bed && BedClaimedByStranger(roomBeds, guest))
-                        {
-                            royalExpectations -= 100;
-                        }
+                        royalExpectations -= 100;
                     }
+                }
 
-                if (RoyalTitleUtility.BedroomSatisfiesRequirements(room, title)) royalExpectations += 100;
-            }
+            if (RoyalTitleUtility.BedroomSatisfiesRequirements(room, title)) royalExpectations += 100;
 
             return royalExpectations;
         }
