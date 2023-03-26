@@ -132,9 +132,9 @@ namespace Hospitality
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
-            base.PostDestroy(mode, previousMap);
-            MainContainer.TryDropAll(parent.InteractionCell, previousMap, ThingPlaceMode.Near);
+            MainContainer.TryDropAll(parent.OccupiedRect().Cells.RandomElement(), previousMap, ThingPlaceMode.Near);
             MainContainer.ClearAndDestroyContents();
+            base.PostDestroy(mode, previousMap);
         }
     }
 
