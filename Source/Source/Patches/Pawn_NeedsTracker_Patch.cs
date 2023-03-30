@@ -20,7 +20,8 @@ namespace Hospitality.Patches
             [HarmonyPrefix]
             public static bool Prefix(ref bool __result, NeedDef nd, Pawn ___pawn)
             {
-                if ((nd == NeedDefOf.Joy || nd == defComfort || nd == defBeauty || nd == defSpace) && ___pawn.IsGuest()) // ADDED
+                if (___pawn.guest == null) return true;
+                if ((nd == NeedDefOf.Joy || nd == defComfort || nd == defBeauty || nd == defSpace) && ___pawn.guest.GuestStatus.Equals(GuestStatus.Guest))
                 {
                     __result = true;
                     return false;
