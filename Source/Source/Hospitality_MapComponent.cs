@@ -100,6 +100,7 @@ namespace Hospitality
             RefreshGuestListTotal();
             CheckForCorrectDrugPolicies();
             ApplyCorrectFoodRestrictions();
+            AddOrRemoveNeedsAsAppropriate();
         }
 
         [DebugAction("Pawns", actionType = DebugActionType.ToolMapForPawns, allowedGameStates = AllowedGameStates.PlayingOnMap)]
@@ -119,6 +120,14 @@ namespace Hospitality
             }
         }
 
+        private void AddOrRemoveNeedsAsAppropriate()
+        {
+            foreach (var pawn in PresentGuests)
+            {
+                pawn.needs.AddOrRemoveNeedsAsAppropriate();
+            }
+        }
+        
         private void ApplyCorrectFoodRestrictions()
         {
             foreach (var pawn in PresentGuests)
