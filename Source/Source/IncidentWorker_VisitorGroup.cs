@@ -317,6 +317,7 @@ namespace Hospitality
             {
                 try
                 {
+                    if (parms.pawnKind != null) pawn.kindDef = parms.pawnKind;
                     var visitor = SpawnGroupUtility.SpawnVisitor(spawned, pawn, map, parms.spawnCenter);
                     if (visitor?.needs?.rest != null) visitor.needs.rest.CurLevel = Rand.Range(0.1f, 0.7f);
                 }
@@ -335,7 +336,7 @@ namespace Hospitality
         [NotNull]
         protected IEnumerable<Pawn> GetPawnsToSpawn(IncidentParms parms)
         {
-            var totalAmount = GetGroupSize();
+            var totalAmount = (parms.pawnCount > 0) ? parms.pawnCount : GetGroupSize();
             int knownPawnAmount = Mathf.RoundToInt(totalAmount * ChanceToKnowEachPawn);
             
             var options = SpawnGroupUtility.GetKnownPawns(parms).RandomlyUsingTitleAsChance().InRandomOrder().Take(knownPawnAmount).ToList();

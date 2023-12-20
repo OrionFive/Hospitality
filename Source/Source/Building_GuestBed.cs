@@ -34,6 +34,11 @@ namespace Hospitality
             get => rentalFee;
             set => SetRentalFee(value);
         }
+        
+        public int GetRentalFee()
+        {
+            return rentalFee;
+        }
 
         internal void SetRentalFee(int value)
         {
