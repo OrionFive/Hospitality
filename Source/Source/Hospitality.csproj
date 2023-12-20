@@ -27,11 +27,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Krafs.Publicizer" Version="1.0.3">
+    <PackageReference Include="Krafs.Rimworld.Ref">
+      <Version>*</Version>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Krafs.Publicizer">
+	  <Version>1.0.3</Version>
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="*" GeneratePathProperty="true" />
     <!-- Use Version="*-*" to get the latest beta! -->
     <PackageReference Include="Lib.Harmony" Version="*" ExcludeAssets="runtime" />
     <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="*" ExcludeAssets="runtime" />
