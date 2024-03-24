@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hospitality.Utilities;
 using JetBrains.Annotations;
+using LudeonTK;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
@@ -110,13 +111,13 @@ namespace Hospitality
             Log.Message($"Default restriction = {Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction?.label}");
 
             if(pawn.foodRestriction == null) Log.Message($"{pawn.NameShortColored}: Food restriction is null.");
-            else if(pawn.foodRestriction.curRestriction == null) Log.Message($"{pawn.NameShortColored}: curRestriction is null.");
+            else if(pawn.foodRestriction.curPolicy == null) Log.Message($"{pawn.NameShortColored}: curRestriction is null.");
             else
             {
-                Log.Message($"{pawn.NameShortColored}: curRestriction is {pawn.foodRestriction.curRestriction.label}");
-                var dialog = new Dialog_ManageFoodRestrictions(pawn.foodRestriction.CurrentFoodRestriction);
+                Log.Message($"{pawn.NameShortColored}: curRestriction is {pawn.foodRestriction.curPolicy.label}");
+                var dialog = new Dialog_ManageFoodPolicies(pawn.foodRestriction.CurrentFoodPolicy);
                 Find.WindowStack.Add(dialog);
-                dialog.SelectedFoodRestriction = pawn.foodRestriction.CurrentFoodRestriction;
+                dialog.policyInt = pawn.foodRestriction.CurrentFoodPolicy;
             }
         }
 
@@ -133,7 +134,7 @@ namespace Hospitality
             foreach (var pawn in PresentGuests)
             {
                 pawn.foodRestriction ??= new Pawn_FoodRestrictionTracker(pawn);
-                pawn.foodRestriction.CurrentFoodRestriction = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
+                pawn.foodRestriction.CurrentFoodPolicy = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
             }
         }
 

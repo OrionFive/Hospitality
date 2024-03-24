@@ -80,6 +80,7 @@ namespace Hospitality
                 guestBedDef.scatterableOnMapGen = false;
                 guestBedDef.tickerType = TickerType.Long;
                 guestBedDef.modContentPack = GuestUtility.relaxDef.modContentPack;
+                guestBedDef.drawerType = DrawerType.MapMeshAndRealTime;
 
                 HashSet<ushort> takenHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
                 typeof(ShortHashGiver).GetMethod("GiveShortHash", BindingFlags.NonPublic|BindingFlags.Static).Invoke(null, new object[] {guestBedDef, typeof(ThingDef), takenHashes});

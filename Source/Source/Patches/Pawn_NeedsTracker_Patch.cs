@@ -16,11 +16,12 @@ namespace Hospitality.Patches
             private static readonly NeedDef defComfort = DefDatabase<NeedDef>.GetNamed("Comfort");
             private static readonly NeedDef defBeauty = DefDatabase<NeedDef>.GetNamed("Beauty");
             private static readonly NeedDef defSpace = DefDatabase<NeedDef>.GetNamed("RoomSize");
+            private static readonly NeedDef defJoy = DefDatabase<NeedDef>.GetNamed("Joy");
 
             [HarmonyPrefix]
             public static bool Prefix(ref bool __result, NeedDef nd, Pawn ___pawn)
             {
-                if ((nd == NeedDefOf.Joy || nd == defComfort || nd == defBeauty || nd == defSpace) && ___pawn.IsGuest()) // ADDED
+                if ((nd == defJoy || nd == defComfort || nd == defBeauty || nd == defSpace) && ___pawn.IsGuest()) // ADDED
                 {
                     __result = true;
                     return false;
