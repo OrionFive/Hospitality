@@ -39,9 +39,9 @@
     <PackageReference Include="Lib.Harmony" Version="*" ExcludeAssets="runtime" />
     <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="*" ExcludeAssets="runtime" />
   </ItemGroup>
-  <PropertyGroup>
-	<PublicizeAll>true</PublicizeAll>
-  </PropertyGroup>
+  <ItemGroup>
+	<Publicize Include="Assembly-CSharp" />
+  </ItemGroup>
   <PropertyGroup>
 	<PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
   </PropertyGroup>
