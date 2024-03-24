@@ -12,7 +12,7 @@ namespace Hospitality.Patches
         [HarmonyPatch(typeof(ThingFilter), nameof(ThingFilter.Allows), typeof(ThingDef))]
         public class Allows
         {
-            private static Dictionary<string, ThingDef> bedNameToThing = new Dictionary<string, ThingDef>();
+            private static Dictionary<string, ThingDef> bedNameToThing = new();
             [HarmonyPrefix]
             public static bool Prefix(ref ThingDef def)
             {

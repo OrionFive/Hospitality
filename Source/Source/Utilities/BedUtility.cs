@@ -35,14 +35,21 @@ namespace Hospitality.Utilities
 
         private static IEnumerable<Building_GuestBed> FindAvailableBeds(Pawn guest, int money)
         {
-            return guest.MapHeld.GetGuestBeds(guest.GetGuestArea()).Where(bed => 
-                bed.AnyUnownedSleepingSlot 
-                && bed.RentalFee <= money 
-                && !bed.IsForbidden(guest) 
-                && !bed.IsBurning() 
-                && RestUtility.CanUseBedEver(guest, bed.def)
-                && !bed.CompAssignableToPawn.IdeoligionForbids(guest)
-                && guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some));
+            return guest.MapHeld.GetGuestBeds(guest.GetGuestArea()).Where(bed => IsAvailableBed(bed, guest, money));
+        }
+
+        private static bool IsAvailableBed(Building_GuestBed bed, Pawn guest, int money)
+        {
+            if (bed.RentalFee > money) return false;
+            if (bed.IsForbidden(guest)) return false;
+            if (bed.IsBurning()) return false;
+            if (!RestUtility.CanUseBedEver(guest, bed.def)) return false;
+            //Log.Message($"{guest.LabelShort} is checking {bed.Label} at {bed.Position}. SleepingSlots = {bed.SleepingSlotsCount}, Owners = {bed.Owners().Count}, Ideology forbids = {bed.CompAssignableToPawn.IdeoligionForbids(guest)}, AnyUnowned = {bed.AnyUnownedSleepingSlot}, CanReserve (with slots) = {guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some, bed.SleepingSlotsCount)} CanReserve (without) = {guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some)}");
+            if (!bed.AnyUnownedSleepingSlot) return false;
+            if (bed.CompAssignableToPawn.IdeoligionForbids(guest)) return false;
+            if (!guest.CanReserveAndReach(bed, PathEndMode.OnCell, Danger.Some, bed.SleepingSlotsCount)) return false;
+            return true;
+
         }
 
         private static Building_GuestBed SelectBest(IEnumerable<Building_GuestBed> beds, Pawn guest, int money)
@@ -158,22 +165,21 @@ namespace Hospitality.Utilities
 
         private static int GetRoyalExpectations(Building_GuestBed bed, Pawn guest, Room room, out RoyalTitle title)
         {
-            var royalExpectations = 0;
             title = guest.royalty?.HighestTitleWithBedroomRequirements();
-            if (title != null)
-            {
-                if (room == null) royalExpectations -= 75;
-                else
-                    foreach (Building_Bed roomBeds in room.ContainedBeds)
+            if (title == null) return 0;
+            
+            var royalExpectations = 0;
+            if (room == null) royalExpectations -= 75;
+            else
+                foreach (Building_Bed roomBeds in room.ContainedBeds)
+                {
+                    if (roomBeds != bed && BedClaimedByStranger(roomBeds, guest))
                     {
-                        if (roomBeds != bed && BedClaimedByStranger(roomBeds, guest))
-                        {
-                            royalExpectations -= 100;
-                        }
+                        royalExpectations -= 100;
                     }
+                }
 
-                if (RoyalTitleUtility.BedroomSatisfiesRequirements(room, title)) royalExpectations += 100;
-            }
+            if (RoyalTitleUtility.BedroomSatisfiesRequirements(room, title)) royalExpectations += 100;
 
             return royalExpectations;
         }

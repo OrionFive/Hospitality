@@ -18,7 +18,7 @@ namespace Hospitality.MainTab
             absorbInputAroundWindow = true;
         }
 
-        public override Vector2 InitialSize => new Vector2(450f, 400f);
+        public override Vector2 InitialSize => new(450f, 400f);
 
         public override void DoWindowContents(Rect inRect)
         {

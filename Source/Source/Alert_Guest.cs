@@ -8,7 +8,7 @@ namespace Hospitality
 {
     public abstract class Alert_Guest : Alert
     {
-        protected readonly List<Pawn> affectedPawnCache = new List<Pawn>();
+        protected readonly List<Pawn> affectedPawnCache = new();
         protected string explanationKey;
         
         protected abstract void UpdateAffectedPawnsCache();

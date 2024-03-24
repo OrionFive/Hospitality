@@ -13,7 +13,7 @@ namespace Hospitality
 {
     public class Building_GuestBed : Building_Bed
     {
-        private static readonly Color sheetColorForGuests = new Color(89 / 255f, 55 / 255f, 121 / 255f);
+        private static readonly Color sheetColorForGuests = new(89 / 255f, 55 / 255f, 121 / 255f);
 
         internal const int FeeStep = 10;
 
@@ -27,7 +27,7 @@ namespace Hospitality
 
         public override Color DrawColorTwo => sheetColorForGuests;
 
-        public BedStats Stats { get; } = new BedStats();
+        public BedStats Stats { get; } = new();
 
         internal int RentalFee
         {

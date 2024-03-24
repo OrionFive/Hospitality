@@ -29,7 +29,7 @@ namespace Hospitality
 
 			bool PassCheck(IntVec3 x, Danger maxDanger)
 			{
-				return x.Walkable(searcher.Map) && x.GetDangerFor(searcher, searcher.Map) <= maxDanger && (!(x.GetEdifice(searcher.Map) is Building_Door edifice) || edifice.CanPhysicallyPass(searcher));
+				return x.Walkable(searcher.Map) && x.GetDangerFor(searcher, searcher.Map) <= maxDanger && (x.GetEdifice(searcher.Map) is not Building_Door edifice || edifice.CanPhysicallyPass(searcher));
 			}
 
 			// First try, for no danger

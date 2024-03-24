@@ -15,7 +15,7 @@ namespace Hospitality
 
         public override bool GroupsWith(Gizmo other) => false;
 
-        protected override Color ButtonColor { get; } = new Color(249 / 256f, 178 / 256f, 86 / 256f);
+        protected override Color ButtonColor { get; } = new(249 / 256f, 178 / 256f, 86 / 256f);
 
         protected override string Title => "Hospitality_VendingMachine".Translate();
 

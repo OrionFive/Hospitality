@@ -14,7 +14,7 @@ namespace Hospitality
         public override float GetValueUnfinalized(StatRequest req, bool applyPostProcess = true)
         {
             if (!req.HasThing) return 0;
-            if (!(req.Thing is Pawn pawn)) return 0;
+            if (req.Thing is not Pawn pawn) return 0;
             return base.GetValueUnfinalized(req, applyPostProcess) + GetExtraPenalty(pawn);
         }
 
@@ -34,7 +34,7 @@ namespace Hospitality
         public override string GetExplanationUnfinalized(StatRequest req, ToStringNumberSense numberSense)
         {
             var stringBuilder = new StringBuilder(base.GetExplanationUnfinalized(req, numberSense));
-            if (!req.HasThing || !(req.Thing is Pawn pawn)) return stringBuilder.ToString();
+            if (!req.HasThing || req.Thing is not Pawn pawn) return stringBuilder.ToString();
 
             stringBuilder.AppendLine();
             stringBuilder.AppendLine($"{"StatsReport_MissingFriends".Translate()}: +{GetMissingPercentage(pawn).ToStringPercent()} x{penaltyPer10PercentMissing}");

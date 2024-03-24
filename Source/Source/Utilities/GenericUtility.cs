@@ -14,7 +14,7 @@ namespace Hospitality.Utilities
 	{
 		internal const int NoBasesLeft = -1;
 
-		private static readonly Dictionary<Faction, int> travelDaysCache = new Dictionary<Faction, int>();
+		private static readonly Dictionary<Faction, int> travelDaysCache = new();
 
 		public static bool IsMeal(this Thing thing)
 		{
@@ -160,7 +160,7 @@ namespace Hospitality.Utilities
 
 		public static void PlanNewVisit(IIncidentTarget map, float afterDays, Faction faction = null)
 		{
-			if (!(map is Map realMap)) return;
+			if (map is not Map realMap) return;
 
 			var incidentParms = StorytellerUtility.DefaultParmsNow(DefDatabase<IncidentCategoryDef>.GetNamed("FactionArrival"), realMap);
 

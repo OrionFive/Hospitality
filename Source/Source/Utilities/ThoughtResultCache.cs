@@ -10,8 +10,8 @@ namespace Hospitality.Utilities
     public static class ThoughtResultCache
     {
         //We save both the last result and the last tick it got cached at
-        private static readonly Dictionary<int, ThoughtState> cachedStates = new Dictionary<int, ThoughtState>();
-        private static readonly Dictionary<int, int> cachedTick = new Dictionary<int, int>();
+        private static readonly Dictionary<int, ThoughtState> cachedStates = new();
+        private static readonly Dictionary<int, int> cachedTick = new();
 
         public static void Reset()
         {

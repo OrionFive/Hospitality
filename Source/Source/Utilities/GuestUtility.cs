@@ -40,9 +40,9 @@ namespace Hospitality.Utilities
         private static readonly StatDef statForcedRecruitRelationshipDamage = StatDef.Named("ForcedRecruitRelationshipDamage");
         private static readonly StatDef statRecruitEffectivity = StatDef.Named("RecruitEffectivity");
 
-        private static readonly SimpleCurve recruitChanceOpinionCurve = new SimpleCurve {new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30)};
+        private static readonly SimpleCurve recruitChanceOpinionCurve = new() {new CurvePoint(0f, 5), new CurvePoint(0.5f, 20), new CurvePoint(1f, 30)};
 
-        private static readonly Dictionary<int, bool> relatedCache = new Dictionary<int, bool>();
+        private static readonly Dictionary<int, bool> relatedCache = new();
         private static int relatedCacheNextClearTick;
 
         private static RoyalTitleDef[] titleDefs;
@@ -554,8 +554,20 @@ namespace Hospitality.Utilities
             var opinion = target.relations.OpinionOf(recruiter);
             //Log.Message(String.Format("Opinion of {0} about {1}: {2}", target.NameStringShort,recruiter.NameStringShort, opinion));
             //Log.Message(String.Format("{0} + {1} = {2}", pleaseChance, opinion*0.01f, pleaseChance + opinion*0.01f));
-            var difficultyOffset = target.royalty?.MostSeniorTitle?.def.recruitmentResistanceOffset ?? 0;
+            var difficultyOffset = GetRoyalDifficultyOffset(recruiter, target);
             return pleaseChance * 0.8f + opinion * 0.01f - difficultyOffset;
+        }
+
+        private static float GetRoyalDifficultyOffset(Pawn recruiter, Pawn target)
+        {
+            var title = target.royalty?.MostSeniorTitle;
+            if (title == null) return 0f;
+            var resistance = title.def.recruitmentResistanceOffset / 200f;
+
+            // If the target has no royal title, the recruiter's royal title does not matter
+            var rTitle = recruiter.royalty?.MostSeniorTitle;
+            if (rTitle == null) return resistance;
+            return resistance - rTitle.def.recruitmentResistanceOffset / 200f;
         }
 
         private static void GainSocialThought(Pawn initiator, Pawn target, ThoughtDef thoughtDef)
@@ -964,7 +976,7 @@ namespace Hospitality.Utilities
                 pawn.CompGuest().lord = lord;
                 return;
             }
-            if (!(lord.CurLordToil is LordToil_VisitPoint lordToil)) return;
+            if (lord.CurLordToil is not LordToil_VisitPoint lordToil) return;
             Log.Message($"{pawn.LabelShort}: Joined lord of faction {lord.faction?.Name}.");
            
             pawn.Map.GetMapComponent()?.OnGuestJoinedLate(pawn);

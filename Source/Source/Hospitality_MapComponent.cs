@@ -12,7 +12,7 @@ namespace Hospitality
 {
     public class Hospitality_MapComponent : MapComponent
     {
-        private IncidentQueue incidentQueue = new IncidentQueue();
+        private IncidentQueue incidentQueue = new();
         public bool defaultEntertain;
         public bool defaultMakeFriends;
         public bool guestsAreWelcome = true;
@@ -26,8 +26,8 @@ namespace Hospitality
         public DrugPolicy drugPolicy;
         public bool askForSafety = true;
 
-        [NotNull] public List<Lord> PresentLords { get; } = new List<Lord>();
-        [NotNull] public HashSet<Pawn> PresentGuests { get; } = new HashSet<Pawn>();
+        [NotNull] public List<Lord> PresentLords { get; } = new();
+        [NotNull] public HashSet<Pawn> PresentGuests { get; } = new();
         [NotNull] public RelationsCache RelationsCache { get; }
 
         public override void ExposeData()

@@ -11,23 +11,26 @@ namespace Hospitality
     {
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            if (!(TargetA.Thing is Building_GuestBed newBed)) return false;
-            if (pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed)) return true;
-
-            Log.Message($"{pawn.LabelShort} failed to reserve {TargetA.Thing.LabelShort}!");
-            return false;
+            if (TargetA.Thing is not Building_GuestBed newBed) return false;
+            return pawn.Reserve(TargetA, job, newBed.SleepingSlotsCount, 0, null, errorOnFailed);
         }
 
         public override IEnumerable<Toil> MakeNewToils()
         {
             this.EndOnDespawnedOrNull(TargetIndex.A);
-            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOn(BedHasBeenClaimed);//.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
+            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOn(_ => BedCantBeClaimedAnymore());//.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);
             yield return ClaimBed();
         }
 
-        private bool BedHasBeenClaimed(Toil toil)
+        private bool BedCantBeClaimedAnymore()
         {
-            return !(TargetA.Thing is Building_GuestBed {AnyUnownedSleepingSlot: true});
+            var bed = TargetA.Thing as Building_GuestBed;
+            if (bed == null) return true;
+            if (bed.IsForbidden(pawn)) return false;
+
+            var result = !bed.AnyUnownedSleepingSlot || bed.CompAssignableToPawn.IdeoligionForbids(pawn);
+            //if (result) Log.Message($"{pawn.LabelShort} failed to claim {TargetA.Thing.LabelShort}. Ideology forbids: {bed.CompAssignableToPawn.IdeoligionForbids(pawn)}");
+            return result;
         }
 
         private Toil ClaimBed()
@@ -40,7 +43,7 @@ namespace Hospitality
                     var money = silver?.stackCount ?? 0;
                     
                     // Check the stored RentalFee (takeExtraIngestibles)... if it was increased, cancel!
-                    if (!(TargetA.Thing is Building_GuestBed newBed) 
+                    if (TargetA.Thing is not Building_GuestBed newBed 
                         || newBed.RentalFee > job.takeExtraIngestibles 
                         || newBed.RentalFee > money) 
                     {
@@ -48,14 +51,18 @@ namespace Hospitality
                         return;
                     }
 
-                    if (!newBed.AnyUnownedSleepingSlot)
+                    if (BedCantBeClaimedAnymore())
                     {
                         actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                         return;
                     }
 
                     var compGuest = actor.CompGuest();
-                    if (compGuest.HasBed) Log.Error($"{actor.LabelShort} already has a bed ({compGuest.bed.Label})");
+                    if (compGuest.HasBed)
+                    {
+                        Log.Error($"{actor.LabelShort} already has a bed ({compGuest.bed.Label})");
+                        return;
+                    }
 
                     compGuest.ClaimBed(newBed);
 

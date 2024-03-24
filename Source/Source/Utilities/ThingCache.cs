@@ -7,7 +7,7 @@ namespace Hospitality.Utilities
     public static class ThingCache
     {
         [NotNull]
-        private static readonly Dictionary<Map, ThingCacheSet> allCacheSets = new Dictionary<Map, ThingCacheSet>();
+        private static readonly Dictionary<Map, ThingCacheSet> allCacheSets = new();
 
         [NotNull]
         public static ThingCacheSet GetSetFor(Map map)
@@ -46,7 +46,7 @@ namespace Hospitality.Utilities
 
         public class ThingCacheSet
         {
-            private readonly List<Thing> vendingMachines = new List<Thing>();
+            private readonly List<Thing> vendingMachines = new();
             public IEnumerable<Thing> AllVendingMachines => vendingMachines;
 
             public void TryRegister(Thing newThing)

@@ -17,11 +17,11 @@ namespace Hospitality.Patches
         [HarmonyPatch(typeof(SocialCardUtility), nameof(SocialCardUtility.DrawPawnRow))]
         public class DrawPawnRow
         {
-            private static readonly Color HighlightColorFriend = new Color(0.0f, 0.5f, 0.0f, 1f);
-            private static readonly Color HighlightColorFriendRelated = new Color(0.0f, 0.75f, 0.0f, 1f);
-            private static readonly Color HighlightColorEnemy = new Color(0.5f, 0.0f, 0.0f, 1f);
-            private static readonly Color HighlightColorEnemyRelated = new Color(0.75f, 0.0f, 0.0f, 1f);
-            private static readonly Color HighlightColorSlave = new Color(0.35f, 0.35f, 0.35f, 1f);
+            private static readonly Color HighlightColorFriend = new(0.0f, 0.5f, 0.0f, 1f);
+            private static readonly Color HighlightColorFriendRelated = new(0.0f, 0.75f, 0.0f, 1f);
+            private static readonly Color HighlightColorEnemy = new(0.5f, 0.0f, 0.0f, 1f);
+            private static readonly Color HighlightColorEnemyRelated = new(0.75f, 0.0f, 0.0f, 1f);
+            private static readonly Color HighlightColorSlave = new(0.35f, 0.35f, 0.35f, 1f);
 
             [HarmonyPrefix]
             public static bool Prefix(float y, float width,  SocialCardUtility.CachedSocialTabEntry entry, Pawn selPawnForSocialInfo)

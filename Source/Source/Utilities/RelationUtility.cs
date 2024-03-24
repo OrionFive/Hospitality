@@ -8,7 +8,7 @@ namespace Hospitality
 {
     internal static class RelationUtility
     {
-        private static readonly Dictionary<int, RelationInfo> relationCache = new Dictionary<int, RelationInfo>();
+        private static readonly Dictionary<int, RelationInfo> relationCache = new();
 
         public class RelationInfo
         {

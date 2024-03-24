@@ -7,7 +7,7 @@ namespace Hospitality
 {
     public abstract class Alert_GuestThought : Alert_Guest
     {
-        private static readonly List<Thought> tmpThoughts = new List<Thought>();
+        private static readonly List<Thought> tmpThoughts = new();
         protected abstract ThoughtDef Thought { get; }
 
         protected override void UpdateAffectedPawnsCache()

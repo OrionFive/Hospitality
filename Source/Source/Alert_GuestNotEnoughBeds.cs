@@ -6,7 +6,7 @@ namespace Hospitality
 {
     public class Alert_GuestNotEnoughBeds : Alert_Guest
     {
-        private static readonly List<Thought> tmpThoughts = new List<Thought>();
+        private static readonly List<Thought> tmpThoughts = new();
 
         public Alert_GuestNotEnoughBeds()
         {
