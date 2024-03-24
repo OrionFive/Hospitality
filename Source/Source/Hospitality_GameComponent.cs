@@ -6,7 +6,7 @@ namespace Hospitality
 {
 	public class Hospitality_GameComponent : GameComponent
 	{
-		public FoodRestriction defaultFoodRestriction;
+		public FoodPolicy defaultFoodRestriction;
 
 		// ReSharper disable once UnusedParameter.Local
 		public Hospitality_GameComponent(Game _)
@@ -17,7 +17,7 @@ namespace Hospitality
 		public override void StartedNewGame()
 		{
 			base.StartedNewGame();
-			defaultFoodRestriction ??= new FoodRestriction(600, "Hospitality_Guests"); // Arbitrary ID
+			defaultFoodRestriction ??= new FoodPolicy(600, "Hospitality_Guests"); // Arbitrary ID
 			ApplyFoodFilters(defaultFoodRestriction);
 		}
 
@@ -27,12 +27,12 @@ namespace Hospitality
 			Scribe_Deep.Look(ref defaultFoodRestriction, "defaultFoodRestriction");
 			if (Scribe.mode == LoadSaveMode.ResolvingCrossRefs)
 			{
-				defaultFoodRestriction ??= new FoodRestriction(600, "Hospitality_Guests");
+				defaultFoodRestriction ??= new FoodPolicy(600, "Hospitality_Guests");
 				ApplyFoodFilters(defaultFoodRestriction);
 			}
 		}
 
-		private static void ApplyFoodFilters(FoodRestriction foodRestriction)
+		private static void ApplyFoodFilters(FoodPolicy foodRestriction)
 		{
 			foodRestriction.filter.SetAllow(ThingCategoryDefOf.Foods, true);
 			foodRestriction.filter.SetAllow(ThingCategoryDefOf.Drugs, true);

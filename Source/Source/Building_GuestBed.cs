@@ -136,13 +136,6 @@ namespace Hospitality
             return !room.ContainedBeds.Any(containedBed => containedBed != this && containedBed.def.building.bed_humanlike);
         }
 
-        public override void Draw()
-        {
-            base.Draw();
-            if (Medical) Medical = false;
-            if (ForPrisoners) ForPrisoners = false;
-        }
-
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             // Creating copy for iteration, since list changes during loop
@@ -302,6 +295,8 @@ namespace Hospitality
             if (bed.IsGuestBed())
             {
                 newBed = (Building_Bed) MakeBed(bed, bed.def.defName.Split(new[] {"Guest"}, StringSplitOptions.RemoveEmptyEntries)[0]);
+                newBed.Medical = false;
+                newBed.ForPrisoners = false;
             }
             else
             {
