@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudeonTK;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -161,7 +162,7 @@ namespace Hospitality.Utilities
 		{
 			if (!(map is Map realMap)) return;
 
-			var incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.FactionArrival, realMap);
+			var incidentParms = StorytellerUtility.DefaultParmsNow(DefDatabase<IncidentCategoryDef>.GetNamed("FactionArrival"), realMap);
 
             if (faction == null) return;
 			if (faction.def.pawnGroupMakers == null || !faction.def.pawnGroupMakers.Any(g => g.kindDef == PawnGroupKindDefOf.Peaceful))

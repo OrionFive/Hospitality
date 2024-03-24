@@ -160,7 +160,7 @@ namespace Hospitality.Utilities
 
             if (visitor.foodRestriction != null && visitor.RaceProps.Humanlike) // Humanlike check copied from vanilla, faction check removed (these are always guests)
             {
-                visitor.foodRestriction.CurrentFoodRestriction = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
+                visitor.foodRestriction.CurrentFoodPolicy = Current.Game.GetComponent<Hospitality_GameComponent>().defaultFoodRestriction;
             }
 
         }

@@ -257,7 +257,7 @@ namespace Hospitality {
         {
             if (thing == null || guestTrader == null) return false;
             if (thing.def.tradeability.PlayerCanSell()) return true;
-            return guestTrader.IsGuestTrader() && thing.def.thingCategories?.Contains(ThingCategoryDefOf.FoodMeals) == true;
+            return guestTrader.IsGuestTrader() && thing.def.thingCategories?.Contains(DefDatabase<ThingCategoryDef>.GetNamed("FoodMeals")) == true;
         }
 
         public static Toil TakeFromPawn(Thing item, ThingOwner holder, int count = -1, TargetIndex indexToSet = TargetIndex.None)

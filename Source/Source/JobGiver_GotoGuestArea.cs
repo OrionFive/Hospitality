@@ -25,7 +25,7 @@ namespace Hospitality
             if (area.TrueCount == 0) return ThinkResult.NoJob;
 
             // Find nearby
-            bool found = CellFinder.TryFindRandomReachableCellNear(pawn.Position, pawn.MapHeld, 20, 
+            bool found = CellFinder.TryFindRandomReachableNearbyCell(pawn.Position, pawn.MapHeld, 20, 
                 TraverseParms.For(pawn, Danger.Some, TraverseMode.PassDoors), c => area[c], null, out var closeSpot);
 
             if (!found)

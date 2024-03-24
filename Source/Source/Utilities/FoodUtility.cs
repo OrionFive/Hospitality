@@ -13,7 +13,7 @@ namespace Hospitality.Utilities
 
             //Search FoodSource
 #pragma warning disable CS0612 // Type or member is obsolete
-            if (RimWorld.FoodUtility.TryFindBestFoodSourceFor(guest, guest, false, out var foodSource, out var foodDef, false, true, false, false, false, false, false, false, false, false, FoodPreferability.RawTasty))
+            if (RimWorld.FoodUtility.TryFindBestFoodSourceFor(guest, guest, false, out var foodSource, out var foodDef, false, true, false, false, false, false, false, false, false, false, false, FoodPreferability.RawTasty))
 #pragma warning restore CS0612 // Type or member is obsolete
             {
                 if (foodSource != null && foodDef != null)
@@ -87,7 +87,7 @@ namespace Hospitality.Utilities
         public static bool WillConsume(Pawn pawn, ThingDef foodDef)
         {
             if (foodDef == null) return false;
-            var restrictions = pawn.foodRestriction.CurrentFoodRestriction;
+            var restrictions = pawn.foodRestriction.CurrentFoodPolicy;
 
             if (!restrictions.Allows(foodDef)) return false;
 

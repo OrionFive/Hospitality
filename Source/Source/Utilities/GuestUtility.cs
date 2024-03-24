@@ -542,8 +542,8 @@ namespace Hospitality.Utilities
             guest.MapHeld.mapPawns.UpdateRegistryForPawn(guest);
 
             guest.playerSettings.medCare = MedicalCareCategory.Best;
-            guest.playerSettings.AreaRestriction = null;
-            guest.foodRestriction.CurrentFoodRestriction = Current.Game.foodRestrictionDatabase.DefaultFoodRestriction();
+            guest.playerSettings.allowedAreas = new Dictionary<Map, Area>();
+            guest.foodRestriction.CurrentFoodPolicy = Current.Game.foodRestrictionDatabase.DefaultFoodRestriction();
             guest.drugs.CurrentPolicy = Current.Game.drugPolicyDatabase.DefaultDrugPolicy();
 
             guest.caller?.DoCall();
@@ -1012,7 +1012,7 @@ namespace Hospitality.Utilities
             if (hediffDeathAcidifier != null)
             {
                 var acidifier = pawn.health.hediffSet.GetFirstHediffOfDef(hediffDeathAcidifier);
-                acidifier.Notify_PawnDied();
+                acidifier.Notify_PawnDied(null);
                 if(!pawn.Dead) acidifier.Notify_PawnKilled();
             }
         }
