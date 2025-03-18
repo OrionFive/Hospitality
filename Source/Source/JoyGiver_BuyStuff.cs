@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Hospitality.Utilities;
@@ -14,7 +15,6 @@ public class JoyGiver_BuyStuff : JoyGiver
 {
     private readonly JobDef jobDefBrowse = DefDatabase<JobDef>.GetNamed("BrowseItems");
     private readonly JobDef jobDefBuy = DefDatabase<JobDef>.GetNamed("BuyItem");
-    private readonly Dictionary<int, List<ulong>> recentlyLookedAt = new(); // Pawn ID, list of cell hashes
     public JoyGiverDefShopping Def => (JoyGiverDefShopping)def;
     protected virtual int OptimalMoneyForShopping => 50;
 
@@ -38,34 +38,32 @@ public class JoyGiver_BuyStuff : JoyGiver
     {
         var shoppingArea = pawn?.GetShoppingArea();
         if (shoppingArea == null) return null;
-
-        var pawnWealth = pawn.GetMoney();
+        
+        // Gather all things lying on the ground, and in storage
         var map = pawn.MapHeld;
-        var things = shoppingArea.ActiveCells.Where(cell => !HasRecentlyLookedAt(pawn, cell)).SelectMany(cell => map.thingGrid.ThingsListAtFast(cell))
-            .Where(t => t != null && ItemUtility.IsBuyableAtAll(pawn, pawnWealth, t) && Qualifies(t, pawn)).ToList();
-        var storage = shoppingArea.ActiveCells.Where(cell => !HasRecentlyLookedAt(pawn, cell)).Select(cell => map.edificeGrid[cell]).OfType<Building_Storage>();
-        things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, pawnWealth, t) && Qualifies(t, pawn))));
-        if (things.Count == 0) return null;
-        var requiresFoodFactor = GuestUtility.GetRequiresFoodFactor(pawn);
+        var groundThings = shoppingArea.ActiveCells.SelectMany(c => map.thingGrid.ThingsListAtFast(c));
+        var storedThings = shoppingArea.ActiveCells.Select(cell => map.edificeGrid[cell]).OfType<Building_Storage>().SelectMany(s => s.slotGroup.HeldThings);
+        
+        var allThings = storedThings.Concat(groundThings).ToList();
+        
+        var pawnWealth = pawn.GetMoney();
+        bool IsValidThing(Thing t) => ItemUtility.IsBuyableAtAll(pawn, pawnWealth, t) && Qualifies(t, pawn);
 
-        // Try some things
-        IEnumerable<Thing> selectedThings;
+        List<Thing> selectedThings = null;
+        var requiresFoodFactor = GuestUtility.GetRequiresFoodFactor(pawn);
         if (requiresFoodFactor <= 0.8)
-            selectedThings = things.TakeRandom(5);
+        {
+            // We can select non-food things, so anything random is good
+            selectedThings = SelectRandomThings(allThings, 5, IsValidThing);
+        }
         else
         {
-            // Do not pick at random if the pawn needs food, select only food, and try to avoid disliked food.
-            selectedThings = things.Where(t => t.IsFood() && pawn.RaceProps.CanEverEat(t) && FoodUtility.MoodFromIngesting(pawn, t, t.def) >= 0);
-            if (selectedThings.FirstOrDefault() == null)
-                selectedThings = things.Where(t => t.IsFood() && pawn.RaceProps.CanEverEat(t));
-            selectedThings = selectedThings.ToList().TakeRandom(5);
+            bool ValidFoodThing(Thing t) => t.IsFood() && pawn.RaceProps.CanEverEat(t) && FoodUtility.MoodFromIngesting(pawn, t, t.def) >= 0;
+            selectedThings = SelectRandomThings(allThings, 5, t => ValidFoodThing(t) && IsValidThing(t));
         }
+        
         var selection = selectedThings.Where(t => pawn.CanReach(t.Position, PathEndMode.Touch, Danger.None, false, false, TraverseMode.PassDoors)).ToArray();
-        foreach (var t in selection)
-        {
-            RegisterLookedAt(pawn, t.Position);
-        }
-
+        
         Thing thing = null;
         if (selection.Length > 1)
             thing = selection.MaxBy(t => Likey(pawn, t, requiresFoodFactor));
@@ -91,6 +89,27 @@ public class JoyGiver_BuyStuff : JoyGiver
 
         //Log.Message($"{pawn.NameShortColored} is going to buy {thing.LabelShort} at {thing.Position}.");
         return new Job(jobDefBuy, thing);
+    }
+
+    private static List<Thing> SelectRandomThings(List<Thing> things, int count, Func<Thing, bool> predicate)
+    {
+        var selectedThings = new List<Thing>();
+        
+        // For performance ... doesn't necessarily mean we are actually doing this randomly :)
+        var randomBaseIdx = Rand.Range(0, things.Count);
+        for (var i = 0; i < count; i++)
+        {
+            var thing = things[(randomBaseIdx + i) % things.Count];
+            
+            if (predicate(thing))
+            {
+                selectedThings.Add(thing);
+                if (selectedThings.Count == count)
+                    break;
+            }
+        }
+
+        return selectedThings;
     }
 
     private static float Likey(Pawn pawn, Thing thing, float requiresFoodFactor)
@@ -228,21 +247,5 @@ public class JoyGiver_BuyStuff : JoyGiver
     public static bool CanEat(Thing thing, Pawn pawn)
     {
         return thing.def.IsNutritionGivingIngestible && thing.def.IsWithinCategory(ThingCategoryDefOf.Foods) && ItemUtility.AlienFrameworkAllowsIt(pawn.def, thing.def, "CanEat");
-    }
-
-    private bool HasRecentlyLookedAt(Pawn pawn, IntVec3 cell)
-    {
-        return recentlyLookedAt.TryGetValue(pawn.thingIDNumber, out var hashes) && hashes.Contains(cell.UniqueHashCode());
-    }
-
-    private void RegisterLookedAt(Pawn pawn, IntVec3 cell)
-    {
-        if (recentlyLookedAt.TryGetValue(pawn.thingIDNumber, out var hashes))
-        {
-            hashes.Add(cell.UniqueHashCode());
-            const int MaxCellsToRemember = 5;
-            if (hashes.Count > MaxCellsToRemember) hashes.RemoveAt(0);
-        }
-        else recentlyLookedAt.Add(pawn.thingIDNumber, [cell.UniqueHashCode()]);
     }
 }

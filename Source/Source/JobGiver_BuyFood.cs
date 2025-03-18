@@ -31,7 +31,8 @@ namespace Hospitality
 
 		public override Job TryGiveJob(Pawn pawn)
 		{
-			if (pawn.needs.food == null) return null;
+			var canTakeFreeFood = pawn.GetMapComponent()?.guestsCanTakeFoodForFree ?? false;
+			if (pawn.needs.food == null || (pawn.GetMoney() == 0 && !canTakeFreeFood)) return null;
 
 			if (InternalDefOf.BuyFood.Worker.MissingRequiredCapacity(pawn) != null) return null;
 			//Log.Message($"{pawn.NameShortColored} is trying to buy food.");
