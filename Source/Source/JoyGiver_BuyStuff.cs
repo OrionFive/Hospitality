@@ -39,11 +39,12 @@ public class JoyGiver_BuyStuff : JoyGiver
         var shoppingArea = pawn?.GetShoppingArea();
         if (shoppingArea == null) return null;
 
+        var pawnWealth = pawn.GetMoney();
         var map = pawn.MapHeld;
         var things = shoppingArea.ActiveCells.Where(cell => !HasRecentlyLookedAt(pawn, cell)).SelectMany(cell => map.thingGrid.ThingsListAtFast(cell))
-            .Where(t => t != null && ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn)).ToList();
+            .Where(t => t != null && ItemUtility.IsBuyableAtAll(pawn, pawnWealth, t) && Qualifies(t, pawn)).ToList();
         var storage = shoppingArea.ActiveCells.Where(cell => !HasRecentlyLookedAt(pawn, cell)).Select(cell => map.edificeGrid[cell]).OfType<Building_Storage>();
-        things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, t) && Qualifies(t, pawn))));
+        things.AddRange(storage.SelectMany(s => s.slotGroup.HeldThings.Where(t => ItemUtility.IsBuyableAtAll(pawn, pawnWealth, t) && Qualifies(t, pawn))));
         if (things.Count == 0) return null;
         var requiresFoodFactor = GuestUtility.GetRequiresFoodFactor(pawn);
 

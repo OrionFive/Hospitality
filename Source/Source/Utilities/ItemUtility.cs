@@ -13,12 +13,18 @@ using Verse.Sound;
 
 namespace Hospitality.Utilities;
 
+[StaticConstructorOnStartup]
 public static class ItemUtility
 {
     private static readonly Dictionary<string, MethodInfo> alienFrameworkMethods = new();
 
     public static float priceFactor = 0.55f;
+    public static bool isCELoaded = false;
 
+    static ItemUtility()
+    {
+        isCELoaded = ModsConfig.ActiveModsInLoadOrder.Any(m => m.PackageId == "CETeam.CombatExtended");
+    }
 
     public static void PocketHeadgear(this Pawn pawn)
     {
@@ -150,7 +156,7 @@ public static class ItemUtility
         return method == null || (bool)method.Invoke(null, [thingDef, raceDef]);
     }
 
-    public static bool IsBuyableAtAll(Pawn pawn, Thing thing)
+    public static bool IsBuyableAtAll(Pawn pawn, int pawnMoney, Thing thing)
     {
         if (thing.def.isUnfinishedThing) return false;
 
@@ -168,7 +174,7 @@ public static class ItemUtility
         //}
         var cost = Mathf.CeilToInt(GetPurchasingCost(thing));
 
-        if (cost > GetMoney(pawn))
+        if (cost > pawnMoney)
         {
             return false;
         }
@@ -318,7 +324,7 @@ public static class ItemUtility
 
     private static ThingComp GetInventory(this Pawn pawn)
     {
-        return pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompInventory");
+        return isCELoaded ? pawn.AllComps.FirstOrDefault(c => c.GetType().Name == "CompInventory") : null;
     }
 
     #endregion
