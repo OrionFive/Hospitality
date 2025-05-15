@@ -10,5 +10,7 @@ namespace Hospitality.Utilities
         public static readonly Texture2D ButtonNumberDown = ContentFinder<Texture2D>.Get("UI/Commands/ButtonNumberDown");
         public static readonly Texture2D ButtonNumberAuto = ContentFinder<Texture2D>.Get("UI/Commands/ButtonNumberAuto");
 
+        public static readonly Texture2D RelationshipIcon = ContentFinder<Texture2D>.Get("UI/Tab/Relationship");
+
     }
 }

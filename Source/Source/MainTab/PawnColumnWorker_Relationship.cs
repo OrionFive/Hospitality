@@ -6,16 +6,14 @@ using static Hospitality.Utilities.RelationUtility;
 
 namespace Hospitality.MainTab;
 
-[StaticConstructorOnStartup]
 public class PawnColumnWorker_Relationship : PawnColumnWorker_Icon
 {
-    private static readonly Texture2D Icon = ContentFinder<Texture2D>.Get("UI/Tab/Relationship");
     private bool mayDrawLordGroups;
 
     public override Texture2D GetIconFor(Pawn pawn)
     {
         if (pawn == null) return null;
-        return GetRelationInfo(pawn).hasRelationship ? Icon : null;
+        return GetRelationInfo(pawn).hasRelationship ? HospitalityContent.RelationshipIcon : null;
     }
 
     public override string GetIconTip(Pawn pawn)
